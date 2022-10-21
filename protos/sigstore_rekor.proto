@@ -54,7 +54,8 @@ message InclusionProof {
         // A list of hashes required to compute the inclusion proof, sorted
         // in order from leaf to root.
         repeated bytes hashes = 4;
-        // Signature of the current tree head. See above for more details.
+        // Signature of the tree head, as of the time of this proof was
+        // generated. See above info on 'Checkpoint' for more details.
         Checkpoint checkpoint = 5;
 }
 
