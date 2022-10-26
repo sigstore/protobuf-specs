@@ -105,5 +105,5 @@ message TransparencyLogEntry {
         // The inclusion proof can be used for online verification that the
         // entry was appended to the log, and that the log has not been
         // altered.
-        optional InclusionProof inclusion_proof = 6;
+       InclusionProof inclusion_proof = 6;
 }
