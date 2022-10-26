@@ -83,10 +83,10 @@ message X509Certificate {
         bytes der_bytes = 1;
 }
 
-// A chain of X509 certificates.
+// A chain of X.509 certificates.
 message X509CertificateChain {
         // The chain of certificates, with indices 0 to n.
-        // The first certificate in the array  must be the leaf
+        // The first certificate in the array must be the leaf
         // certificate used for signing. Any intermediate certificates
         // must be stored as offset 1 to n-1, and the root certificate at
         // position n.
