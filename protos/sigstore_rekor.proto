@@ -62,7 +62,7 @@ message InclusionProof {
 // The inclusion promise is calculated by Rekor. It's calculated as a
 // signature over a canonical JSON serialization of the persisted entry, the
 // log ID, log index and the integration timestamp.
-// See https://github.com/sigstore/rekor/blob/main/pkg/api/entries.go#L54
+// See https://github.com/sigstore/rekor/blob/a6e58f72b6b18cc06cefe61808efd562b9726330/pkg/api/entries.go#L54
 // The format of the signature depends on the transparency log's public key.
 // If the signature algorithm requires a hash function and/or a signature
 // scheme (e.g. RSA) those has to be retrieved out-of-band from the log's
