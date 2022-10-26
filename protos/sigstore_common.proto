@@ -79,7 +79,7 @@ message PublicKeyIdentifier {
 }
 
 message X509Certificate {
-        // DER encoded X509 certificate.
+        // DER-encoded X.509 certificate.
         bytes der_bytes = 1;
 }
 
