@@ -67,7 +67,7 @@ message InclusionProof {
 // If the signature algorithm requires a hash function and/or a signature
 // scheme (e.g. RSA) those has to be retrieved out-of-band from the log's
 // operators, together with the public key.
-// This is primarily used to verify the integration timestamp's value.
+// This is used to verify the integration timestamp's value and that the log has promised to include the entry.
 message InclusionPromise {
         bytes signed_entry_timestamp = 1;
 }
