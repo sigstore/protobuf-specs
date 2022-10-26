@@ -72,7 +72,7 @@ message InclusionPromise {
         bytes signed_entry_timestamp = 1;
 }
 
-// LogId captures the identity of a transparceny log.
+// LogId captures the identity of a transparency log.
 message LogId {
         // The unique id of the log, represented as the SHA-256 hash
         // of the log's public key, computed over the DER encoding.
