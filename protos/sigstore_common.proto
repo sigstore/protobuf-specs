@@ -75,6 +75,9 @@ message PublicKeyIdentifier {
         // The format of the hint must be agreed upon out of band by the
         // signer and the verifiers, and so is not subject to this
         // specification.
+        // Example use-case is to specify the public key to use, from a
+        // trusted key-ring. Formats may differ depending on implementation,
+        // but a hex encoded digest of the public key is one example.
         string hint = 1;
 }
 
