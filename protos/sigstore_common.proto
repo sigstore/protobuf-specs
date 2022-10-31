@@ -76,8 +76,9 @@ message PublicKeyIdentifier {
         // signer and the verifiers, and so is not subject to this
         // specification.
         // Example use-case is to specify the public key to use, from a
-        // trusted key-ring. Formats may differ depending on implementation,
-        // but a hex encoded digest of the public key is one example.
+        // trusted key-ring.
+        // Implementors are RECOMMENDED derive the value from the public
+        // key as described in https://www.rfc-editor.org/rfc/rfc3280#section-4.2.1.1
         string hint = 1;
 }
 
