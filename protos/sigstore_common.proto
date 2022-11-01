@@ -15,6 +15,8 @@
 syntax = "proto3";
 package dev.sigstore.common.v1;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/common/v1";
 option java_package = "dev.sigstore.proto.common.v1";
 option java_multiple_files = true;
@@ -60,6 +62,19 @@ message MessageSignature {
         bytes signature = 2;
 }
 
+// LogId captures the identity of a transparency log.
+message LogId {
+        oneof id {
+                // The unique id of the log, represented as the SHA-256 hash
+                // of the log's public key, computed over the DER encoding.
+                // https://www.rfc-editor.org/rfc/rfc6962#section-3.2
+                bytes key_id = 1;
+                // Currently not used but proposed by
+                // https://datatracker.ietf.org/doc/rfc9162/
+                string oid = 2;
+        }
+}
+
 // This message holds a RFC 3161 timestamp.
 message RFC3161SignedTimestamp {
         // Signed timestamp is the DER encoded TimeStampResponse.
@@ -67,6 +82,19 @@ message RFC3161SignedTimestamp {
         bytes signed_timestamp = 1;
 }
 
+message PublicKey {
+        // Optional key identifier. Format must be agreed upon out of band
+        // by signer and verifier. See PublicKeyIdentifier for more
+        // information.
+        // Implementors MAY provide a mapping function from hint to PublicKey.
+        string key_id = 1;
+        // DER-encoded public key.
+        bytes raw_bytes = 2;
+        // The time range is half-open and does not include the end
+        // timestamp, i.e [valid_for.start, valid_for.end).
+        optional TimeRange valid_for = 3;
+        // TODO: Add details on algorithm and parameters.
+}
 
 // PublicKeyIdentifier can be used to identify an (out of band) delivered
 // key, to verify a signature.
@@ -80,6 +108,11 @@ message PublicKeyIdentifier {
         // Implementors are RECOMMENDED derive the value from the public
         // key as described in https://www.rfc-editor.org/rfc/rfc3280#section-4.2.1.1
         string hint = 1;
+}
+
+message DistinguishedName {
+        string organization = 1;
+        string common_name = 2;
 }
 
 message X509Certificate {
@@ -104,4 +137,9 @@ message VerificationMaterial {
                 PublicKeyIdentifier public_key = 1;
                 X509CertificateChain x509_certificate_chain = 2;
         }
+}
+
+message TimeRange {
+        google.protobuf.Timestamp start = 1;
+        google.protobuf.Timestamp end = 2;
 }
