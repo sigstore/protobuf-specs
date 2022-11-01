@@ -24,6 +24,7 @@ option java_package = "dev.sigstore.proto.verification.v1";
 option java_multiple_files = true;
 option java_outer_classname = "VerificationProto";
 
+// The identity of a signer.
 message Identity {
         // The X.509v3 issuer extension (OID 1.3.6.1.4.1.57264.1.1)
         string issuer = 1;
@@ -65,7 +66,7 @@ message Material {
 // A light-weight set of options/policies for identifying trusted signers.
 message Options {
         // At least one identity MUST be provided.
-        repeated Identity identities = 1;
+        repeated Identity signers = 1;
 }
 
 // Input captures all that is needed to call the bundle verification method.

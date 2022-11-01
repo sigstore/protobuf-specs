@@ -22,9 +22,9 @@ option java_package = "dev.sigstore.proto.trustroot.v1";
 option java_multiple_files = true;
 option java_outer_classname = "TrustRootProto";
 
-// TransparencyLogInstance describes the attributes required from a
+// TransparencyLogInstance describes the data required from a
 // transparency log, to successfully identify it and perform verification
-// of entries added to it.
+// inclusion.
 message TransparencyLogInstance {
         dev.sigstore.common.v1.LogId log_id = 1;
         string uri = 2;
@@ -43,8 +43,8 @@ message CertificateAuthority {
         string uri = 2;
         dev.sigstore.common.v1.X509CertificateChain cert_chain = 3;
         // The time the *entire* chain was valid. This is at max the
-        // longest interval when *all* certificates in the chain are valid,
-        // but MAY be less.
+        // longest interval when *all* certificates in the chain where valid,
+        // but it MAY be shorter.
         // The time range is half-open and does not include the end
         // timestamp, i.e [valid_for.start, valid_for.end).
         dev.sigstore.common.v1.TimeRange valid_for = 4;
