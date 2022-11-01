@@ -36,6 +36,7 @@ message TransparencyLogs {
         // The set of transparency logs to use during bundle verification.
         repeated dev.sigstore.trustroot.v1.TransparencyLogInstance instances = 1;
         // The minimim number of logs the entry must appear on.
+        // Setting this value to zero disables verification.
         int32 threshold = 2;
         // Perform an online proof of inclusion.
         bool require_inclusion_proof = 3;
@@ -45,6 +46,7 @@ message TimestampAuthorities {
         // The set of trusted timestamp authorities
         repeated dev.sigstore.trustroot.v1.CertificateAuthority instances = 1;
         // The minimum number of valid countersignatues.
+        // Setting this value to zero disables verification.
         int32 threshold = 2;
 }
 
@@ -53,7 +55,7 @@ message TimestampAuthorities {
 // dev.sisgtore.trustroot.TrustedRoot.v1 instance. Prior to verifying an
 // artifact (i.e a bundle) some selection is expected to happen, to filter
 // out the exact authorities to use, which is captured in this message.
-message Material {
+message VerificationMaterial {
         TransparencyLogs tlogs = 1;
         oneof signature_verification {
                 dev.sigstore.trustroot.v1.CertificateAuthority certificate_authority = 2;
@@ -71,7 +73,7 @@ message Options {
 
 // Input captures all that is needed to call the bundle verification method.
 message Input {
-        Material verification_material = 1;
+        VerificationMaterial verification_material = 1;
         Options verification_options = 2;
         dev.sigstore.bundle.v1.Bundle bundle = 3;
         // If the bundle contains a hashed record, this URI MUST identify
