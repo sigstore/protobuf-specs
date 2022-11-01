@@ -26,7 +26,9 @@ option java_outer_classname = "TrustRootProto";
 // transparency log, to successfully identify it and perform verification
 // inclusion.
 message TransparencyLogInstance {
+        // The unique identifier for this transparency log.
         dev.sigstore.common.v1.LogId log_id = 1;
+        // The URI at which the log can be accessed.
         string uri = 2;
         dev.sigstore.common.v1.PublicKey public_key = 3;
         // The time range is half-open and does not include the end
@@ -40,7 +42,9 @@ message CertificateAuthority {
         // The root certificate MUST be self-signed, and so the subject and
         // issuer are the same.
         dev.sigstore.common.v1.DistinguishedName subject = 1;
+        // The URI at which the CA can be accessed.
         string uri = 2;
+        // A single chain for a signing certificate.
         dev.sigstore.common.v1.X509CertificateChain cert_chain = 3;
         // The time the *entire* chain was valid. This is at max the
         // longest interval when *all* certificates in the chain where valid,
