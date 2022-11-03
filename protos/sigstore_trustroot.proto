@@ -48,7 +48,7 @@ message CertificateAuthority {
         dev.sigstore.common.v1.DistinguishedName subject = 1;
         // The URI at which the CA can be accessed.
         string uri = 2;
-        // A single chain for a signing certificate.
+        // The certificate chain for this CA.
         dev.sigstore.common.v1.X509CertificateChain cert_chain = 3;
         // The time the *entire* chain was valid. This is at max the
         // longest interval when *all* certificates in the chain where valid,
@@ -72,8 +72,8 @@ message CertificateAuthority {
 message TrustedRoot {
         // A set of trusted Rekor servers.
         repeated TransparencyLogInstance tlogs = 1;
-        // A set of trusted certificate authorites, and any intermediate
-        // certificates they provide.
+        // A set of trusted certificate authorites (e.g Fulcio), and any
+        // intermediate certificates they provide.
         // If a CA is issuing multiple intermediate certificate, each
         // combination shall be represented as separate chain. I.e, a single
         // root cert may appear in multiple chains but with different
