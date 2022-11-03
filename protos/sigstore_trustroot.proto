@@ -22,11 +22,12 @@ option java_package = "dev.sigstore.proto.trustroot.v1";
 option java_multiple_files = true;
 option java_outer_classname = "TrustRootProto";
 
-// TransparencyLogInstance describes the data required from a
-// transparency log, to successfully identify it and perform verification
-// inclusion.
+// TransparencyLogInstance describes the immutable parameters from a
+// transparency log.
 // See https://www.rfc-editor.org/rfc/rfc9162.html#name-log-parameters
 // for more details.
+// The incluced parameters are the minimal set required to identify a log,
+// and verify an inclusion promise.
 message TransparencyLogInstance {
         // The base URL at which can be used to URLs for the client.
         string base_urL = 1;
