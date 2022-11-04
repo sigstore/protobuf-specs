@@ -39,9 +39,8 @@ message SubjectAlternativeName {
 message Identity {
         // The X.509v3 issuer extension (OID 1.3.6.1.4.1.57264.1.1)
         string issuer = 1;
-        oneof identity {
-                SubjectAlternativeName san = 2;
-        }
+        SubjectAlternativeName san = 2;
+        // TODO: add more optional attributes for identify verification.
 }
 
 // A light-weight set of options/policies for identifying trusted signers,
@@ -56,7 +55,7 @@ message ArtifactVerificationOptions {
                 // Disable verification for transparency logs.
                 bool disable = 3;
         }
-        message CtfeOptions {
+        message CtlogOptions {
                 // The number of ct transparency logs the certificate must
                 // appear on.
                 int32 threshold = 1;
@@ -67,7 +66,7 @@ message ArtifactVerificationOptions {
                 // Disable ct transparency log verification
                 bool disable = 3;
         }
-        message TsaOptions {
+        message TimestampAuthorityOptions {
                 // The number of signed timestamps that are expected.
                 int32 threshold = 1;
                 // Disable signed timestamp verification.
@@ -75,7 +74,8 @@ message ArtifactVerificationOptions {
         }
 
         // At least one identity MUST be provided. Providing zero identities
-        // is an error.
+        // is an error. If at least one provided identity is found as a
+        // signer, the verification is considered successful.
         repeated Identity signers = 1;
         // Optional options for artifact transparency log verification.
         // If none is provided, the default verification options are:
@@ -88,12 +88,12 @@ message ArtifactVerificationOptions {
         // Threshold: 1
         // Detached SCT: false
         // Disable: false
-        optional CtfeOptions ctfe_options = 3;
+        optional CtlogOptions ctlog_options = 3;
         // Optional options for certificate signed timestamp verification.
         // If none is provided, the default verification options are:
         // Threshold: 1
         // Disable: false
-        optional TsaOptions tsa_options = 4;
+        optional TimestampAuthorityOptions tsa_options = 4;
 }
 
 message Artifact {
@@ -116,11 +116,11 @@ message Input {
         // captured in this attribute.
         //
         // As there can be multiple certificate authorities and public keys
-        // after the global trust root has ben filtered down to a smaller,
+        // after the global trust root has been filtered down to a smaller,
         // per artifact set, any implementors of the verification logic MUST
         // offer an interface where the calling client can provide a
         // function that finds the correct key/certificate authority to use,
-        // as this selection is inherently  dependant on the used key
+        // as this selection is inherently dependant on the used key
         // mechanism (e.g. a cloud KMS with a versioned key).
         // As an example the client can provide a method
         // `Verify(bytes artifact, bytes signature, string key_id)`

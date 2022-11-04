@@ -30,7 +30,7 @@ option java_outer_classname = "TrustRootProto";
 // and verify an inclusion promise.
 message TransparencyLogInstance {
         // The base URL at which can be used to URLs for the client.
-        string base_urL = 1;
+        string base_url = 1;
         // The hash algorithm used for the Merkle Tree.
         dev.sigstore.common.v1.HashAlgorithm hash_algorithm = 2;
         // The signature algorithm used.
@@ -85,7 +85,7 @@ message TrustedRoot {
         // A set of public keys to trust for artifact signing.
         repeated dev.sigstore.common.v1.PublicKey public_keys = 3;
         // A set of trusted certificate transparency logs.
-        repeated TransparencyLogInstance ctfes = 4;
+        repeated TransparencyLogInstance ctlogs = 4;
         // A set of trusted timestamping authorities.
         repeated CertificateAuthority timestamp_authorities = 5;
 }
