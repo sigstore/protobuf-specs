@@ -15,6 +15,7 @@
 syntax = "proto3";
 package dev.sigstore.verification.v1;
 
+import "sigstore_common.proto";
 import "sigstore_trustroot.proto";
 import "sigstore_bundle.proto";
 
@@ -40,7 +41,10 @@ message Identity {
         // The X.509v3 issuer extension (OID 1.3.6.1.4.1.57264.1.1)
         string issuer = 1;
         SubjectAlternativeName san = 2;
-        // TODO: add more optional attributes for identify verification.
+        // An unordered list of OIDs that must be verified.
+        // All OID/values provided in this list MUST exactly match against
+        // the values in the certificate for verification to be successful.
+        repeated dev.sigstore.common.v1.ObjectIdentifierValuePair oids = 3;
 }
 
 // A light-weight set of options/policies for identifying trusted signers,
