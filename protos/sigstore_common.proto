@@ -48,8 +48,8 @@ enum SignatureAlgorithm {
         RSA_PSS = 5; // See RFC8017
 }
 
-// Supported key types
-enum KeyType {
+// Supported key encodings
+enum KeyEncoding {
         KEY_TYPE_UNSPECIFIED = 0;
         PKCS1 = 1; // PEM: RSA PUBLIC KEY
         PKCS8 = 2; // PEM: PUBLIC KEY
@@ -107,7 +107,7 @@ message PublicKey {
         string key_id = 1;
         // DER-encoded public key.
         optional bytes raw_bytes = 2;
-        KeyType key_type = 3;
+        KeyEncoding key_encoding = 3;
         SignatureAlgorithm signature_algorithm = 4;
         // Optional validity period for this key.
         optional TimeRange valid_for = 5;
