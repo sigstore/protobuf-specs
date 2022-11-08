@@ -44,6 +44,15 @@ enum SignatureAlgorithm {
         ECDSA_P256_SHA_256 = 1; // See NIST FIPS 186-4
         ECDSA_P256_HMAC_SHA_256 = 2; // See RFC6979
         ED25519 = 3; // See RFC8032
+        RSA_PKCS1V5 = 4; // See RFC8017
+        RSA_PSS = 5; // See RFC8017
+}
+
+// Supported key types
+enum KeyType {
+        KEY_TYPE_UNSPECIFIED = 0;
+        PKCS1 = 1; // PEM: RSA PUBLIC KEY
+        PKCS8 = 2; // PEM: PUBLIC KEY
 }
 
 // HashOutput captures a digest of a 'message' (generic octet sequence)
@@ -97,10 +106,11 @@ message PublicKey {
         // Implementors MAY provide a mapping function from hint to PublicKey.
         string key_id = 1;
         // DER-encoded public key.
-        // TODO: Add details on algorithm and parameters.
         optional bytes raw_bytes = 2;
+        KeyType key_type = 3;
+        SignatureAlgorithm signature_algorithm = 4;
         // Optional validity period for this key.
-        optional TimeRange valid_for = 3;
+        optional TimeRange valid_for = 5;
 }
 
 // PublicKeyIdentifier can be used to identify an (out of band) delivered
