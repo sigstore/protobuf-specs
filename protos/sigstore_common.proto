@@ -51,8 +51,8 @@ enum SignatureAlgorithm {
 // Supported key encodings
 enum KeyEncoding {
         KEY_TYPE_UNSPECIFIED = 0;
-        PKCS1 = 1; // PEM: RSA PUBLIC KEY
-        PKCS8 = 2; // PEM: PUBLIC KEY
+        PKCS1 = 1;
+        PKIX = 2;
 }
 
 // HashOutput captures a digest of a 'message' (generic octet sequence)
@@ -104,7 +104,7 @@ message PublicKey {
         // by signer and verifier. See PublicKeyIdentifier for more
         // information.
         // Implementors MAY provide a mapping function from hint to PublicKey.
-        string key_id = 1;
+        optional string key_id = 1;
         // DER-encoded public key.
         optional bytes raw_bytes = 2;
         KeyEncoding key_encoding = 3;
