@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PROTOC_IMAGE := namely/protoc-all:1.50_0
+PROTOC_IMAGE := namely/protoc-all:sha256:07f1ba9dbe11f5675e2efc8617c9552217dc4c3eb5ccd108f7c3889878dbae50 # v1.50_0
 
 # generate Go protobuf code
 proto: 
