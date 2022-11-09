@@ -13,8 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PROTOC_IMAGE := namely/protoc-all:1.50_5
-
+PROTOC_IMAGE := namely/protoc-all:1.50_0
 
 # generate Go protobuf code
 proto: 
