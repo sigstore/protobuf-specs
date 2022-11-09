@@ -20,9 +20,11 @@ permissions:
 
 on:
   push:
-    branches: [ main ]
+    paths: 
+      - '**.proto'
   pull_request:
-    branches: [ main ]
+    paths: 
+      - '**.proto'
 
 jobs:
   generate_go:
