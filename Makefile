@@ -13,11 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# bootstrap and install dev tools
-bootstrap:
-	go generate -tags tools tools/tools.go
+PROTOC_IMAGE := namely/protoc-all:1.29_2
+
 
 # generate Go protobuf code
 proto: 
 	@echo "Generating Protobuf files"
-	protoc -I=./protos --go_out=./protos --go_opt=paths=source_relative protos/*.proto
+	docker run -v ${PWD}:/defs ${PROTOC_IMAGE} -i protos -f envelope.proto -l go --go-module-prefix github.com/secure-systems-lab
+	docker run -v ${PWD}:/defs ${PROTOC_IMAGE} -i protos -f sigstore_common.proto -l go --go-module-prefix github.com/sigstore
+	docker run -v ${PWD}:/defs ${PROTOC_IMAGE} -i protos -f sigstore_rekor.proto -l go --go-module-prefix github.com/sigstore
+	docker run -v ${PWD}:/defs ${PROTOC_IMAGE} -i protos -f sigstore_bundle.proto -l go --go-module-prefix github.com/sigstore
