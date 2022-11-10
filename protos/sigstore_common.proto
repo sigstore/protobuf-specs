@@ -48,11 +48,21 @@ enum SignatureAlgorithm {
         RSA_PSS = 5; // See RFC8017
 }
 
-// Supported key encodings
-enum KeyEncoding {
-        KEY_TYPE_UNSPECIFIED = 0;
-        PKCS1 = 1;
-        PKIX = 2;
+// The permutations of signature algorithms and encoding schemas.
+// To avoid contradicting formats such as PKCS1 with ED25519 the valid
+// permutations are listed as a linear set instead of a cartesian set.
+enum KeyFormat {
+        KEY_FORMAT_UNSPECIFIED = 0;
+        // RSA
+        PKCS1_RSA_PKCS1V5 = 1; // See RFC8017
+        PKCS1_RSA_PSS = 2; // See RFC8017
+        PKIX_RSA_PKCS1V5 = 3;
+        PKIX_RSA_PSS = 4;
+        // ECDSA
+        PKIX_ECDSA_P256_SHA_256 = 5; // See NIST FIPS 186-4
+        PKIX_ECDSA_P256_HMAC_SHA_256 = 6; // See RFC6979
+        // Ed 25519
+        PKIX_ED25519 = 7; // See RFC8032
 }
 
 // HashOutput captures a digest of a 'message' (generic octet sequence)
@@ -107,10 +117,10 @@ message PublicKey {
         optional string key_id = 1;
         // DER-encoded public key.
         optional bytes raw_bytes = 2;
-        KeyEncoding key_encoding = 3;
-        SignatureAlgorithm signature_algorithm = 4;
+        // Key encoding and signature algorithm.
+        KeyFormat key_format = 3;
         // Optional validity period for this key.
-        optional TimeRange valid_for = 5;
+        optional TimeRange valid_for = 4;
 }
 
 // PublicKeyIdentifier can be used to identify an (out of band) delivered

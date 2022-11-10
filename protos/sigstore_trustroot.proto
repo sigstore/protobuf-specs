@@ -82,10 +82,8 @@ message TrustedRoot {
         // The certificates are intended to be used for verifying artifact
         // signatures.
         repeated CertificateAuthority certificate_authorities = 2;
-        // A set of public keys to trust for artifact signing.
-        repeated dev.sigstore.common.v1.PublicKey public_keys = 3;
         // A set of trusted certificate transparency logs.
-        repeated TransparencyLogInstance ctlogs = 4;
+        repeated TransparencyLogInstance ctlogs = 3;
         // A set of trusted timestamping authorities.
-        repeated CertificateAuthority timestamp_authorities = 5;
+        repeated CertificateAuthority timestamp_authorities = 4;
 }
