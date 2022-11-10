@@ -158,6 +158,18 @@ message X509Certificate {
         bytes raw_bytes = 1;
 }
 
+enum SubjectAlternativeNameType {
+        DNS = 0;
+        Email = 1;
+        URI = 2;
+}
+
+message SubjectAlternativeName {
+        SubjectAlternativeNameType type = 1;
+        // A regular expression describing the expected value for the SAN.
+        string value = 2;
+}
+
 // A chain of X.509 certificates.
 message X509CertificateChain {
         // The chain of certificates, with indices 0 to n.
