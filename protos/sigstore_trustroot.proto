@@ -54,8 +54,6 @@ message CertificateAuthority {
         // The time the *entire* chain was valid. This is at max the
         // longest interval when *all* certificates in the chain where valid,
         // but it MAY be shorter.
-        // The time range is half-open and does not include the end
-        // timestamp, i.e [valid_for.start, valid_for.end).
         dev.sigstore.common.v1.TimeRange valid_for = 4;
 }
 
