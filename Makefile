@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PROTOC_IMAGE := namely/protoc-all@sha256:07f1ba9dbe11f5675e2efc8617c9552217dc4c3eb5ccd108f7c3889878dbae50 # v1.50_0
+PROTOC_IMAGE=$(shell cat Dockerfile | grep FROM |  cut -d' ' -f2)
 
 # generate Go protobuf code
 proto: 
 	@echo "Generating Protobuf files"
-	docker run --platform linux/amd64 -v ${PWD}:/defs ${PROTOC_IMAGE} -i protos -f envelope.proto -f sigstore_bundle.proto -f sigstore_common.proto -f sigstore_rekor.proto -l go --go-module-prefix github.com/sigstore/protobuf-specs/gen/pb-go
+	docker run --pull always --platform linux/amd64 -v ${PWD}:/defs ${PROTOC_IMAGE} -i protos -f envelope.proto -f sigstore_bundle.proto -f sigstore_common.proto -f sigstore_rekor.proto -l go --go-module-prefix github.com/sigstore/protobuf-specs/gen/pb-go
