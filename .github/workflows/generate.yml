@@ -22,9 +22,11 @@ on:
   push:
     paths: 
       - '**.proto'
+      - 'gen/**'
   pull_request:
     paths: 
       - '**.proto'
+      - 'gen/**'
 
 jobs:
   generate_go:
