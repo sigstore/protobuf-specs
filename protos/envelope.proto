@@ -16,7 +16,7 @@ syntax = "proto3";
 
 package io.intoto;
 
-option go_package = "github.com/secure-systems-lab/dsse";
+option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/dsse";
 
 // An authenticated message of arbitrary type.
 message Envelope {

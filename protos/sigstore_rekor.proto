@@ -15,7 +15,7 @@
 syntax = "proto3";
 package dev.sigstore.rekor.v1;
 
-option go_package = "github.com/sigstore/proto/rekor/v1";
+option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/rekor/v1";
 option java_package = "dev.sigstore.proto.rekor.v1";
 option java_multiple_files = true;
 option java_outer_classname = "RekorProto";
