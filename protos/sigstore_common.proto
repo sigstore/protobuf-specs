@@ -110,17 +110,12 @@ message RFC3161SignedTimestamp {
 }
 
 message PublicKey {
-        // Optional key identifier. Format must be agreed upon out of band
-        // by signer and verifier. See PublicKeyIdentifier for more
-        // information.
-        // Implementors MAY provide a mapping function from hint to PublicKey.
-        optional string key_id = 1;
         // DER-encoded public key.
-        optional bytes raw_bytes = 2;
+        optional bytes raw_bytes = 1;
         // Key encoding and signature algorithm.
-        KeyFormat key_format = 3;
+        KeyFormat key_format = 2;
         // Optional validity period for this key.
-        optional TimeRange valid_for = 4;
+        optional TimeRange valid_for = 3;
 }
 
 // PublicKeyIdentifier can be used to identify an (out of band) delivered
