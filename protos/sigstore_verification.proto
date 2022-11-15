@@ -19,7 +19,7 @@ import "sigstore_common.proto";
 import "sigstore_trustroot.proto";
 import "sigstore_bundle.proto";
 
-option go_package = "github.com/sigstore/proto/verification/v1";
+option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/verification/v1";
 option java_package = "dev.sigstore.proto.verification.v1";
 option java_multiple_files = true;
 option java_outer_classname = "VerificationProto";
