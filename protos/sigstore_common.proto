@@ -48,10 +48,13 @@ enum SignatureAlgorithm {
         RSA_PSS = 5; // See RFC8017
 }
 
-// The permutations of signature algorithms and encoding schemas.
-// To avoid contradicting formats such as PKCS1 with ED25519 the valid
-// permutations are listed as a linear set instead of a cartesian set.
-enum KeyFormat {
+// Details of a specific public key, capturing the the key encoding method,
+// and signature algorithm.
+// To avoid the possibility of contradicting formats such as PKCS1 with
+// ED25519 the valid permutations are listed as a linear set instead of a
+// cartesian set (i.e one combined variable instead of two, one for encoding
+// and one for the signature algorithm).
+enum PublicKeyDetails {
         KEY_FORMAT_UNSPECIFIED = 0;
         // RSA
         PKCS1_RSA_PKCS1V5 = 1; // See RFC8017
@@ -110,10 +113,11 @@ message RFC3161SignedTimestamp {
 }
 
 message PublicKey {
-        // DER-encoded public key.
+        // DER-encoded public key, encoding method is specified by the
+        // key_details attribute.
         optional bytes raw_bytes = 1;
-        // Key encoding and signature algorithm.
-        KeyFormat key_format = 2;
+        // Key encoding and signature algorithm to use for this key.
+        PublicKeyDetails key_details = 2;
         // Optional validity period for this key.
         optional TimeRange valid_for = 3;
 }
