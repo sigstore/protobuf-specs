@@ -51,7 +51,7 @@ message CertificateAuthority {
         // The certificate chain for this CA.
         dev.sigstore.common.v1.X509CertificateChain cert_chain = 3;
         // The time the *entire* chain was valid. This is at max the
-        // longest interval when *all* certificates in the chain where valid,
+        // longest interval when *all* certificates in the chain were valid,
         // but it MAY be shorter.
         dev.sigstore.common.v1.TimeRange valid_for = 4;
 }
@@ -63,7 +63,7 @@ message CertificateAuthority {
 // The TrustedRoot is not meant to be used for any artifact verification, only
 // to capture the complete/global set of trusted verification materials.
 // When verifying an artifact, based on the artifact and policies, a selection
-// of keys/authorities are epxected to be extracted and provided to the
+// of keys/authorities are expected to be extracted and provided to the
 // verification function. This way the set of keys/authorities kan be kept to
 // a minimal set by the policy to gain better control over what signatures
 // that are allowed.
