@@ -9,7 +9,7 @@ If you change protobuf definitions, you will need to regenerate the code by runn
 You will need [Docker](https://docs.docker.com/get-docker/) installed to generate the protobuf stubs. Then run, 
 
 ```
-$ make proto
+$ make all
 ```
 
 to generate the `*.pb.go` files under `gen/`.

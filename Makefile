@@ -15,7 +15,17 @@
 
 PROTOC_IMAGE=$(shell cat Dockerfile | grep FROM |  cut -d' ' -f2)
 
+# generate all language protobuf code
+all: go
+
 # generate Go protobuf code
-proto: 
-	@echo "Generating Protobuf files"
-	docker run --pull always --platform linux/amd64 -v ${PWD}:/defs ${PROTOC_IMAGE} -i protos -f envelope.proto -f sigstore_bundle.proto -f sigstore_common.proto -f sigstore_rekor.proto -l go --go-module-prefix github.com/sigstore/protobuf-specs/gen/pb-go
+go:
+	@echo "Generating go protobuf files"
+	docker run --pull always --platform linux/amd64 -v ${PWD}:/defs ${PROTOC_IMAGE} -d protos -l go --go-module-prefix github.com/sigstore/protobuf-specs/gen/pb-go
+
+# clean up generated files (not working? try sudo make clean)
+clean:
+	rm -rf gen
+
+help:
+	docker run --pull always --platform linux/amd64 -v ${PWD}:/defs ${PROTOC_IMAGE}
