@@ -1,0 +1,60 @@
+#
+# Copyright 2022 The Sigstore Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Check java build
+
+permissions:
+  contents: read
+
+on:
+  push:
+    paths:
+      - '**.proto'
+      - 'java/**'
+  pull_request:
+    paths:
+      - '**.proto'
+      - 'java/**'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        java-version: [8, 11, 17]
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@de1bb2b0c5634f0fc4438d7aa9944e68f9bf86cc # v3.6.0
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+
+    # make sure jar generation works and tests/checks pass
+    - name: Test 
+      uses: gradle/gradle-build-action@3fbe033aaae657f011f88f29be9e65ed26bd29ef # v2.3.3
+      with:
+        arguments: build
+        build-root-directory: java
+
+  check-gradle-wrapper:
+    name: "gradle wrapper validation"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - uses: gradle/wrapper-validation-action@55e685c48d84285a5b0418cd094606e199cca3b6 # v1.0.5
