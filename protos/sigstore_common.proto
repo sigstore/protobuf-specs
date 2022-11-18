@@ -15,6 +15,8 @@
 syntax = "proto3";
 package dev.sigstore.common.v1;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/common/v1";
 option java_package = "dev.sigstore.proto.common.v1";
 option java_multiple_files = true;
@@ -34,6 +36,36 @@ enum HashAlgorithm {
         HASH_ALGORITHM_UNSPECIFIED = 0;
         SHA2_256 = 1;
         SHA2_512 = 2;
+}
+
+// Subset of known signature algorithms.
+enum SignatureAlgorithm {
+        SIGNATURE_ALGORITHM_UNSPECIFIED = 0;
+        ECDSA_P256_SHA_256 = 1; // See NIST FIPS 186-4
+        ECDSA_P256_HMAC_SHA_256 = 2; // See RFC6979
+        ED25519 = 3; // See RFC8032
+        RSA_PKCS1V5 = 4; // See RFC8017
+        RSA_PSS = 5; // See RFC8017
+}
+
+// Details of a specific public key, capturing the the key encoding method,
+// and signature algorithm.
+// To avoid the possibility of contradicting formats such as PKCS1 with
+// ED25519 the valid permutations are listed as a linear set instead of a
+// cartesian set (i.e one combined variable instead of two, one for encoding
+// and one for the signature algorithm).
+enum PublicKeyDetails {
+        KEY_FORMAT_UNSPECIFIED = 0;
+        // RSA
+        PKCS1_RSA_PKCS1V5 = 1; // See RFC8017
+        PKCS1_RSA_PSS = 2; // See RFC8017
+        PKIX_RSA_PKCS1V5 = 3;
+        PKIX_RSA_PSS = 4;
+        // ECDSA
+        PKIX_ECDSA_P256_SHA_256 = 5; // See NIST FIPS 186-4
+        PKIX_ECDSA_P256_HMAC_SHA_256 = 6; // See RFC6979
+        // Ed 25519
+        PKIX_ED25519 = 7; // See RFC8032
 }
 
 // HashOutput captures a digest of a 'message' (generic octet sequence)
@@ -60,6 +92,19 @@ message MessageSignature {
         bytes signature = 2;
 }
 
+// LogId captures the identity of a transparency log.
+message LogId {
+        oneof id {
+                // The unique id of the log, represented as the SHA-256 hash
+                // of the log's public key, computed over the DER encoding.
+                // https://www.rfc-editor.org/rfc/rfc6962#section-3.2
+                bytes key_id = 1;
+                // Currently not used but proposed by
+                // https://datatracker.ietf.org/doc/rfc9162/
+                ObjectIdentifier oid = 2;
+        }
+}
+
 // This message holds a RFC 3161 timestamp.
 message RFC3161SignedTimestamp {
         // Signed timestamp is the DER encoded TimeStampResponse.
@@ -67,6 +112,15 @@ message RFC3161SignedTimestamp {
         bytes signed_timestamp = 1;
 }
 
+message PublicKey {
+        // DER-encoded public key, encoding method is specified by the
+        // key_details attribute.
+        optional bytes raw_bytes = 1;
+        // Key encoding and signature algorithm to use for this key.
+        PublicKeyDetails key_details = 2;
+        // Optional validity period for this key.
+        optional TimeRange valid_for = 3;
+}
 
 // PublicKeyIdentifier can be used to identify an (out of band) delivered
 // key, to verify a signature.
@@ -82,9 +136,37 @@ message PublicKeyIdentifier {
         string hint = 1;
 }
 
+// An ASN1. OBJECT IDENTIFIER
+message ObjectIdentifier {
+        repeated int32 id = 1;
+}
+
+// An OID and the corresponding (byte) value.
+message ObjectIdentifierValuePair {
+        ObjectIdentifier oid = 1;
+        bytes value = 2;
+}
+
+message DistinguishedName {
+        string organization = 1;
+        string common_name = 2;
+}
+
 message X509Certificate {
         // DER-encoded X.509 certificate.
         bytes raw_bytes = 1;
+}
+
+enum SubjectAlternativeNameType {
+        DNS = 0;
+        Email = 1;
+        URI = 2;
+}
+
+message SubjectAlternativeName {
+        SubjectAlternativeNameType type = 1;
+        // A regular expression describing the expected value for the SAN.
+        string value = 2;
 }
 
 // A chain of X.509 certificates.
@@ -104,4 +186,13 @@ message VerificationMaterial {
                 PublicKeyIdentifier public_key = 1;
                 X509CertificateChain x509_certificate_chain = 2;
         }
+}
+
+// The time range is half-open and does not include the end timestamp,
+// i.e [start, end).
+// End is optional to be able to capture a period that has started but
+// has no known end.
+message TimeRange {
+        google.protobuf.Timestamp start = 1;
+        optional google.protobuf.Timestamp end = 2;
 }
