@@ -23,6 +23,17 @@ go:
 	@echo "Generating go protobuf files"
 	docker run --pull always --platform linux/amd64 -v ${PWD}:/defs ${PROTOC_IMAGE} -d protos -l go --go-module-prefix github.com/sigstore/protobuf-specs/gen/pb-go
 
+python: env/pyenv.cfg
+	@echo "Generating python protobuf files"
+	. env/bin/activate && cd ./gen/pb-python/sigstore_protobuf_specs && python -m grpc_tools.protoc -I ../../../protos/ --python_betterproto_out=. ../../../protos/*
+
+env/pyenv.cfg:
+	@echo "Building virtual environment for python protobuf"
+	python3 -m venv env
+	./env/bin/python -m pip install --upgrade pip
+	./env/bin/python -m pip install -e ./gen/pb-python[dev]
+	./env/bin/python -m pip install grpcio-tools
+
 # clean up generated files (not working? try sudo make clean)
 clean:
 	rm -rf gen
