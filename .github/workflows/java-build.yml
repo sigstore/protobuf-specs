@@ -51,10 +51,3 @@ jobs:
       with:
         arguments: build
         build-root-directory: java
-
-  check-gradle-wrapper:
-    name: "gradle wrapper validation"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
-    - uses: gradle/wrapper-validation-action@55e685c48d84285a5b0418cd094606e199cca3b6 # v1.0.5
