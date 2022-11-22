@@ -16,7 +16,7 @@
 PROTOC_IMAGE=$(shell cat Dockerfile | grep FROM |  cut -d' ' -f2)
 
 # generate all language protobuf code
-all: go
+all: go python
 
 # generate Go protobuf code
 go:
