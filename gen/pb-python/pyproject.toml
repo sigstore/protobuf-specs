@@ -34,8 +34,3 @@ requires-python = ">=3.7"
 Homepage = "https://pypi.org/project/sigstore-protobuf-specs/"
 Issues = "https://github.com/sigstore/protobuf-specs/issues"
 Source = "https://github.com/sigstore/protobuf-specs"
-
-[project.optional-dependencies]
-dev = [
-  "betterproto[compiler]==2.0.0b5",
-]

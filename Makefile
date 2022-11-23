@@ -13,30 +13,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PROTOC_IMAGE=$(shell cat Dockerfile | grep FROM |  cut -d' ' -f2)
+PROTOC_IMAGE=protobuf-specs-build
 
 # generate all language protobuf code
 all: go python
 
 # generate Go protobuf code
-go:
+go: docker-image
 	@echo "Generating go protobuf files"
-	docker run --pull always --platform linux/amd64 -v ${PWD}:/defs ${PROTOC_IMAGE} -d protos -l go --go-module-prefix github.com/sigstore/protobuf-specs/gen/pb-go
+	docker run --platform linux/amd64 -v ${PWD}:/defs ${PROTOC_IMAGE} -d protos -l go --go-module-prefix github.com/sigstore/protobuf-specs/gen/pb-go
 
-python: env/pyenv.cfg
+python: docker-image
 	@echo "Generating python protobuf files"
-	. env/bin/activate && cd ./gen/pb-python/sigstore_protobuf_specs && python -m grpc_tools.protoc -I ../../../protos/ --python_betterproto_out=. ../../../protos/*
+# we need to manually fix the PYTHONPATH due to: https://github.com/namely/docker-protoc/pull/356
+	docker run --platform linux/amd64 -v ${PWD}:/defs -e PYTHONPATH="/opt/mypy-protobuf/" --entrypoint make ${PROTOC_IMAGE} generate-python
 
-env/pyenv.cfg:
-	@echo "Building virtual environment for python protobuf"
-	python3 -m venv env
-	./env/bin/python -m pip install --upgrade pip
-	./env/bin/python -m pip install -e ./gen/pb-python[dev]
-	./env/bin/python -m pip install grpcio-tools
+# we should NEVER invoke this target manually, this target gets built inside docker via the `python` target
+generate-python:
+	cd ./gen/pb-python/sigstore_protobuf_specs && \
+	protoc -I/opt/include -I../../../protos/ --python_betterproto_out=. ../../../protos/*
+
+# docker already does its own caching so we can attempt a build every time
+.PHONY: docker-image
+docker-image:
+	@echo "Building development docker image"
+	docker build -t ${PROTOC_IMAGE} .
 
 # clean up generated files (not working? try sudo make clean)
 clean:
-	rm -rf gen
+	rm -rf gen/pb-go \
+		gen/pb-python/sigstore_protobuf_specs/dev \
+		gen/pb-python/sigstore_protobuf_specs/io
+	docker rmi -f ${PROTOC_IMAGE}
 
 help:
 	docker run --pull always --platform linux/amd64 -v ${PWD}:/defs ${PROTOC_IMAGE}
