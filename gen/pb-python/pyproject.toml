@@ -6,8 +6,8 @@ build-backend = "flit_core.buildapi"
 name = "sigstore-protobuf-specs"
 version = "0.0.1"
 description = "A library for serializing and deserializing Sigstore messages"
-readme = "../../README.md"
-license = { file = "../../LICENSE" }
+readme = "README.md"
+license = { file = "LICENSE" }
 authors = [
   { name = "Sigstore Authors", email = "sigstore-dev@googlegroups.com" }
 ]
@@ -34,3 +34,8 @@ requires-python = ">=3.7"
 Homepage = "https://pypi.org/project/sigstore-protobuf-specs/"
 Issues = "https://github.com/sigstore/protobuf-specs/issues"
 Source = "https://github.com/sigstore/protobuf-specs"
+
+[project.optional-dependencies]
+dev = [
+  "build",
+]
