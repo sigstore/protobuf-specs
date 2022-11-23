@@ -26,12 +26,12 @@ go: docker-image
 python: docker-image
 	@echo "Generating python protobuf files"
 # we need to manually fix the PYTHONPATH due to: https://github.com/namely/docker-protoc/pull/356
-	docker run --platform linux/amd64 -v ${PWD}:/defs -e PYTHONPATH="/opt/mypy-protobuf/" --entrypoint make ${PROTOC_IMAGE} generate-python
-
-# we should NEVER invoke this target manually, this target gets built inside docker via the `python` target
-generate-python:
-	cd ./gen/pb-python/sigstore_protobuf_specs && \
-	protoc -I/opt/include -I../../../protos/ --python_betterproto_out=. ../../../protos/*
+	docker run \
+		--platform linux/amd64 \
+		-v ${PWD}:/defs \
+		-e PYTHONPATH="/opt/mypy-protobuf/" \
+		--entrypoint bash ${PROTOC_IMAGE} \
+		-c "cd ./gen/pb-python/sigstore_protobuf_specs && protoc -I/opt/include -I../../../protos/ --python_betterproto_out=. ../../../protos/*"
 
 # docker already does its own caching so we can attempt a build every time
 .PHONY: docker-image
