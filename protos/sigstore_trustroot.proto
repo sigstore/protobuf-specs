@@ -84,3 +84,23 @@ message TrustedRoot {
         // A set of trusted timestamping authorities.
         repeated CertificateAuthority timestamp_authorities = 4;
 }
+
+// Environment acts a selector to filter down a trust root to a smaller one.
+// A policy should reference an environment, or embed one that can be used
+// during artifact verification to filter the global trust root into a one
+// only containing the relevant instances. An environment does not take
+// temporality into account when selecting the instances from a trust root.
+// Prior to performing verification the temporal aspect should be further
+// examined to reduce the set of instances.
+message Environment {
+        // The name of the environment.
+        string name = 1;
+        // URIs for artifact signature transparency log to include.
+        repeated string tlog_uris = 2;
+        // URIs for certificate authorities to include.
+        repeated string ca_uris = 3;
+        // URIs for certificate transparency logs to include.
+        repeated string ctlog_uris = 4;
+        // URIs for timestamp authorities to include.
+        repeated string tsa_uris = 5;
+}
