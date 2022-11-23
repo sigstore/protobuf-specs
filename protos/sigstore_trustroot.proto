@@ -85,6 +85,28 @@ message TrustedRoot {
         repeated CertificateAuthority timestamp_authorities = 4;
 }
 
+// TransparencyLogIdentifier contains information that can be used to
+// identify a `TransparencyLogInstance`, either by its log id or its base_uri.
+message TransparencyLogIdentifier {
+        oneof id {
+                // The log id of the transparency log.
+                dev.sigstore.common.v1.LogId log_id = 1;
+                // The base_uri for the transparency log.
+                string uri = 2;
+        }
+}
+
+// CertificateAuthorityIdentifier contains information that can be used to
+// identify a `CertificateAuthority`, either by its subject or by its uri.
+message CertificateAuthorityIdentifier {
+        oneof id {
+                // The subject of the certificate authority.
+                dev.sigstore.common.v1.DistinguishedName subject = 1;
+                // The uri of the certificate authority.
+                string uri = 2;
+        }
+}
+
 // Environment acts a selector to filter down a trust root to a smaller one.
 // A policy should reference an environment, or embed one that can be used
 // during artifact verification to filter the global trust root into a one
@@ -95,12 +117,12 @@ message TrustedRoot {
 message Environment {
         // The name of the environment.
         string name = 1;
-        // URIs for artifact signature transparency log to include.
-        repeated string tlog_uris = 2;
-        // URIs for certificate authorities to include.
-        repeated string ca_uris = 3;
-        // URIs for certificate transparency logs to include.
-        repeated string ctlog_uris = 4;
-        // URIs for timestamp authorities to include.
-        repeated string tsa_uris = 5;
+        // Ids for artifact signature transparency log to include.
+        repeated TransparencyLogIdentifier tlog = 2;
+        // Ids for certificate authorities to include.
+        repeated CertificateAuthorityIdentifier cas = 3;
+        // Ids for certificate transparency logs to include.
+        repeated TransparencyLogIdentifier ctlogs = 4;
+        // Ids for timestamp authorities to include.
+        repeated CertificateAuthorityIdentifier tsas = 5;
 }

@@ -290,6 +290,174 @@ func (x *TrustedRoot) GetTimestampAuthorities() []*CertificateAuthority {
 	return nil
 }
 
+// TransparencyLogIdentifier contains information that can be used to
+// identify a `TransparencyLogInstance`, either by its log id or its base_uri.
+type TransparencyLogIdentifier struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Id:
+	//	*TransparencyLogIdentifier_LogId
+	//	*TransparencyLogIdentifier_Uri
+	Id isTransparencyLogIdentifier_Id `protobuf_oneof:"id"`
+}
+
+func (x *TransparencyLogIdentifier) Reset() {
+	*x = TransparencyLogIdentifier{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_sigstore_trustroot_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TransparencyLogIdentifier) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TransparencyLogIdentifier) ProtoMessage() {}
+
+func (x *TransparencyLogIdentifier) ProtoReflect() protoreflect.Message {
+	mi := &file_sigstore_trustroot_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TransparencyLogIdentifier.ProtoReflect.Descriptor instead.
+func (*TransparencyLogIdentifier) Descriptor() ([]byte, []int) {
+	return file_sigstore_trustroot_proto_rawDescGZIP(), []int{3}
+}
+
+func (m *TransparencyLogIdentifier) GetId() isTransparencyLogIdentifier_Id {
+	if m != nil {
+		return m.Id
+	}
+	return nil
+}
+
+func (x *TransparencyLogIdentifier) GetLogId() *v1.LogId {
+	if x, ok := x.GetId().(*TransparencyLogIdentifier_LogId); ok {
+		return x.LogId
+	}
+	return nil
+}
+
+func (x *TransparencyLogIdentifier) GetUri() string {
+	if x, ok := x.GetId().(*TransparencyLogIdentifier_Uri); ok {
+		return x.Uri
+	}
+	return ""
+}
+
+type isTransparencyLogIdentifier_Id interface {
+	isTransparencyLogIdentifier_Id()
+}
+
+type TransparencyLogIdentifier_LogId struct {
+	// The log id of the transparency log.
+	LogId *v1.LogId `protobuf:"bytes,1,opt,name=log_id,json=logId,proto3,oneof"`
+}
+
+type TransparencyLogIdentifier_Uri struct {
+	// The base_uri for the transparency log.
+	Uri string `protobuf:"bytes,2,opt,name=uri,proto3,oneof"`
+}
+
+func (*TransparencyLogIdentifier_LogId) isTransparencyLogIdentifier_Id() {}
+
+func (*TransparencyLogIdentifier_Uri) isTransparencyLogIdentifier_Id() {}
+
+// CertificateAuthorityIdentifier contains information that can be used to
+// identify a `CertificateAuthority`, either by its subject or by its uri.
+type CertificateAuthorityIdentifier struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Id:
+	//	*CertificateAuthorityIdentifier_Subject
+	//	*CertificateAuthorityIdentifier_Uri
+	Id isCertificateAuthorityIdentifier_Id `protobuf_oneof:"id"`
+}
+
+func (x *CertificateAuthorityIdentifier) Reset() {
+	*x = CertificateAuthorityIdentifier{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_sigstore_trustroot_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CertificateAuthorityIdentifier) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CertificateAuthorityIdentifier) ProtoMessage() {}
+
+func (x *CertificateAuthorityIdentifier) ProtoReflect() protoreflect.Message {
+	mi := &file_sigstore_trustroot_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CertificateAuthorityIdentifier.ProtoReflect.Descriptor instead.
+func (*CertificateAuthorityIdentifier) Descriptor() ([]byte, []int) {
+	return file_sigstore_trustroot_proto_rawDescGZIP(), []int{4}
+}
+
+func (m *CertificateAuthorityIdentifier) GetId() isCertificateAuthorityIdentifier_Id {
+	if m != nil {
+		return m.Id
+	}
+	return nil
+}
+
+func (x *CertificateAuthorityIdentifier) GetSubject() *v1.DistinguishedName {
+	if x, ok := x.GetId().(*CertificateAuthorityIdentifier_Subject); ok {
+		return x.Subject
+	}
+	return nil
+}
+
+func (x *CertificateAuthorityIdentifier) GetUri() string {
+	if x, ok := x.GetId().(*CertificateAuthorityIdentifier_Uri); ok {
+		return x.Uri
+	}
+	return ""
+}
+
+type isCertificateAuthorityIdentifier_Id interface {
+	isCertificateAuthorityIdentifier_Id()
+}
+
+type CertificateAuthorityIdentifier_Subject struct {
+	// The subject of the certificate authority.
+	Subject *v1.DistinguishedName `protobuf:"bytes,1,opt,name=subject,proto3,oneof"`
+}
+
+type CertificateAuthorityIdentifier_Uri struct {
+	// The uri of the certificate authority.
+	Uri string `protobuf:"bytes,2,opt,name=uri,proto3,oneof"`
+}
+
+func (*CertificateAuthorityIdentifier_Subject) isCertificateAuthorityIdentifier_Id() {}
+
+func (*CertificateAuthorityIdentifier_Uri) isCertificateAuthorityIdentifier_Id() {}
+
 // Environment acts a selector to filter down a trust root to a smaller one.
 // A policy should reference an environment, or embed one that can be used
 // during artifact verification to filter the global trust root into a one
@@ -304,20 +472,20 @@ type Environment struct {
 
 	// The name of the environment.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// URIs for artifact signature transparency log to include.
-	TlogUris []string `protobuf:"bytes,2,rep,name=tlog_uris,json=tlogUris,proto3" json:"tlog_uris,omitempty"`
-	// URIs for certificate authorities to include.
-	CaUris []string `protobuf:"bytes,3,rep,name=ca_uris,json=caUris,proto3" json:"ca_uris,omitempty"`
-	// URIs for certificate transparency logs to include.
-	CtlogUris []string `protobuf:"bytes,4,rep,name=ctlog_uris,json=ctlogUris,proto3" json:"ctlog_uris,omitempty"`
-	// URIs for timestamp authorities to include.
-	TsaUris []string `protobuf:"bytes,5,rep,name=tsa_uris,json=tsaUris,proto3" json:"tsa_uris,omitempty"`
+	// Ids for artifact signature transparency log to include.
+	Tlog []*TransparencyLogIdentifier `protobuf:"bytes,2,rep,name=tlog,proto3" json:"tlog,omitempty"`
+	// Ids for certificate authorities to include.
+	Cas []*CertificateAuthorityIdentifier `protobuf:"bytes,3,rep,name=cas,proto3" json:"cas,omitempty"`
+	// Ids for certificate transparency logs to include.
+	Ctlogs []*TransparencyLogIdentifier `protobuf:"bytes,4,rep,name=ctlogs,proto3" json:"ctlogs,omitempty"`
+	// Ids for timestamp authorities to include.
+	Tsas []*CertificateAuthorityIdentifier `protobuf:"bytes,5,rep,name=tsas,proto3" json:"tsas,omitempty"`
 }
 
 func (x *Environment) Reset() {
 	*x = Environment{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_sigstore_trustroot_proto_msgTypes[3]
+		mi := &file_sigstore_trustroot_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -330,7 +498,7 @@ func (x *Environment) String() string {
 func (*Environment) ProtoMessage() {}
 
 func (x *Environment) ProtoReflect() protoreflect.Message {
-	mi := &file_sigstore_trustroot_proto_msgTypes[3]
+	mi := &file_sigstore_trustroot_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -343,7 +511,7 @@ func (x *Environment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Environment.ProtoReflect.Descriptor instead.
 func (*Environment) Descriptor() ([]byte, []int) {
-	return file_sigstore_trustroot_proto_rawDescGZIP(), []int{3}
+	return file_sigstore_trustroot_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Environment) GetName() string {
@@ -353,30 +521,30 @@ func (x *Environment) GetName() string {
 	return ""
 }
 
-func (x *Environment) GetTlogUris() []string {
+func (x *Environment) GetTlog() []*TransparencyLogIdentifier {
 	if x != nil {
-		return x.TlogUris
+		return x.Tlog
 	}
 	return nil
 }
 
-func (x *Environment) GetCaUris() []string {
+func (x *Environment) GetCas() []*CertificateAuthorityIdentifier {
 	if x != nil {
-		return x.CaUris
+		return x.Cas
 	}
 	return nil
 }
 
-func (x *Environment) GetCtlogUris() []string {
+func (x *Environment) GetCtlogs() []*TransparencyLogIdentifier {
 	if x != nil {
-		return x.CtlogUris
+		return x.Ctlogs
 	}
 	return nil
 }
 
-func (x *Environment) GetTsaUris() []string {
+func (x *Environment) GetTsas() []*CertificateAuthorityIdentifier {
 	if x != nil {
-		return x.TsaUris
+		return x.Tsas
 	}
 	return nil
 }
@@ -443,24 +611,51 @@ var file_sigstore_trustroot_proto_rawDesc = []byte{
 	0x74, 0x6f, 0x72, 0x65, 0x2e, 0x74, 0x72, 0x75, 0x73, 0x74, 0x72, 0x6f, 0x6f, 0x74, 0x2e, 0x76,
 	0x31, 0x2e, 0x43, 0x65, 0x72, 0x74, 0x69, 0x66, 0x69, 0x63, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74,
 	0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x52, 0x14, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d,
-	0x70, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x69, 0x65, 0x73, 0x22, 0x91, 0x01, 0x0a,
-	0x0b, 0x45, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x12, 0x0a, 0x04,
-	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65,
-	0x12, 0x1b, 0x0a, 0x09, 0x74, 0x6c, 0x6f, 0x67, 0x5f, 0x75, 0x72, 0x69, 0x73, 0x18, 0x02, 0x20,
-	0x03, 0x28, 0x09, 0x52, 0x08, 0x74, 0x6c, 0x6f, 0x67, 0x55, 0x72, 0x69, 0x73, 0x12, 0x17, 0x0a,
-	0x07, 0x63, 0x61, 0x5f, 0x75, 0x72, 0x69, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x09, 0x52, 0x06,
-	0x63, 0x61, 0x55, 0x72, 0x69, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x74, 0x6c, 0x6f, 0x67, 0x5f,
-	0x75, 0x72, 0x69, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09, 0x63, 0x74, 0x6c, 0x6f,
-	0x67, 0x55, 0x72, 0x69, 0x73, 0x12, 0x19, 0x0a, 0x08, 0x74, 0x73, 0x61, 0x5f, 0x75, 0x72, 0x69,
-	0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x09, 0x52, 0x07, 0x74, 0x73, 0x61, 0x55, 0x72, 0x69, 0x73,
-	0x42, 0x6e, 0x0a, 0x1f, 0x64, 0x65, 0x76, 0x2e, 0x73, 0x69, 0x67, 0x73, 0x74, 0x6f, 0x72, 0x65,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x74, 0x72, 0x75, 0x73, 0x74, 0x72, 0x6f, 0x6f, 0x74,
-	0x2e, 0x76, 0x31, 0x42, 0x0e, 0x54, 0x72, 0x75, 0x73, 0x74, 0x52, 0x6f, 0x6f, 0x74, 0x50, 0x72,
-	0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x39, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
-	0x6d, 0x2f, 0x73, 0x69, 0x67, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x62, 0x75, 0x66, 0x2d, 0x73, 0x70, 0x65, 0x63, 0x73, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x70, 0x62,
-	0x2d, 0x67, 0x6f, 0x2f, 0x74, 0x72, 0x75, 0x73, 0x74, 0x72, 0x6f, 0x6f, 0x74, 0x2f, 0x76, 0x31,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x70, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x69, 0x65, 0x73, 0x22, 0x6d, 0x0a, 0x19,
+	0x54, 0x72, 0x61, 0x6e, 0x73, 0x70, 0x61, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x4c, 0x6f, 0x67, 0x49,
+	0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x12, 0x36, 0x0a, 0x06, 0x6c, 0x6f, 0x67,
+	0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x64, 0x65, 0x76, 0x2e,
+	0x73, 0x69, 0x67, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e,
+	0x76, 0x31, 0x2e, 0x4c, 0x6f, 0x67, 0x49, 0x64, 0x48, 0x00, 0x52, 0x05, 0x6c, 0x6f, 0x67, 0x49,
+	0x64, 0x12, 0x12, 0x0a, 0x03, 0x75, 0x72, 0x69, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00,
+	0x52, 0x03, 0x75, 0x72, 0x69, 0x42, 0x04, 0x0a, 0x02, 0x69, 0x64, 0x22, 0x81, 0x01, 0x0a, 0x1e,
+	0x43, 0x65, 0x72, 0x74, 0x69, 0x66, 0x69, 0x63, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f,
+	0x72, 0x69, 0x74, 0x79, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x12, 0x45,
+	0x0a, 0x07, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x29, 0x2e, 0x64, 0x65, 0x76, 0x2e, 0x73, 0x69, 0x67, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x2e, 0x63,
+	0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x44, 0x69, 0x73, 0x74, 0x69, 0x6e, 0x67,
+	0x75, 0x69, 0x73, 0x68, 0x65, 0x64, 0x4e, 0x61, 0x6d, 0x65, 0x48, 0x00, 0x52, 0x07, 0x73, 0x75,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x12, 0x0a, 0x03, 0x75, 0x72, 0x69, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x48, 0x00, 0x52, 0x03, 0x75, 0x72, 0x69, 0x42, 0x04, 0x0a, 0x02, 0x69, 0x64, 0x22,
+	0xd5, 0x02, 0x0a, 0x0b, 0x45, 0x6e, 0x76, 0x69, 0x72, 0x6f, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x12,
+	0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e,
+	0x61, 0x6d, 0x65, 0x12, 0x48, 0x0a, 0x04, 0x74, 0x6c, 0x6f, 0x67, 0x18, 0x02, 0x20, 0x03, 0x28,
+	0x0b, 0x32, 0x34, 0x2e, 0x64, 0x65, 0x76, 0x2e, 0x73, 0x69, 0x67, 0x73, 0x74, 0x6f, 0x72, 0x65,
+	0x2e, 0x74, 0x72, 0x75, 0x73, 0x74, 0x72, 0x6f, 0x6f, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x72,
+	0x61, 0x6e, 0x73, 0x70, 0x61, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x4c, 0x6f, 0x67, 0x49, 0x64, 0x65,
+	0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x52, 0x04, 0x74, 0x6c, 0x6f, 0x67, 0x12, 0x4b, 0x0a,
+	0x03, 0x63, 0x61, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x39, 0x2e, 0x64, 0x65, 0x76,
+	0x2e, 0x73, 0x69, 0x67, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x2e, 0x74, 0x72, 0x75, 0x73, 0x74, 0x72,
+	0x6f, 0x6f, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x65, 0x72, 0x74, 0x69, 0x66, 0x69, 0x63, 0x61,
+	0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x49, 0x64, 0x65, 0x6e, 0x74,
+	0x69, 0x66, 0x69, 0x65, 0x72, 0x52, 0x03, 0x63, 0x61, 0x73, 0x12, 0x4c, 0x0a, 0x06, 0x63, 0x74,
+	0x6c, 0x6f, 0x67, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x34, 0x2e, 0x64, 0x65, 0x76,
+	0x2e, 0x73, 0x69, 0x67, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x2e, 0x74, 0x72, 0x75, 0x73, 0x74, 0x72,
+	0x6f, 0x6f, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x70, 0x61, 0x72, 0x65,
+	0x6e, 0x63, 0x79, 0x4c, 0x6f, 0x67, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72,
+	0x52, 0x06, 0x63, 0x74, 0x6c, 0x6f, 0x67, 0x73, 0x12, 0x4d, 0x0a, 0x04, 0x74, 0x73, 0x61, 0x73,
+	0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x39, 0x2e, 0x64, 0x65, 0x76, 0x2e, 0x73, 0x69, 0x67,
+	0x73, 0x74, 0x6f, 0x72, 0x65, 0x2e, 0x74, 0x72, 0x75, 0x73, 0x74, 0x72, 0x6f, 0x6f, 0x74, 0x2e,
+	0x76, 0x31, 0x2e, 0x43, 0x65, 0x72, 0x74, 0x69, 0x66, 0x69, 0x63, 0x61, 0x74, 0x65, 0x41, 0x75,
+	0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65,
+	0x72, 0x52, 0x04, 0x74, 0x73, 0x61, 0x73, 0x42, 0x6e, 0x0a, 0x1f, 0x64, 0x65, 0x76, 0x2e, 0x73,
+	0x69, 0x67, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x74, 0x72,
+	0x75, 0x73, 0x74, 0x72, 0x6f, 0x6f, 0x74, 0x2e, 0x76, 0x31, 0x42, 0x0e, 0x54, 0x72, 0x75, 0x73,
+	0x74, 0x52, 0x6f, 0x6f, 0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x39, 0x67, 0x69,
+	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x69, 0x67, 0x73, 0x74, 0x6f, 0x72,
+	0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2d, 0x73, 0x70, 0x65, 0x63, 0x73,
+	0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x70, 0x62, 0x2d, 0x67, 0x6f, 0x2f, 0x74, 0x72, 0x75, 0x73, 0x74,
+	0x72, 0x6f, 0x6f, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -475,35 +670,43 @@ func file_sigstore_trustroot_proto_rawDescGZIP() []byte {
 	return file_sigstore_trustroot_proto_rawDescData
 }
 
-var file_sigstore_trustroot_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_sigstore_trustroot_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_sigstore_trustroot_proto_goTypes = []interface{}{
-	(*TransparencyLogInstance)(nil), // 0: dev.sigstore.trustroot.v1.TransparencyLogInstance
-	(*CertificateAuthority)(nil),    // 1: dev.sigstore.trustroot.v1.CertificateAuthority
-	(*TrustedRoot)(nil),             // 2: dev.sigstore.trustroot.v1.TrustedRoot
-	(*Environment)(nil),             // 3: dev.sigstore.trustroot.v1.Environment
-	(v1.HashAlgorithm)(0),           // 4: dev.sigstore.common.v1.HashAlgorithm
-	(*v1.PublicKey)(nil),            // 5: dev.sigstore.common.v1.PublicKey
-	(*v1.LogId)(nil),                // 6: dev.sigstore.common.v1.LogId
-	(*v1.DistinguishedName)(nil),    // 7: dev.sigstore.common.v1.DistinguishedName
-	(*v1.X509CertificateChain)(nil), // 8: dev.sigstore.common.v1.X509CertificateChain
-	(*v1.TimeRange)(nil),            // 9: dev.sigstore.common.v1.TimeRange
+	(*TransparencyLogInstance)(nil),        // 0: dev.sigstore.trustroot.v1.TransparencyLogInstance
+	(*CertificateAuthority)(nil),           // 1: dev.sigstore.trustroot.v1.CertificateAuthority
+	(*TrustedRoot)(nil),                    // 2: dev.sigstore.trustroot.v1.TrustedRoot
+	(*TransparencyLogIdentifier)(nil),      // 3: dev.sigstore.trustroot.v1.TransparencyLogIdentifier
+	(*CertificateAuthorityIdentifier)(nil), // 4: dev.sigstore.trustroot.v1.CertificateAuthorityIdentifier
+	(*Environment)(nil),                    // 5: dev.sigstore.trustroot.v1.Environment
+	(v1.HashAlgorithm)(0),                  // 6: dev.sigstore.common.v1.HashAlgorithm
+	(*v1.PublicKey)(nil),                   // 7: dev.sigstore.common.v1.PublicKey
+	(*v1.LogId)(nil),                       // 8: dev.sigstore.common.v1.LogId
+	(*v1.DistinguishedName)(nil),           // 9: dev.sigstore.common.v1.DistinguishedName
+	(*v1.X509CertificateChain)(nil),        // 10: dev.sigstore.common.v1.X509CertificateChain
+	(*v1.TimeRange)(nil),                   // 11: dev.sigstore.common.v1.TimeRange
 }
 var file_sigstore_trustroot_proto_depIdxs = []int32{
-	4,  // 0: dev.sigstore.trustroot.v1.TransparencyLogInstance.hash_algorithm:type_name -> dev.sigstore.common.v1.HashAlgorithm
-	5,  // 1: dev.sigstore.trustroot.v1.TransparencyLogInstance.public_key:type_name -> dev.sigstore.common.v1.PublicKey
-	6,  // 2: dev.sigstore.trustroot.v1.TransparencyLogInstance.log_id:type_name -> dev.sigstore.common.v1.LogId
-	7,  // 3: dev.sigstore.trustroot.v1.CertificateAuthority.subject:type_name -> dev.sigstore.common.v1.DistinguishedName
-	8,  // 4: dev.sigstore.trustroot.v1.CertificateAuthority.cert_chain:type_name -> dev.sigstore.common.v1.X509CertificateChain
-	9,  // 5: dev.sigstore.trustroot.v1.CertificateAuthority.valid_for:type_name -> dev.sigstore.common.v1.TimeRange
+	6,  // 0: dev.sigstore.trustroot.v1.TransparencyLogInstance.hash_algorithm:type_name -> dev.sigstore.common.v1.HashAlgorithm
+	7,  // 1: dev.sigstore.trustroot.v1.TransparencyLogInstance.public_key:type_name -> dev.sigstore.common.v1.PublicKey
+	8,  // 2: dev.sigstore.trustroot.v1.TransparencyLogInstance.log_id:type_name -> dev.sigstore.common.v1.LogId
+	9,  // 3: dev.sigstore.trustroot.v1.CertificateAuthority.subject:type_name -> dev.sigstore.common.v1.DistinguishedName
+	10, // 4: dev.sigstore.trustroot.v1.CertificateAuthority.cert_chain:type_name -> dev.sigstore.common.v1.X509CertificateChain
+	11, // 5: dev.sigstore.trustroot.v1.CertificateAuthority.valid_for:type_name -> dev.sigstore.common.v1.TimeRange
 	0,  // 6: dev.sigstore.trustroot.v1.TrustedRoot.tlogs:type_name -> dev.sigstore.trustroot.v1.TransparencyLogInstance
 	1,  // 7: dev.sigstore.trustroot.v1.TrustedRoot.certificate_authorities:type_name -> dev.sigstore.trustroot.v1.CertificateAuthority
 	0,  // 8: dev.sigstore.trustroot.v1.TrustedRoot.ctlogs:type_name -> dev.sigstore.trustroot.v1.TransparencyLogInstance
 	1,  // 9: dev.sigstore.trustroot.v1.TrustedRoot.timestamp_authorities:type_name -> dev.sigstore.trustroot.v1.CertificateAuthority
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	8,  // 10: dev.sigstore.trustroot.v1.TransparencyLogIdentifier.log_id:type_name -> dev.sigstore.common.v1.LogId
+	9,  // 11: dev.sigstore.trustroot.v1.CertificateAuthorityIdentifier.subject:type_name -> dev.sigstore.common.v1.DistinguishedName
+	3,  // 12: dev.sigstore.trustroot.v1.Environment.tlog:type_name -> dev.sigstore.trustroot.v1.TransparencyLogIdentifier
+	4,  // 13: dev.sigstore.trustroot.v1.Environment.cas:type_name -> dev.sigstore.trustroot.v1.CertificateAuthorityIdentifier
+	3,  // 14: dev.sigstore.trustroot.v1.Environment.ctlogs:type_name -> dev.sigstore.trustroot.v1.TransparencyLogIdentifier
+	4,  // 15: dev.sigstore.trustroot.v1.Environment.tsas:type_name -> dev.sigstore.trustroot.v1.CertificateAuthorityIdentifier
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_sigstore_trustroot_proto_init() }
@@ -549,6 +752,30 @@ func file_sigstore_trustroot_proto_init() {
 			}
 		}
 		file_sigstore_trustroot_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*TransparencyLogIdentifier); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_sigstore_trustroot_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CertificateAuthorityIdentifier); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_sigstore_trustroot_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Environment); i {
 			case 0:
 				return &v.state
@@ -561,13 +788,21 @@ func file_sigstore_trustroot_proto_init() {
 			}
 		}
 	}
+	file_sigstore_trustroot_proto_msgTypes[3].OneofWrappers = []interface{}{
+		(*TransparencyLogIdentifier_LogId)(nil),
+		(*TransparencyLogIdentifier_Uri)(nil),
+	}
+	file_sigstore_trustroot_proto_msgTypes[4].OneofWrappers = []interface{}{
+		(*CertificateAuthorityIdentifier_Subject)(nil),
+		(*CertificateAuthorityIdentifier_Uri)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_sigstore_trustroot_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
