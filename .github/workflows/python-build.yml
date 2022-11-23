@@ -51,8 +51,4 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install .[dev]
 
-          # NOTE: We run the sdist and wheel builds manually, since
-          # our package metadata includes relative paths (README.md and LICENSE)
-          # that are outside of the package root. As a result, our sdist
-          # cannot be used to produce a wheel in isolation.
-          python -m build --sdist --wheel
+          python -m build
