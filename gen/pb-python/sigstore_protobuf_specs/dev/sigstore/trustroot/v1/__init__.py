@@ -93,3 +93,61 @@ class TrustedRoot(betterproto.Message):
 
     timestamp_authorities: List["CertificateAuthority"] = betterproto.message_field(4)
     """A set of trusted timestamping authorities."""
+
+
+@dataclass(eq=False, repr=False)
+class TransparencyLogIdentifier(betterproto.Message):
+    """
+    TransparencyLogIdentifier contains information that can be used to identify
+    a `TransparencyLogInstance`, either by its log id or its base_uri.
+    """
+
+    log_id: "__common_v1__.LogId" = betterproto.message_field(1, group="id")
+    """The log id of the transparency log."""
+
+    uri: str = betterproto.string_field(2, group="id")
+    """The base_uri for the transparency log."""
+
+
+@dataclass(eq=False, repr=False)
+class CertificateAuthorityIdentifier(betterproto.Message):
+    """
+    CertificateAuthorityIdentifier contains information that can be used to
+    identify a `CertificateAuthority`, either by its subject or by its uri.
+    """
+
+    subject: "__common_v1__.DistinguishedName" = betterproto.message_field(
+        1, group="id"
+    )
+    """The subject of the certificate authority."""
+
+    uri: str = betterproto.string_field(2, group="id")
+    """The uri of the certificate authority."""
+
+
+@dataclass(eq=False, repr=False)
+class Environment(betterproto.Message):
+    """
+    Environment acts a selector to filter down a trust root to a smaller one. A
+    policy should reference an environment, or embed one that can be used
+    during artifact verification to filter the global trust root into a one
+    only containing the relevant instances. An environment does not take
+    temporality into account when selecting the instances from a trust root.
+    Prior to performing verification the temporal aspect should be further
+    examined to reduce the set of instances.
+    """
+
+    name: str = betterproto.string_field(1)
+    """The name of the environment."""
+
+    tlog: List["TransparencyLogIdentifier"] = betterproto.message_field(2)
+    """Ids for artifact signature transparency log to include."""
+
+    cas: List["CertificateAuthorityIdentifier"] = betterproto.message_field(3)
+    """Ids for certificate authorities to include."""
+
+    ctlogs: List["TransparencyLogIdentifier"] = betterproto.message_field(4)
+    """Ids for certificate transparency logs to include."""
+
+    tsas: List["CertificateAuthorityIdentifier"] = betterproto.message_field(5)
+    """Ids for timestamp authorities to include."""
