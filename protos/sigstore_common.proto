@@ -169,6 +169,25 @@ message SubjectAlternativeName {
         string value = 2;
 }
 
+// The identity of a X.509 Certificate signer.
+message CertificateIdentity {
+        // The X.509v3 issuer extension (OID 1.3.6.1.4.1.57264.1.1)
+        string issuer = 1;
+        SubjectAlternativeName san = 2;
+        // An unordered list of OIDs that must be verified.
+        // All OID/values provided in this list MUST exactly match against
+        // the values in the certificate for verification to be successful.
+        repeated ObjectIdentifierValuePair oids = 3;
+}
+
+message CertificateIdentities {
+        repeated CertificateIdentity identities = 1;
+}
+
+message PublicKeyIdentities {
+        repeated PublicKey public_keys = 1;
+}
+
 // A chain of X.509 certificates.
 message X509CertificateChain {
         // The chain of certificates, with indices 0 to n.

@@ -126,3 +126,16 @@ message Environment {
         // Ids for timestamp authorities to include.
         repeated CertificateAuthorityIdentifier tsas = 5;
 }
+
+// Policy to apply to a trust root prior to creating the verification Input
+// when calling a verifier.
+// Not that the Policy does NOT contain any reference to a bundle. How this
+// mapping happens is specific for each client.
+message Policy {
+        string name = 1;
+        Environment environment = 2;
+        oneof signers {
+                dev.sigstore.common.v1.CertificateIdentities certificate_identities = 3;
+                dev.sigstore.common.v1.PublicKeyIdentities public_keys = 4;
+        }
+}

@@ -24,25 +24,6 @@ option java_package = "dev.sigstore.proto.verification.v1";
 option java_multiple_files = true;
 option java_outer_classname = "VerificationProto";
 
-// The identity of a X.509 Certificate signer.
-message CertificateIdentity {
-        // The X.509v3 issuer extension (OID 1.3.6.1.4.1.57264.1.1)
-        string issuer = 1;
-        dev.sigstore.common.v1.SubjectAlternativeName san = 2;
-        // An unordered list of OIDs that must be verified.
-        // All OID/values provided in this list MUST exactly match against
-        // the values in the certificate for verification to be successful.
-        repeated dev.sigstore.common.v1.ObjectIdentifierValuePair oids = 3;
-}
-
-message CertificateIdentities {
-        repeated CertificateIdentity identities = 1;
-}
-
-message PublicKeyIdentities {
-        repeated dev.sigstore.common.v1.PublicKey public_keys = 1;
-}
-
 // A light-weight set of options/policies for identifying trusted signers,
 // used during verification of a single artifact.
 message ArtifactVerificationOptions {
@@ -76,7 +57,7 @@ message ArtifactVerificationOptions {
         // is an error. If at least one provided identity is found as a
         // signer, the verification is considered successful.
         oneof signers {
-                CertificateIdentities certificate_identities = 1;
+                dev.sigstore.common.v1.CertificateIdentities certificate_identities = 1;
                 // To simplify verification implementation, the logic for
                 // bundle verification should be implemented as a
                 // higher-order function, where one of argument should be an
@@ -86,7 +67,7 @@ message ArtifactVerificationOptions {
                 // identified (or hinted) key in the bundle to one of the
                 // trusted keys, as this process is inherently application
                 // specific.
-                PublicKeyIdentities public_keys = 2;
+                dev.sigstore.common.v1.PublicKeyIdentities public_keys = 2;
         }
         // Optional options for artifact transparency log verification.
         // If none is provided, the default verification options are:

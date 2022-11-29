@@ -2,10 +2,7 @@
 # sources: sigstore_verification.proto
 # plugin: python-betterproto
 from dataclasses import dataclass
-from typing import (
-    List,
-    Optional,
-)
+from typing import Optional
 
 import betterproto
 
@@ -15,42 +12,18 @@ from ...trustroot import v1 as __trustroot_v1__
 
 
 @dataclass(eq=False, repr=False)
-class CertificateIdentity(betterproto.Message):
-    """The identity of a X.509 Certificate signer."""
-
-    issuer: str = betterproto.string_field(1)
-    """The X.509v3 issuer extension (OID 1.3.6.1.4.1.57264.1.1)"""
-
-    san: "__common_v1__.SubjectAlternativeName" = betterproto.message_field(2)
-    oids: List["__common_v1__.ObjectIdentifierValuePair"] = betterproto.message_field(3)
-    """
-    An unordered list of OIDs that must be verified. All OID/values provided in
-    this list MUST exactly match against the values in the certificate for
-    verification to be successful.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class CertificateIdentities(betterproto.Message):
-    identities: List["CertificateIdentity"] = betterproto.message_field(1)
-
-
-@dataclass(eq=False, repr=False)
-class PublicKeyIdentities(betterproto.Message):
-    public_keys: List["__common_v1__.PublicKey"] = betterproto.message_field(1)
-
-
-@dataclass(eq=False, repr=False)
 class ArtifactVerificationOptions(betterproto.Message):
     """
     A light-weight set of options/policies for identifying trusted signers,
     used during verification of a single artifact.
     """
 
-    certificate_identities: "CertificateIdentities" = betterproto.message_field(
-        1, group="signers"
+    certificate_identities: "__common_v1__.CertificateIdentities" = (
+        betterproto.message_field(1, group="signers")
     )
-    public_keys: "PublicKeyIdentities" = betterproto.message_field(2, group="signers")
+    public_keys: "__common_v1__.PublicKeyIdentities" = betterproto.message_field(
+        2, group="signers"
+    )
     """
     To simplify verification implementation, the logic for bundle verification
     should be implemented as a higher-order function, where one of argument

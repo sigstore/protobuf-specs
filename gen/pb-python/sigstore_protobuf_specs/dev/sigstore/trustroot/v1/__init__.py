@@ -151,3 +151,21 @@ class Environment(betterproto.Message):
 
     tsas: List["CertificateAuthorityIdentifier"] = betterproto.message_field(5)
     """Ids for timestamp authorities to include."""
+
+
+@dataclass(eq=False, repr=False)
+class Policy(betterproto.Message):
+    """
+    Policy to apply to a trust root prior to creating the verification Input
+    when calling a verifier. Not that the Policy does NOT contain any reference
+    to a bundle. How this mapping happens is specific for each client.
+    """
+
+    name: str = betterproto.string_field(1)
+    environment: "Environment" = betterproto.message_field(2)
+    certificate_identities: "__common_v1__.CertificateIdentities" = (
+        betterproto.message_field(3, group="signers")
+    )
+    public_keys: "__common_v1__.PublicKeyIdentities" = betterproto.message_field(
+        4, group="signers"
+    )
