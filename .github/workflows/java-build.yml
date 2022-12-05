@@ -19,6 +19,7 @@ permissions:
   contents: read
 
 on:
+  workflow_call: # allow this workflow to be called by other workflows
   push:
     paths:
       - '**.proto'
