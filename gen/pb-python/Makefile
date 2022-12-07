@@ -1,5 +1,3 @@
-SHELL := /bin/bash
-
 .PHONY: all
 all:
 	@echo "Run my targets individually!"
