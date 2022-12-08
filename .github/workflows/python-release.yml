@@ -18,6 +18,7 @@ jobs:
 
     - name: build
       run:
+        cd gen/pb-python/
         make package
 
     - name: publish
