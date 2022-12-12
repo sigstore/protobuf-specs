@@ -31,31 +31,6 @@ class TimestampVerificationData(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class ExtendedVerificationMaterials(betterproto.Message):
-    """
-    ExtendedVerificationMaterials contains extra data that can be used to
-    verify things such as transparency and timestamp of the signature creation.
-    As this message can be either empty (no inclusion proof or timestamps), or
-    a combination of an arbitrarily number of transparency log entries and
-    signed timestamps, it is the client's responsibility to implement any
-    required verification policies.
-    """
-
-    tlog_entries: List["__rekor_v1__.TransparencyLogEntry"] = betterproto.message_field(
-        1
-    )
-    """
-    This is the inclusion promise and/or proof, where the timestamp is coming
-    from the transparency log.
-    """
-
-    timestamp_verification_data: "TimestampVerificationData" = (
-        betterproto.message_field(2)
-    )
-    """Timestamp verification data, over the artifact's signature."""
-
-
-@dataclass(eq=False, repr=False)
 class Bundle(betterproto.Message):
     media_type: str = betterproto.string_field(1)
     """
@@ -63,17 +38,27 @@ class Bundle(betterproto.Message):
     as JSON.
     """
 
-    extended_verification_materials: "ExtendedVerificationMaterials" = (
-        betterproto.message_field(2)
+    tlog_entries: List["__rekor_v1__.TransparencyLogEntry"] = betterproto.message_field(
+        2
     )
-    verification_material: "__common_v1__.VerificationMaterial" = (
+    """
+    This is the inclusion promise and/or proof, where the timestamp is coming
+    from the transparency log.
+    """
+
+    timestamp_verification_data: "TimestampVerificationData" = (
         betterproto.message_field(3)
     )
+    """Timestamp verification data, over the artifact's signature."""
+
+    verification_material: "__common_v1__.VerificationMaterial" = (
+        betterproto.message_field(4)
+    )
     message_signature: "__common_v1__.MessageSignature" = betterproto.message_field(
-        4, group="content"
+        5, group="content"
     )
     dsse_envelope: "____io_intoto__.Envelope" = betterproto.message_field(
-        5, group="content"
+        6, group="content"
     )
     """
     A DSSE envelope can contain arbitrary payloads. Verifiers must verify that

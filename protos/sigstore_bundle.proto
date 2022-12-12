@@ -44,34 +44,24 @@ message TimestampVerificationData {
         repeated dev.sigstore.common.v1.RFC3161SignedTimestamp rfc3161_timestamps = 1;
 }
 
-// ExtendedVerificationMaterials contains extra data that can be used to verify things
-// such as transparency and timestamp of the signature creation.
-// As this message can be either empty (no inclusion proof or timestamps), or a combination of
-// an arbitrarily number of transparency log entries and signed timestamps,
-// it is the client's responsibility to implement any required verification
-// policies.
-message ExtendedVerificationMaterials {
-        // This is the inclusion promise and/or proof, where
-        // the timestamp is coming from the transparency log.
-        repeated dev.sigstore.rekor.v1.TransparencyLogEntry tlog_entries = 1;
-        // Timestamp verification data, over the artifact's signature.
-        TimestampVerificationData timestamp_verification_data = 2;
-}
-
 message Bundle {
         // MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
         // when encoded as JSON.
         string media_type = 1;
-        ExtendedVerificationMaterials extended_verification_materials = 2;
-        dev.sigstore.common.v1.VerificationMaterial verification_material = 3;
+        // This is the inclusion promise and/or proof, where
+        // the timestamp is coming from the transparency log.
+        repeated dev.sigstore.rekor.v1.TransparencyLogEntry tlog_entries = 2;
+        // Timestamp verification data, over the artifact's signature.
+        TimestampVerificationData timestamp_verification_data = 3;
+        dev.sigstore.common.v1.VerificationMaterial verification_material = 4;
         oneof content {
-                dev.sigstore.common.v1.MessageSignature message_signature = 4;
+                dev.sigstore.common.v1.MessageSignature message_signature = 5;
                 // A DSSE envelope can contain arbitrary payloads.
                 // Verifiers must verify that the payload type is a
                 // supported and expected type. This is part of the DSSE
                 // protocol which is defined here https://github.com/secure-systems-lab/dsse/blob/master/protocol.md
-                io.intoto.Envelope dsse_envelope = 5;
+                io.intoto.Envelope dsse_envelope = 6;
         }
         // Reserved for future additions of artifact types.
-        reserved 6 to 50;
+        reserved 7 to 50;
 }
