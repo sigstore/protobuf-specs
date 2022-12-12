@@ -31,14 +31,14 @@ class TimestampVerificationData(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class VerificationData(betterproto.Message):
+class ExtendedVerificationMaterials(betterproto.Message):
     """
-    VerificationData contains extra data that can be used to verify things such
-    as transparency and timestamp of the signature creation. As this message
-    can be either empty (no inclusion proof or timestamps), or a combination of
-    an arbitrarily number of transparency log entries and signed timestamps, it
-    is the client's responsibility to implement any required verification
-    policies.
+    ExtendedVerificationMaterials contains extra data that can be used to
+    verify things such as transparency and timestamp of the signature creation.
+    As this message can be either empty (no inclusion proof or timestamps), or
+    a combination of an arbitrarily number of transparency log entries and
+    signed timestamps, it is the client's responsibility to implement any
+    required verification policies.
     """
 
     tlog_entries: List["__rekor_v1__.TransparencyLogEntry"] = betterproto.message_field(
@@ -63,7 +63,9 @@ class Bundle(betterproto.Message):
     as JSON.
     """
 
-    verification_data: "VerificationData" = betterproto.message_field(2)
+    extended_verification_materials: "ExtendedVerificationMaterials" = (
+        betterproto.message_field(2)
+    )
     verification_material: "__common_v1__.VerificationMaterial" = (
         betterproto.message_field(3)
     )
