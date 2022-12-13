@@ -66,7 +66,11 @@ class SubjectAlternativeNameType(betterproto.Enum):
     EMAIL = 1
     URI = 2
     OTHER_NAME = 3
-    """OID 1.3.6.1.4.1.57264.1.7"""
+    """
+    OID 1.3.6.1.4.1.57264.1.7 See
+    https://github.com/sigstore/fulcio/blob/main/docs/oid-info.md#1361415726417
+    --othername-san for more details.
+    """
 
 
 @dataclass(eq=False, repr=False)
