@@ -44,24 +44,33 @@ message TimestampVerificationData {
         repeated dev.sigstore.common.v1.RFC3161SignedTimestamp rfc3161_timestamps = 1;
 }
 
+// VerificationMaterial captures details on the materials used to verify
+// signatures.
+message VerificationMaterial {
+        oneof content {
+                dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1;
+                dev.sigstore.common.v1.X509CertificateChain x509_certificate_chain = 2;
+        }
+        // This is the inclusion promise and/or proof, where
+        // the timestamp is coming from the transparency log.
+        repeated dev.sigstore.rekor.v1.TransparencyLogEntry tlog_entries = 3;
+        // Timestamp verification data, over the artifact's signature.
+        TimestampVerificationData timestamp_verification_data = 4;
+}
+
 message Bundle {
         // MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
         // when encoded as JSON.
         string media_type = 1;
-        // This is the inclusion promise and/or proof, where
-        // the timestamp is coming from the transparency log.
-        repeated dev.sigstore.rekor.v1.TransparencyLogEntry tlog_entries = 2;
-        // Timestamp verification data, over the artifact's signature.
-        TimestampVerificationData timestamp_verification_data = 3;
-        dev.sigstore.common.v1.VerificationMaterial verification_material = 4;
+        VerificationMaterial verification_material = 2;
         oneof content {
-                dev.sigstore.common.v1.MessageSignature message_signature = 5;
+                dev.sigstore.common.v1.MessageSignature message_signature = 3;
                 // A DSSE envelope can contain arbitrary payloads.
                 // Verifiers must verify that the payload type is a
                 // supported and expected type. This is part of the DSSE
                 // protocol which is defined here https://github.com/secure-systems-lab/dsse/blob/master/protocol.md
-                io.intoto.Envelope dsse_envelope = 6;
+                io.intoto.Envelope dsse_envelope = 4;
         }
         // Reserved for future additions of artifact types.
-        reserved 7 to 50;
+        reserved 5 to 50;
 }

@@ -31,15 +31,20 @@ class TimestampVerificationData(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class Bundle(betterproto.Message):
-    media_type: str = betterproto.string_field(1)
+class VerificationMaterial(betterproto.Message):
     """
-    MUST be application/vnd.dev.sigstore.bundle+json;version=0.1 when encoded
-    as JSON.
+    VerificationMaterial captures details on the materials used to verify
+    signatures.
     """
 
+    public_key: "__common_v1__.PublicKeyIdentifier" = betterproto.message_field(
+        1, group="content"
+    )
+    x509_certificate_chain: "__common_v1__.X509CertificateChain" = (
+        betterproto.message_field(2, group="content")
+    )
     tlog_entries: List["__rekor_v1__.TransparencyLogEntry"] = betterproto.message_field(
-        2
+        3
     )
     """
     This is the inclusion promise and/or proof, where the timestamp is coming
@@ -47,18 +52,25 @@ class Bundle(betterproto.Message):
     """
 
     timestamp_verification_data: "TimestampVerificationData" = (
-        betterproto.message_field(3)
+        betterproto.message_field(4)
     )
     """Timestamp verification data, over the artifact's signature."""
 
-    verification_material: "__common_v1__.VerificationMaterial" = (
-        betterproto.message_field(4)
-    )
+
+@dataclass(eq=False, repr=False)
+class Bundle(betterproto.Message):
+    media_type: str = betterproto.string_field(1)
+    """
+    MUST be application/vnd.dev.sigstore.bundle+json;version=0.1 when encoded
+    as JSON.
+    """
+
+    verification_material: "VerificationMaterial" = betterproto.message_field(2)
     message_signature: "__common_v1__.MessageSignature" = betterproto.message_field(
-        5, group="content"
+        3, group="content"
     )
     dsse_envelope: "____io_intoto__.Envelope" = betterproto.message_field(
-        6, group="content"
+        4, group="content"
     )
     """
     A DSSE envelope can contain arbitrary payloads. Verifiers must verify that

@@ -179,15 +179,6 @@ message X509CertificateChain {
         repeated X509Certificate certificates = 1;
 }
 
-// VerificationMaterial captures details on the materials used to verify
-// signatures.
-message VerificationMaterial {
-        oneof content {
-                PublicKeyIdentifier public_key = 1;
-                X509CertificateChain x509_certificate_chain = 2;
-        }
-}
-
 // The time range is half-open and does not include the end timestamp,
 // i.e [start, end).
 // End is optional to be able to capture a period that has started but

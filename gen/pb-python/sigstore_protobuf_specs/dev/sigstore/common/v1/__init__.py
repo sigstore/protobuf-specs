@@ -215,19 +215,6 @@ class X509CertificateChain(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class VerificationMaterial(betterproto.Message):
-    """
-    VerificationMaterial captures details on the materials used to verify
-    signatures.
-    """
-
-    public_key: "PublicKeyIdentifier" = betterproto.message_field(1, group="content")
-    x509_certificate_chain: "X509CertificateChain" = betterproto.message_field(
-        2, group="content"
-    )
-
-
-@dataclass(eq=False, repr=False)
 class TimeRange(betterproto.Message):
     """
     The time range is half-open and does not include the end timestamp, i.e
