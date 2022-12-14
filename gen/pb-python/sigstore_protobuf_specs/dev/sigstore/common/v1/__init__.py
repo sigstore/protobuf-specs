@@ -23,7 +23,6 @@ class HashAlgorithm(betterproto.Enum):
 
     HASH_ALGORITHM_UNSPECIFIED = 0
     SHA2_256 = 1
-    SHA2_512 = 2
 
 
 class SignatureAlgorithm(betterproto.Enum):
@@ -105,17 +104,11 @@ class MessageSignature(betterproto.Message):
 class LogId(betterproto.Message):
     """LogId captures the identity of a transparency log."""
 
-    key_id: bytes = betterproto.bytes_field(1, group="id")
+    key_id: bytes = betterproto.bytes_field(1)
     """
     The unique id of the log, represented as the SHA-256 hash of the log's
-    public key, computed over the DER encoding. https://www.rfc-
-    editor.org/rfc/rfc6962#section-3.2
-    """
-
-    oid: "ObjectIdentifier" = betterproto.message_field(2, group="id")
-    """
-    Currently not used but proposed by
-    https://datatracker.ietf.org/doc/rfc9162/
+    public key, computed over the DER encoding. <https://www.rfc-
+    editor.org/rfc/rfc6962#section-3.2>
     """
 
 
