@@ -62,6 +62,11 @@ message Bundle {
         // MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
         // when encoded as JSON.
         string media_type = 1;
+        // When a signer is identified by a X.509 certiicate, a verifier MUST
+        // verify that the signature was computed at the time the certificate
+        // was valid as descbribed in the Sigstore client spec: "Verification
+        // using a Bundle".
+        // https://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E/edit#heading=h.x8bduppe89ln
         VerificationData verification_data = 2;
         dev.sigstore.common.v1.VerificationMaterial verification_material = 3;
         oneof content {

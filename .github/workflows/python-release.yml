@@ -1,0 +1,29 @@
+on:
+  push:
+    tags:
+      - 'release/python/v*'
+
+name: release Python package
+
+jobs:
+  pypi:
+    name: upload release to PyPI
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
+
+    - name: build
+      run: |
+        cd gen/pb-python/
+        make package
+
+    - name: publish
+      uses: pypa/gh-action-pypi-publish@v1.6.4
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_TOKEN }}
+        packages_dir: gen/pb-python/dist/
