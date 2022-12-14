@@ -35,7 +35,6 @@ option java_outer_classname = "CommonProto";
 enum HashAlgorithm {
         HASH_ALGORITHM_UNSPECIFIED = 0;
         SHA2_256 = 1;
-        SHA2_512 = 2;
 }
 
 // Subset of known signature algorithms.
@@ -94,15 +93,10 @@ message MessageSignature {
 
 // LogId captures the identity of a transparency log.
 message LogId {
-        oneof id {
-                // The unique id of the log, represented as the SHA-256 hash
-                // of the log's public key, computed over the DER encoding.
-                // https://www.rfc-editor.org/rfc/rfc6962#section-3.2
-                bytes key_id = 1;
-                // Currently not used but proposed by
-                // https://datatracker.ietf.org/doc/rfc9162/
-                ObjectIdentifier oid = 2;
-        }
+        // The unique id of the log, represented as the SHA-256 hash
+        // of the log's public key, computed over the DER encoding.
+        // <https://www.rfc-editor.org/rfc/rfc6962#section-3.2>
+        bytes key_id = 1;
 }
 
 // This message holds a RFC 3161 timestamp.
