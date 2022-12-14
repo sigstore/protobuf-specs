@@ -31,7 +31,7 @@ python: docker-image
 		-v ${PWD}:/defs \
 		-e PYTHONPATH="/opt/mypy-protobuf/" \
 		--entrypoint bash ${PROTOC_IMAGE} \
-		-c "cd ./gen/pb-python/sigstore_protobuf_specs && protoc -I/opt/include -I../../../protos/ --python_betterproto_out=. ../../../protos/*"
+		-c "cd ./gen/pb-python/sigstore_protobuf_specs && protoc -I/opt/include -I../../../protos/ --python_betterproto_out=. ../../../protos/*.proto"
 
 # docker already does its own caching so we can attempt a build every time
 .PHONY: docker-image

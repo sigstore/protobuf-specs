@@ -64,6 +64,14 @@ class Bundle(betterproto.Message):
     """
 
     verification_data: "VerificationData" = betterproto.message_field(2)
+    """
+    When a signer is identified by a X.509 certiicate, a verifier MUST verify
+    that the signature was computed at the time the certificate was valid as
+    descbribed in the Sigstore client spec: "Verification using a Bundle". http
+    s://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E
+    /edit#heading=h.x8bduppe89ln
+    """
+
     verification_material: "__common_v1__.VerificationMaterial" = (
         betterproto.message_field(3)
     )
