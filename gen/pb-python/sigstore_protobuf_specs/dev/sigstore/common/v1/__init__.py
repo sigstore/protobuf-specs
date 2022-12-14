@@ -202,6 +202,32 @@ class SubjectAlternativeName(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class CertificateIdentity(betterproto.Message):
+    """The identity of a X.509 Certificate signer."""
+
+    issuer: str = betterproto.string_field(1)
+    """The X.509v3 issuer extension (OID 1.3.6.1.4.1.57264.1.1)"""
+
+    san: "SubjectAlternativeName" = betterproto.message_field(2)
+    oids: List["ObjectIdentifierValuePair"] = betterproto.message_field(3)
+    """
+    An unordered list of OIDs that must be verified. All OID/values provided in
+    this list MUST exactly match against the values in the certificate for
+    verification to be successful.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class CertificateIdentities(betterproto.Message):
+    identities: List["CertificateIdentity"] = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class PublicKeyIdentities(betterproto.Message):
+    public_keys: List["PublicKey"] = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
 class X509CertificateChain(betterproto.Message):
     """A chain of X.509 certificates."""
 
