@@ -200,7 +200,12 @@ type Bundle struct {
 
 	// MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
 	// when encoded as JSON.
-	MediaType            string                `protobuf:"bytes,1,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
+	MediaType string `protobuf:"bytes,1,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
+	// When a signer is identified by a X.509 certificate, a verifier MUST
+	// verify that the signature was computed at the time the certificate
+	// was valid as described in the Sigstore client spec: "Verification
+	// using a Bundle".
+	// <https://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E/edit#heading=h.x8bduppe89ln>
 	VerificationMaterial *VerificationMaterial `protobuf:"bytes,2,opt,name=verification_material,json=verificationMaterial,proto3" json:"verification_material,omitempty"`
 	// Types that are assignable to Content:
 	//	*Bundle_MessageSignature
@@ -287,7 +292,8 @@ type Bundle_DsseEnvelope struct {
 	// A DSSE envelope can contain arbitrary payloads.
 	// Verifiers must verify that the payload type is a
 	// supported and expected type. This is part of the DSSE
-	// protocol which is defined here https://github.com/secure-systems-lab/dsse/blob/master/protocol.md
+	// protocol which is defined here:
+	// <https://github.com/secure-systems-lab/dsse/blob/master/protocol.md>
 	DsseEnvelope *dsse.Envelope `protobuf:"bytes,4,opt,name=dsse_envelope,json=dsseEnvelope,proto3,oneof"`
 }
 

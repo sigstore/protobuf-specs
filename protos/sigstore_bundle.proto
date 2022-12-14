@@ -62,13 +62,19 @@ message Bundle {
         // MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
         // when encoded as JSON.
         string media_type = 1;
+        // When a signer is identified by a X.509 certificate, a verifier MUST
+        // verify that the signature was computed at the time the certificate
+        // was valid as described in the Sigstore client spec: "Verification
+        // using a Bundle".
+        // <https://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E/edit#heading=h.x8bduppe89ln>
         VerificationMaterial verification_material = 2;
         oneof content {
                 dev.sigstore.common.v1.MessageSignature message_signature = 3;
                 // A DSSE envelope can contain arbitrary payloads.
                 // Verifiers must verify that the payload type is a
                 // supported and expected type. This is part of the DSSE
-                // protocol which is defined here https://github.com/secure-systems-lab/dsse/blob/master/protocol.md
+                // protocol which is defined here:
+                // <https://github.com/secure-systems-lab/dsse/blob/master/protocol.md>
                 io.intoto.Envelope dsse_envelope = 4;
         }
         // Reserved for future additions of artifact types.

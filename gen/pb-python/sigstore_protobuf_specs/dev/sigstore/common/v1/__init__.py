@@ -46,7 +46,7 @@ class PublicKeyDetails(betterproto.Enum):
     one for encoding and one for the signature algorithm).
     """
 
-    KEY_FORMAT_UNSPECIFIED = 0
+    PUBLIC_KEY_DETAILS_UNSPECIFIED = 0
     PKCS1_RSA_PKCS1V5 = 1
     """RSA"""
 
@@ -62,9 +62,15 @@ class PublicKeyDetails(betterproto.Enum):
 
 
 class SubjectAlternativeNameType(betterproto.Enum):
-    DNS = 0
-    Email = 1
+    SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED = 0
+    EMAIL = 1
     URI = 2
+    OTHER_NAME = 3
+    """
+    OID 1.3.6.1.4.1.57264.1.7 See
+    https://github.com/sigstore/fulcio/blob/main/docs/oid-info.md#1361415726417
+    --othername-san for more details.
+    """
 
 
 @dataclass(eq=False, repr=False)
@@ -197,8 +203,11 @@ class X509Certificate(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class SubjectAlternativeName(betterproto.Message):
     type: "SubjectAlternativeNameType" = betterproto.enum_field(1)
-    value: str = betterproto.string_field(2)
+    regexp: str = betterproto.string_field(2, group="identity")
     """A regular expression describing the expected value for the SAN."""
+
+    value: str = betterproto.string_field(3, group="identity")
+    """The exact value to match against."""
 
 
 @dataclass(eq=False, repr=False)

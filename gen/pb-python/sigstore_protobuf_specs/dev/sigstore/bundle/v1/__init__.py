@@ -66,6 +66,14 @@ class Bundle(betterproto.Message):
     """
 
     verification_material: "VerificationMaterial" = betterproto.message_field(2)
+    """
+    When a signer is identified by a X.509 certificate, a verifier MUST verify
+    that the signature was computed at the time the certificate was valid as
+    described in the Sigstore client spec: "Verification using a Bundle". <http
+    s://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E
+    /edit#heading=h.x8bduppe89ln>
+    """
+
     message_signature: "__common_v1__.MessageSignature" = betterproto.message_field(
         3, group="content"
     )
@@ -75,6 +83,6 @@ class Bundle(betterproto.Message):
     """
     A DSSE envelope can contain arbitrary payloads. Verifiers must verify that
     the payload type is a supported and expected type. This is part of the DSSE
-    protocol which is defined here https://github.com/secure-systems-
-    lab/dsse/blob/master/protocol.md
+    protocol which is defined here: <https://github.com/secure-systems-
+    lab/dsse/blob/master/protocol.md>
     """
