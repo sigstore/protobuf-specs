@@ -44,39 +44,39 @@ message TimestampVerificationData {
         repeated dev.sigstore.common.v1.RFC3161SignedTimestamp rfc3161_timestamps = 1;
 }
 
-// VerificationData contains extra data that can be used to verify things
-// such as transparency and timestamp of the signature creation.
-// As this message can be either empty (no inclusion proof or timestamps), or a combination of
-// an arbitrarily number of transparency log entries and signed timestamps,
-// it is the client's responsibility to implement any required verification
-// policies.
-message VerificationData {
+// VerificationMaterial captures details on the materials used to verify
+// signatures.
+message VerificationMaterial {
+        oneof content {
+                dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1;
+                dev.sigstore.common.v1.X509CertificateChain x509_certificate_chain = 2;
+        }
         // This is the inclusion promise and/or proof, where
         // the timestamp is coming from the transparency log.
-        repeated dev.sigstore.rekor.v1.TransparencyLogEntry tlog_entries = 1;
+        repeated dev.sigstore.rekor.v1.TransparencyLogEntry tlog_entries = 3;
         // Timestamp verification data, over the artifact's signature.
-        TimestampVerificationData timestamp_verification_data = 2;
+        TimestampVerificationData timestamp_verification_data = 4;
 }
 
 message Bundle {
         // MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
         // when encoded as JSON.
         string media_type = 1;
-        // When a signer is identified by a X.509 certiicate, a verifier MUST
+        // When a signer is identified by a X.509 certificate, a verifier MUST
         // verify that the signature was computed at the time the certificate
-        // was valid as descbribed in the Sigstore client spec: "Verification
+        // was valid as described in the Sigstore client spec: "Verification
         // using a Bundle".
-        // https://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E/edit#heading=h.x8bduppe89ln
-        VerificationData verification_data = 2;
-        dev.sigstore.common.v1.VerificationMaterial verification_material = 3;
+        // <https://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E/edit#heading=h.x8bduppe89ln>
+        VerificationMaterial verification_material = 2;
         oneof content {
-                dev.sigstore.common.v1.MessageSignature message_signature = 4;
+                dev.sigstore.common.v1.MessageSignature message_signature = 3;
                 // A DSSE envelope can contain arbitrary payloads.
                 // Verifiers must verify that the payload type is a
                 // supported and expected type. This is part of the DSSE
-                // protocol which is defined here https://github.com/secure-systems-lab/dsse/blob/master/protocol.md
-                io.intoto.Envelope dsse_envelope = 5;
+                // protocol which is defined here:
+                // <https://github.com/secure-systems-lab/dsse/blob/master/protocol.md>
+                io.intoto.Envelope dsse_envelope = 4;
         }
         // Reserved for future additions of artifact types.
-        reserved 6 to 50;
+        reserved 5 to 50;
 }

@@ -31,18 +31,20 @@ class TimestampVerificationData(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class VerificationData(betterproto.Message):
+class VerificationMaterial(betterproto.Message):
     """
-    VerificationData contains extra data that can be used to verify things such
-    as transparency and timestamp of the signature creation. As this message
-    can be either empty (no inclusion proof or timestamps), or a combination of
-    an arbitrarily number of transparency log entries and signed timestamps, it
-    is the client's responsibility to implement any required verification
-    policies.
+    VerificationMaterial captures details on the materials used to verify
+    signatures.
     """
 
+    public_key: "__common_v1__.PublicKeyIdentifier" = betterproto.message_field(
+        1, group="content"
+    )
+    x509_certificate_chain: "__common_v1__.X509CertificateChain" = (
+        betterproto.message_field(2, group="content")
+    )
     tlog_entries: List["__rekor_v1__.TransparencyLogEntry"] = betterproto.message_field(
-        1
+        3
     )
     """
     This is the inclusion promise and/or proof, where the timestamp is coming
@@ -50,7 +52,7 @@ class VerificationData(betterproto.Message):
     """
 
     timestamp_verification_data: "TimestampVerificationData" = (
-        betterproto.message_field(2)
+        betterproto.message_field(4)
     )
     """Timestamp verification data, over the artifact's signature."""
 
@@ -63,27 +65,24 @@ class Bundle(betterproto.Message):
     as JSON.
     """
 
-    verification_data: "VerificationData" = betterproto.message_field(2)
+    verification_material: "VerificationMaterial" = betterproto.message_field(2)
     """
-    When a signer is identified by a X.509 certiicate, a verifier MUST verify
+    When a signer is identified by a X.509 certificate, a verifier MUST verify
     that the signature was computed at the time the certificate was valid as
-    descbribed in the Sigstore client spec: "Verification using a Bundle". http
+    described in the Sigstore client spec: "Verification using a Bundle". <http
     s://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E
-    /edit#heading=h.x8bduppe89ln
+    /edit#heading=h.x8bduppe89ln>
     """
 
-    verification_material: "__common_v1__.VerificationMaterial" = (
-        betterproto.message_field(3)
-    )
     message_signature: "__common_v1__.MessageSignature" = betterproto.message_field(
-        4, group="content"
+        3, group="content"
     )
     dsse_envelope: "____io_intoto__.Envelope" = betterproto.message_field(
-        5, group="content"
+        4, group="content"
     )
     """
     A DSSE envelope can contain arbitrary payloads. Verifiers must verify that
     the payload type is a supported and expected type. This is part of the DSSE
-    protocol which is defined here https://github.com/secure-systems-
-    lab/dsse/blob/master/protocol.md
+    protocol which is defined here: <https://github.com/secure-systems-
+    lab/dsse/blob/master/protocol.md>
     """
