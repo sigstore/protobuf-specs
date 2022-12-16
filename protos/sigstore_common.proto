@@ -131,7 +131,7 @@ message PublicKeyIdentifier {
         string hint = 1;
 }
 
-// An ASN1. OBJECT IDENTIFIER
+// An ASN.1 OBJECT IDENTIFIER
 message ObjectIdentifier {
         repeated int32 id = 1 [(google.api.field_behavior) = REQUIRED];
 }
@@ -149,7 +149,7 @@ message DistinguishedName {
 
 message X509Certificate {
         // DER-encoded X.509 certificate.
-        bytes raw_bytes = 1;
+        bytes raw_bytes = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 enum SubjectAlternativeNameType {
