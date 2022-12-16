@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
     implementation("com.google.protobuf:protobuf-java:3.21.9")
+    implementation("com.google.api.grpc:googleapis-common-protos:0.0.3")
 }
 
 // gradle reproducible jar builds
