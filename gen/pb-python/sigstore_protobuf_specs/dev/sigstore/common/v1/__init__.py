@@ -168,7 +168,7 @@ class PublicKeyIdentifier(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ObjectIdentifier(betterproto.Message):
-    """An ASN1. OBJECT IDENTIFIER"""
+    """An ASN.1 OBJECT IDENTIFIER"""
 
     id: List[int] = betterproto.int32_field(1)
 
