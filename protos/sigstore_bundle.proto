@@ -40,7 +40,7 @@ option java_outer_classname = "BundleProto";
 message TimestampVerificationData {
         // A list of RFC3161 signed timestamps provided by the user.
         // This can be used when the entry has not been stored on a
-        // transparency log, or in conjuction for a stronger trust model.
+        // transparency log, or in conjunction for a stronger trust model.
         // Clients MUST verify the hashed message in the message imprint
         // against the signature in the bundle.
         repeated dev.sigstore.common.v1.RFC3161SignedTimestamp rfc3161_timestamps = 1;

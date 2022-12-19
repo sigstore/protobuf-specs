@@ -24,7 +24,7 @@ class TimestampVerificationData(betterproto.Message):
     ] = betterproto.message_field(1)
     """
     A list of RFC3161 signed timestamps provided by the user. This can be used
-    when the entry has not been stored on a transparency log, or in conjuction
+    when the entry has not been stored on a transparency log, or in conjunction
     for a stronger trust model. Clients MUST verify the hashed message in the
     message imprint against the signature in the bundle.
     """
