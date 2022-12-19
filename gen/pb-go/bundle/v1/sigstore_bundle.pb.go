@@ -47,7 +47,7 @@ type TimestampVerificationData struct {
 
 	// A list of RFC3161 signed timestamps provided by the user.
 	// This can be used when the entry has not been stored on a
-	// transparency log, or in conjuction for a stronger trust model.
+	// transparency log, or in conjunction for a stronger trust model.
 	// Clients MUST verify the hashed message in the message imprint
 	// against the signature in the bundle.
 	Rfc3161Timestamps []*v1.RFC3161SignedTimestamp `protobuf:"bytes,1,rep,name=rfc3161_timestamps,json=rfc3161Timestamps,proto3" json:"rfc3161_timestamps,omitempty"`
