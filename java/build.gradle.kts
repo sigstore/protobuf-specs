@@ -7,6 +7,8 @@ plugins {
     id("com.diffplug.spotless") version "6.11.0"
 }
 
+description = "Code generated library for the Sigstore bundle format protobufs"
+
 sourceSets {
     main {
         proto {
