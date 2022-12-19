@@ -15,6 +15,8 @@
 syntax = "proto3";
 package dev.sigstore.bundle.v1;
 
+import "google/api/field_behavior.proto";
+
 // https://raw.githubusercontent.com/secure-systems-lab/dsse/9c813476bd36de70a5738c72e784f123ecea16af/envelope.proto
 import "envelope.proto";
 import "sigstore_common.proto";
@@ -48,8 +50,8 @@ message TimestampVerificationData {
 // signatures.
 message VerificationMaterial {
         oneof content {
-                dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1;
-                dev.sigstore.common.v1.X509CertificateChain x509_certificate_chain = 2;
+                dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
+                dev.sigstore.common.v1.X509CertificateChain x509_certificate_chain = 2 [(google.api.field_behavior) = REQUIRED];
         }
         // This is the inclusion promise and/or proof, where
         // the timestamp is coming from the transparency log.
@@ -67,15 +69,15 @@ message Bundle {
         // was valid as described in the Sigstore client spec: "Verification
         // using a Bundle".
         // <https://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E/edit#heading=h.x8bduppe89ln>
-        VerificationMaterial verification_material = 2;
+        VerificationMaterial verification_material = 2 [(google.api.field_behavior) = REQUIRED];
         oneof content {
-                dev.sigstore.common.v1.MessageSignature message_signature = 3;
+                dev.sigstore.common.v1.MessageSignature message_signature = 3 [(google.api.field_behavior) = REQUIRED];
                 // A DSSE envelope can contain arbitrary payloads.
                 // Verifiers must verify that the payload type is a
                 // supported and expected type. This is part of the DSSE
                 // protocol which is defined here:
                 // <https://github.com/secure-systems-lab/dsse/blob/master/protocol.md>
-                io.intoto.Envelope dsse_envelope = 4;
+                io.intoto.Envelope dsse_envelope = 4 [(google.api.field_behavior) = REQUIRED];
         }
         // Reserved for future additions of artifact types.
         reserved 5 to 50;

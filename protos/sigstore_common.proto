@@ -15,6 +15,7 @@
 syntax = "proto3";
 package dev.sigstore.common.v1;
 
+import "google/api/field_behavior.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/common/v1";
@@ -79,7 +80,7 @@ message HashOutput {
 // MessageSignature stores the computed signature over a message.
 message MessageSignature {
         // Message digest can be used to identify the artifact.
-        HashOutput message_digest = 1;
+        HashOutput message_digest = 1 [(google.api.field_behavior) = REQUIRED];
         // The raw bytes as returned from the signature algorithm.
         // The signature algorithm (and so the format of the signature bytes)
         // are determined by the contents of the 'verification_material',
@@ -88,7 +89,7 @@ message MessageSignature {
         // algorithm.
         // When using a key pair, the algorithm MUST be part of the public
         // key, which MUST be communicated out-of-band.
-        bytes signature = 2;
+        bytes signature = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // LogId captures the identity of a transparency log.
@@ -96,14 +97,14 @@ message LogId {
         // The unique id of the log, represented as the SHA-256 hash
         // of the log's public key, computed over the DER encoding.
         // <https://www.rfc-editor.org/rfc/rfc6962#section-3.2>
-        bytes key_id = 1;
+        bytes key_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // This message holds a RFC 3161 timestamp.
 message RFC3161SignedTimestamp {
         // Signed timestamp is the DER encoded TimeStampResponse.
         // See https://www.rfc-editor.org/rfc/rfc3161.html#section-2.4.2
-        bytes signed_timestamp = 1;
+        bytes signed_timestamp = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message PublicKey {
@@ -131,9 +132,9 @@ message PublicKeyIdentifier {
         string hint = 1;
 }
 
-// An ASN1. OBJECT IDENTIFIER
+// An ASN.1 OBJECT IDENTIFIER
 message ObjectIdentifier {
-        repeated int32 id = 1;
+        repeated int32 id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // An OID and the corresponding (byte) value.
@@ -149,7 +150,7 @@ message DistinguishedName {
 
 message X509Certificate {
         // DER-encoded X.509 certificate.
-        bytes raw_bytes = 1;
+        bytes raw_bytes = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 enum SubjectAlternativeNameType {
