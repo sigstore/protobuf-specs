@@ -36,11 +36,11 @@ const (
 )
 
 // Only a subset of the secure hash standard algorithms are supported.
-// See https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf for more
+// See <https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf> for more
 // details.
 // UNSPECIFIED SHOULD not be used, primary reason for inclusion is to force
 // any proto JSON serialization to emit the used hash algorithm, as default
-// option is to *omit* the default value of an emum (which is the first
+// option is to *omit* the default value of an enum (which is the first
 // value, represented by '0'.
 type HashAlgorithm int32
 
@@ -580,8 +580,9 @@ type PublicKeyIdentifier struct {
 	// specification.
 	// Example use-case is to specify the public key to use, from a
 	// trusted key-ring.
-	// Implementors are RECOMMENDED derive the value from the public
-	// key as described in https://www.rfc-editor.org/rfc/rfc3280#section-4.2.1.1
+	// Implementors are RECOMMENDED to derive the value from the public
+	// key as described in RFC 6962.
+	// See: <https://www.rfc-editor.org/rfc/rfc6962#section-3.2>
 	Hint string `protobuf:"bytes,1,opt,name=hint,proto3" json:"hint,omitempty"`
 }
 
