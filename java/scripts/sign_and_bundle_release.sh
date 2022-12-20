@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-REQUIRED_PROGRAMS=("gpg" "cosign" "jq" "curl" "wget" "md5sum" "sha1sum" "sha256sum" "sha512sum" "jar")
+REQUIRED_PROGRAMS=("gpg" "cosign" "jq" "curl" "wget" "jar")
 
 usage() {
   echo -e "Usage: $0 \e[4mVERSION\e[0m"
@@ -77,14 +77,6 @@ main() {
   echo "Signing with gpg"
   for file in *; do
     gpg --batch --detach-sign --armor -o "$file.asc" "$file"
-  done
-
-  echo "Generating checksums"
-  for file in *; do
-    md5sum "$file" | cut -c -32 | tr -d '\n' > "$file.md5"
-    sha1sum "$file" | cut -c -40  | tr -d '\n' > "$file.sha1"
-    sha256sum "$file" | cut -c -64 | tr -d '\n' > "$file.sha256"
-    sha512sum "$file" | cut -c -128 | tr -d '\n' > "$file.sha512"
   done
 
   # create a maven central compatible bundle jar
