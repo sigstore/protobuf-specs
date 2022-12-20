@@ -25,17 +25,6 @@ class HashAlgorithm(betterproto.Enum):
     SHA2_256 = 1
 
 
-class SignatureAlgorithm(betterproto.Enum):
-    """Subset of known signature algorithms."""
-
-    SIGNATURE_ALGORITHM_UNSPECIFIED = 0
-    ECDSA_P256_SHA_256 = 1
-    ECDSA_P256_HMAC_SHA_256 = 2
-    ED25519 = 3
-    RSA_PKCS1V5 = 4
-    RSA_PSS = 5
-
-
 class PublicKeyDetails(betterproto.Enum):
     """
     Details of a specific public key, capturing the the key encoding method,
