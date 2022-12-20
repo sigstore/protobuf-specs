@@ -38,16 +38,6 @@ enum HashAlgorithm {
         SHA2_256 = 1;
 }
 
-// Subset of known signature algorithms.
-enum SignatureAlgorithm {
-        SIGNATURE_ALGORITHM_UNSPECIFIED = 0;
-        ECDSA_P256_SHA_256 = 1; // See NIST FIPS 186-4
-        ECDSA_P256_HMAC_SHA_256 = 2; // See RFC6979
-        ED25519 = 3; // See RFC8032
-        RSA_PKCS1V5 = 4; // See RFC8017
-        RSA_PSS = 5; // See RFC8017
-}
-
 // Details of a specific public key, capturing the the key encoding method,
 // and signature algorithm.
 // To avoid the possibility of contradicting formats such as PKCS1 with
