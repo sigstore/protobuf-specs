@@ -68,8 +68,10 @@ message CertificateAuthority {
 // a minimal set by the policy to gain better control over what signatures
 // that are allowed.
 message TrustedRoot {
+        // MUST be application/vnd.dev.sigstore.trustedroot+json;version=0.1
+        string media_type = 1;
         // A set of trusted Rekor servers.
-        repeated TransparencyLogInstance tlogs = 1;
+        repeated TransparencyLogInstance tlogs = 2;
         // A set of trusted certificate authorites (e.g Fulcio), and any
         // intermediate certificates they provide.
         // If a CA is issuing multiple intermediate certificate, each
@@ -78,9 +80,9 @@ message TrustedRoot {
         // intermediate and/or leaf certificates.
         // The certificates are intended to be used for verifying artifact
         // signatures.
-        repeated CertificateAuthority certificate_authorities = 2;
+        repeated CertificateAuthority certificate_authorities = 3;
         // A set of trusted certificate transparency logs.
-        repeated TransparencyLogInstance ctlogs = 3;
+        repeated TransparencyLogInstance ctlogs = 4;
         // A set of trusted timestamping authorities.
-        repeated CertificateAuthority timestamp_authorities = 4;
+        repeated CertificateAuthority timestamp_authorities = 5;
 }
