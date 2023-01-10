@@ -75,10 +75,13 @@ class TrustedRoot(betterproto.Message):
     that are allowed.
     """
 
-    tlogs: List["TransparencyLogInstance"] = betterproto.message_field(1)
+    media_type: str = betterproto.string_field(1)
+    """MUST be application/vnd.dev.sigstore.trustedroot+json;version=0.1"""
+
+    tlogs: List["TransparencyLogInstance"] = betterproto.message_field(2)
     """A set of trusted Rekor servers."""
 
-    certificate_authorities: List["CertificateAuthority"] = betterproto.message_field(2)
+    certificate_authorities: List["CertificateAuthority"] = betterproto.message_field(3)
     """
     A set of trusted certificate authorites (e.g Fulcio), and any intermediate
     certificates they provide. If a CA is issuing multiple intermediate
@@ -88,8 +91,8 @@ class TrustedRoot(betterproto.Message):
     used for verifying artifact signatures.
     """
 
-    ctlogs: List["TransparencyLogInstance"] = betterproto.message_field(3)
+    ctlogs: List["TransparencyLogInstance"] = betterproto.message_field(4)
     """A set of trusted certificate transparency logs."""
 
-    timestamp_authorities: List["CertificateAuthority"] = betterproto.message_field(4)
+    timestamp_authorities: List["CertificateAuthority"] = betterproto.message_field(5)
     """A set of trusted timestamping authorities."""
