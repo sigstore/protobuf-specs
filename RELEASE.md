@@ -20,7 +20,7 @@ Examples of breaking changes are (non-complete list):
 
 * Deletion or rename of a field.
 * Changing the type of a field.
-* Altering the field number (**NEVER DO THIS!**)
+* Altering the field number (**NEVER DO THIS!**).
 
 ### Minor version change
 An update which does not break the functionality of existing (older)
