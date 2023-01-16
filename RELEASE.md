@@ -10,9 +10,17 @@ messages and the language clients.
 
 ## Notes on semantic versioning
 
+General information on evolving protocol buffers is described
+[here](https://developers.google.com/protocol-buffers/docs/proto3#updating).
+
 ### Major version change
 As expected this indicate a breaking change. Any major update MUST
 update the package name of the generated code.
+Examples of breaking changes are (non-complete list):
+
+* Deletion or rename of a field.
+* Changing the type of a field.
+* Altering the field number (**NEVER DO THIS!**)
 
 ### Minor version change
 An update which does not break the functionality of existing (older)
@@ -31,7 +39,10 @@ be used for bug-fixes.
 Checklist prior to releasing:
 
 1. Gather consensus among the community and maintainers of this
-   repository that the messages are ready to be released.
+   repository that the messages are ready to be released. Create an
+   issue to inform the community. The issue should describe the
+   intended release, and any changes it introduces. The issue must be
+   open for comments *at least* for a complete week (7 days).
 1. Decide the new version of this release. The releases are versioned
    via [semver](https://semver.org/).
 1. Two of the messages,
@@ -60,16 +71,19 @@ point if the tag is signed :champagne:.
 
 No extra step is needed. On every commit a new Go language client is
 generated as part of the action
-[workflow](https://github.com/sigstore/protobuf-specs/blob/a4750f5ada0d70d66636ab00df7acf694b969750/.github/workflows/generate.yml#L45).
+[workflow](.github/workflows/generate.yml).
 
 ### Java
 
 Prepare a tag with the following pattern `release/java/vX.Y.Z` and
-push it. The [workflow](.github/workflows/python-release.yml) will
+push it. The [workflow](.github/workflows/java-build-for-release.yml) will
 automatically start.
+After the job is finished, complete the release following [java
+release
+instructions](https://github.com/sigstore/protobuf-specs/blob/main/java/README.md#releasing).
 
 ### Python
 
 Prepare a tag with the following pattern `release/python/vX.Y.Z` and
-push it. The [workflow](.github/workflows/java-build-for-release.yml)
+push it. The [workflow](.github/workflows/python-release.yml)
 will automatically start.
