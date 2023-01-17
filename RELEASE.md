@@ -3,7 +3,7 @@
 This repository primary provides two features:
 
 * Protobuf specifications for messages used within Sigstore.
-* Language clients for different ecosystems.
+* Language bindings for different ecosystems.
 
 During a release, a few steps have to be synchronized to release the
 messages and the language clients.
@@ -31,7 +31,7 @@ Guide](https://developers.google.com/protocol-buffers/docs/proto3#updating).
 ### Patch version change
 Any update which does not change the behaviour. For the protocol buffer
 messages this is limited to _only_ capture changes in the comments,
-not the messages themselves. For language clients patch versions MAY
+not the messages themselves. For language bindings patch versions MAY
 be used for bug-fixes.
 
 ## Releasing new versions of the messages
@@ -65,7 +65,7 @@ When all of the above are set, prepare for release by creating a tag
 with the following pattern: `vX.Y.Z` and push to the repository. Bonus
 point if the tag is signed :champagne:.
 
-## Releasing new language clients
+## Releasing new language bindings
 
 ### Go
 
