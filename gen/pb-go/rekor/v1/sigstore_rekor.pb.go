@@ -327,12 +327,19 @@ type TransparencyLogEntry struct {
 	// entry was appended to the log, and that the log has not been
 	// altered.
 	InclusionProof *InclusionProof `protobuf:"bytes,6,opt,name=inclusion_proof,json=inclusionProof,proto3" json:"inclusion_proof,omitempty"`
-	// The canonicalized Rekor entry body, used for SET verification. This
-	// is the same as the body returned by Rekor. It's included here for
-	// cases where the client cannot deterministically reconstruct the
-	// bundle from the other fields. Clients MUST verify that the signature
-	// referenced in the canonicalized_body matches the signature provided
-	// in the bundle content.
+	// The canonicalized transparency log entry, used to reconstruct
+	// the Signed Entry Timestamp (SET) during verification.
+	// The contents of this field as the same as the `body` field in
+	// a Rekor response, meaning that it does **not** include the "full"
+	// canonicalized form (of log index, ID, etc.) which are
+	// exposed as separate fields. The verifier is responsible for
+	// combining the `canonicalized_body`, `log_index`, `log_id`,
+	// and `integrated_time` into the payload that the SET's signature
+	// is generated over.
+	//
+	// Clients MUST verify that the signatured referenced in the
+	// `canonicalized_body` matches the signature provided in the
+	// `Bundle.content`.
 	CanonicalizedBody []byte `protobuf:"bytes,7,opt,name=canonicalized_body,json=canonicalizedBody,proto3" json:"canonicalized_body,omitempty"`
 }
 
