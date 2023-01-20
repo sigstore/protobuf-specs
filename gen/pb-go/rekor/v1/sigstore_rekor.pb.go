@@ -329,7 +329,7 @@ type TransparencyLogEntry struct {
 	InclusionProof *InclusionProof `protobuf:"bytes,6,opt,name=inclusion_proof,json=inclusionProof,proto3" json:"inclusion_proof,omitempty"`
 	// The canonicalized transparency log entry, used to reconstruct
 	// the Signed Entry Timestamp (SET) during verification.
-	// The contents of this field as the same as the `body` field in
+	// The contents of this field are the same as the `body` field in
 	// a Rekor response, meaning that it does **not** include the "full"
 	// canonicalized form (of log index, ID, etc.) which are
 	// exposed as separate fields. The verifier is responsible for
