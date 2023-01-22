@@ -61,10 +61,10 @@ enum PublicKeyDetails {
 // HashOutput captures a digest of a 'message' (generic octet sequence)
 // and the corresponding hash algorithm used.
 message HashOutput {
-        HashAlgorithm algorithm = 1;
+        HashAlgorithm algorithm = 1 [(google.api.field_behavior) = REQUIRED];
         // This is the raw octets of the message digest as computed by
         // the hash algorithm.
-        bytes digest = 2;
+        bytes digest = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // MessageSignature stores the computed signature over a message.
@@ -154,13 +154,13 @@ enum SubjectAlternativeNameType {
 }
 
 message SubjectAlternativeName {
-        SubjectAlternativeNameType type = 1;
+        SubjectAlternativeNameType type = 1 [(google.api.field_behavior) = REQUIRED];
         oneof identity {
                 // A regular expression describing the expected value for
                 // the SAN.
-                string regexp = 2;
+                string regexp = 2 [(google.api.field_behavior) = REQUIRED];
                 // The exact value to match against.
-                string value = 3;
+                string value = 3 [(google.api.field_behavior) = REQUIRED];
         }
 }
 
@@ -171,7 +171,7 @@ message X509CertificateChain {
         // certificate used for signing. Any intermediate certificates
         // must be stored as offset 1 to n-1, and the root certificate at
         // position n.
-        repeated X509Certificate certificates = 1;
+        repeated X509Certificate certificates = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // The time range is half-open and does not include the end timestamp,
@@ -179,6 +179,6 @@ message X509CertificateChain {
 // End is optional to be able to capture a period that has started but
 // has no known end.
 message TimeRange {
-        google.protobuf.Timestamp start = 1;
+        google.protobuf.Timestamp start = 1 [(google.api.field_behavior) = REQUIRED];
         optional google.protobuf.Timestamp end = 2;
 }

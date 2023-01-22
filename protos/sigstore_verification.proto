@@ -15,6 +15,7 @@
 syntax = "proto3";
 package dev.sigstore.verification.v1;
 
+import "google/api/field_behavior.proto";
 import "sigstore_common.proto";
 import "sigstore_trustroot.proto";
 import "sigstore_bundle.proto";
@@ -76,7 +77,7 @@ message ArtifactVerificationOptions {
         // is an error. If at least one provided identity is found as a
         // signer, the verification is considered successful.
         oneof signers {
-                CertificateIdentities certificate_identities = 1;
+                CertificateIdentities certificate_identities = 1 [(google.api.field_behavior) = REQUIRED];
                 // To simplify verification implementation, the logic for
                 // bundle verification should be implemented as a
                 // higher-order function, where one of argument should be an
@@ -86,7 +87,7 @@ message ArtifactVerificationOptions {
                 // identified (or hinted) key in the bundle to one of the
                 // trusted keys, as this process is inherently application
                 // specific.
-                PublicKeyIdentities public_keys = 2;
+                PublicKeyIdentities public_keys = 2 [(google.api.field_behavior) = REQUIRED];
         }
         // Optional options for artifact transparency log verification.
         // If none is provided, the default verification options are:
@@ -110,9 +111,9 @@ message ArtifactVerificationOptions {
 message Artifact {
         oneof data {
                 // Location of the artifact
-                string artifact_uri = 1;
+                string artifact_uri = 1 [(google.api.field_behavior) = REQUIRED];
                 // The raw bytes of the artifact
-                bytes artifact = 2;
+                bytes artifact = 2 [(google.api.field_behavior) = REQUIRED];
         }
 }
 
@@ -125,7 +126,7 @@ message Input {
         // verifying an artifact (i.e a bundle), and/or based on current
         // policy, some selection is expected to happen, to filter out the
         // exact certificate authority to use, which transparency logs are
-        // relevant etc. The result should b ecaptured in the
+        // relevant etc. The result should be captured in the
         // `artifact_trust_root`.
         dev.sigstore.trustroot.v1.TrustedRoot artifact_trust_root = 1;
         ArtifactVerificationOptions artifact_verification_options = 2;

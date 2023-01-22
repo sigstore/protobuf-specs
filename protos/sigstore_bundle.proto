@@ -43,7 +43,7 @@ message TimestampVerificationData {
         // transparency log, or in conjunction for a stronger trust model.
         // Clients MUST verify the hashed message in the message imprint
         // against the signature in the bundle.
-        repeated dev.sigstore.common.v1.RFC3161SignedTimestamp rfc3161_timestamps = 1;
+        repeated dev.sigstore.common.v1.RFC3161SignedTimestamp rfc3161_timestamps = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // VerificationMaterial captures details on the materials used to verify
@@ -63,7 +63,7 @@ message VerificationMaterial {
 message Bundle {
         // MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
         // when encoded as JSON.
-        string media_type = 1;
+        string media_type = 1 [(google.api.field_behavior) = REQUIRED];
         // When a signer is identified by a X.509 certificate, a verifier MUST
         // verify that the signature was computed at the time the certificate
         // was valid as described in the Sigstore client spec: "Verification
