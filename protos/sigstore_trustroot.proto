@@ -72,7 +72,7 @@ message TrustedRoot {
         // MUST be application/vnd.dev.sigstore.trustedroot+json;version=0.1
         string media_type = 1 [(google.api.field_behavior) = REQUIRED];
         // A set of trusted Rekor servers.
-        repeated TransparencyLogInstance tlogs = 2 [(google.api.field_behavior) = REQUIRED];
+        repeated TransparencyLogInstance tlogs = 2;
         // A set of trusted certificate authorites (e.g Fulcio), and any
         // intermediate certificates they provide.
         // If a CA is issuing multiple intermediate certificate, each

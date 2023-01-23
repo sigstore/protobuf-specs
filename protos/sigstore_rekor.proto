@@ -103,7 +103,7 @@ message TransparencyLogEntry {
         // The inclusion proof can be used for online verification that the
         // entry was appended to the log, and that the log has not been
         // altered.
-        InclusionProof inclusion_proof = 6 [(google.api.field_behavior) = REQUIRED];
+        InclusionProof inclusion_proof = 6;
         // The canonicalized transparency log entry, used to reconstruct
         // the Signed Entry Timestamp (SET) during verification.
         // The contents of this field are the same as the `body` field in
