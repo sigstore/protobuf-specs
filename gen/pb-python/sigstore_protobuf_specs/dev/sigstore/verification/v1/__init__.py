@@ -147,7 +147,7 @@ class Input(betterproto.Message):
     dev.sisgtore.trustroot.TrustedRoot.v1 instance. Prior to verifying an
     artifact (i.e a bundle), and/or based on current policy, some selection is
     expected to happen, to filter out the exact certificate authority to use,
-    which transparency logs are relevant etc. The result should b ecaptured in
+    which transparency logs are relevant etc. The result should be captured in
     the `artifact_trust_root`.
     """
 
