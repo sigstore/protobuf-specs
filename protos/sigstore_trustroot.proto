@@ -81,7 +81,7 @@ message TrustedRoot {
         // intermediate and/or leaf certificates.
         // The certificates are intended to be used for verifying artifact
         // signatures.
-        repeated CertificateAuthority certificate_authorities = 3 [(google.api.field_behavior) = REQUIRED];
+        repeated CertificateAuthority certificate_authorities = 3;
         // A set of trusted certificate transparency logs.
         repeated TransparencyLogInstance ctlogs = 4;
         // A set of trusted timestamping authorities.
