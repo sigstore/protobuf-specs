@@ -8,7 +8,7 @@ To generate a jar from the protobuf spec run
 ```
 ./gradlew assemble
 ```
-A jar file will be created at `./build/libs/protobuf-specs-<version>.jar`
+A jar file will be created at `./build/libs/protobuf-specs-SNAPSHOT.jar`
 
 ## Releasing
 
