@@ -16,7 +16,7 @@
 PROTOC_IMAGE=protobuf-specs-build
 
 # generate all language protobuf code
-all: go python
+all: go python typescript
 
 # generate Go protobuf code
 go: docker-image
@@ -33,6 +33,14 @@ python: docker-image
 		--entrypoint bash ${PROTOC_IMAGE} \
 		-c "cd ./gen/pb-python/sigstore_protobuf_specs && protoc -I/opt/include -I../../../protos/ --python_betterproto_out=. ../../../protos/*.proto"
 
+typescript: docker-image
+	@echo "Generating javascript protobuf files"
+	docker run \
+		--platform linux/amd64 \
+		-v ${PWD}:/defs \
+		${PROTOC_IMAGE} \
+		-d protos -l typescript -o ./gen/pb-typescript/src/__generated__ --ts_opt oneof=unions,forceLong=string,env=node,exportCommonSymbols=false,outputPartialMethods=false,outputEncodeMethods=false,unrecognizedEnum=false
+
 # docker already does its own caching so we can attempt a build every time
 .PHONY: docker-image
 docker-image:
@@ -42,6 +50,7 @@ docker-image:
 # clean up generated files (not working? try sudo make clean)
 clean:
 	rm -rf gen/pb-go \
+		gen/pb-typescript/src/__generated__ \
 		gen/pb-python/sigstore_protobuf_specs/dev \
 		gen/pb-python/sigstore_protobuf_specs/io
 	docker rmi -f ${PROTOC_IMAGE}
