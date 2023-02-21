@@ -20,6 +20,10 @@ on:
 
 name: Release TypeScript package
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   publish:
     name: Publish package to npmjs
