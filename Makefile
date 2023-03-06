@@ -16,7 +16,7 @@
 PROTOC_IMAGE=protobuf-specs-build
 
 # generate all language protobuf code
-all: go python typescript
+all: go python typescript ruby
 
 # generate Go protobuf code
 go: docker-image
@@ -40,6 +40,14 @@ typescript: docker-image
 		-v ${PWD}:/defs \
 		${PROTOC_IMAGE} \
 		-d protos -l typescript -o ./gen/pb-typescript/src/__generated__ --ts_opt oneof=unions,forceLong=string,env=node,exportCommonSymbols=false,outputPartialMethods=false,outputEncodeMethods=false,unrecognizedEnum=false
+
+ruby: docker-image
+	@echo "Generating ruby protobuf files"
+	docker run \
+		--platform linux/amd64 \
+		-v ${PWD}:/defs \
+		--entrypoint bash ${PROTOC_IMAGE} \
+		-c "cd ./gen/pb-ruby && protoc -I/opt/include -I../../protos/ --ruby_out=sigstore-protobuf-specs/lib ../../protos/*.proto"
 
 # docker already does its own caching so we can attempt a build every time
 .PHONY: docker-image
