@@ -20,10 +20,11 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :valid_for, :message, 4, "dev.sigstore.common.v1.TimeRange"
     end
     add_message "dev.sigstore.trustroot.v1.TrustedRoot" do
-      repeated :tlogs, :message, 1, "dev.sigstore.trustroot.v1.TransparencyLogInstance"
-      repeated :certificate_authorities, :message, 2, "dev.sigstore.trustroot.v1.CertificateAuthority"
-      repeated :ctlogs, :message, 3, "dev.sigstore.trustroot.v1.TransparencyLogInstance"
-      repeated :timestamp_authorities, :message, 4, "dev.sigstore.trustroot.v1.CertificateAuthority"
+      optional :media_type, :string, 1
+      repeated :tlogs, :message, 2, "dev.sigstore.trustroot.v1.TransparencyLogInstance"
+      repeated :certificate_authorities, :message, 3, "dev.sigstore.trustroot.v1.CertificateAuthority"
+      repeated :ctlogs, :message, 4, "dev.sigstore.trustroot.v1.TransparencyLogInstance"
+      repeated :timestamp_authorities, :message, 5, "dev.sigstore.trustroot.v1.CertificateAuthority"
     end
   end
 end

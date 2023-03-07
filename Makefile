@@ -47,7 +47,7 @@ ruby: docker-image
 		--platform linux/amd64 \
 		-v ${PWD}:/defs \
 		--entrypoint bash ${PROTOC_IMAGE} \
-		-c "cd ./gen/pb-ruby && protoc -I/opt/include -I../../protos/ --ruby_out=sigstore-protobuf-specs/lib ../../protos/*.proto"
+		-c "cd ./gen/pb-ruby && protoc -I/opt/include -I../../protos/ --ruby_out=lib ../../protos/*.proto"
 
 # docker already does its own caching so we can attempt a build every time
 .PHONY: docker-image
