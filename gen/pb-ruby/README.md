@@ -1,36 +1,44 @@
-# Sigstore::Protobuf::Specs
+# sigstore_protobuf_specs
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/sigstore/protobuf/specs`. To experiment with that code, run `bin/console` for an interactive prompt.
+These are the Ruby language bindings for Sigstore's protobuf specs.
 
-TODO: Delete this and the text above, and describe your gem
+See the [repository's README](https://github.com/sigstore/protobuf-specs)
+for more information.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'sigstore-protobuf-specs'
+gem 'sigstore_protobuf_specs'
 ```
 
 And then execute:
-
+```bash
     $ bundle install
-
+```
 Or install it yourself as:
-
-    $ gem install sigstore-protobuf-specs
+```bash
+    $ gem install sigstore_protobuf_specs
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+Import all the bindings:
 
-## Development
+```ruby
+require 'sigstore_protobuf_specs'
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Or you can import them individually:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+require 'sigstore_bundle_pb'
+```
+
+See what is available in `gen/pb-ruby/lib/`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/sigstore-protobuf-specs.
+Bug reports and pull requests are welcome on GitHub at https://github.com/sigstore/protobuf-specs/issues.
 
