@@ -1,4 +1,4 @@
-require File.expand_path("../lib/version", __FILE__)
+require File.expand_path("../lib/sigstore_protobuf_specs/version", __FILE__)
 
 Gem::Specification.new do |spec|
   spec.name          = "sigstore_protobuf_specs"

@@ -38,6 +38,10 @@ require 'sigstore_bundle_pb'
 
 See what is available in `gen/pb-ruby/lib/`.
 
+## Releasing
+
+Make sure you update the version in `gen/pb-ruby/lib/sigstore_protobuf_specs/version.rb`
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/sigstore/protobuf-specs/issues.
