@@ -16,6 +16,6 @@
 
 module Dev
   module Sigstore
-    VERSION = '0.0.1.pre.alpha2'
+    VERSION = '0.1.0'
   end
 end
