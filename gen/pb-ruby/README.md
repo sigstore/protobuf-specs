@@ -42,6 +42,11 @@ See what is available in `gen/pb-ruby/lib/`.
 
 Make sure you update the version in `gen/pb-ruby/lib/sigstore_protobuf_specs/version.rb`
 
+A release will be build and automatically pushed to RubyGems when a tag in the
+format `release/ruby/v*` is created.
+
+Contact elfotografo007 for Gem ownership stuff.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/sigstore/protobuf-specs/issues.
