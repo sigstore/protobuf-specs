@@ -102,7 +102,7 @@ class LogId(betterproto.Message):
     key_id: bytes = betterproto.bytes_field(1)
     """
     The unique id of the log, represented as the SHA-256 hash of the log's
-    public key, computed over the DER encoding. <https://www.rfc-
+    public key, computed over the PKIX encoding. <https://www.rfc-
     editor.org/rfc/rfc6962#section-3.2>
     """
 
