@@ -131,14 +131,17 @@ class TransparencyLogEntry(betterproto.Message):
 
     canonicalized_body: bytes = betterproto.bytes_field(7)
     """
-    The canonicalized transparency log entry, used to reconstruct the Signed
-    Entry Timestamp (SET) during verification. The contents of this field are
-    the same as the `body` field in a Rekor response, meaning that it does
-    **not** include the "full" canonicalized form (of log index, ID, etc.)
+    Optional. The canonicalized transparency log entry, used to reconstruct the
+    Signed Entry Timestamp (SET) during verification. The contents of this
+    field are the same as the `body` field in a Rekor response, meaning that it
+    does **not** include the "full" canonicalized form (of log index, ID, etc.)
     which are exposed as separate fields. The verifier is responsible for
     combining the `canonicalized_body`, `log_index`, `log_id`, and
     `integrated_time` into the payload that the SET's signature is generated
-    over. Clients MUST verify that the signatured referenced in the
-    `canonicalized_body` matches the signature provided in the
-    `Bundle.content`.
+    over. This field is intended to be used in cases where the SET cannot be
+    produced determinisitically (e.g. inconsistent JSON field ordering,
+    differing whitespace, etc). If set, clients MUST verify that the signature
+    referenced in the `canonicalized_body` matches the signature provided in
+    the `Bundle.content`. If not set, clients are responsible for constructing
+    an equivalent payload from other sources to verify the signature.
     """
