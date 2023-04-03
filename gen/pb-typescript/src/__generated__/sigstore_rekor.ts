@@ -111,8 +111,8 @@ export interface TransparencyLogEntry {
     | InclusionProof
     | undefined;
   /**
-   * The canonicalized transparency log entry, used to reconstruct
-   * the Signed Entry Timestamp (SET) during verification.
+   * Optional. The canonicalized transparency log entry, used to
+   * reconstruct the Signed Entry Timestamp (SET) during verification.
    * The contents of this field are the same as the `body` field in
    * a Rekor response, meaning that it does **not** include the "full"
    * canonicalized form (of log index, ID, etc.) which are
@@ -120,10 +120,15 @@ export interface TransparencyLogEntry {
    * combining the `canonicalized_body`, `log_index`, `log_id`,
    * and `integrated_time` into the payload that the SET's signature
    * is generated over.
+   * This field is intended to be used in cases where the SET cannot be
+   * produced determinisitically (e.g. inconsistent JSON field ordering,
+   * differing whitespace, etc).
    *
-   * Clients MUST verify that the signatured referenced in the
+   * If set, clients MUST verify that the signature referenced in the
    * `canonicalized_body` matches the signature provided in the
    * `Bundle.content`.
+   * If not set, clients are responsible for constructing an equivalent
+   * payload from other sources to verify the signature.
    */
   canonicalizedBody: Buffer;
 }
