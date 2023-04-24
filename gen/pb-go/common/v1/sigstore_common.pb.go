@@ -874,9 +874,16 @@ type X509CertificateChain struct {
 
 	// The chain of certificates, with indices 0 to n.
 	// The first certificate in the array must be the leaf
-	// certificate used for signing. Any intermediate certificates
-	// must be stored as offset 1 to n-1, and the root certificate at
-	// position n.
+	// certificate used for signing.
+	//
+	// Signers MUST NOT include their root CA or CAs in their embedded
+	// certificate chains, and SHOULD NOT include intermediate CAs that
+	// appear in independent roots of trust.
+	//
+	// Verifiers MUST validate the chain carefully to ensure that it
+	// upholds the signer's invariants, and MUST be prepared to handle
+	// old or non-complying bundles by ignoring all root CAs and any
+	// intermediate CAs that appear in independent roots of trust.
 	Certificates []*X509Certificate `protobuf:"bytes,1,rep,name=certificates,proto3" json:"certificates,omitempty"`
 }
 
