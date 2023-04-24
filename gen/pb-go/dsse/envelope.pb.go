@@ -47,9 +47,9 @@ type Envelope struct {
 	// REQUIRED.
 	PayloadType string `protobuf:"bytes,2,opt,name=payloadType,proto3" json:"payloadType,omitempty"`
 	// Signature over:
-	//     PAE(type, body)
+	//     PAE(type, payload)
 	// Where PAE is defined as:
-	// PAE(type, body) = "DSSEv1" + SP + LEN(type) + SP + type + SP + LEN(body) + SP + body
+	// PAE(type, payload) = "DSSEv1" + SP + LEN(type) + SP + type + SP + LEN(payload) + SP + payload
 	// +               = concatenation
 	// SP              = ASCII space [0x20]
 	// "DSSEv1"        = ASCII [0x44, 0x53, 0x53, 0x45, 0x76, 0x31]
