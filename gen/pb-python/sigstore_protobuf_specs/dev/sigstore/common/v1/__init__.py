@@ -201,12 +201,15 @@ class X509CertificateChain(betterproto.Message):
     """
     The chain of certificates, with indices 0 to n. The first certificate in
     the array must be the leaf certificate used for signing. Signers MUST NOT
-    include their root CA or CAs in their embedded certificate chains, and
-    SHOULD NOT include intermediate CAs that appear in independent roots of
-    trust. Verifiers MUST validate the chain carefully to ensure that it
-    upholds the signer's invariants, and MUST be prepared to handle old or non-
-    complying bundles by ignoring all root CAs and any intermediate CAs that
-    appear in independent roots of trust.
+    include their root CA certificates in their embedded certificate chains,
+    and SHOULD NOT include intermediate CA certificates that appear in
+    independent roots of trust. Verifiers MUST validate the chain carefully to
+    ensure that it chains up to a root CA certificate that they trust,
+    regardless of whether the chain includes additional intermediate/root CA
+    certificates. Verifiers MAY enforce additional constraints, such as
+    requiring that all intermediate CA certificates appear in an independent
+    root of trust. Verifiers SHOULD handle old or non-complying bundles that
+    have additional intermediate/root CA certificates.
     """
 
 
