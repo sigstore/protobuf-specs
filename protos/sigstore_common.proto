@@ -104,7 +104,7 @@ message PublicKey {
         optional bytes raw_bytes = 1;
         // Key encoding and signature algorithm to use for this key.
         PublicKeyDetails key_details = 2;
-        // Optional validity period for this key.
+        // Optional validity period for this key, *inclusive* of the endpoints.
         optional TimeRange valid_for = 3;
 }
 

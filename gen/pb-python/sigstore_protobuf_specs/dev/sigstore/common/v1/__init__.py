@@ -135,7 +135,7 @@ class PublicKey(betterproto.Message):
     valid_for: Optional["TimeRange"] = betterproto.message_field(
         3, optional=True, group="_valid_for"
     )
-    """Optional validity period for this key."""
+    """Optional validity period for this key, *inclusive* of the endpoints."""
 
 
 @dataclass(eq=False, repr=False)

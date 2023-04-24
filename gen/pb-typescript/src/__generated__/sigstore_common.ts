@@ -225,7 +225,7 @@ export interface PublicKey {
     | undefined;
   /** Key encoding and signature algorithm to use for this key. */
   keyDetails: PublicKeyDetails;
-  /** Optional validity period for this key. */
+  /** Optional validity period for this key, *inclusive* of the endpoints. */
   validFor?: TimeRange | undefined;
 }
 

@@ -453,7 +453,7 @@ type PublicKey struct {
 	RawBytes []byte `protobuf:"bytes,1,opt,name=raw_bytes,json=rawBytes,proto3,oneof" json:"raw_bytes,omitempty"`
 	// Key encoding and signature algorithm to use for this key.
 	KeyDetails PublicKeyDetails `protobuf:"varint,2,opt,name=key_details,json=keyDetails,proto3,enum=dev.sigstore.common.v1.PublicKeyDetails" json:"key_details,omitempty"`
-	// Optional validity period for this key.
+	// Optional validity period for this key, *inclusive* of the endpoints.
 	ValidFor *TimeRange `protobuf:"bytes,3,opt,name=valid_for,json=validFor,proto3,oneof" json:"valid_for,omitempty"`
 }
 
