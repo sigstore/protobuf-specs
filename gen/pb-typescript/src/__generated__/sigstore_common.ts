@@ -225,7 +225,7 @@ export interface PublicKey {
     | undefined;
   /** Key encoding and signature algorithm to use for this key. */
   keyDetails: PublicKeyDetails;
-  /** Optional validity period for this key. */
+  /** Optional validity period for this key, *inclusive* of the endpoints. */
   validFor?: TimeRange | undefined;
 }
 
@@ -299,8 +299,8 @@ export interface X509CertificateChain {
 }
 
 /**
- * The time range is half-open and does not include the end timestamp,
- * i.e [start, end).
+ * The time range is closed and includes both the start and end times,
+ * (i.e., [start, end]).
  * End is optional to be able to capture a period that has started but
  * has no known end.
  */

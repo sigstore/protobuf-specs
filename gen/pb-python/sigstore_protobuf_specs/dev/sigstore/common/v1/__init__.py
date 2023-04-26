@@ -135,7 +135,7 @@ class PublicKey(betterproto.Message):
     valid_for: Optional["TimeRange"] = betterproto.message_field(
         3, optional=True, group="_valid_for"
     )
-    """Optional validity period for this key."""
+    """Optional validity period for this key, *inclusive* of the endpoints."""
 
 
 @dataclass(eq=False, repr=False)
@@ -216,8 +216,8 @@ class X509CertificateChain(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class TimeRange(betterproto.Message):
     """
-    The time range is half-open and does not include the end timestamp, i.e
-    [start, end). End is optional to be able to capture a period that has
+    The time range is closed and includes both the start and end times, (i.e.,
+    [start, end]). End is optional to be able to capture a period that has
     started but has no known end.
     """
 

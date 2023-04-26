@@ -453,7 +453,7 @@ type PublicKey struct {
 	RawBytes []byte `protobuf:"bytes,1,opt,name=raw_bytes,json=rawBytes,proto3,oneof" json:"raw_bytes,omitempty"`
 	// Key encoding and signature algorithm to use for this key.
 	KeyDetails PublicKeyDetails `protobuf:"varint,2,opt,name=key_details,json=keyDetails,proto3,enum=dev.sigstore.common.v1.PublicKeyDetails" json:"key_details,omitempty"`
-	// Optional validity period for this key.
+	// Optional validity period for this key, *inclusive* of the endpoints.
 	ValidFor *TimeRange `protobuf:"bytes,3,opt,name=valid_for,json=validFor,proto3,oneof" json:"valid_for,omitempty"`
 }
 
@@ -931,8 +931,8 @@ func (x *X509CertificateChain) GetCertificates() []*X509Certificate {
 	return nil
 }
 
-// The time range is half-open and does not include the end timestamp,
-// i.e [start, end).
+// The time range is closed and includes both the start and end times,
+// (i.e., [start, end]).
 // End is optional to be able to capture a period that has started but
 // has no known end.
 type TimeRange struct {

@@ -57,6 +57,9 @@ class CertificateAuthority(betterproto.Message):
     """
     The time the *entire* chain was valid. This is at max the longest interval
     when *all* certificates in the chain were valid, but it MAY be shorter.
+    Clients MUST check timestamps against *both* the `valid_for` time range
+    *and* the entire certificate chain. The TimeRange should be considered
+    valid *inclusive* of the endpoints.
     """
 
 
