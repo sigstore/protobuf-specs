@@ -15,6 +15,8 @@
 syntax = "proto3";
 package dev.sigstore.rekor.v1;
 
+import "google/api/field_behavior.proto";
+
 import "sigstore_common.proto";
 
 option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/rekor/v1";
@@ -26,9 +28,9 @@ option java_outer_classname = "RekorProto";
 message KindVersion {
         // Kind is the type of entry being stored in the log.
         // See here for a list: https://github.com/sigstore/rekor/tree/main/pkg/types
-        string kind = 1;
+        string kind = 1 [(google.api.field_behavior) = REQUIRED];
         // The specific api version of the type.
-        string version = 2;
+        string version = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // The checkpoint contains a signature of the tree head (root hash),
@@ -40,28 +42,28 @@ message KindVersion {
 // The signature has the same format as
 // InclusionPromise.signed_entry_timestamp. See below for more details.
 message Checkpoint {
-        string envelope = 1;
+        string envelope = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // InclusionProof is the proof returned from the transparency log. Can
 // be used for on line verification against the log.
 message InclusionProof {
         // The index of the entry in the log.
-        int64 log_index = 1;
+        int64 log_index = 1 [(google.api.field_behavior) = REQUIRED];
         // The hash digest stored at the root of the merkle tree at the time
         // the proof was generated.
-        bytes root_hash = 2;
+        bytes root_hash = 2 [(google.api.field_behavior) = REQUIRED];
         // The size of the merkle tree at the time the proof was generated.
-        int64 tree_size = 3;
+        int64 tree_size = 3 [(google.api.field_behavior) = REQUIRED];
         // A list of hashes required to compute the inclusion proof, sorted
         // in order from leaf to root.
         // Not that leaf and root hashes are not included.
         // The root has is available separately in this message, and the
         // leaf hash should be calculated by the client.
-        repeated bytes hashes = 4;
+        repeated bytes hashes = 4 [(google.api.field_behavior) = REQUIRED];
         // Signature of the tree head, as of the time of this proof was
         // generated. See above info on 'Checkpoint' for more details.
-        Checkpoint checkpoint = 5;
+        Checkpoint checkpoint = 5 [(google.api.field_behavior) = REQUIRED];
 }
 
 // The inclusion promise is calculated by Rekor. It's calculated as a
@@ -75,7 +77,7 @@ message InclusionProof {
 // This is used to verify the integration timestamp's value and that the log
 // has promised to include the entry.
 message InclusionPromise {
-        bytes signed_entry_timestamp = 1;
+        bytes signed_entry_timestamp = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // TransparencyLogEntry captures all the details required from Rekor to
@@ -88,17 +90,17 @@ message InclusionPromise {
 // as described here https://www.rfc-editor.org/rfc/rfc9162#name-signed-certificate-timestam.
 message TransparencyLogEntry {
         // The index of the entry in the log.
-        int64 log_index = 1;
+        int64 log_index = 1 [(google.api.field_behavior) = REQUIRED];
         // The unique identifier of the log.
-        dev.sigstore.common.v1.LogId log_id = 2;
+        dev.sigstore.common.v1.LogId log_id = 2 [(google.api.field_behavior) = REQUIRED];
         // The kind (type) and version of the object associated with this
         // entry. These values are required to construct the entry during
         // verification.
-        KindVersion kind_version = 3;
+        KindVersion kind_version = 3 [(google.api.field_behavior) = REQUIRED];
         // The UNIX timestamp from the log when the entry was persisted.
-        int64 integrated_time = 4;
+        int64 integrated_time = 4 [(google.api.field_behavior) = REQUIRED];
         // The inclusion promise/signed entry timestamp from the log.
-        InclusionPromise inclusion_promise = 5;
+        InclusionPromise inclusion_promise = 5 [(google.api.field_behavior) = REQUIRED];
         // The inclusion proof can be used for online verification that the
         // entry was appended to the log, and that the log has not been
         // altered.

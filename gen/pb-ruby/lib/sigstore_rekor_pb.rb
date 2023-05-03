@@ -3,6 +3,7 @@
 
 require 'google/protobuf'
 
+require 'google/api/field_behavior_pb'
 require 'sigstore_common_pb'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
