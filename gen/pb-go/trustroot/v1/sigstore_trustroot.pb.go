@@ -39,7 +39,7 @@ const (
 // transparency log.
 // See https://www.rfc-editor.org/rfc/rfc9162.html#name-log-parameters
 // for more details.
-// The incluced parameters are the minimal set required to identify a log,
+// The included parameters are the minimal set required to identify a log,
 // and verify an inclusion promise.
 type TransparencyLogInstance struct {
 	state         protoimpl.MessageState
@@ -136,7 +136,8 @@ type CertificateAuthority struct {
 	// but it MAY be shorter. Clients MUST check timestamps against *both*
 	// the `valid_for` time range *and* the entire certificate chain.
 	//
-	// The TimeRange should be considered valid *inclusive* of the endpoints.
+	// The TimeRange should be considered valid *inclusive* of the
+	// endpoints.
 	ValidFor *v1.TimeRange `protobuf:"bytes,4,opt,name=valid_for,json=validFor,proto3" json:"valid_for,omitempty"`
 }
 
@@ -208,9 +209,17 @@ func (x *CertificateAuthority) GetValidFor() *v1.TimeRange {
 // to capture the complete/global set of trusted verification materials.
 // When verifying an artifact, based on the artifact and policies, a selection
 // of keys/authorities are expected to be extracted and provided to the
-// verification function. This way the set of keys/authorities kan be kept to
+// verification function. This way the set of keys/authorities can be kept to
 // a minimal set by the policy to gain better control over what signatures
 // that are allowed.
+//
+// The embedded transparency logs, CT logs, CAs and TSAs MUST include any
+// previously used instance -- otherwise signatures made in the pas cannot
+// be verified.
+// The currently used instances MUST NOT have their 'end' timestamp set in
+// their 'valid_for' attribute for easy identification.
+// All the listed instances SHOULD be sorted by the 'valid_for' in ascending
+// order, that is, the oldest instance first and the current instance last.
 type TrustedRoot struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -220,7 +229,7 @@ type TrustedRoot struct {
 	MediaType string `protobuf:"bytes,1,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
 	// A set of trusted Rekor servers.
 	Tlogs []*TransparencyLogInstance `protobuf:"bytes,2,rep,name=tlogs,proto3" json:"tlogs,omitempty"`
-	// A set of trusted certificate authorites (e.g Fulcio), and any
+	// A set of trusted certificate authorities (e.g Fulcio), and any
 	// intermediate certificates they provide.
 	// If a CA is issuing multiple intermediate certificate, each
 	// combination shall be represented as separate chain. I.e, a single

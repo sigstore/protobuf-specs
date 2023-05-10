@@ -14,7 +14,7 @@ class TransparencyLogInstance(betterproto.Message):
     """
     TransparencyLogInstance describes the immutable parameters from a
     transparency log. See https://www.rfc-editor.org/rfc/rfc9162.html#name-log-
-    parameters for more details. The incluced parameters are the minimal set
+    parameters for more details. The included parameters are the minimal set
     required to identify a log, and verify an inclusion promise.
     """
 
@@ -73,9 +73,15 @@ class TrustedRoot(betterproto.Message):
     complete/global set of trusted verification materials. When verifying an
     artifact, based on the artifact and policies, a selection of
     keys/authorities are expected to be extracted and provided to the
-    verification function. This way the set of keys/authorities kan be kept to
+    verification function. This way the set of keys/authorities can be kept to
     a minimal set by the policy to gain better control over what signatures
-    that are allowed.
+    that are allowed. The embedded transparency logs, CT logs, CAs and TSAs
+    MUST include any previously used instance -- otherwise signatures made in
+    the pas cannot be verified. The currently used instances MUST NOT have
+    their 'end' timestamp set in their 'valid_for' attribute for easy
+    identification. All the listed instances SHOULD be sorted by the
+    'valid_for' in ascending order, that is, the oldest instance first and the
+    current instance last.
     """
 
     media_type: str = betterproto.string_field(1)
@@ -86,7 +92,7 @@ class TrustedRoot(betterproto.Message):
 
     certificate_authorities: List["CertificateAuthority"] = betterproto.message_field(3)
     """
-    A set of trusted certificate authorites (e.g Fulcio), and any intermediate
+    A set of trusted certificate authorities (e.g Fulcio), and any intermediate
     certificates they provide. If a CA is issuing multiple intermediate
     certificate, each combination shall be represented as separate chain. I.e,
     a single root cert may appear in multiple chains but with different
