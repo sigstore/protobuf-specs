@@ -214,7 +214,7 @@ func (x *CertificateAuthority) GetValidFor() *v1.TimeRange {
 // that are allowed.
 //
 // The embedded transparency logs, CT logs, CAs and TSAs MUST include any
-// previously used instance -- otherwise signatures made in the pas cannot
+// previously used instance -- otherwise signatures made in the past cannot
 // be verified.
 // The currently used instances MUST NOT have their 'end' timestamp set in
 // their 'valid_for' attribute for easy identification.

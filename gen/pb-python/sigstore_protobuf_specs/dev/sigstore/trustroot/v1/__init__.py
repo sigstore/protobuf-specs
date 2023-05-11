@@ -77,7 +77,7 @@ class TrustedRoot(betterproto.Message):
     a minimal set by the policy to gain better control over what signatures
     that are allowed. The embedded transparency logs, CT logs, CAs and TSAs
     MUST include any previously used instance -- otherwise signatures made in
-    the pas cannot be verified. The currently used instances MUST NOT have
+    the past cannot be verified. The currently used instances MUST NOT have
     their 'end' timestamp set in their 'valid_for' attribute for easy
     identification. All the listed instances SHOULD be sorted by the
     'valid_for' in ascending order, that is, the oldest instance first and the
