@@ -48,7 +48,11 @@ class VerificationMaterial(betterproto.Message):
     )
     """
     This is the inclusion proof, where the timestamp is coming from the
-    transparency log.
+    transparency log. Client verification libraries MAY provide an option to
+    support v0.1 bundles for backwards compatibility, which may contain an
+    inclusion promise and not an inclusion proof. In this case, the client MUST
+    validate the promise. Verifiers SHOULD NOT allow v0.1 bundles if they're
+    used in an ecosystem which never produced them.
     """
 
     timestamp_verification_data: "TimestampVerificationData" = (

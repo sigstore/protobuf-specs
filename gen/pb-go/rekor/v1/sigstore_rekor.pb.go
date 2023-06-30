@@ -322,8 +322,9 @@ type TransparencyLogEntry struct {
 	KindVersion *KindVersion `protobuf:"bytes,3,opt,name=kind_version,json=kindVersion,proto3" json:"kind_version,omitempty"`
 	// The UNIX timestamp from the log when the entry was persisted.
 	IntegratedTime int64 `protobuf:"varint,4,opt,name=integrated_time,json=integratedTime,proto3" json:"integrated_time,omitempty"`
-	// The inclusion promise/signed entry timestamp from the log. Optional,
-	// but MUST be verified if present.
+	// The inclusion promise/signed entry timestamp from the log.
+	// Required for v0.1 bundles, and MUST be verified.
+	// Optional for >= v0.2 bundles, and SHOULD be verified when present.
 	InclusionPromise *InclusionPromise `protobuf:"bytes,5,opt,name=inclusion_promise,json=inclusionPromise,proto3" json:"inclusion_promise,omitempty"`
 	// The inclusion proof can be used for offline or online verification
 	// that the entry was appended to the log, and that the log has not been

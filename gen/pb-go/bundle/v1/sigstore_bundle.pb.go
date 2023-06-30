@@ -106,6 +106,12 @@ type VerificationMaterial struct {
 	Content isVerificationMaterial_Content `protobuf_oneof:"content"`
 	// This is the inclusion proof, where the timestamp is coming from
 	// the transparency log.
+	// Client verification libraries MAY provide an option to support v0.1
+	// bundles for backwards compatibility, which may contain an inclusion
+	// promise and not an inclusion proof. In this case, the client MUST
+	// validate the promise.
+	// Verifiers SHOULD NOT allow v0.1 bundles if they're used in an
+	// ecosystem which never produced them.
 	TlogEntries []*v11.TransparencyLogEntry `protobuf:"bytes,3,rep,name=tlog_entries,json=tlogEntries,proto3" json:"tlog_entries,omitempty"`
 	// Timestamp verification data, over the artifact's signature.
 	TimestampVerificationData *TimestampVerificationData `protobuf:"bytes,4,opt,name=timestamp_verification_data,json=timestampVerificationData,proto3" json:"timestamp_verification_data,omitempty"`

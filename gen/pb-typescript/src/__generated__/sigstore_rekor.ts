@@ -99,8 +99,9 @@ export interface TransparencyLogEntry {
   /** The UNIX timestamp from the log when the entry was persisted. */
   integratedTime: string;
   /**
-   * The inclusion promise/signed entry timestamp from the log. Optional,
-   * but MUST be verified if present.
+   * The inclusion promise/signed entry timestamp from the log.
+   * Required for v0.1 bundles, and MUST be verified.
+   * Optional for >= v0.2 bundles, and SHOULD be verified when present.
    */
   inclusionPromise:
     | InclusionPromise
