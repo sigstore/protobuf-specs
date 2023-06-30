@@ -39,6 +39,7 @@ export interface VerificationMaterial {
 export interface Bundle {
   /**
    * MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
+   * or application/vnd.dev.sigstore.bundle+json;version=0.2
    * when encoded as JSON.
    */
   mediaType: string;

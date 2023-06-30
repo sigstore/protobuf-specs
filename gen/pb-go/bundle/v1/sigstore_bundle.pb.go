@@ -200,6 +200,7 @@ type Bundle struct {
 	unknownFields protoimpl.UnknownFields
 
 	// MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
+	// or application/vnd.dev.sigstore.bundle+json;version=0.2
 	// when encoded as JSON.
 	MediaType string `protobuf:"bytes,1,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
 	// When a signer is identified by a X.509 certificate, a verifier MUST
