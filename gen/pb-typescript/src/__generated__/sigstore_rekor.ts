@@ -28,7 +28,7 @@ export interface Checkpoint {
 
 /**
  * InclusionProof is the proof returned from the transparency log. Can
- * be used for on line verification against the log.
+ * be used for offline or online verification against the log.
  */
 export interface InclusionProof {
   /** The index of the entry in the log. */
@@ -79,7 +79,7 @@ export interface InclusionPromise {
  * attributes (excluding the payload) that are required for verifying the
  * inclusion promise. The inclusion promise (called SignedEntryTimestamp in
  * the response from Rekor) is similar to a Signed Certificate Timestamp
- * as described here https://www.rfc-editor.org/rfc/rfc9162#name-signed-certificate-timestam.
+ * as described here https://www.rfc-editor.org/rfc/rfc6962.html#section-3.2.
  */
 export interface TransparencyLogEntry {
   /** The index of the entry in the log. */
@@ -98,13 +98,16 @@ export interface TransparencyLogEntry {
     | undefined;
   /** The UNIX timestamp from the log when the entry was persisted. */
   integratedTime: string;
-  /** The inclusion promise/signed entry timestamp from the log. */
+  /**
+   * The inclusion promise/signed entry timestamp from the log. Optional,
+   * but MUST be verified if present.
+   */
   inclusionPromise:
     | InclusionPromise
     | undefined;
   /**
-   * The inclusion proof can be used for online verification that the
-   * entry was appended to the log, and that the log has not been
+   * The inclusion proof can be used for offline or online verification
+   * that the entry was appended to the log, and that the log has not been
    * altered.
    */
   inclusionProof:

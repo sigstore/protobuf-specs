@@ -104,8 +104,8 @@ type VerificationMaterial struct {
 	//	*VerificationMaterial_PublicKey
 	//	*VerificationMaterial_X509CertificateChain
 	Content isVerificationMaterial_Content `protobuf_oneof:"content"`
-	// This is the inclusion promise and/or proof, where
-	// the timestamp is coming from the transparency log.
+	// This is the inclusion proof, where the timestamp is coming from
+	// the transparency log.
 	TlogEntries []*v11.TransparencyLogEntry `protobuf:"bytes,3,rep,name=tlog_entries,json=tlogEntries,proto3" json:"tlog_entries,omitempty"`
 	// Timestamp verification data, over the artifact's signature.
 	TimestampVerificationData *TimestampVerificationData `protobuf:"bytes,4,opt,name=timestamp_verification_data,json=timestampVerificationData,proto3" json:"timestamp_verification_data,omitempty"`

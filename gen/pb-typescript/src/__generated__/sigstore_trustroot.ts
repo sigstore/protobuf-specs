@@ -16,7 +16,7 @@ import {
  * See https://www.rfc-editor.org/rfc/rfc9162.html#name-log-parameters
  * for more details.
  * The included parameters are the minimal set required to identify a log,
- * and verify an inclusion promise.
+ * and verify an inclusion proof/promise.
  */
 export interface TransparencyLogInstance {
   /** The base URL at which can be used to URLs for the client. */

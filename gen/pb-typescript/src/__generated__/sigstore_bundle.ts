@@ -28,8 +28,8 @@ export interface VerificationMaterial {
     | { $case: "publicKey"; publicKey: PublicKeyIdentifier }
     | { $case: "x509CertificateChain"; x509CertificateChain: X509CertificateChain };
   /**
-   * This is the inclusion promise and/or proof, where
-   * the timestamp is coming from the transparency log.
+   * This is the inclusion proof, where the timestamp is coming from
+   * the transparency log.
    */
   tlogEntries: TransparencyLogEntry[];
   /** Timestamp verification data, over the artifact's signature. */

@@ -47,8 +47,8 @@ class VerificationMaterial(betterproto.Message):
         3
     )
     """
-    This is the inclusion promise and/or proof, where the timestamp is coming
-    from the transparency log.
+    This is the inclusion proof, where the timestamp is coming from the
+    transparency log.
     """
 
     timestamp_verification_data: "TimestampVerificationData" = (

@@ -46,7 +46,7 @@ message Checkpoint {
 }
 
 // InclusionProof is the proof returned from the transparency log. Can
-// be used for on line verification against the log.
+// be used for offline or online verification against the log.
 message InclusionProof {
         // The index of the entry in the log.
         int64 log_index = 1 [(google.api.field_behavior) = REQUIRED];
@@ -87,7 +87,7 @@ message InclusionPromise {
 // attributes (excluding the payload) that are required for verifying the
 // inclusion promise. The inclusion promise (called SignedEntryTimestamp in
 // the response from Rekor) is similar to a Signed Certificate Timestamp
-// as described here https://www.rfc-editor.org/rfc/rfc9162#name-signed-certificate-timestam.
+// as described here https://www.rfc-editor.org/rfc/rfc6962.html#section-3.2.
 message TransparencyLogEntry {
         // The index of the entry in the log.
         int64 log_index = 1 [(google.api.field_behavior) = REQUIRED];
@@ -99,12 +99,13 @@ message TransparencyLogEntry {
         KindVersion kind_version = 3 [(google.api.field_behavior) = REQUIRED];
         // The UNIX timestamp from the log when the entry was persisted.
         int64 integrated_time = 4 [(google.api.field_behavior) = REQUIRED];
-        // The inclusion promise/signed entry timestamp from the log.
-        InclusionPromise inclusion_promise = 5 [(google.api.field_behavior) = REQUIRED];
-        // The inclusion proof can be used for online verification that the
-        // entry was appended to the log, and that the log has not been
+        // The inclusion promise/signed entry timestamp from the log. Optional,
+        // but MUST be verified if present.
+        InclusionPromise inclusion_promise = 5;
+        // The inclusion proof can be used for offline or online verification
+        // that the entry was appended to the log, and that the log has not been
         // altered.
-        InclusionProof inclusion_proof = 6;
+        InclusionProof inclusion_proof = 6 [(google.api.field_behavior) = REQUIRED];
         // Optional. The canonicalized transparency log entry, used to
         // reconstruct the Signed Entry Timestamp (SET) during verification.
         // The contents of this field are the same as the `body` field in

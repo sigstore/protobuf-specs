@@ -43,7 +43,7 @@ class Checkpoint(betterproto.Message):
 class InclusionProof(betterproto.Message):
     """
     InclusionProof is the proof returned from the transparency log. Can be used
-    for on line verification against the log.
+    for offline or online verification against the log.
     """
 
     log_index: int = betterproto.int64_field(1)
@@ -101,8 +101,7 @@ class TransparencyLogEntry(betterproto.Message):
     attributes (excluding the payload) that are required for verifying the
     inclusion promise. The inclusion promise (called SignedEntryTimestamp in
     the response from Rekor) is similar to a Signed Certificate Timestamp as
-    described here https://www.rfc-editor.org/rfc/rfc9162#name-signed-
-    certificate-timestam.
+    described here https://www.rfc-editor.org/rfc/rfc6962.html#section-3.2.
     """
 
     log_index: int = betterproto.int64_field(1)
@@ -121,12 +120,15 @@ class TransparencyLogEntry(betterproto.Message):
     """The UNIX timestamp from the log when the entry was persisted."""
 
     inclusion_promise: "InclusionPromise" = betterproto.message_field(5)
-    """The inclusion promise/signed entry timestamp from the log."""
+    """
+    The inclusion promise/signed entry timestamp from the log. Optional, but
+    MUST be verified if present.
+    """
 
     inclusion_proof: "InclusionProof" = betterproto.message_field(6)
     """
-    The inclusion proof can be used for online verification that the entry was
-    appended to the log, and that the log has not been altered.
+    The inclusion proof can be used for offline or online verification that the
+    entry was appended to the log, and that the log has not been altered.
     """
 
     canonicalized_body: bytes = betterproto.bytes_field(7)

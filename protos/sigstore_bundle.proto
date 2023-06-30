@@ -53,8 +53,8 @@ message VerificationMaterial {
                 dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
                 dev.sigstore.common.v1.X509CertificateChain x509_certificate_chain = 2 [(google.api.field_behavior) = REQUIRED];
         }
-        // This is the inclusion promise and/or proof, where
-        // the timestamp is coming from the transparency log.
+        // This is the inclusion proof, where the timestamp is coming from
+        // the transparency log.
         repeated dev.sigstore.rekor.v1.TransparencyLogEntry tlog_entries = 3;
         // Timestamp verification data, over the artifact's signature.
         TimestampVerificationData timestamp_verification_data = 4;
