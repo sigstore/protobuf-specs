@@ -15,7 +15,7 @@ class TransparencyLogInstance(betterproto.Message):
     TransparencyLogInstance describes the immutable parameters from a
     transparency log. See https://www.rfc-editor.org/rfc/rfc9162.html#name-log-
     parameters for more details. The included parameters are the minimal set
-    required to identify a log, and verify an inclusion promise.
+    required to identify a log, and verify an inclusion proof/promise.
     """
 
     base_url: str = betterproto.string_field(1)

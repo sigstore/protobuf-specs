@@ -47,8 +47,12 @@ class VerificationMaterial(betterproto.Message):
         3
     )
     """
-    This is the inclusion promise and/or proof, where the timestamp is coming
-    from the transparency log.
+    This is the inclusion proof, where the timestamp is coming from the
+    transparency log. Client verification libraries MAY provide an option to
+    support v0.1 bundles for backwards compatibility, which may contain an
+    inclusion promise and not an inclusion proof. In this case, the client MUST
+    validate the promise. Verifiers SHOULD NOT allow v0.1 bundles if they're
+    used in an ecosystem which never produced them.
     """
 
     timestamp_verification_data: "TimestampVerificationData" = (
@@ -61,8 +65,8 @@ class VerificationMaterial(betterproto.Message):
 class Bundle(betterproto.Message):
     media_type: str = betterproto.string_field(1)
     """
-    MUST be application/vnd.dev.sigstore.bundle+json;version=0.1 when encoded
-    as JSON.
+    MUST be application/vnd.dev.sigstore.bundle+json;version=0.1 or
+    application/vnd.dev.sigstore.bundle+json;version=0.2 when encoded as JSON.
     """
 
     verification_material: "VerificationMaterial" = betterproto.message_field(2)

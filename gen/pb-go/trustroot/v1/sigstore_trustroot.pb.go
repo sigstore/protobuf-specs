@@ -40,7 +40,7 @@ const (
 // See https://www.rfc-editor.org/rfc/rfc9162.html#name-log-parameters
 // for more details.
 // The included parameters are the minimal set required to identify a log,
-// and verify an inclusion promise.
+// and verify an inclusion proof/promise.
 type TransparencyLogInstance struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

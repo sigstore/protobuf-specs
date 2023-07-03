@@ -31,8 +31,8 @@ option java_outer_classname = "BundleProto";
 // The primary message ('Bundle') MUST be versioned, by populating the
 // 'media_type' field. Semver-ish (only major/minor versions) scheme MUST
 // be used. The current version as specified by this file is:
-// application/vnd.dev.sigstore.bundle+json;version=0.1
-// The semantic version is thus '0.1'.
+// application/vnd.dev.sigstore.bundle+json;version=0.2
+// The semantic version is thus '0.2'.
 
 // Various timestamped counter signatures over the artifacts signature.
 // Currently only RFC3161 signatures are provided. More formats may be added
@@ -53,8 +53,14 @@ message VerificationMaterial {
                 dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
                 dev.sigstore.common.v1.X509CertificateChain x509_certificate_chain = 2 [(google.api.field_behavior) = REQUIRED];
         }
-        // This is the inclusion promise and/or proof, where
-        // the timestamp is coming from the transparency log.
+        // This is the inclusion proof, where the timestamp is coming from
+        // the transparency log.
+        // Client verification libraries MAY provide an option to support v0.1
+        // bundles for backwards compatibility, which may contain an inclusion
+        // promise and not an inclusion proof. In this case, the client MUST
+        // validate the promise.
+        // Verifiers SHOULD NOT allow v0.1 bundles if they're used in an
+        // ecosystem which never produced them.
         repeated dev.sigstore.rekor.v1.TransparencyLogEntry tlog_entries = 3;
         // Timestamp verification data, over the artifact's signature.
         TimestampVerificationData timestamp_verification_data = 4;
@@ -62,6 +68,7 @@ message VerificationMaterial {
 
 message Bundle {
         // MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
+        // or application/vnd.dev.sigstore.bundle+json;version=0.2
         // when encoded as JSON.
         string media_type = 1;
         // When a signer is identified by a X.509 certificate, a verifier MUST
