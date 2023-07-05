@@ -16,7 +16,7 @@
 PROTOC_IMAGE=protobuf-specs-build
 
 # generate all language protobuf code
-all: go python typescript ruby
+all: go python typescript ruby rust
 
 # generate Go protobuf code
 go: docker-image
@@ -49,6 +49,16 @@ ruby: docker-image
 		--entrypoint bash ${PROTOC_IMAGE} \
 		-c "cd ./gen/pb-ruby && protoc -I/opt/include -I../../protos/ --ruby_out=lib ../../protos/*.proto"
 
+rust: docker-image
+	@echo "Generating rust protobuf files"
+	docker run \
+		--platform linux/amd64 \
+		-v ${PWD}:/defs \
+		-e "RUST_BACKTRACE=1" \
+		--entrypoint bash ${PROTOC_IMAGE} \
+		-c "cd gen/pb-rust/codegen && cargo run"
+
+
 # docker already does its own caching so we can attempt a build every time
 .PHONY: docker-image
 docker-image:
@@ -60,7 +70,8 @@ clean:
 	rm -rf gen/pb-go \
 		gen/pb-typescript/src/__generated__ \
 		gen/pb-python/sigstore_protobuf_specs/dev \
-		gen/pb-python/sigstore_protobuf_specs/io
+		gen/pb-python/sigstore_protobuf_specs/io \
+		gen/pb-rust/target
 	docker rmi -f ${PROTOC_IMAGE}
 
 help:
