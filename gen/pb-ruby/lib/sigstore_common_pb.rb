@@ -81,27 +81,25 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   end
 end
 
-module Dev
-  module Sigstore
-    module Common
-      module V1
-        HashOutput = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.HashOutput").msgclass
-        MessageSignature = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.MessageSignature").msgclass
-        LogId = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.LogId").msgclass
-        RFC3161SignedTimestamp = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.RFC3161SignedTimestamp").msgclass
-        PublicKey = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.PublicKey").msgclass
-        PublicKeyIdentifier = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.PublicKeyIdentifier").msgclass
-        ObjectIdentifier = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.ObjectIdentifier").msgclass
-        ObjectIdentifierValuePair = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.ObjectIdentifierValuePair").msgclass
-        DistinguishedName = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.DistinguishedName").msgclass
-        X509Certificate = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.X509Certificate").msgclass
-        SubjectAlternativeName = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.SubjectAlternativeName").msgclass
-        X509CertificateChain = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.X509CertificateChain").msgclass
-        TimeRange = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.TimeRange").msgclass
-        HashAlgorithm = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.HashAlgorithm").enummodule
-        PublicKeyDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.PublicKeyDetails").enummodule
-        SubjectAlternativeNameType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.SubjectAlternativeNameType").enummodule
-      end
+module Sigstore
+  module Common
+    module V1
+      HashOutput = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.HashOutput").msgclass
+      MessageSignature = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.MessageSignature").msgclass
+      LogId = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.LogId").msgclass
+      RFC3161SignedTimestamp = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.RFC3161SignedTimestamp").msgclass
+      PublicKey = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.PublicKey").msgclass
+      PublicKeyIdentifier = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.PublicKeyIdentifier").msgclass
+      ObjectIdentifier = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.ObjectIdentifier").msgclass
+      ObjectIdentifierValuePair = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.ObjectIdentifierValuePair").msgclass
+      DistinguishedName = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.DistinguishedName").msgclass
+      X509Certificate = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.X509Certificate").msgclass
+      SubjectAlternativeName = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.SubjectAlternativeName").msgclass
+      X509CertificateChain = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.X509CertificateChain").msgclass
+      TimeRange = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.TimeRange").msgclass
+      HashAlgorithm = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.HashAlgorithm").enummodule
+      PublicKeyDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.PublicKeyDetails").enummodule
+      SubjectAlternativeNameType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.SubjectAlternativeNameType").enummodule
     end
   end
 end

@@ -37,16 +37,14 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   end
 end
 
-module Dev
-  module Sigstore
-    module Rekor
-      module V1
-        KindVersion = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.KindVersion").msgclass
-        Checkpoint = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.Checkpoint").msgclass
-        InclusionProof = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.InclusionProof").msgclass
-        InclusionPromise = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.InclusionPromise").msgclass
-        TransparencyLogEntry = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.TransparencyLogEntry").msgclass
-      end
+module Sigstore
+  module Rekor
+    module V1
+      KindVersion = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.KindVersion").msgclass
+      Checkpoint = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.Checkpoint").msgclass
+      InclusionProof = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.InclusionProof").msgclass
+      InclusionPromise = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.InclusionPromise").msgclass
+      TransparencyLogEntry = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.TransparencyLogEntry").msgclass
     end
   end
 end
