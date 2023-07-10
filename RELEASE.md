@@ -71,7 +71,7 @@ point if the tag is signed :champagne:.
 
 ### Go
 
-Prepare a tag with the pattern `v.X.Y.Z` and push it. No workflow is needed.
+Prepare a tag with the pattern `vX.Y.Z` and push it. No workflow is needed.
 
 **WARNING**: Tags should not be updated to a new ref or deleted/recreated after creation.
 Go provides a checksum database that persists an immutable mapping between version and ref,
