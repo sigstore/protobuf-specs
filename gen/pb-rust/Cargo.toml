@@ -1,0 +1,19 @@
+[package]
+name = "sigstore_protobuf_specs"
+version = "0.1.0-rc.0"
+exclude = ["codegen/"]
+authors = ["Sigstore Authors <sigstore-dev@googlegroups.com>"]
+edition = "2021"
+homepage = "https://github.com/sigstore/protobuf-specs"
+repository = "https://github.com/sigstore/protobuf-specs"
+description = "A library for serializing and deserializing Sigstore messages"
+readme = "README.md"
+license-file = "LICENSE"
+keywords = ["sigstore"]
+categories = ["encoding", "parser-implementations"]
+
+[dependencies]
+protobuf = "2.28"
+
+[lib]
+path = "src/mod.rs"
