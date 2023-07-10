@@ -26,6 +26,7 @@ option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/bundle/v1";
 option java_package = "dev.sigstore.proto.bundle.v1";
 option java_multiple_files = true;
 option java_outer_classname = "BundleProto";
+option ruby_package = "Sigstore::Bundle::V1";
 
 // Notes on versioning.
 // The primary message ('Bundle') MUST be versioned, by populating the
