@@ -479,8 +479,9 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     d\x18\x01\x20\x01(\x0cR\x07payload\x12\x20\n\x0bpayloadType\x18\x02\x20\
     \x01(\tR\x0bpayloadType\x124\n\nsignatures\x18\x03\x20\x03(\x0b2\x14.io.\
     intoto.SignatureR\nsignatures\"3\n\tSignature\x12\x10\n\x03sig\x18\x01\
-    \x20\x01(\x0cR\x03sig\x12\x14\n\x05keyid\x18\x02\x20\x01(\tR\x05keyidB3Z\
-    1github.com/sigstore/protobuf-specs/gen/pb-go/dsseb\x06proto3\
+    \x20\x01(\x0cR\x03sig\x12\x14\n\x05keyid\x18\x02\x20\x01(\tR\x05keyidBDZ\
+    1github.com/sigstore/protobuf-specs/gen/pb-go/dsse\xea\x02\x0eSigstore::\
+    DSSEb\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

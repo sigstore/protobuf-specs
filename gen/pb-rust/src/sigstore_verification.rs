@@ -2483,9 +2483,9 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     ficationOptions\x126\n\x06bundle\x18\x03\x20\x01(\x0b2\x1e.dev.sigstore.\
     bundle.v1.BundleR\x06bundle\x12G\n\x08artifact\x18\x04\x20\x01(\x0b2&.de\
     v.sigstore.verification.v1.ArtifactH\0R\x08artifact\x88\x01\x01B\x0b\n\t\
-    _artifactBw\n\"dev.sigstore.proto.verification.v1B\x11VerificationProtoP\
-    \x01Z<github.com/sigstore/protobuf-specs/gen/pb-go/verification/v1b\x06p\
-    roto3\
+    _artifactB\x94\x01\n\"dev.sigstore.proto.verification.v1B\x11Verificatio\
+    nProtoP\x01Z<github.com/sigstore/protobuf-specs/gen/pb-go/verification/v\
+    1\xea\x02\x1aSigstore::Verification::V1b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

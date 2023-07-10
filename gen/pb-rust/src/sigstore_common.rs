@@ -2901,8 +2901,9 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     SHA_256\x10\x06\x12\x10\n\x0cPKIX_ED25519\x10\x07*o\n\x1aSubjectAlternat\
     iveNameType\x12-\n)SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED\x10\0\x12\t\
     \n\x05EMAIL\x10\x01\x12\x07\n\x03URI\x10\x02\x12\x0e\n\nOTHER_NAME\x10\
-    \x03Be\n\x1cdev.sigstore.proto.common.v1B\x0bCommonProtoP\x01Z6github.co\
-    m/sigstore/protobuf-specs/gen/pb-go/common/v1b\x06proto3\
+    \x03B|\n\x1cdev.sigstore.proto.common.v1B\x0bCommonProtoP\x01Z6github.co\
+    m/sigstore/protobuf-specs/gen/pb-go/common/v1\xea\x02\x14Sigstore::Commo\
+    n::V1b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

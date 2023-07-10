@@ -979,9 +979,10 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     ialB\x03\xe0A\x02\x12\\\n\x11message_signature\x18\x03\x20\x01(\x0b2(.de\
     v.sigstore.common.v1.MessageSignatureH\0R\x10messageSignatureB\x03\xe0A\
     \x02\x12?\n\rdsse_envelope\x18\x04\x20\x01(\x0b2\x13.io.intoto.EnvelopeH\
-    \0R\x0cdsseEnvelopeB\x03\xe0A\x02B\t\n\x07contentJ\x04\x08\x05\x103Be\n\
+    \0R\x0cdsseEnvelopeB\x03\xe0A\x02B\t\n\x07contentJ\x04\x08\x05\x103B|\n\
     \x1cdev.sigstore.proto.bundle.v1B\x0bBundleProtoP\x01Z6github.com/sigsto\
-    re/protobuf-specs/gen/pb-go/bundle/v1b\x06proto3\
+    re/protobuf-specs/gen/pb-go/bundle/v1\xea\x02\x14Sigstore::Bundle::V1b\
+    \x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;
