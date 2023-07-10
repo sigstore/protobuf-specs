@@ -71,9 +71,11 @@ point if the tag is signed :champagne:.
 
 ### Go
 
-No extra step is needed. On every commit a new Go language client is
-generated as part of the action
-[workflow](.github/workflows/generate.yml).
+Prepare a tag with the pattern `v.X.Y.Z` and push it. No workflow is needed.
+
+**WARNING**: Tags should not be updated to a new ref or deleted/recreated after creation.
+Go provides a checksum database that persists an immutable mapping between version and ref,
+and updating the tag will break clients that have already downloaded the release.
 
 ### Java
 
