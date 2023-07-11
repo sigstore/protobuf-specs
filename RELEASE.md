@@ -92,6 +92,12 @@ Prepare a tag with the following pattern `release/python/vX.Y.Z` and
 push it. The [workflow](.github/workflows/python-release.yml)
 will automatically start.
 
+### Ruby
+
+Prepare a tag with the following pattern `release/ruby/vX.Y.Z` and
+push it. The [workflow](.github/workflows/ruby-release.yml)
+will automatically start.
+
 ### Rust
 
 Prepare a tag with the following pattern `release/rust/vX.Y.Z` and
