@@ -62,6 +62,10 @@ Checklist prior to releasing:
    `version` matches the targeted release.
 1. Update [package.json](gen/pb-typescript/package.json) so the
     `version` matches the targeted release.
+1. Update [version.rb](gen/pb-ruby/lib/sigstore_protobuf_specs/version.rb) so the
+   `version` matches the targeted release.
+1. Update [Cargo.toml](gen/pb-rust/Cargo.toml) so the
+   `version` matches the targeted release.
 
 When all of the above are set, prepare for release by creating a tag
 with the following pattern: `vX.Y.Z` and push to the repository. Bonus
@@ -90,6 +94,12 @@ instructions](https://github.com/sigstore/protobuf-specs/blob/main/java/README.m
 
 Prepare a tag with the following pattern `release/python/vX.Y.Z` and
 push it. The [workflow](.github/workflows/python-release.yml)
+will automatically start.
+
+### Ruby
+
+Prepare a tag with the following pattern `release/ruby/vX.Y.Z` and
+push it. The [workflow](.github/workflows/ruby-release.yml)
 will automatically start.
 
 ### Rust
