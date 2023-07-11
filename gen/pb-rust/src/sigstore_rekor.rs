@@ -1349,8 +1349,9 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     seR\x10inclusionPromise\x12S\n\x0finclusion_proof\x18\x06\x20\x01(\x0b2%\
     .dev.sigstore.rekor.v1.InclusionProofR\x0einclusionProofB\x03\xe0A\x02\
     \x12-\n\x12canonicalized_body\x18\x07\x20\x01(\x0cR\x11canonicalizedBody\
-    Bb\n\x1bdev.sigstore.proto.rekor.v1B\nRekorProtoP\x01Z5github.com/sigsto\
-    re/protobuf-specs/gen/pb-go/rekor/v1b\x06proto3\
+    Bx\n\x1bdev.sigstore.proto.rekor.v1B\nRekorProtoP\x01Z5github.com/sigsto\
+    re/protobuf-specs/gen/pb-go/rekor/v1\xea\x02\x13Sigstore::Rekor::V1b\x06\
+    proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

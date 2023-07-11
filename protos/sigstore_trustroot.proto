@@ -21,6 +21,7 @@ option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/trustroot/v1";
 option java_package = "dev.sigstore.proto.trustroot.v1";
 option java_multiple_files = true;
 option java_outer_classname = "TrustRootProto";
+option ruby_package = "Sigstore::TrustRoot::V1";
 
 // TransparencyLogInstance describes the immutable parameters from a
 // transparency log.

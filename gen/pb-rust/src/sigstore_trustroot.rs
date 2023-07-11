@@ -1031,9 +1031,10 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     ertificateAuthorityR\x16certificateAuthorities\x12J\n\x06ctlogs\x18\x04\
     \x20\x03(\x0b22.dev.sigstore.trustroot.v1.TransparencyLogInstanceR\x06ct\
     logs\x12d\n\x15timestamp_authorities\x18\x05\x20\x03(\x0b2/.dev.sigstore\
-    .trustroot.v1.CertificateAuthorityR\x14timestampAuthoritiesBn\n\x1fdev.s\
-    igstore.proto.trustroot.v1B\x0eTrustRootProtoP\x01Z9github.com/sigstore/\
-    protobuf-specs/gen/pb-go/trustroot/v1b\x06proto3\
+    .trustroot.v1.CertificateAuthorityR\x14timestampAuthoritiesB\x88\x01\n\
+    \x1fdev.sigstore.proto.trustroot.v1B\x0eTrustRootProtoP\x01Z9github.com/\
+    sigstore/protobuf-specs/gen/pb-go/trustroot/v1\xea\x02\x17Sigstore::Trus\
+    tRoot::V1b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

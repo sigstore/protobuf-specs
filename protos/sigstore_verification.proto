@@ -23,6 +23,7 @@ option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/verification/v
 option java_package = "dev.sigstore.proto.verification.v1";
 option java_multiple_files = true;
 option java_outer_classname = "VerificationProto";
+option ruby_package = "Sigstore::Verification::V1";
 
 // The identity of a X.509 Certificate signer.
 message CertificateIdentity {

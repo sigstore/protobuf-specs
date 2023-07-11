@@ -17,8 +17,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   end
 end
 
-module Io
-  module Intoto
+module Sigstore
+  module DSSE
     Envelope = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("io.intoto.Envelope").msgclass
     Signature = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("io.intoto.Signature").msgclass
   end

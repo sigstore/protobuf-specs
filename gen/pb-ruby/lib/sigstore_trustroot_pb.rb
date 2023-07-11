@@ -29,14 +29,12 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   end
 end
 
-module Dev
-  module Sigstore
-    module Trustroot
-      module V1
-        TransparencyLogInstance = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.trustroot.v1.TransparencyLogInstance").msgclass
-        CertificateAuthority = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.trustroot.v1.CertificateAuthority").msgclass
-        TrustedRoot = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.trustroot.v1.TrustedRoot").msgclass
-      end
+module Sigstore
+  module TrustRoot
+    module V1
+      TransparencyLogInstance = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.trustroot.v1.TransparencyLogInstance").msgclass
+      CertificateAuthority = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.trustroot.v1.CertificateAuthority").msgclass
+      TrustedRoot = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.trustroot.v1.TrustedRoot").msgclass
     end
   end
 end

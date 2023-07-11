@@ -32,14 +32,12 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   end
 end
 
-module Dev
-  module Sigstore
-    module Bundle
-      module V1
-        TimestampVerificationData = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.bundle.v1.TimestampVerificationData").msgclass
-        VerificationMaterial = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.bundle.v1.VerificationMaterial").msgclass
-        Bundle = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.bundle.v1.Bundle").msgclass
-      end
+module Sigstore
+  module Bundle
+    module V1
+      TimestampVerificationData = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.bundle.v1.TimestampVerificationData").msgclass
+      VerificationMaterial = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.bundle.v1.VerificationMaterial").msgclass
+      Bundle = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.bundle.v1.Bundle").msgclass
     end
   end
 end

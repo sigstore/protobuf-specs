@@ -58,20 +58,18 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   end
 end
 
-module Dev
-  module Sigstore
-    module Verification
-      module V1
-        CertificateIdentity = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.CertificateIdentity").msgclass
-        CertificateIdentities = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.CertificateIdentities").msgclass
-        PublicKeyIdentities = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.PublicKeyIdentities").msgclass
-        ArtifactVerificationOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions").msgclass
-        ArtifactVerificationOptions::TlogOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions").msgclass
-        ArtifactVerificationOptions::CtlogOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions").msgclass
-        ArtifactVerificationOptions::TimestampAuthorityOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions").msgclass
-        Artifact = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.Artifact").msgclass
-        Input = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.Input").msgclass
-      end
+module Sigstore
+  module Verification
+    module V1
+      CertificateIdentity = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.CertificateIdentity").msgclass
+      CertificateIdentities = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.CertificateIdentities").msgclass
+      PublicKeyIdentities = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.PublicKeyIdentities").msgclass
+      ArtifactVerificationOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions").msgclass
+      ArtifactVerificationOptions::TlogOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions").msgclass
+      ArtifactVerificationOptions::CtlogOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions").msgclass
+      ArtifactVerificationOptions::TimestampAuthorityOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions").msgclass
+      Artifact = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.Artifact").msgclass
+      Input = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.Input").msgclass
     end
   end
 end
