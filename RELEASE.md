@@ -64,7 +64,7 @@ Checklist prior to releasing:
     `version` matches the targeted release.
 1. Update [version.rb](gen/pb-ruby/lib/sigstore_protobuf_specs/version.rb) so the
    `version` matches the targeted release.
-1. Update [Cargo.toml](/main/gen/pb-rust/Cargo.toml) so the
+1. Update [Cargo.toml](gen/pb-rust/Cargo.toml) so the
    `version` matches the targeted release.
 
 When all of the above are set, prepare for release by creating a tag
