@@ -66,6 +66,7 @@ Checklist prior to releasing:
    `version` matches the targeted release.
 1. Update [Cargo.toml](gen/pb-rust/Cargo.toml) so the
    `version` matches the targeted release.
+1. Update the [CHANGELOG](https://github.com/sigstore/protobuf-specs/blob/main/CHANGELOG.md).
 
 When all of the above are set, prepare for release by creating a tag
 with the following pattern: `vX.Y.Z` and push to the repository. Bonus
