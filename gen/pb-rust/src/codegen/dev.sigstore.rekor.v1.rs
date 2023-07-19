@@ -1,5 +1,6 @@
 /// KindVersion contains the entry's kind and api version.
 #[derive(serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KindVersion {
@@ -20,6 +21,7 @@ pub struct KindVersion {
 /// The signature has the same format as
 /// InclusionPromise.signed_entry_timestamp. See below for more details.
 #[derive(serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Checkpoint {
@@ -29,6 +31,7 @@ pub struct Checkpoint {
 /// InclusionProof is the proof returned from the transparency log. Can
 /// be used for offline or online verification against the log.
 #[derive(serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InclusionProof {
@@ -65,6 +68,7 @@ pub struct InclusionProof {
 /// This is used to verify the integration timestamp's value and that the log
 /// has promised to include the entry.
 #[derive(serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InclusionPromise {
@@ -80,6 +84,7 @@ pub struct InclusionPromise {
 /// the response from Rekor) is similar to a Signed Certificate Timestamp
 /// as described here <https://www.rfc-editor.org/rfc/rfc6962.html#section-3.2.>
 #[derive(serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransparencyLogEntry {

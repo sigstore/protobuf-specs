@@ -2,6 +2,7 @@
 /// Currently only RFC3161 signatures are provided. More formats may be added
 /// in the future.
 #[derive(serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimestampVerificationData {
@@ -18,6 +19,7 @@ pub struct TimestampVerificationData {
 /// VerificationMaterial captures details on the materials used to verify
 /// signatures.
 #[derive(serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerificationMaterial {
@@ -42,6 +44,7 @@ pub struct VerificationMaterial {
 /// Nested message and enum types in `VerificationMaterial`.
 pub mod verification_material {
     #[derive(serde::Serialize, serde::Deserialize)]
+    #[serde(rename_all = "camelCase")]
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
@@ -52,6 +55,7 @@ pub mod verification_material {
     }
 }
 #[derive(serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Bundle {
@@ -73,6 +77,7 @@ pub struct Bundle {
 /// Nested message and enum types in `Bundle`.
 pub mod bundle {
     #[derive(serde::Serialize, serde::Deserialize)]
+    #[serde(rename_all = "camelCase")]
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
