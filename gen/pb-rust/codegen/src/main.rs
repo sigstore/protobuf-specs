@@ -1,25 +1,26 @@
-use glob::glob;
-extern crate protoc_rust;
-
-fn main() {
-    protoc_rust::Codegen::new()
-        .includes([
-            concat!(env!("CARGO_MANIFEST_DIR"), "/../../../protos"),
-            "/opt/include",
-        ])
-        .inputs(
-            glob(concat!(
+fn main() -> anyhow::Result<()> {
+    prost_build::Config::new()
+        .type_attribute(".", "#[derive(serde::Serialize, serde::Deserialize)]")
+        .compile_well_known_types()
+        .extern_path(".google.protobuf", "::pbjson_types")
+        .out_dir(concat!(env!("CARGO_MANIFEST_DIR"), "/../src/codegen"))
+        .compile_protos(
+            &glob::glob(concat!(
                 env!("CARGO_MANIFEST_DIR"),
                 "/../../../protos/*.proto"
             ))
-            .expect("invalid protobuf inputs!")
-            .flatten(),
-        )
-        .out_dir("../src")
-        .customize(protoc_rust::Customize {
-            gen_mod_rs: Some(true),
-            ..Default::default()
-        })
-        .run()
-        .expect("Running protoc failed.");
+            .expect("no protos found!")
+            .flatten()
+            .collect::<Vec<_>>(),
+            &[
+                concat!(env!("CARGO_MANIFEST_DIR"), "/../../../protos"),
+                "/opt/include",
+            ],
+        )?;
+
+    pbjson_build::Builder::new()
+        .out_dir(concat!(env!("CARGO_MANIFEST_DIR"), "/../src/codegen"))
+        .build(&[""])?;
+
+    Ok(())
 }
