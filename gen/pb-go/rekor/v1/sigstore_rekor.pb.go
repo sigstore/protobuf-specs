@@ -166,8 +166,8 @@ type InclusionProof struct {
 	TreeSize int64 `protobuf:"varint,3,opt,name=tree_size,json=treeSize,proto3" json:"tree_size,omitempty"`
 	// A list of hashes required to compute the inclusion proof, sorted
 	// in order from leaf to root.
-	// Not that leaf and root hashes are not included.
-	// The root has is available separately in this message, and the
+	// Note that leaf and root hashes are not included.
+	// The root hash is available separately in this message, and the
 	// leaf hash should be calculated by the client.
 	Hashes [][]byte `protobuf:"bytes,4,rep,name=hashes,proto3" json:"hashes,omitempty"`
 	// Signature of the tree head, as of the time of this proof was

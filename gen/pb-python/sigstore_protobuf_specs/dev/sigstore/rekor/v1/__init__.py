@@ -61,9 +61,9 @@ class InclusionProof(betterproto.Message):
     hashes: List[bytes] = betterproto.bytes_field(4)
     """
     A list of hashes required to compute the inclusion proof, sorted in order
-    from leaf to root. Not that leaf and root hashes are not included. The root
-    has is available separately in this message, and the leaf hash should be
-    calculated by the client.
+    from leaf to root. Note that leaf and root hashes are not included. The
+    root hash is available separately in this message, and the leaf hash should
+    be calculated by the client.
     """
 
     checkpoint: "Checkpoint" = betterproto.message_field(5)

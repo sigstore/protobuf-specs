@@ -65,6 +65,14 @@ docker-image:
 	@echo "Building development docker image"
 	docker build -t ${PROTOC_IMAGE} .
 
+# to recover from a situation where a stale layer exist, just  purging the
+# docker image via `make clean` is not enough. Re-building without layer
+# cache is the only solution.
+.PHONY: docker-image-no-cache
+docker-image-no-cache:
+	@echo "Building development docker image with disabled cache"
+	docker build --no-cache -t ${PROTOC_IMAGE} .
+
 # clean up generated files (not working? try sudo make clean)
 clean:
 	rm -rf gen/pb-go \
