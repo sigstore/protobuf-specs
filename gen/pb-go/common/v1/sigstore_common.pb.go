@@ -782,6 +782,7 @@ type SubjectAlternativeName struct {
 
 	Type SubjectAlternativeNameType `protobuf:"varint,1,opt,name=type,proto3,enum=dev.sigstore.common.v1.SubjectAlternativeNameType" json:"type,omitempty"`
 	// Types that are assignable to Identity:
+	//
 	//	*SubjectAlternativeName_Regexp
 	//	*SubjectAlternativeName_Value
 	Identity isSubjectAlternativeName_Identity `protobuf_oneof:"identity"`

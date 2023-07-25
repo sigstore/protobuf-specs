@@ -1,4 +1,4 @@
-FROM namely/protoc-all@sha256:07f1ba9dbe11f5675e2efc8617c9552217dc4c3eb5ccd108f7c3889878dbae50
+FROM namely/protoc-all@sha256:33e47b2aece23a282a9f8d03a193c063cdd4b1f60d427b148b3c449b51a3ba3c
 
 # Install Python pip.
 RUN set -ex && \

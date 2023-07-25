@@ -79,7 +79,7 @@ clean:
 		gen/pb-typescript/src/__generated__ \
 		gen/pb-python/sigstore_protobuf_specs/dev \
 		gen/pb-python/sigstore_protobuf_specs/io \
-		gen/pb-rust/target
+		gen/pb-rust/codegen/target
 	docker rmi -f ${PROTOC_IMAGE}
 
 help:

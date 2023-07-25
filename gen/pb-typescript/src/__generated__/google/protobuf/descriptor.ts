@@ -261,7 +261,7 @@ export function fieldDescriptorProto_TypeFromJSON(object: any): FieldDescriptorP
     case "TYPE_SINT64":
       return FieldDescriptorProto_Type.TYPE_SINT64;
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FieldDescriptorProto_Type");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FieldDescriptorProto_Type");
   }
 }
 
@@ -304,7 +304,7 @@ export function fieldDescriptorProto_TypeToJSON(object: FieldDescriptorProto_Typ
     case FieldDescriptorProto_Type.TYPE_SINT64:
       return "TYPE_SINT64";
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FieldDescriptorProto_Type");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FieldDescriptorProto_Type");
   }
 }
 
@@ -327,7 +327,7 @@ export function fieldDescriptorProto_LabelFromJSON(object: any): FieldDescriptor
     case "LABEL_REPEATED":
       return FieldDescriptorProto_Label.LABEL_REPEATED;
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FieldDescriptorProto_Label");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FieldDescriptorProto_Label");
   }
 }
 
@@ -340,7 +340,7 @@ export function fieldDescriptorProto_LabelToJSON(object: FieldDescriptorProto_La
     case FieldDescriptorProto_Label.LABEL_REPEATED:
       return "LABEL_REPEATED";
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FieldDescriptorProto_Label");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FieldDescriptorProto_Label");
   }
 }
 
@@ -560,7 +560,7 @@ export function fileOptions_OptimizeModeFromJSON(object: any): FileOptions_Optim
     case "LITE_RUNTIME":
       return FileOptions_OptimizeMode.LITE_RUNTIME;
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FileOptions_OptimizeMode");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FileOptions_OptimizeMode");
   }
 }
 
@@ -573,7 +573,7 @@ export function fileOptions_OptimizeModeToJSON(object: FileOptions_OptimizeMode)
     case FileOptions_OptimizeMode.LITE_RUNTIME:
       return "LITE_RUNTIME";
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FileOptions_OptimizeMode");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FileOptions_OptimizeMode");
   }
 }
 
@@ -744,7 +744,7 @@ export function fieldOptions_CTypeFromJSON(object: any): FieldOptions_CType {
     case "STRING_PIECE":
       return FieldOptions_CType.STRING_PIECE;
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FieldOptions_CType");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FieldOptions_CType");
   }
 }
 
@@ -757,7 +757,7 @@ export function fieldOptions_CTypeToJSON(object: FieldOptions_CType): string {
     case FieldOptions_CType.STRING_PIECE:
       return "STRING_PIECE";
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FieldOptions_CType");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FieldOptions_CType");
   }
 }
 
@@ -782,7 +782,7 @@ export function fieldOptions_JSTypeFromJSON(object: any): FieldOptions_JSType {
     case "JS_NUMBER":
       return FieldOptions_JSType.JS_NUMBER;
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FieldOptions_JSType");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FieldOptions_JSType");
   }
 }
 
@@ -795,7 +795,7 @@ export function fieldOptions_JSTypeToJSON(object: FieldOptions_JSType): string {
     case FieldOptions_JSType.JS_NUMBER:
       return "JS_NUMBER";
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FieldOptions_JSType");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FieldOptions_JSType");
   }
 }
 
@@ -883,7 +883,9 @@ export function methodOptions_IdempotencyLevelFromJSON(object: any): MethodOptio
     case "IDEMPOTENT":
       return MethodOptions_IdempotencyLevel.IDEMPOTENT;
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum MethodOptions_IdempotencyLevel");
+      throw new tsProtoGlobalThis.Error(
+        "Unrecognized enum value " + object + " for enum MethodOptions_IdempotencyLevel",
+      );
   }
 }
 
@@ -896,7 +898,9 @@ export function methodOptions_IdempotencyLevelToJSON(object: MethodOptions_Idemp
     case MethodOptions_IdempotencyLevel.IDEMPOTENT:
       return "IDEMPOTENT";
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum MethodOptions_IdempotencyLevel");
+      throw new tsProtoGlobalThis.Error(
+        "Unrecognized enum value " + object + " for enum MethodOptions_IdempotencyLevel",
+      );
   }
 }
 
@@ -2083,7 +2087,7 @@ export const GeneratedCodeInfo_Annotation = {
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
-var globalThis: any = (() => {
+var tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -2100,10 +2104,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -2113,14 +2117,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 

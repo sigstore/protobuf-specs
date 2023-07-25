@@ -101,6 +101,7 @@ type VerificationMaterial struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Content:
+	//
 	//	*VerificationMaterial_PublicKey
 	//	*VerificationMaterial_X509CertificateChain
 	Content isVerificationMaterial_Content `protobuf_oneof:"content"`
@@ -216,6 +217,7 @@ type Bundle struct {
 	// <https://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E/edit#heading=h.x8bduppe89ln>
 	VerificationMaterial *VerificationMaterial `protobuf:"bytes,2,opt,name=verification_material,json=verificationMaterial,proto3" json:"verification_material,omitempty"`
 	// Types that are assignable to Content:
+	//
 	//	*Bundle_MessageSignature
 	//	*Bundle_DsseEnvelope
 	Content isBundle_Content `protobuf_oneof:"content"`
