@@ -31,7 +31,7 @@ jobs:
     steps:
     - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
 
-    - uses: ruby/setup-ruby@31a7f6d628878b80bc63375a93ae079ec50a1601 # v4.5.0
+    - uses: ruby/setup-ruby@250fcd6a742febb1123a77a841497ccaa8b9e939 # v4.5.0
       with:
         ruby-version: '3.2'
 
