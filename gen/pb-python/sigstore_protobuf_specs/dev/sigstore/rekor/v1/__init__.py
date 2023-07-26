@@ -105,7 +105,7 @@ class TransparencyLogEntry(betterproto.Message):
     """
 
     log_index: int = betterproto.int64_field(1)
-    """The index of the entry in the global log."""
+    """The global index of the entry, used when querying the log by index."""
 
     log_id: "__common_v1__.LogId" = betterproto.message_field(2)
     """The unique identifier of the log."""

@@ -82,7 +82,7 @@ export interface InclusionPromise {
  * as described here https://www.rfc-editor.org/rfc/rfc6962.html#section-3.2.
  */
 export interface TransparencyLogEntry {
-  /** The index of the entry in the global log. */
+  /** The global index of the entry, used when querying the log by index. */
   logIndex: string;
   /** The unique identifier of the log. */
   logId:

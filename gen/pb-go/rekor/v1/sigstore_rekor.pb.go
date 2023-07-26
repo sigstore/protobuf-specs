@@ -312,7 +312,7 @@ type TransparencyLogEntry struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The index of the entry in the global log.
+	// The global index of the entry, used when querying the log by index.
 	LogIndex int64 `protobuf:"varint,1,opt,name=log_index,json=logIndex,proto3" json:"log_index,omitempty"`
 	// The unique identifier of the log.
 	LogId *v1.LogId `protobuf:"bytes,2,opt,name=log_id,json=logId,proto3" json:"log_id,omitempty"`
