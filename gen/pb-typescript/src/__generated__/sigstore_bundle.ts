@@ -28,8 +28,7 @@ export interface VerificationMaterial {
     | { $case: "publicKey"; publicKey: PublicKeyIdentifier }
     | { $case: "x509CertificateChain"; x509CertificateChain: X509CertificateChain };
   /**
-   * This is the inclusion proof, where the timestamp is coming from
-   * the transparency log.
+   * An inclusion proof and an optional signed timestamp from the log.
    * Client verification libraries MAY provide an option to support v0.1
    * bundles for backwards compatibility, which may contain an inclusion
    * promise and not an inclusion proof. In this case, the client MUST
@@ -38,7 +37,10 @@ export interface VerificationMaterial {
    * ecosystem which never produced them.
    */
   tlogEntries: TransparencyLogEntry[];
-  /** Timestamp verification data, over the artifact's signature. */
+  /**
+   * Timestamp may also come from
+   * tlog_entries.inclusion_promise.signed_entry_timestamp.
+   */
   timestampVerificationData: TimestampVerificationData | undefined;
 }
 
