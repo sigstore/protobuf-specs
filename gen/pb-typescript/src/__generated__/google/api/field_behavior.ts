@@ -75,7 +75,7 @@ export function fieldBehaviorFromJSON(object: any): FieldBehavior {
     case "UNORDERED_LIST":
       return FieldBehavior.UNORDERED_LIST;
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FieldBehavior");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FieldBehavior");
   }
 }
 
@@ -96,14 +96,14 @@ export function fieldBehaviorToJSON(object: FieldBehavior): string {
     case FieldBehavior.UNORDERED_LIST:
       return "UNORDERED_LIST";
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum FieldBehavior");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum FieldBehavior");
   }
 }
 
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
-var globalThis: any = (() => {
+var tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }

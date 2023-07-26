@@ -211,6 +211,7 @@ type ArtifactVerificationOptions struct {
 	// signer, the verification is considered successful.
 	//
 	// Types that are assignable to Signers:
+	//
 	//	*ArtifactVerificationOptions_CertificateIdentities
 	//	*ArtifactVerificationOptions_PublicKeys
 	Signers isArtifactVerificationOptions_Signers `protobuf_oneof:"signers"`
@@ -338,6 +339,7 @@ type Artifact struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Data:
+	//
 	//	*Artifact_ArtifactUri
 	//	*Artifact_Artifact
 	Data isArtifact_Data `protobuf_oneof:"data"`

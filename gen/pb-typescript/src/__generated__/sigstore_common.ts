@@ -24,7 +24,7 @@ export function hashAlgorithmFromJSON(object: any): HashAlgorithm {
     case "SHA2_256":
       return HashAlgorithm.SHA2_256;
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum HashAlgorithm");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum HashAlgorithm");
   }
 }
 
@@ -35,7 +35,7 @@ export function hashAlgorithmToJSON(object: HashAlgorithm): string {
     case HashAlgorithm.SHA2_256:
       return "SHA2_256";
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum HashAlgorithm");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum HashAlgorithm");
   }
 }
 
@@ -90,7 +90,7 @@ export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
     case "PKIX_ED25519":
       return PublicKeyDetails.PKIX_ED25519;
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
   }
 }
 
@@ -113,7 +113,7 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
     case PublicKeyDetails.PKIX_ED25519:
       return "PKIX_ED25519";
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
   }
 }
 
@@ -144,7 +144,7 @@ export function subjectAlternativeNameTypeFromJSON(object: any): SubjectAlternat
     case "OTHER_NAME":
       return SubjectAlternativeNameType.OTHER_NAME;
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum SubjectAlternativeNameType");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum SubjectAlternativeNameType");
   }
 }
 
@@ -159,7 +159,7 @@ export function subjectAlternativeNameTypeToJSON(object: SubjectAlternativeNameT
     case SubjectAlternativeNameType.OTHER_NAME:
       return "OTHER_NAME";
     default:
-      throw new globalThis.Error("Unrecognized enum value " + object + " for enum SubjectAlternativeNameType");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum SubjectAlternativeNameType");
   }
 }
 
@@ -582,7 +582,7 @@ export const TimeRange = {
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
-var globalThis: any = (() => {
+var tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -599,10 +599,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -612,14 +612,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
