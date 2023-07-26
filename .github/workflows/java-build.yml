@@ -48,7 +48,7 @@ jobs:
 
     # make sure jar generation works and tests/checks pass
     - name: Test 
-      uses: gradle/gradle-build-action@3fbe033aaae657f011f88f29be9e65ed26bd29ef # v2.3.3
+      uses: gradle/gradle-build-action@a4cf152f482c7ca97ef56ead29bf08bcd953284c # v2.7.0
       with:
         arguments: build
         build-root-directory: java
