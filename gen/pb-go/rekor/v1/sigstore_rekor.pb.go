@@ -157,7 +157,7 @@ type InclusionProof struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The index of the entry in the log.
+	// The index of the entry in the tree it was written to.
 	LogIndex int64 `protobuf:"varint,1,opt,name=log_index,json=logIndex,proto3" json:"log_index,omitempty"`
 	// The hash digest stored at the root of the merkle tree at the time
 	// the proof was generated.
@@ -312,7 +312,7 @@ type TransparencyLogEntry struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The index of the entry in the log.
+	// The global index of the entry, used when querying the log by index.
 	LogIndex int64 `protobuf:"varint,1,opt,name=log_index,json=logIndex,proto3" json:"log_index,omitempty"`
 	// The unique identifier of the log.
 	LogId *v1.LogId `protobuf:"bytes,2,opt,name=log_id,json=logId,proto3" json:"log_id,omitempty"`

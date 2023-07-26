@@ -31,7 +31,7 @@ export interface Checkpoint {
  * be used for offline or online verification against the log.
  */
 export interface InclusionProof {
-  /** The index of the entry in the log. */
+  /** The index of the entry in the tree it was written to. */
   logIndex: string;
   /**
    * The hash digest stored at the root of the merkle tree at the time
@@ -82,7 +82,7 @@ export interface InclusionPromise {
  * as described here https://www.rfc-editor.org/rfc/rfc6962.html#section-3.2.
  */
 export interface TransparencyLogEntry {
-  /** The index of the entry in the log. */
+  /** The global index of the entry, used when querying the log by index. */
   logIndex: string;
   /** The unique identifier of the log. */
   logId:
