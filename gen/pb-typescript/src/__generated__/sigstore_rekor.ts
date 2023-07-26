@@ -102,6 +102,7 @@ export interface TransparencyLogEntry {
    * The inclusion promise/signed entry timestamp from the log.
    * Required for v0.1 bundles, and MUST be verified.
    * Optional for >= v0.2 bundles, and SHOULD be verified when present.
+   * Also may be used as a signed timestamp.
    */
   inclusionPromise:
     | InclusionPromise

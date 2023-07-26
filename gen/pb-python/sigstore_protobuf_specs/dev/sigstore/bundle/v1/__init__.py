@@ -47,18 +47,21 @@ class VerificationMaterial(betterproto.Message):
         3
     )
     """
-    This is the inclusion proof, where the timestamp is coming from the
-    transparency log. Client verification libraries MAY provide an option to
-    support v0.1 bundles for backwards compatibility, which may contain an
-    inclusion promise and not an inclusion proof. In this case, the client MUST
-    validate the promise. Verifiers SHOULD NOT allow v0.1 bundles if they're
-    used in an ecosystem which never produced them.
+    An inclusion proof and an optional signed timestamp from the log. Client
+    verification libraries MAY provide an option to support v0.1 bundles for
+    backwards compatibility, which may contain an inclusion promise and not an
+    inclusion proof. In this case, the client MUST validate the promise.
+    Verifiers SHOULD NOT allow v0.1 bundles if they're used in an ecosystem
+    which never produced them.
     """
 
     timestamp_verification_data: "TimestampVerificationData" = (
         betterproto.message_field(4)
     )
-    """Timestamp verification data, over the artifact's signature."""
+    """
+    Timestamp may also come from
+    tlog_entries.inclusion_promise.signed_entry_timestamp.
+    """
 
 
 @dataclass(eq=False, repr=False)
