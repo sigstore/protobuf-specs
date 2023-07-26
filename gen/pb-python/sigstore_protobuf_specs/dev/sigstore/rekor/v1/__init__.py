@@ -47,7 +47,7 @@ class InclusionProof(betterproto.Message):
     """
 
     log_index: int = betterproto.int64_field(1)
-    """The index of the entry in the log."""
+    """The index of the entry in the tree it was written to."""
 
     root_hash: bytes = betterproto.bytes_field(2)
     """
@@ -105,7 +105,7 @@ class TransparencyLogEntry(betterproto.Message):
     """
 
     log_index: int = betterproto.int64_field(1)
-    """The index of the entry in the log."""
+    """The index of the entry in the global log."""
 
     log_id: "__common_v1__.LogId" = betterproto.message_field(2)
     """The unique identifier of the log."""
