@@ -63,7 +63,7 @@ message VerificationMaterial {
         // ecosystem which never produced them.
         repeated dev.sigstore.rekor.v1.TransparencyLogEntry tlog_entries = 3;
         // Timestamp may also come from
-        //tlog_entries.inclusion_promise.signed_entry_timestamp.
+        // tlog_entries.inclusion_promise.signed_entry_timestamp.
         TimestampVerificationData timestamp_verification_data = 4;
 }
 
