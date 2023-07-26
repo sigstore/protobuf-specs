@@ -59,8 +59,8 @@ class VerificationMaterial(betterproto.Message):
         betterproto.message_field(4)
     )
     """
-    Timestamp may also come
-    fromtlog_entries.inclusion_promise.signed_entry_timestamp.
+    Timestamp may also come from
+    tlog_entries.inclusion_promise.signed_entry_timestamp.
     """
 
 
