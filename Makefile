@@ -56,7 +56,7 @@ rust: docker-image
 		-v ${PWD}:/defs \
 		-e "RUST_BACKTRACE=1" \
 		--entrypoint bash ${PROTOC_IMAGE} \
-		-c "cd gen/pb-rust/codegen && cargo run"
+		-c "cd gen/pb-rust/codegen && cargo run && rm -rf target/"
 
 
 # docker already does its own caching so we can attempt a build every time
