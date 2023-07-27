@@ -4,8 +4,6 @@
 /// for more details.
 /// The included parameters are the minimal set required to identify a log,
 /// and verify an inclusion proof/promise.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransparencyLogInstance {
@@ -25,8 +23,6 @@ pub struct TransparencyLogInstance {
 }
 /// CertificateAuthority enlists the information required to identify which
 /// CA to use and perform signature verification.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateAuthority {
@@ -71,8 +67,6 @@ pub struct CertificateAuthority {
 /// their 'valid_for' attribute for easy identification.
 /// All the listed instances SHOULD be sorted by the 'valid_for' in ascending
 /// order, that is, the oldest instance first and the current instance last.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrustedRoot {

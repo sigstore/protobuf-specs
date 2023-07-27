@@ -1,3 +1,5 @@
+mod serialization;
+
 pub mod io {
     pub mod intoto {
         include!("codegen/io.intoto.rs");

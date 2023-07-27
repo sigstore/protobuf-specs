@@ -13,9 +13,7 @@ keywords = ["sigstore"]
 categories = ["encoding", "parser-implementations"]
 
 [dependencies]
-pbjson-types = "0.5.1"
+prost-types = "0.11.9"
 prost = "0.11.9"
 serde = {version = "1.0", features = ["derive"]}
-
-[dev-dependencies]
-serde_json = "1.0.79"
+serde_json = "1.0"

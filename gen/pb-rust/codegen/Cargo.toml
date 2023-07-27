@@ -10,5 +10,4 @@ license-file = "../LICENSE"
 [dependencies]
 anyhow = "1.0.72"
 glob = "0.3"
-pbjson-build = "0.5.1"
 prost-build = "0.11.9"

@@ -1,7 +1,5 @@
 /// HashOutput captures a digest of a 'message' (generic octet sequence)
 /// and the corresponding hash algorithm used.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HashOutput {
@@ -13,8 +11,6 @@ pub struct HashOutput {
     pub digest: ::prost::alloc::vec::Vec<u8>,
 }
 /// MessageSignature stores the computed signature over a message.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MessageSignature {
@@ -33,8 +29,6 @@ pub struct MessageSignature {
     pub signature: ::prost::alloc::vec::Vec<u8>,
 }
 /// LogId captures the identity of a transparency log.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogId {
@@ -46,8 +40,6 @@ pub struct LogId {
     pub key_id: ::prost::alloc::vec::Vec<u8>,
 }
 /// This message holds a RFC 3161 timestamp.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rfc3161SignedTimestamp {
@@ -56,8 +48,6 @@ pub struct Rfc3161SignedTimestamp {
     #[prost(bytes = "vec", tag = "1")]
     pub signed_timestamp: ::prost::alloc::vec::Vec<u8>,
 }
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicKey {
@@ -74,8 +64,6 @@ pub struct PublicKey {
 }
 /// PublicKeyIdentifier can be used to identify an (out of band) delivered
 /// key, to verify a signature.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicKeyIdentifier {
@@ -92,8 +80,6 @@ pub struct PublicKeyIdentifier {
     pub hint: ::prost::alloc::string::String,
 }
 /// An ASN.1 OBJECT IDENTIFIER
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectIdentifier {
@@ -101,8 +87,6 @@ pub struct ObjectIdentifier {
     pub id: ::prost::alloc::vec::Vec<i32>,
 }
 /// An OID and the corresponding (byte) value.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectIdentifierValuePair {
@@ -111,8 +95,6 @@ pub struct ObjectIdentifierValuePair {
     #[prost(bytes = "vec", tag = "2")]
     pub value: ::prost::alloc::vec::Vec<u8>,
 }
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DistinguishedName {
@@ -121,8 +103,6 @@ pub struct DistinguishedName {
     #[prost(string, tag = "2")]
     pub common_name: ::prost::alloc::string::String,
 }
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct X509Certificate {
@@ -130,8 +110,6 @@ pub struct X509Certificate {
     #[prost(bytes = "vec", tag = "1")]
     pub raw_bytes: ::prost::alloc::vec::Vec<u8>,
 }
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubjectAlternativeName {
@@ -142,8 +120,6 @@ pub struct SubjectAlternativeName {
 }
 /// Nested message and enum types in `SubjectAlternativeName`.
 pub mod subject_alternative_name {
-    #[derive(serde::Serialize, serde::Deserialize)]
-    #[serde(rename_all = "camelCase")]
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Identity {
@@ -157,8 +133,6 @@ pub mod subject_alternative_name {
     }
 }
 /// A chain of X.509 certificates.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct X509CertificateChain {
@@ -186,15 +160,13 @@ pub struct X509CertificateChain {
 /// (i.e., [start, end]).
 /// End is optional to be able to capture a period that has started but
 /// has no known end.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeRange {
     #[prost(message, optional, tag = "1")]
-    pub start: ::core::option::Option<::pbjson_types::Timestamp>,
+    pub start: ::core::option::Option<::prost_types::Timestamp>,
     #[prost(message, optional, tag = "2")]
-    pub end: ::core::option::Option<::pbjson_types::Timestamp>,
+    pub end: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Only a subset of the secure hash standard algorithms are supported.
 /// See <<https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf>> for more
@@ -203,8 +175,6 @@ pub struct TimeRange {
 /// any proto JSON serialization to emit the used hash algorithm, as default
 /// option is to *omit* the default value of an enum (which is the first
 /// value, represented by '0'.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum HashAlgorithm {
@@ -237,8 +207,6 @@ impl HashAlgorithm {
 /// ED25519 the valid permutations are listed as a linear set instead of a
 /// cartesian set (i.e one combined variable instead of two, one for encoding
 /// and one for the signature algorithm).
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PublicKeyDetails {
@@ -294,8 +262,6 @@ impl PublicKeyDetails {
         }
     }
 }
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SubjectAlternativeNameType {

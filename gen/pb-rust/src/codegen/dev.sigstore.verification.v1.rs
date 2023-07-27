@@ -1,6 +1,4 @@
 /// The identity of a X.509 Certificate signer.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateIdentity {
@@ -17,16 +15,12 @@ pub struct CertificateIdentity {
         super::super::common::v1::ObjectIdentifierValuePair,
     >,
 }
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateIdentities {
     #[prost(message, repeated, tag = "1")]
     pub identities: ::prost::alloc::vec::Vec<CertificateIdentity>,
 }
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicKeyIdentities {
@@ -35,8 +29,6 @@ pub struct PublicKeyIdentities {
 }
 /// A light-weight set of options/policies for identifying trusted signers,
 /// used during verification of a single artifact.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArtifactVerificationOptions {
@@ -72,8 +64,6 @@ pub struct ArtifactVerificationOptions {
 }
 /// Nested message and enum types in `ArtifactVerificationOptions`.
 pub mod artifact_verification_options {
-    #[derive(serde::Serialize, serde::Deserialize)]
-    #[serde(rename_all = "camelCase")]
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TlogOptions {
@@ -87,8 +77,6 @@ pub mod artifact_verification_options {
         #[prost(bool, tag = "3")]
         pub disable: bool,
     }
-    #[derive(serde::Serialize, serde::Deserialize)]
-    #[serde(rename_all = "camelCase")]
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CtlogOptions {
@@ -105,8 +93,6 @@ pub mod artifact_verification_options {
         #[prost(bool, tag = "3")]
         pub disable: bool,
     }
-    #[derive(serde::Serialize, serde::Deserialize)]
-    #[serde(rename_all = "camelCase")]
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TimestampAuthorityOptions {
@@ -120,8 +106,6 @@ pub mod artifact_verification_options {
     /// At least one identity MUST be provided. Providing zero identities
     /// is an error. If at least one provided identity is found as a
     /// signer, the verification is considered successful.
-    #[derive(serde::Serialize, serde::Deserialize)]
-    #[serde(rename_all = "camelCase")]
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Signers {
@@ -140,8 +124,6 @@ pub mod artifact_verification_options {
         PublicKeys(super::PublicKeyIdentities),
     }
 }
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Artifact {
@@ -150,8 +132,6 @@ pub struct Artifact {
 }
 /// Nested message and enum types in `Artifact`.
 pub mod artifact {
-    #[derive(serde::Serialize, serde::Deserialize)]
-    #[serde(rename_all = "camelCase")]
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
@@ -165,8 +145,6 @@ pub mod artifact {
 }
 /// Input captures all that is needed to call the bundle verification method,
 /// to verify a single artifact referenced by the bundle.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Input {

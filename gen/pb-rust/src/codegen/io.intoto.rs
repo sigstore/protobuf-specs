@@ -1,6 +1,4 @@
 /// An authenticated message of arbitrary type.
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Envelope {
@@ -24,8 +22,6 @@ pub struct Envelope {
     #[prost(message, repeated, tag = "3")]
     pub signatures: ::prost::alloc::vec::Vec<Signature>,
 }
-#[derive(serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Signature {
