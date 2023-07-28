@@ -283,6 +283,8 @@ type MessageSignature struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Message digest can be used to identify the artifact.
+	// Clients MUST NOT attempt to use this digest to verify the associated
+	// signature; it is intended solely for identification.
 	MessageDigest *HashOutput `protobuf:"bytes,1,opt,name=message_digest,json=messageDigest,proto3" json:"message_digest,omitempty"`
 	// The raw bytes as returned from the signature algorithm.
 	// The signature algorithm (and so the format of the signature bytes)
