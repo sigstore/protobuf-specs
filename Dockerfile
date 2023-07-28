@@ -18,3 +18,9 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 COPY ./dev-requirements.txt /tmp/
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install --requirement /tmp/dev-requirements.txt
+
+# Install protoc-gen-jsonschema
+RUN set -ex && \
+    apt-get install -y --no-install-recommends \
+    golang
+RUN GO111MODULE=on go get github.com/chrusty/protoc-gen-jsonschema/cmd/protoc-gen-jsonschema@1.4.1

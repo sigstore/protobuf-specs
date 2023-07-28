@@ -1,0 +1,49 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/Envelope",
+    "definitions": {
+        "Envelope": {
+            "properties": {
+                "payload": {
+                    "type": "string",
+                    "description": "Message to be signed. (In JSON, this is encoded as base64.) REQUIRED.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "payloadType": {
+                    "type": "string",
+                    "description": "String unambiguously identifying how to interpret payload. REQUIRED."
+                },
+                "signatures": {
+                    "items": {
+                        "$ref": "#/definitions/io.intoto.Signature"
+                    },
+                    "additionalProperties": false,
+                    "type": "array",
+                    "description": "Signature over:     PAE(type, payload) Where PAE is defined as: PAE(type, payload) = \"DSSEv1\" + SP + LEN(type) + SP + type + SP + LEN(payload) + SP + payload +               = concatenation SP              = ASCII space [0x20] \"DSSEv1\"        = ASCII [0x44, 0x53, 0x53, 0x45, 0x76, 0x31] LEN(s)          = ASCII decimal encoding of the byte length of s, with no leading zeros REQUIRED (length \u003e= 1)."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Envelope",
+            "description": "An authenticated message of arbitrary type."
+        },
+        "io.intoto.Signature": {
+            "properties": {
+                "sig": {
+                    "type": "string",
+                    "description": "Signature itself. (In JSON, this is encoded as base64.) REQUIRED.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "keyid": {
+                    "type": "string",
+                    "description": "*Unauthenticated* hint identifying which public key was used. OPTIONAL."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Signature"
+        }
+    }
+}
