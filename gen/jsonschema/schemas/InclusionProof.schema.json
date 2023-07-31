@@ -6,7 +6,7 @@
             "properties": {
                 "log_index": {
                     "type": "string",
-                    "description": "The index of the entry in the log."
+                    "description": "The index of the entry in the tree it was written to."
                 },
                 "root_hash": {
                     "type": "string",

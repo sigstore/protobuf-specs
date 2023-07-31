@@ -104,12 +104,12 @@
                     },
                     "additionalProperties": false,
                     "type": "array",
-                    "description": "This is the inclusion proof, where the timestamp is coming from the transparency log. Client verification libraries MAY provide an option to support v0.1 bundles for backwards compatibility, which may contain an inclusion promise and not an inclusion proof. In this case, the client MUST validate the promise. Verifiers SHOULD NOT allow v0.1 bundles if they're used in an ecosystem which never produced them."
+                    "description": "An inclusion proof and an optional signed timestamp from the log. Client verification libraries MAY provide an option to support v0.1 bundles for backwards compatibility, which may contain an inclusion promise and not an inclusion proof. In this case, the client MUST validate the promise. Verifiers SHOULD NOT allow v0.1 bundles if they're used in an ecosystem which never produced them."
                 },
                 "timestamp_verification_data": {
                     "$ref": "#/definitions/dev.sigstore.bundle.v1.TimestampVerificationData",
                     "additionalProperties": false,
-                    "description": "Timestamp verification data, over the artifact's signature."
+                    "description": "Timestamp may also come from tlog_entries.inclusion_promise.signed_entry_timestamp."
                 }
             },
             "additionalProperties": false,
@@ -452,7 +452,7 @@
             "properties": {
                 "log_index": {
                     "type": "string",
-                    "description": "The index of the entry in the log."
+                    "description": "The index of the entry in the tree it was written to."
                 },
                 "root_hash": {
                     "type": "string",
@@ -504,7 +504,7 @@
             "properties": {
                 "log_index": {
                     "type": "string",
-                    "description": "The index of the entry in the log."
+                    "description": "The global index of the entry, used when querying the log by index."
                 },
                 "log_id": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.LogId",
@@ -523,7 +523,7 @@
                 "inclusion_promise": {
                     "$ref": "#/definitions/dev.sigstore.rekor.v1.InclusionPromise",
                     "additionalProperties": false,
-                    "description": "The inclusion promise/signed entry timestamp from the log. Required for v0.1 bundles, and MUST be verified. Optional for \u003e= v0.2 bundles, and SHOULD be verified when present."
+                    "description": "The inclusion promise/signed entry timestamp from the log. Required for v0.1 bundles, and MUST be verified. Optional for \u003e= v0.2 bundles, and SHOULD be verified when present. Also may be used as a signed timestamp."
                 },
                 "inclusion_proof": {
                     "$ref": "#/definitions/dev.sigstore.rekor.v1.InclusionProof",
