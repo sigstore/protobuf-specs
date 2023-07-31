@@ -114,3 +114,8 @@ will automatically start.
 Prepare a tag with the following pattern `release/typescript/vX.Y.Z` and
 push it. The [workflow](.github/workflows/typescript-release.yml)
 will automatically start.
+
+### JSON Schema
+
+Prepare a tag with the pattern `release/jsonschema/vX.Y.Z` and push it.
+No workflow is required.
