@@ -5,4 +5,6 @@ RUN go install github.com/chrusty/protoc-gen-jsonschema/cmd/protoc-gen-jsonschem
 # This is required to get the field_behavior.proto file
 # NOTE: --filter=tree:0 performs a treeless clone; we do this to optimize cloning
 # this otherwise relatively heavy repository.
-RUN git clone --filter=tree:0 https://github.com/googleapis/googleapis.git
+RUN git clone --filter=tree:0 https://github.com/googleapis/googleapis.git \
+    && cd googleapis \
+    && git checkout 95f0f2b2aee51e460646320d6e8f2ce75c463f5a
