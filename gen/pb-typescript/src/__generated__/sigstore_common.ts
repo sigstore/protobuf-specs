@@ -178,7 +178,11 @@ export interface HashOutput {
 
 /** MessageSignature stores the computed signature over a message. */
 export interface MessageSignature {
-  /** Message digest can be used to identify the artifact. */
+  /**
+   * Message digest can be used to identify the artifact.
+   * Clients MUST NOT attempt to use this digest to verify the associated
+   * signature; it is intended solely for identification.
+   */
   messageDigest:
     | HashOutput
     | undefined;

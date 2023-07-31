@@ -81,7 +81,11 @@ class MessageSignature(betterproto.Message):
     """MessageSignature stores the computed signature over a message."""
 
     message_digest: "HashOutput" = betterproto.message_field(1)
-    """Message digest can be used to identify the artifact."""
+    """
+    Message digest can be used to identify the artifact. Clients MUST NOT
+    attempt to use this digest to verify the associated signature; it is
+    intended solely for identification.
+    """
 
     signature: bytes = betterproto.bytes_field(2)
     """
