@@ -17,7 +17,7 @@ PROTOC_IMAGE=protobuf-specs-build
 JSONSCHEMA_IMAGE=jsonschema-specs-build
 
 # generate all language protobuf code
-all: go python typescript ruby rust
+all: go python typescript ruby rust jsonschema
 
 # generate Go protobuf code
 go: docker-image
