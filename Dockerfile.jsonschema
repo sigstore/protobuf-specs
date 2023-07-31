@@ -3,4 +3,6 @@ FROM alpine@sha256:25fad2a32ad1f6f510e528448ae1ec69a28ef81916a004d3629874104f8a7
 RUN apk add --update protoc=3.21.12-r2 protobuf-dev=3.21.12-r2 go=1.20.5-r0 git=2.40.1-r0
 RUN go install github.com/chrusty/protoc-gen-jsonschema/cmd/protoc-gen-jsonschema@1.4.1
 # This is required to get the field_behavior.proto file
-RUN git clone https://github.com/googleapis/googleapis.git
+# NOTE: --filter=tree:0 performs a treeless clone; we do this to optimize cloning
+# this otherwise relatively heavy repository.
+RUN git clone --filter=tree:0 https://github.com/googleapis/googleapis.git
