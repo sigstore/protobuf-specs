@@ -1,0 +1,381 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/Bundle",
+    "definitions": {
+        "Bundle": {
+            "properties": {
+                "media_type": {
+                    "type": "string",
+                    "description": "MUST be application/vnd.dev.sigstore.bundle+json;version=0.1 or application/vnd.dev.sigstore.bundle+json;version=0.2 when encoded as JSON."
+                },
+                "verification_material": {
+                    "$ref": "#/definitions/dev.sigstore.bundle.v1.VerificationMaterial",
+                    "additionalProperties": false,
+                    "description": "When a signer is identified by a X.509 certificate, a verifier MUST verify that the signature was computed at the time the certificate was valid as described in the Sigstore client spec: \"Verification using a Bundle\". \u003chttps://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E/edit#heading=h.x8bduppe89ln\u003e"
+                },
+                "message_signature": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.MessageSignature",
+                    "additionalProperties": false
+                },
+                "dsse_envelope": {
+                    "$ref": "#/definitions/io.intoto.Envelope",
+                    "additionalProperties": false,
+                    "description": "A DSSE envelope can contain arbitrary payloads. Verifiers must verify that the payload type is a supported and expected type. This is part of the DSSE protocol which is defined here: \u003chttps://github.com/secure-systems-lab/dsse/blob/master/protocol.md\u003e"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [
+                        "message_signature"
+                    ]
+                },
+                {
+                    "required": [
+                        "dsse_envelope"
+                    ]
+                }
+            ],
+            "title": "Bundle"
+        },
+        "dev.sigstore.bundle.v1.TimestampVerificationData": {
+            "properties": {
+                "rfc3161_timestamps": {
+                    "items": {
+                        "$ref": "#/definitions/dev.sigstore.common.v1.RFC3161SignedTimestamp"
+                    },
+                    "additionalProperties": false,
+                    "type": "array",
+                    "description": "A list of RFC3161 signed timestamps provided by the user. This can be used when the entry has not been stored on a transparency log, or in conjunction for a stronger trust model. Clients MUST verify the hashed message in the message imprint against the signature in the bundle."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Notes on versioning.\n The primary message ('Bundle') MUST be versioned, by populating the\n 'media_type' field. Semver-ish (only major/minor versions) scheme MUST\n be used. The current version as specified by this file is:\n application/vnd.dev.sigstore.bundle+json;version=0.2\n The semantic version is thus '0.2'.",
+            "description": "Notes on versioning. The primary message ('Bundle') MUST be versioned, by populating the 'media_type' field. Semver-ish (only major/minor versions) scheme MUST be used. The current version as specified by this file is: application/vnd.dev.sigstore.bundle+json;version=0.2 The semantic version is thus '0.2'.  Various timestamped counter signatures over the artifacts signature. Currently only RFC3161 signatures are provided. More formats may be added in the future."
+        },
+        "dev.sigstore.bundle.v1.VerificationMaterial": {
+            "properties": {
+                "public_key": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.PublicKeyIdentifier",
+                    "additionalProperties": false
+                },
+                "x509_certificate_chain": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.X509CertificateChain",
+                    "additionalProperties": false
+                },
+                "tlog_entries": {
+                    "items": {
+                        "$ref": "#/definitions/dev.sigstore.rekor.v1.TransparencyLogEntry"
+                    },
+                    "additionalProperties": false,
+                    "type": "array",
+                    "description": "An inclusion proof and an optional signed timestamp from the log. Client verification libraries MAY provide an option to support v0.1 bundles for backwards compatibility, which may contain an inclusion promise and not an inclusion proof. In this case, the client MUST validate the promise. Verifiers SHOULD NOT allow v0.1 bundles if they're used in an ecosystem which never produced them."
+                },
+                "timestamp_verification_data": {
+                    "$ref": "#/definitions/dev.sigstore.bundle.v1.TimestampVerificationData",
+                    "additionalProperties": false,
+                    "description": "Timestamp may also come from tlog_entries.inclusion_promise.signed_entry_timestamp."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [
+                        "public_key"
+                    ]
+                },
+                {
+                    "required": [
+                        "x509_certificate_chain"
+                    ]
+                }
+            ],
+            "title": "Verification Material",
+            "description": "VerificationMaterial captures details on the materials used to verify signatures."
+        },
+        "dev.sigstore.common.v1.HashOutput": {
+            "properties": {
+                "algorithm": {
+                    "enum": [
+                        "HASH_ALGORITHM_UNSPECIFIED",
+                        0,
+                        "SHA2_256",
+                        1
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "This package defines commonly used message types within the Sigstore\n community.",
+                    "description": "This package defines commonly used message types within the Sigstore community.  Only a subset of the secure hash standard algorithms are supported. See \u003chttps://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf\u003e for more details. UNSPECIFIED SHOULD not be used, primary reason for inclusion is to force any proto JSON serialization to emit the used hash algorithm, as default option is to *omit* the default value of an enum (which is the first value, represented by '0'."
+                },
+                "digest": {
+                    "type": "string",
+                    "description": "This is the raw octets of the message digest as computed by the hash algorithm.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Hash Output",
+            "description": "HashOutput captures a digest of a 'message' (generic octet sequence) and the corresponding hash algorithm used."
+        },
+        "dev.sigstore.common.v1.LogId": {
+            "properties": {
+                "key_id": {
+                    "type": "string",
+                    "description": "The unique id of the log, represented as the SHA-256 hash of the log's public key, calculated over the DER encoding of the key represented as SubjectPublicKeyInfo. See https://www.rfc-editor.org/rfc/rfc6962#section-3.2",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Log Id",
+            "description": "LogId captures the identity of a transparency log."
+        },
+        "dev.sigstore.common.v1.MessageSignature": {
+            "properties": {
+                "message_digest": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.HashOutput",
+                    "additionalProperties": false,
+                    "description": "Message digest can be used to identify the artifact. Clients MUST NOT attempt to use this digest to verify the associated signature; it is intended solely for identification."
+                },
+                "signature": {
+                    "type": "string",
+                    "description": "The raw bytes as returned from the signature algorithm. The signature algorithm (and so the format of the signature bytes) are determined by the contents of the 'verification_material', either a key-pair or a certificate. If using a certificate, the certificate contains the required information on the signature algorithm. When using a key pair, the algorithm MUST be part of the public key, which MUST be communicated out-of-band.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Message Signature",
+            "description": "MessageSignature stores the computed signature over a message."
+        },
+        "dev.sigstore.common.v1.PublicKeyIdentifier": {
+            "properties": {
+                "hint": {
+                    "type": "string",
+                    "description": "Optional unauthenticated hint on which key to use. The format of the hint must be agreed upon out of band by the signer and the verifiers, and so is not subject to this specification. Example use-case is to specify the public key to use, from a trusted key-ring. Implementors are RECOMMENDED to derive the value from the public key as described in RFC 6962. See: \u003chttps://www.rfc-editor.org/rfc/rfc6962#section-3.2\u003e"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Public Key Identifier",
+            "description": "PublicKeyIdentifier can be used to identify an (out of band) delivered key, to verify a signature."
+        },
+        "dev.sigstore.common.v1.RFC3161SignedTimestamp": {
+            "properties": {
+                "signed_timestamp": {
+                    "type": "string",
+                    "description": "Signed timestamp is the DER encoded TimeStampResponse. See https://www.rfc-editor.org/rfc/rfc3161.html#section-2.4.2",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "RFC 3161 Signed Timestamp",
+            "description": "This message holds a RFC 3161 timestamp."
+        },
+        "dev.sigstore.common.v1.X509Certificate": {
+            "properties": {
+                "raw_bytes": {
+                    "type": "string",
+                    "description": "DER-encoded X.509 certificate.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "X 509 Certificate"
+        },
+        "dev.sigstore.common.v1.X509CertificateChain": {
+            "properties": {
+                "certificates": {
+                    "items": {
+                        "$ref": "#/definitions/dev.sigstore.common.v1.X509Certificate"
+                    },
+                    "additionalProperties": false,
+                    "type": "array",
+                    "description": "The chain of certificates, with indices 0 to n. The first certificate in the array must be the leaf certificate used for signing. Signers MUST NOT include their root CA certificates in their embedded certificate chains, and SHOULD NOT include intermediate CA certificates that appear in independent roots of trust. Verifiers MUST validate the chain carefully to ensure that it chains up to a root CA certificate that they trust, regardless of whether the chain includes additional intermediate/root CA certificates. Verifiers MAY enforce additional constraints, such as requiring that all intermediate CA certificates appear in an independent root of trust. Verifiers SHOULD handle old or non-complying bundles that have additional intermediate/root CA certificates."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "X 509 Certificate Chain",
+            "description": "A chain of X.509 certificates."
+        },
+        "dev.sigstore.rekor.v1.Checkpoint": {
+            "properties": {
+                "envelope": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Checkpoint",
+            "description": "The checkpoint contains a signature of the tree head (root hash), size of the tree, the transparency log's unique identifier (log ID), hostname and the current time. The result is a string, the format is described here https://github.com/transparency-dev/formats/blob/main/log/README.md The details are here https://github.com/sigstore/rekor/blob/a6e58f72b6b18cc06cefe61808efd562b9726330/pkg/util/signed_note.go#L114 The signature has the same format as InclusionPromise.signed_entry_timestamp. See below for more details."
+        },
+        "dev.sigstore.rekor.v1.InclusionPromise": {
+            "properties": {
+                "signed_entry_timestamp": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Inclusion Promise",
+            "description": "The inclusion promise is calculated by Rekor. It's calculated as a signature over a canonical JSON serialization of the persisted entry, the log ID, log index and the integration timestamp. See https://github.com/sigstore/rekor/blob/a6e58f72b6b18cc06cefe61808efd562b9726330/pkg/api/entries.go#L54 The format of the signature depends on the transparency log's public key. If the signature algorithm requires a hash function and/or a signature scheme (e.g. RSA) those has to be retrieved out-of-band from the log's operators, together with the public key. This is used to verify the integration timestamp's value and that the log has promised to include the entry."
+        },
+        "dev.sigstore.rekor.v1.InclusionProof": {
+            "properties": {
+                "log_index": {
+                    "type": "string",
+                    "description": "The index of the entry in the tree it was written to."
+                },
+                "root_hash": {
+                    "type": "string",
+                    "description": "The hash digest stored at the root of the merkle tree at the time the proof was generated.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "tree_size": {
+                    "type": "string",
+                    "description": "The size of the merkle tree at the time the proof was generated."
+                },
+                "hashes": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "A list of hashes required to compute the inclusion proof, sorted in order from leaf to root. Note that leaf and root hashes are not included. The root hash is available separately in this message, and the leaf hash should be calculated by the client.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "checkpoint": {
+                    "$ref": "#/definitions/dev.sigstore.rekor.v1.Checkpoint",
+                    "additionalProperties": false,
+                    "description": "Signature of the tree head, as of the time of this proof was generated. See above info on 'Checkpoint' for more details."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Inclusion Proof",
+            "description": "InclusionProof is the proof returned from the transparency log. Can be used for offline or online verification against the log."
+        },
+        "dev.sigstore.rekor.v1.KindVersion": {
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "description": "Kind is the type of entry being stored in the log. See here for a list: https://github.com/sigstore/rekor/tree/main/pkg/types"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "The specific api version of the type."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Kind Version",
+            "description": "KindVersion contains the entry's kind and api version."
+        },
+        "dev.sigstore.rekor.v1.TransparencyLogEntry": {
+            "properties": {
+                "log_index": {
+                    "type": "string",
+                    "description": "The global index of the entry, used when querying the log by index."
+                },
+                "log_id": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.LogId",
+                    "additionalProperties": false,
+                    "description": "The unique identifier of the log."
+                },
+                "kind_version": {
+                    "$ref": "#/definitions/dev.sigstore.rekor.v1.KindVersion",
+                    "additionalProperties": false,
+                    "description": "The kind (type) and version of the object associated with this entry. These values are required to construct the entry during verification."
+                },
+                "integrated_time": {
+                    "type": "string",
+                    "description": "The UNIX timestamp from the log when the entry was persisted."
+                },
+                "inclusion_promise": {
+                    "$ref": "#/definitions/dev.sigstore.rekor.v1.InclusionPromise",
+                    "additionalProperties": false,
+                    "description": "The inclusion promise/signed entry timestamp from the log. Required for v0.1 bundles, and MUST be verified. Optional for \u003e= v0.2 bundles, and SHOULD be verified when present. Also may be used as a signed timestamp."
+                },
+                "inclusion_proof": {
+                    "$ref": "#/definitions/dev.sigstore.rekor.v1.InclusionProof",
+                    "additionalProperties": false,
+                    "description": "The inclusion proof can be used for offline or online verification that the entry was appended to the log, and that the log has not been altered."
+                },
+                "canonicalized_body": {
+                    "type": "string",
+                    "description": "Optional. The canonicalized transparency log entry, used to reconstruct the Signed Entry Timestamp (SET) during verification. The contents of this field are the same as the `body` field in a Rekor response, meaning that it does **not** include the \"full\" canonicalized form (of log index, ID, etc.) which are exposed as separate fields. The verifier is responsible for combining the `canonicalized_body`, `log_index`, `log_id`, and `integrated_time` into the payload that the SET's signature is generated over. This field is intended to be used in cases where the SET cannot be produced determinisitically (e.g. inconsistent JSON field ordering, differing whitespace, etc). If set, clients MUST verify that the signature referenced in the `canonicalized_body` matches the signature provided in the `Bundle.content`. If not set, clients are responsible for constructing an equivalent payload from other sources to verify the signature.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Transparency Log Entry",
+            "description": "TransparencyLogEntry captures all the details required from Rekor to reconstruct an entry, given that the payload is provided via other means. This type can easily be created from the existing response from Rekor. Future iterations could rely on Rekor returning the minimal set of attributes (excluding the payload) that are required for verifying the inclusion promise. The inclusion promise (called SignedEntryTimestamp in the response from Rekor) is similar to a Signed Certificate Timestamp as described here https://www.rfc-editor.org/rfc/rfc6962.html#section-3.2."
+        },
+        "io.intoto.Envelope": {
+            "properties": {
+                "payload": {
+                    "type": "string",
+                    "description": "Message to be signed. (In JSON, this is encoded as base64.) REQUIRED.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "payloadType": {
+                    "type": "string",
+                    "description": "String unambiguously identifying how to interpret payload. REQUIRED."
+                },
+                "signatures": {
+                    "items": {
+                        "$ref": "#/definitions/io.intoto.Signature"
+                    },
+                    "additionalProperties": false,
+                    "type": "array",
+                    "description": "Signature over:     PAE(type, payload) Where PAE is defined as: PAE(type, payload) = \"DSSEv1\" + SP + LEN(type) + SP + type + SP + LEN(payload) + SP + payload +               = concatenation SP              = ASCII space [0x20] \"DSSEv1\"        = ASCII [0x44, 0x53, 0x53, 0x45, 0x76, 0x31] LEN(s)          = ASCII decimal encoding of the byte length of s, with no leading zeros REQUIRED (length \u003e= 1)."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Envelope",
+            "description": "An authenticated message of arbitrary type."
+        },
+        "io.intoto.Signature": {
+            "properties": {
+                "sig": {
+                    "type": "string",
+                    "description": "Signature itself. (In JSON, this is encoded as base64.) REQUIRED.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "keyid": {
+                    "type": "string",
+                    "description": "*Unauthenticated* hint identifying which public key was used. OPTIONAL."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Signature"
+        }
+    }
+}

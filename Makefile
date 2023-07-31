@@ -14,9 +14,10 @@
 # limitations under the License.
 
 PROTOC_IMAGE=protobuf-specs-build
+JSONSCHEMA_IMAGE=jsonschema-specs-build
 
 # generate all language protobuf code
-all: go python typescript ruby rust
+all: go python typescript ruby rust jsonschema
 
 # generate Go protobuf code
 go: docker-image
@@ -58,6 +59,14 @@ rust: docker-image
 		--entrypoint bash ${PROTOC_IMAGE} \
 		-c "cd gen/pb-rust/codegen && cargo run && rm -rf target/"
 
+jsonschema: docker-image-jsonschema
+	@echo "Generating JSON schema files"
+	docker run \
+	       --platform linux/amd64 \
+	       -v ${PWD}:/defs \
+	       --entrypoint sh \
+	       ${JSONSCHEMA_IMAGE} \
+	       -c "cd defs/gen/jsonschema && ./jsonschema.sh -I ../../protos -I /googleapis/ --jsonschema_out=schemas ../../protos/*.proto"
 
 # docker already does its own caching so we can attempt a build every time
 .PHONY: docker-image
@@ -72,6 +81,11 @@ docker-image:
 docker-image-no-cache:
 	@echo "Building development docker image with disabled cache"
 	docker build --no-cache -t ${PROTOC_IMAGE} .
+
+.PHONY: docker-image-jsonschema
+docker-image-jsonschema:
+	@echo "Building docker image for generating JSON schema files"
+	docker build -t ${JSONSCHEMA_IMAGE} -f Dockerfile.jsonschema .
 
 # clean up generated files (not working? try sudo make clean)
 clean:
