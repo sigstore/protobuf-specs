@@ -1,0 +1,103 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/PublicKeyIdentities",
+    "definitions": {
+        "PublicKeyIdentities": {
+            "properties": {
+                "public_keys": {
+                    "items": {
+                        "$ref": "#/definitions/dev.sigstore.common.v1.PublicKey"
+                    },
+                    "additionalProperties": false,
+                    "type": "array"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Public Key Identities"
+        },
+        "dev.sigstore.common.v1.PublicKey": {
+            "properties": {
+                "raw_bytes": {
+                    "type": "string",
+                    "description": "DER-encoded public key, encoding method is specified by the key_details attribute.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "key_details": {
+                    "enum": [
+                        "PUBLIC_KEY_DETAILS_UNSPECIFIED",
+                        0,
+                        "PKCS1_RSA_PKCS1V5",
+                        1,
+                        "PKCS1_RSA_PSS",
+                        2,
+                        "PKIX_RSA_PKCS1V5",
+                        3,
+                        "PKIX_RSA_PSS",
+                        4,
+                        "PKIX_ECDSA_P256_SHA_256",
+                        5,
+                        "PKIX_ECDSA_P256_HMAC_SHA_256",
+                        6,
+                        "PKIX_ED25519",
+                        7
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Public Key Details",
+                    "description": "Details of a specific public key, capturing the the key encoding method, and signature algorithm. To avoid the possibility of contradicting formats such as PKCS1 with ED25519 the valid permutations are listed as a linear set instead of a cartesian set (i.e one combined variable instead of two, one for encoding and one for the signature algorithm)."
+                },
+                "valid_for": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.TimeRange",
+                    "additionalProperties": false,
+                    "description": "Optional validity period for this key, *inclusive* of the endpoints."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [
+                        "raw_bytes"
+                    ]
+                },
+                {
+                    "required": [
+                        "valid_for"
+                    ]
+                }
+            ],
+            "title": "Public Key"
+        },
+        "dev.sigstore.common.v1.TimeRange": {
+            "properties": {
+                "start": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "end": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [
+                        "end"
+                    ]
+                }
+            ],
+            "title": "Time Range",
+            "description": "The time range is closed and includes both the start and end times, (i.e., [start, end]). End is optional to be able to capture a period that has started but has no known end."
+        }
+    }
+}

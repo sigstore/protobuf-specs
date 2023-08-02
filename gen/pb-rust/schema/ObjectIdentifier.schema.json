@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ObjectIdentifier",
+    "definitions": {
+        "ObjectIdentifier": {
+            "properties": {
+                "id": {
+                    "items": {
+                        "type": "integer"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Object Identifier",
+            "description": "An ASN.1 OBJECT IDENTIFIER"
+        }
+    }
+}
