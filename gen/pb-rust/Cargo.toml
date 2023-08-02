@@ -17,3 +17,6 @@ schemafy = "0.6"
 schemafy_core = "0.6"
 serde = "1.0"
 serde_json = "1.0"
+
+[dev-dependencies]
+pretty_assertions = "1.4.0"
