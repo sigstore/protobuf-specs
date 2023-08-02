@@ -4,7 +4,7 @@
     "definitions": {
         "InclusionPromise": {
             "properties": {
-                "signed_entry_timestamp": {
+                "signedEntryTimestamp": {
                     "type": "string",
                     "format": "binary",
                     "binaryEncoding": "base64"
