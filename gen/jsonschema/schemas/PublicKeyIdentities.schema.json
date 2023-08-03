@@ -4,7 +4,7 @@
     "definitions": {
         "PublicKeyIdentities": {
             "properties": {
-                "public_keys": {
+                "publicKeys": {
                     "items": {
                         "$ref": "#/definitions/dev.sigstore.common.v1.PublicKey"
                     },
@@ -18,13 +18,13 @@
         },
         "dev.sigstore.common.v1.PublicKey": {
             "properties": {
-                "raw_bytes": {
+                "rawBytes": {
                     "type": "string",
                     "description": "DER-encoded public key, encoding method is specified by the key_details attribute.",
                     "format": "binary",
                     "binaryEncoding": "base64"
                 },
-                "key_details": {
+                "keyDetails": {
                     "enum": [
                         "PUBLIC_KEY_DETAILS_UNSPECIFIED",
                         0,
@@ -54,7 +54,7 @@
                     "title": "Public Key Details",
                     "description": "Details of a specific public key, capturing the the key encoding method, and signature algorithm. To avoid the possibility of contradicting formats such as PKCS1 with ED25519 the valid permutations are listed as a linear set instead of a cartesian set (i.e one combined variable instead of two, one for encoding and one for the signature algorithm)."
                 },
-                "valid_for": {
+                "validFor": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.TimeRange",
                     "additionalProperties": false,
                     "description": "Optional validity period for this key, *inclusive* of the endpoints."
