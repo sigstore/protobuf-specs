@@ -4,17 +4,17 @@
     "definitions": {
         "InclusionProof": {
             "properties": {
-                "log_index": {
+                "logIndex": {
                     "type": "string",
                     "description": "The index of the entry in the tree it was written to."
                 },
-                "root_hash": {
+                "rootHash": {
                     "type": "string",
                     "description": "The hash digest stored at the root of the merkle tree at the time the proof was generated.",
                     "format": "binary",
                     "binaryEncoding": "base64"
                 },
-                "tree_size": {
+                "treeSize": {
                     "type": "string",
                     "description": "The size of the merkle tree at the time the proof was generated."
                 },

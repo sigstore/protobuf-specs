@@ -4,7 +4,7 @@
     "definitions": {
         "X509Certificate": {
             "properties": {
-                "raw_bytes": {
+                "rawBytes": {
                     "type": "string",
                     "description": "DER-encoded X.509 certificate.",
                     "format": "binary",

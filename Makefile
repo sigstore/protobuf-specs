@@ -62,7 +62,6 @@ rust: docker-image
 jsonschema: docker-image-jsonschema
 	@echo "Generating JSON schema files"
 	docker run \
-	       --platform linux/amd64 \
 	       -v ${PWD}:/defs \
 	       --entrypoint sh \
 	       ${JSONSCHEMA_IMAGE} \

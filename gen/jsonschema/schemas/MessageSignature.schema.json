@@ -4,7 +4,7 @@
     "definitions": {
         "MessageSignature": {
             "properties": {
-                "message_digest": {
+                "messageDigest": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.HashOutput",
                     "additionalProperties": false,
                     "description": "Message digest can be used to identify the artifact. Clients MUST NOT attempt to use this digest to verify the associated signature; it is intended solely for identification."
