@@ -4,12 +4,12 @@
     "definitions": {
         "Input": {
             "properties": {
-                "artifact_trust_root": {
+                "artifactTrustRoot": {
                     "$ref": "#/definitions/dev.sigstore.trustroot.v1.TrustedRoot",
                     "additionalProperties": false,
                     "description": "The verification materials provided during a bundle verification. The running process is usually preloaded with a \"global\" dev.sisgtore.trustroot.TrustedRoot.v1 instance. Prior to verifying an artifact (i.e a bundle), and/or based on current policy, some selection is expected to happen, to filter out the exact certificate authority to use, which transparency logs are relevant etc. The result should b ecaptured in the `artifact_trust_root`."
                 },
-                "artifact_verification_options": {
+                "artifactVerificationOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions",
                     "additionalProperties": false
                 },
@@ -37,20 +37,20 @@
         },
         "dev.sigstore.bundle.v1.Bundle": {
             "properties": {
-                "media_type": {
+                "mediaType": {
                     "type": "string",
                     "description": "MUST be application/vnd.dev.sigstore.bundle+json;version=0.1 or application/vnd.dev.sigstore.bundle+json;version=0.2 when encoded as JSON."
                 },
-                "verification_material": {
+                "verificationMaterial": {
                     "$ref": "#/definitions/dev.sigstore.bundle.v1.VerificationMaterial",
                     "additionalProperties": false,
                     "description": "When a signer is identified by a X.509 certificate, a verifier MUST verify that the signature was computed at the time the certificate was valid as described in the Sigstore client spec: \"Verification using a Bundle\". \u003chttps://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E/edit#heading=h.x8bduppe89ln\u003e"
                 },
-                "message_signature": {
+                "messageSignature": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.MessageSignature",
                     "additionalProperties": false
                 },
-                "dsse_envelope": {
+                "dsseEnvelope": {
                     "$ref": "#/definitions/io.intoto.Envelope",
                     "additionalProperties": false,
                     "description": "A DSSE envelope can contain arbitrary payloads. Verifiers must verify that the payload type is a supported and expected type. This is part of the DSSE protocol which is defined here: \u003chttps://github.com/secure-systems-lab/dsse/blob/master/protocol.md\u003e"
@@ -74,7 +74,7 @@
         },
         "dev.sigstore.bundle.v1.TimestampVerificationData": {
             "properties": {
-                "rfc3161_timestamps": {
+                "rfc3161Timestamps": {
                     "items": {
                         "$ref": "#/definitions/dev.sigstore.common.v1.RFC3161SignedTimestamp"
                     },
@@ -90,15 +90,15 @@
         },
         "dev.sigstore.bundle.v1.VerificationMaterial": {
             "properties": {
-                "public_key": {
+                "publicKey": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.PublicKeyIdentifier",
                     "additionalProperties": false
                 },
-                "x509_certificate_chain": {
+                "x509CertificateChain": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.X509CertificateChain",
                     "additionalProperties": false
                 },
-                "tlog_entries": {
+                "tlogEntries": {
                     "items": {
                         "$ref": "#/definitions/dev.sigstore.rekor.v1.TransparencyLogEntry"
                     },
@@ -106,7 +106,7 @@
                     "type": "array",
                     "description": "An inclusion proof and an optional signed timestamp from the log. Client verification libraries MAY provide an option to support v0.1 bundles for backwards compatibility, which may contain an inclusion promise and not an inclusion proof. In this case, the client MUST validate the promise. Verifiers SHOULD NOT allow v0.1 bundles if they're used in an ecosystem which never produced them."
                 },
-                "timestamp_verification_data": {
+                "timestampVerificationData": {
                     "$ref": "#/definitions/dev.sigstore.bundle.v1.TimestampVerificationData",
                     "additionalProperties": false,
                     "description": "Timestamp may also come from tlog_entries.inclusion_promise.signed_entry_timestamp."
@@ -134,7 +134,7 @@
                 "organization": {
                     "type": "string"
                 },
-                "common_name": {
+                "commonName": {
                     "type": "string"
                 }
             },
@@ -176,7 +176,7 @@
         },
         "dev.sigstore.common.v1.LogId": {
             "properties": {
-                "key_id": {
+                "keyId": {
                     "type": "string",
                     "description": "The unique id of the log, represented as the SHA-256 hash of the log's public key, calculated over the DER encoding of the key represented as SubjectPublicKeyInfo. See https://www.rfc-editor.org/rfc/rfc6962#section-3.2",
                     "format": "binary",
@@ -190,7 +190,7 @@
         },
         "dev.sigstore.common.v1.MessageSignature": {
             "properties": {
-                "message_digest": {
+                "messageDigest": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.HashOutput",
                     "additionalProperties": false,
                     "description": "Message digest can be used to identify the artifact. Clients MUST NOT attempt to use this digest to verify the associated signature; it is intended solely for identification."
@@ -240,13 +240,13 @@
         },
         "dev.sigstore.common.v1.PublicKey": {
             "properties": {
-                "raw_bytes": {
+                "rawBytes": {
                     "type": "string",
                     "description": "DER-encoded public key, encoding method is specified by the key_details attribute.",
                     "format": "binary",
                     "binaryEncoding": "base64"
                 },
-                "key_details": {
+                "keyDetails": {
                     "enum": [
                         "PUBLIC_KEY_DETAILS_UNSPECIFIED",
                         0,
@@ -276,7 +276,7 @@
                     "title": "Public Key Details",
                     "description": "Details of a specific public key, capturing the the key encoding method, and signature algorithm. To avoid the possibility of contradicting formats such as PKCS1 with ED25519 the valid permutations are listed as a linear set instead of a cartesian set (i.e one combined variable instead of two, one for encoding and one for the signature algorithm)."
                 },
-                "valid_for": {
+                "validFor": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.TimeRange",
                     "additionalProperties": false,
                     "description": "Optional validity period for this key, *inclusive* of the endpoints."
@@ -312,7 +312,7 @@
         },
         "dev.sigstore.common.v1.RFC3161SignedTimestamp": {
             "properties": {
-                "signed_timestamp": {
+                "signedTimestamp": {
                     "type": "string",
                     "description": "Signed timestamp is the DER encoded TimeStampResponse. See https://www.rfc-editor.org/rfc/rfc3161.html#section-2.4.2",
                     "format": "binary",
@@ -397,7 +397,7 @@
         },
         "dev.sigstore.common.v1.X509Certificate": {
             "properties": {
-                "raw_bytes": {
+                "rawBytes": {
                     "type": "string",
                     "description": "DER-encoded X.509 certificate.",
                     "format": "binary",
@@ -437,7 +437,7 @@
         },
         "dev.sigstore.rekor.v1.InclusionPromise": {
             "properties": {
-                "signed_entry_timestamp": {
+                "signedEntryTimestamp": {
                     "type": "string",
                     "format": "binary",
                     "binaryEncoding": "base64"
@@ -450,17 +450,17 @@
         },
         "dev.sigstore.rekor.v1.InclusionProof": {
             "properties": {
-                "log_index": {
+                "logIndex": {
                     "type": "string",
                     "description": "The index of the entry in the tree it was written to."
                 },
-                "root_hash": {
+                "rootHash": {
                     "type": "string",
                     "description": "The hash digest stored at the root of the merkle tree at the time the proof was generated.",
                     "format": "binary",
                     "binaryEncoding": "base64"
                 },
-                "tree_size": {
+                "treeSize": {
                     "type": "string",
                     "description": "The size of the merkle tree at the time the proof was generated."
                 },
@@ -502,35 +502,35 @@
         },
         "dev.sigstore.rekor.v1.TransparencyLogEntry": {
             "properties": {
-                "log_index": {
+                "logIndex": {
                     "type": "string",
                     "description": "The global index of the entry, used when querying the log by index."
                 },
-                "log_id": {
+                "logId": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.LogId",
                     "additionalProperties": false,
                     "description": "The unique identifier of the log."
                 },
-                "kind_version": {
+                "kindVersion": {
                     "$ref": "#/definitions/dev.sigstore.rekor.v1.KindVersion",
                     "additionalProperties": false,
                     "description": "The kind (type) and version of the object associated with this entry. These values are required to construct the entry during verification."
                 },
-                "integrated_time": {
+                "integratedTime": {
                     "type": "string",
                     "description": "The UNIX timestamp from the log when the entry was persisted."
                 },
-                "inclusion_promise": {
+                "inclusionPromise": {
                     "$ref": "#/definitions/dev.sigstore.rekor.v1.InclusionPromise",
                     "additionalProperties": false,
                     "description": "The inclusion promise/signed entry timestamp from the log. Required for v0.1 bundles, and MUST be verified. Optional for \u003e= v0.2 bundles, and SHOULD be verified when present. Also may be used as a signed timestamp."
                 },
-                "inclusion_proof": {
+                "inclusionProof": {
                     "$ref": "#/definitions/dev.sigstore.rekor.v1.InclusionProof",
                     "additionalProperties": false,
                     "description": "The inclusion proof can be used for offline or online verification that the entry was appended to the log, and that the log has not been altered."
                 },
-                "canonicalized_body": {
+                "canonicalizedBody": {
                     "type": "string",
                     "description": "Optional. The canonicalized transparency log entry, used to reconstruct the Signed Entry Timestamp (SET) during verification. The contents of this field are the same as the `body` field in a Rekor response, meaning that it does **not** include the \"full\" canonicalized form (of log index, ID, etc.) which are exposed as separate fields. The verifier is responsible for combining the `canonicalized_body`, `log_index`, `log_id`, and `integrated_time` into the payload that the SET's signature is generated over. This field is intended to be used in cases where the SET cannot be produced determinisitically (e.g. inconsistent JSON field ordering, differing whitespace, etc). If set, clients MUST verify that the signature referenced in the `canonicalized_body` matches the signature provided in the `Bundle.content`. If not set, clients are responsible for constructing an equivalent payload from other sources to verify the signature.",
                     "format": "binary",
@@ -553,12 +553,12 @@
                     "type": "string",
                     "description": "The URI at which the CA can be accessed."
                 },
-                "cert_chain": {
+                "certChain": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.X509CertificateChain",
                     "additionalProperties": false,
                     "description": "The certificate chain for this CA."
                 },
-                "valid_for": {
+                "validFor": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.TimeRange",
                     "additionalProperties": false,
                     "description": "The time the *entire* chain was valid. This is at max the longest interval when *all* certificates in the chain were valid, but it MAY be shorter. Clients MUST check timestamps against *both* the `valid_for` time range *and* the entire certificate chain. The TimeRange should be considered valid *inclusive* of the endpoints."
@@ -571,11 +571,11 @@
         },
         "dev.sigstore.trustroot.v1.TransparencyLogInstance": {
             "properties": {
-                "base_url": {
+                "baseUrl": {
                     "type": "string",
                     "description": "The base URL at which can be used to URLs for the client."
                 },
-                "hash_algorithm": {
+                "hashAlgorithm": {
                     "enum": [
                         "HASH_ALGORITHM_UNSPECIFIED",
                         0,
@@ -593,12 +593,12 @@
                     "title": "This package defines commonly used message types within the Sigstore\n community.",
                     "description": "This package defines commonly used message types within the Sigstore community.  Only a subset of the secure hash standard algorithms are supported. See \u003chttps://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf\u003e for more details. UNSPECIFIED SHOULD not be used, primary reason for inclusion is to force any proto JSON serialization to emit the used hash algorithm, as default option is to *omit* the default value of an enum (which is the first value, represented by '0'."
                 },
-                "public_key": {
+                "publicKey": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.PublicKey",
                     "additionalProperties": false,
                     "description": "The public key used to verify signatures generated by the log. This attribute contains the signature algorithm used by the log."
                 },
-                "log_id": {
+                "logId": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.LogId",
                     "additionalProperties": false,
                     "description": "The unique identifier for this transparency log."
@@ -611,7 +611,7 @@
         },
         "dev.sigstore.trustroot.v1.TrustedRoot": {
             "properties": {
-                "media_type": {
+                "mediaType": {
                     "type": "string",
                     "description": "MUST be application/vnd.dev.sigstore.trustedroot+json;version=0.1"
                 },
@@ -623,7 +623,7 @@
                     "type": "array",
                     "description": "A set of trusted Rekor servers."
                 },
-                "certificate_authorities": {
+                "certificateAuthorities": {
                     "items": {
                         "$ref": "#/definitions/dev.sigstore.trustroot.v1.CertificateAuthority"
                     },
@@ -639,7 +639,7 @@
                     "type": "array",
                     "description": "A set of trusted certificate transparency logs."
                 },
-                "timestamp_authorities": {
+                "timestampAuthorities": {
                     "items": {
                         "$ref": "#/definitions/dev.sigstore.trustroot.v1.CertificateAuthority"
                     },
@@ -655,7 +655,7 @@
         },
         "dev.sigstore.verification.v1.Artifact": {
             "properties": {
-                "artifact_uri": {
+                "artifactUri": {
                     "type": "string",
                     "description": "Location of the artifact"
                 },
@@ -684,26 +684,26 @@
         },
         "dev.sigstore.verification.v1.ArtifactVerificationOptions": {
             "properties": {
-                "certificate_identities": {
+                "certificateIdentities": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.CertificateIdentities",
                     "additionalProperties": false
                 },
-                "public_keys": {
+                "publicKeys": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.PublicKeyIdentities",
                     "additionalProperties": false,
                     "description": "To simplify verification implementation, the logic for bundle verification should be implemented as a higher-order function, where one of argument should be an interface over the set of trusted public keys, like this: `Verify(bytes artifact, bytes signature, string key_id)`. This way the caller is in full control of mapping the identified (or hinted) key in the bundle to one of the trusted keys, as this process is inherently application specific."
                 },
-                "tlog_options": {
+                "tlogOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions",
                     "additionalProperties": false,
                     "description": "Optional options for artifact transparency log verification. If none is provided, the default verification options are: Threshold: 1 Online verification: false Disable: false"
                 },
-                "ctlog_options": {
+                "ctlogOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions",
                     "additionalProperties": false,
                     "description": "Optional options for certificate transparency log verification. If none is provided, the default verification options are: Threshold: 1 Detached SCT: false Disable: false"
                 },
-                "tsa_options": {
+                "tsaOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions",
                     "additionalProperties": false,
                     "description": "Optional options for certificate signed timestamp verification. If none is provided, the default verification options are: Threshold: 1 Disable: false"
@@ -747,7 +747,7 @@
                     "type": "integer",
                     "description": "The number of ct transparency logs the certificate must appear on."
                 },
-                "detached_sct": {
+                "detachedSct": {
                     "type": "boolean",
                     "description": "Expect detached SCTs. This is not supported right now as we can't capture an detached SCT in the bundle."
                 },
@@ -781,7 +781,7 @@
                     "type": "integer",
                     "description": "Number of transparency logs the entry must appear on."
                 },
-                "perform_online_verification": {
+                "performOnlineVerification": {
                     "type": "boolean",
                     "description": "Perform an online inclusion proof."
                 },
@@ -834,7 +834,7 @@
         },
         "dev.sigstore.verification.v1.PublicKeyIdentities": {
             "properties": {
-                "public_keys": {
+                "publicKeys": {
                     "items": {
                         "$ref": "#/definitions/dev.sigstore.common.v1.PublicKey"
                     },

@@ -4,7 +4,7 @@
     "definitions": {
         "TrustedRoot": {
             "properties": {
-                "media_type": {
+                "mediaType": {
                     "type": "string",
                     "description": "MUST be application/vnd.dev.sigstore.trustedroot+json;version=0.1"
                 },
@@ -16,7 +16,7 @@
                     "type": "array",
                     "description": "A set of trusted Rekor servers."
                 },
-                "certificate_authorities": {
+                "certificateAuthorities": {
                     "items": {
                         "$ref": "#/definitions/dev.sigstore.trustroot.v1.CertificateAuthority"
                     },
@@ -32,7 +32,7 @@
                     "type": "array",
                     "description": "A set of trusted certificate transparency logs."
                 },
-                "timestamp_authorities": {
+                "timestampAuthorities": {
                     "items": {
                         "$ref": "#/definitions/dev.sigstore.trustroot.v1.CertificateAuthority"
                     },
@@ -51,7 +51,7 @@
                 "organization": {
                     "type": "string"
                 },
-                "common_name": {
+                "commonName": {
                     "type": "string"
                 }
             },
@@ -61,7 +61,7 @@
         },
         "dev.sigstore.common.v1.LogId": {
             "properties": {
-                "key_id": {
+                "keyId": {
                     "type": "string",
                     "description": "The unique id of the log, represented as the SHA-256 hash of the log's public key, calculated over the DER encoding of the key represented as SubjectPublicKeyInfo. See https://www.rfc-editor.org/rfc/rfc6962#section-3.2",
                     "format": "binary",
@@ -75,13 +75,13 @@
         },
         "dev.sigstore.common.v1.PublicKey": {
             "properties": {
-                "raw_bytes": {
+                "rawBytes": {
                     "type": "string",
                     "description": "DER-encoded public key, encoding method is specified by the key_details attribute.",
                     "format": "binary",
                     "binaryEncoding": "base64"
                 },
-                "key_details": {
+                "keyDetails": {
                     "enum": [
                         "PUBLIC_KEY_DETAILS_UNSPECIFIED",
                         0,
@@ -111,7 +111,7 @@
                     "title": "Public Key Details",
                     "description": "Details of a specific public key, capturing the the key encoding method, and signature algorithm. To avoid the possibility of contradicting formats such as PKCS1 with ED25519 the valid permutations are listed as a linear set instead of a cartesian set (i.e one combined variable instead of two, one for encoding and one for the signature algorithm)."
                 },
-                "valid_for": {
+                "validFor": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.TimeRange",
                     "additionalProperties": false,
                     "description": "Optional validity period for this key, *inclusive* of the endpoints."
@@ -158,7 +158,7 @@
         },
         "dev.sigstore.common.v1.X509Certificate": {
             "properties": {
-                "raw_bytes": {
+                "rawBytes": {
                     "type": "string",
                     "description": "DER-encoded X.509 certificate.",
                     "format": "binary",
@@ -196,12 +196,12 @@
                     "type": "string",
                     "description": "The URI at which the CA can be accessed."
                 },
-                "cert_chain": {
+                "certChain": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.X509CertificateChain",
                     "additionalProperties": false,
                     "description": "The certificate chain for this CA."
                 },
-                "valid_for": {
+                "validFor": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.TimeRange",
                     "additionalProperties": false,
                     "description": "The time the *entire* chain was valid. This is at max the longest interval when *all* certificates in the chain were valid, but it MAY be shorter. Clients MUST check timestamps against *both* the `valid_for` time range *and* the entire certificate chain. The TimeRange should be considered valid *inclusive* of the endpoints."
@@ -214,11 +214,11 @@
         },
         "dev.sigstore.trustroot.v1.TransparencyLogInstance": {
             "properties": {
-                "base_url": {
+                "baseUrl": {
                     "type": "string",
                     "description": "The base URL at which can be used to URLs for the client."
                 },
-                "hash_algorithm": {
+                "hashAlgorithm": {
                     "enum": [
                         "HASH_ALGORITHM_UNSPECIFIED",
                         0,
@@ -236,12 +236,12 @@
                     "title": "This package defines commonly used message types within the Sigstore\n community.",
                     "description": "This package defines commonly used message types within the Sigstore community.  Only a subset of the secure hash standard algorithms are supported. See \u003chttps://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf\u003e for more details. UNSPECIFIED SHOULD not be used, primary reason for inclusion is to force any proto JSON serialization to emit the used hash algorithm, as default option is to *omit* the default value of an enum (which is the first value, represented by '0'."
                 },
-                "public_key": {
+                "publicKey": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.PublicKey",
                     "additionalProperties": false,
                     "description": "The public key used to verify signatures generated by the log. This attribute contains the signature algorithm used by the log."
                 },
-                "log_id": {
+                "logId": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.LogId",
                     "additionalProperties": false,
                     "description": "The unique identifier for this transparency log."

@@ -4,26 +4,26 @@
     "definitions": {
         "ArtifactVerificationOptions": {
             "properties": {
-                "certificate_identities": {
+                "certificateIdentities": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.CertificateIdentities",
                     "additionalProperties": false
                 },
-                "public_keys": {
+                "publicKeys": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.PublicKeyIdentities",
                     "additionalProperties": false,
                     "description": "To simplify verification implementation, the logic for bundle verification should be implemented as a higher-order function, where one of argument should be an interface over the set of trusted public keys, like this: `Verify(bytes artifact, bytes signature, string key_id)`. This way the caller is in full control of mapping the identified (or hinted) key in the bundle to one of the trusted keys, as this process is inherently application specific."
                 },
-                "tlog_options": {
+                "tlogOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions",
                     "additionalProperties": false,
                     "description": "Optional options for artifact transparency log verification. If none is provided, the default verification options are: Threshold: 1 Online verification: false Disable: false"
                 },
-                "ctlog_options": {
+                "ctlogOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions",
                     "additionalProperties": false,
                     "description": "Optional options for certificate transparency log verification. If none is provided, the default verification options are: Threshold: 1 Detached SCT: false Disable: false"
                 },
-                "tsa_options": {
+                "tsaOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions",
                     "additionalProperties": false,
                     "description": "Optional options for certificate signed timestamp verification. If none is provided, the default verification options are: Threshold: 1 Disable: false"
@@ -94,13 +94,13 @@
         },
         "dev.sigstore.common.v1.PublicKey": {
             "properties": {
-                "raw_bytes": {
+                "rawBytes": {
                     "type": "string",
                     "description": "DER-encoded public key, encoding method is specified by the key_details attribute.",
                     "format": "binary",
                     "binaryEncoding": "base64"
                 },
-                "key_details": {
+                "keyDetails": {
                     "enum": [
                         "PUBLIC_KEY_DETAILS_UNSPECIFIED",
                         0,
@@ -130,7 +130,7 @@
                     "title": "Public Key Details",
                     "description": "Details of a specific public key, capturing the the key encoding method, and signature algorithm. To avoid the possibility of contradicting formats such as PKCS1 with ED25519 the valid permutations are listed as a linear set instead of a cartesian set (i.e one combined variable instead of two, one for encoding and one for the signature algorithm)."
                 },
-                "valid_for": {
+                "validFor": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.TimeRange",
                     "additionalProperties": false,
                     "description": "Optional validity period for this key, *inclusive* of the endpoints."
@@ -229,7 +229,7 @@
                     "type": "integer",
                     "description": "The number of ct transparency logs the certificate must appear on."
                 },
-                "detached_sct": {
+                "detachedSct": {
                     "type": "boolean",
                     "description": "Expect detached SCTs. This is not supported right now as we can't capture an detached SCT in the bundle."
                 },
@@ -263,7 +263,7 @@
                     "type": "integer",
                     "description": "Number of transparency logs the entry must appear on."
                 },
-                "perform_online_verification": {
+                "performOnlineVerification": {
                     "type": "boolean",
                     "description": "Perform an online inclusion proof."
                 },
@@ -316,7 +316,7 @@
         },
         "dev.sigstore.verification.v1.PublicKeyIdentities": {
             "properties": {
-                "public_keys": {
+                "publicKeys": {
                     "items": {
                         "$ref": "#/definitions/dev.sigstore.common.v1.PublicKey"
                     },
