@@ -59,7 +59,7 @@ jsonschema: docker-image-jsonschema
 	       -c "cd defs/gen/jsonschema && ./jsonschema.sh -I ../../protos -I /googleapis/ --jsonschema_out=schemas ../../protos/*.proto"
 
 gen/pb-rust/schemas: jsonschema
-	cp -r gen/jsonschema/schemas $@
+	cp -r gen/jsonschema/schemas gen/pb-rust
 
 rust: docker-image gen/pb-rust/schemas
 	@echo "Generating rust protobuf files"

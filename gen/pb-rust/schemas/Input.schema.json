@@ -147,18 +147,9 @@
                 "algorithm": {
                     "enum": [
                         "HASH_ALGORITHM_UNSPECIFIED",
-                        0,
-                        "SHA2_256",
-                        1
+                        "SHA2_256"
                     ],
-                    "oneOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "integer"
-                        }
-                    ],
+                    "type": "string",
                     "title": "This package defines commonly used message types within the Sigstore\n community.",
                     "description": "This package defines commonly used message types within the Sigstore community.  Only a subset of the secure hash standard algorithms are supported. See \u003chttps://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf\u003e for more details. UNSPECIFIED SHOULD not be used, primary reason for inclusion is to force any proto JSON serialization to emit the used hash algorithm, as default option is to *omit* the default value of an enum (which is the first value, represented by '0'."
                 },
@@ -249,30 +240,15 @@
                 "keyDetails": {
                     "enum": [
                         "PUBLIC_KEY_DETAILS_UNSPECIFIED",
-                        0,
                         "PKCS1_RSA_PKCS1V5",
-                        1,
                         "PKCS1_RSA_PSS",
-                        2,
                         "PKIX_RSA_PKCS1V5",
-                        3,
                         "PKIX_RSA_PSS",
-                        4,
                         "PKIX_ECDSA_P256_SHA_256",
-                        5,
                         "PKIX_ECDSA_P256_HMAC_SHA_256",
-                        6,
-                        "PKIX_ED25519",
-                        7
+                        "PKIX_ED25519"
                     ],
-                    "oneOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "integer"
-                        }
-                    ],
+                    "type": "string",
                     "title": "Public Key Details",
                     "description": "Details of a specific public key, capturing the the key encoding method, and signature algorithm. To avoid the possibility of contradicting formats such as PKCS1 with ED25519 the valid permutations are listed as a linear set instead of a cartesian set (i.e one combined variable instead of two, one for encoding and one for the signature algorithm)."
                 },
@@ -329,22 +305,11 @@
                 "type": {
                     "enum": [
                         "SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED",
-                        0,
                         "EMAIL",
-                        1,
                         "URI",
-                        2,
-                        "OTHER_NAME",
-                        3
+                        "OTHER_NAME"
                     ],
-                    "oneOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "integer"
-                        }
-                    ],
+                    "type": "string",
                     "title": "Subject Alternative Name Type"
                 },
                 "regexp": {
@@ -578,18 +543,9 @@
                 "hashAlgorithm": {
                     "enum": [
                         "HASH_ALGORITHM_UNSPECIFIED",
-                        0,
-                        "SHA2_256",
-                        1
+                        "SHA2_256"
                     ],
-                    "oneOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "integer"
-                        }
-                    ],
+                    "type": "string",
                     "title": "This package defines commonly used message types within the Sigstore\n community.",
                     "description": "This package defines commonly used message types within the Sigstore community.  Only a subset of the secure hash standard algorithms are supported. See \u003chttps://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf\u003e for more details. UNSPECIFIED SHOULD not be used, primary reason for inclusion is to force any proto JSON serialization to emit the used hash algorithm, as default option is to *omit* the default value of an enum (which is the first value, represented by '0'."
                 },

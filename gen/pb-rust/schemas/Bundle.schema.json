@@ -101,18 +101,9 @@
                 "algorithm": {
                     "enum": [
                         "HASH_ALGORITHM_UNSPECIFIED",
-                        0,
-                        "SHA2_256",
-                        1
+                        "SHA2_256"
                     ],
-                    "oneOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "integer"
-                        }
-                    ],
+                    "type": "string",
                     "title": "This package defines commonly used message types within the Sigstore\n community.",
                     "description": "This package defines commonly used message types within the Sigstore community.  Only a subset of the secure hash standard algorithms are supported. See \u003chttps://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf\u003e for more details. UNSPECIFIED SHOULD not be used, primary reason for inclusion is to force any proto JSON serialization to emit the used hash algorithm, as default option is to *omit* the default value of an enum (which is the first value, represented by '0'."
                 },

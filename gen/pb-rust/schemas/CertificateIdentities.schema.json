@@ -52,22 +52,11 @@
                 "type": {
                     "enum": [
                         "SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED",
-                        0,
                         "EMAIL",
-                        1,
                         "URI",
-                        2,
-                        "OTHER_NAME",
-                        3
+                        "OTHER_NAME"
                     ],
-                    "oneOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "integer"
-                        }
-                    ],
+                    "type": "string",
                     "title": "Subject Alternative Name Type"
                 },
                 "regexp": {
