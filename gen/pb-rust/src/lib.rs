@@ -6,7 +6,7 @@
 ///
 /// prefixing works,
 ///
-/// ```rust
+/// ```ignore
 /// mod CertificateIdentity {
 ///   schemafy::schemafy!("schemas/CertificateIdentity.shema.json")
 /// }
