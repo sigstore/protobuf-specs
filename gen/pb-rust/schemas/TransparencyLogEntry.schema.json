@@ -1,0 +1,138 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TransparencyLogEntry",
+    "definitions": {
+        "TransparencyLogEntry": {
+            "properties": {
+                "logIndex": {
+                    "type": "string",
+                    "description": "The global index of the entry, used when querying the log by index."
+                },
+                "logId": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.LogId",
+                    "additionalProperties": false,
+                    "description": "The unique identifier of the log."
+                },
+                "kindVersion": {
+                    "$ref": "#/definitions/dev.sigstore.rekor.v1.KindVersion",
+                    "additionalProperties": false,
+                    "description": "The kind (type) and version of the object associated with this entry. These values are required to construct the entry during verification."
+                },
+                "integratedTime": {
+                    "type": "string",
+                    "description": "The UNIX timestamp from the log when the entry was persisted."
+                },
+                "inclusionPromise": {
+                    "$ref": "#/definitions/dev.sigstore.rekor.v1.InclusionPromise",
+                    "additionalProperties": false,
+                    "description": "The inclusion promise/signed entry timestamp from the log. Required for v0.1 bundles, and MUST be verified. Optional for \u003e= v0.2 bundles, and SHOULD be verified when present. Also may be used as a signed timestamp."
+                },
+                "inclusionProof": {
+                    "$ref": "#/definitions/dev.sigstore.rekor.v1.InclusionProof",
+                    "additionalProperties": false,
+                    "description": "The inclusion proof can be used for offline or online verification that the entry was appended to the log, and that the log has not been altered."
+                },
+                "canonicalizedBody": {
+                    "type": "string",
+                    "description": "Optional. The canonicalized transparency log entry, used to reconstruct the Signed Entry Timestamp (SET) during verification. The contents of this field are the same as the `body` field in a Rekor response, meaning that it does **not** include the \"full\" canonicalized form (of log index, ID, etc.) which are exposed as separate fields. The verifier is responsible for combining the `canonicalized_body`, `log_index`, `log_id`, and `integrated_time` into the payload that the SET's signature is generated over. This field is intended to be used in cases where the SET cannot be produced determinisitically (e.g. inconsistent JSON field ordering, differing whitespace, etc). If set, clients MUST verify that the signature referenced in the `canonicalized_body` matches the signature provided in the `Bundle.content`. If not set, clients are responsible for constructing an equivalent payload from other sources to verify the signature.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Transparency Log Entry",
+            "description": "TransparencyLogEntry captures all the details required from Rekor to reconstruct an entry, given that the payload is provided via other means. This type can easily be created from the existing response from Rekor. Future iterations could rely on Rekor returning the minimal set of attributes (excluding the payload) that are required for verifying the inclusion promise. The inclusion promise (called SignedEntryTimestamp in the response from Rekor) is similar to a Signed Certificate Timestamp as described here https://www.rfc-editor.org/rfc/rfc6962.html#section-3.2."
+        },
+        "dev.sigstore.common.v1.LogId": {
+            "properties": {
+                "keyId": {
+                    "type": "string",
+                    "description": "The unique id of the log, represented as the SHA-256 hash of the log's public key, calculated over the DER encoding of the key represented as SubjectPublicKeyInfo. See https://www.rfc-editor.org/rfc/rfc6962#section-3.2",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Log Id",
+            "description": "LogId captures the identity of a transparency log."
+        },
+        "dev.sigstore.rekor.v1.Checkpoint": {
+            "properties": {
+                "envelope": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Checkpoint",
+            "description": "The checkpoint contains a signature of the tree head (root hash), size of the tree, the transparency log's unique identifier (log ID), hostname and the current time. The result is a string, the format is described here https://github.com/transparency-dev/formats/blob/main/log/README.md The details are here https://github.com/sigstore/rekor/blob/a6e58f72b6b18cc06cefe61808efd562b9726330/pkg/util/signed_note.go#L114 The signature has the same format as InclusionPromise.signed_entry_timestamp. See below for more details."
+        },
+        "dev.sigstore.rekor.v1.InclusionPromise": {
+            "properties": {
+                "signedEntryTimestamp": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Inclusion Promise",
+            "description": "The inclusion promise is calculated by Rekor. It's calculated as a signature over a canonical JSON serialization of the persisted entry, the log ID, log index and the integration timestamp. See https://github.com/sigstore/rekor/blob/a6e58f72b6b18cc06cefe61808efd562b9726330/pkg/api/entries.go#L54 The format of the signature depends on the transparency log's public key. If the signature algorithm requires a hash function and/or a signature scheme (e.g. RSA) those has to be retrieved out-of-band from the log's operators, together with the public key. This is used to verify the integration timestamp's value and that the log has promised to include the entry."
+        },
+        "dev.sigstore.rekor.v1.InclusionProof": {
+            "properties": {
+                "logIndex": {
+                    "type": "string",
+                    "description": "The index of the entry in the tree it was written to."
+                },
+                "rootHash": {
+                    "type": "string",
+                    "description": "The hash digest stored at the root of the merkle tree at the time the proof was generated.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "treeSize": {
+                    "type": "string",
+                    "description": "The size of the merkle tree at the time the proof was generated."
+                },
+                "hashes": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "A list of hashes required to compute the inclusion proof, sorted in order from leaf to root. Note that leaf and root hashes are not included. The root hash is available separately in this message, and the leaf hash should be calculated by the client.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "checkpoint": {
+                    "$ref": "#/definitions/dev.sigstore.rekor.v1.Checkpoint",
+                    "additionalProperties": false,
+                    "description": "Signature of the tree head, as of the time of this proof was generated. See above info on 'Checkpoint' for more details."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Inclusion Proof",
+            "description": "InclusionProof is the proof returned from the transparency log. Can be used for offline or online verification against the log."
+        },
+        "dev.sigstore.rekor.v1.KindVersion": {
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "description": "Kind is the type of entry being stored in the log. See here for a list: https://github.com/sigstore/rekor/tree/main/pkg/types"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "The specific api version of the type."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Kind Version",
+            "description": "KindVersion contains the entry's kind and api version."
+        }
+    }
+}

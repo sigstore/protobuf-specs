@@ -1,0 +1,53 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/InclusionProof",
+    "definitions": {
+        "InclusionProof": {
+            "properties": {
+                "logIndex": {
+                    "type": "string",
+                    "description": "The index of the entry in the tree it was written to."
+                },
+                "rootHash": {
+                    "type": "string",
+                    "description": "The hash digest stored at the root of the merkle tree at the time the proof was generated.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "treeSize": {
+                    "type": "string",
+                    "description": "The size of the merkle tree at the time the proof was generated."
+                },
+                "hashes": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "A list of hashes required to compute the inclusion proof, sorted in order from leaf to root. Note that leaf and root hashes are not included. The root hash is available separately in this message, and the leaf hash should be calculated by the client.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "checkpoint": {
+                    "$ref": "#/definitions/dev.sigstore.rekor.v1.Checkpoint",
+                    "additionalProperties": false,
+                    "description": "Signature of the tree head, as of the time of this proof was generated. See above info on 'Checkpoint' for more details."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Inclusion Proof",
+            "description": "InclusionProof is the proof returned from the transparency log. Can be used for offline or online verification against the log."
+        },
+        "dev.sigstore.rekor.v1.Checkpoint": {
+            "properties": {
+                "envelope": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Checkpoint",
+            "description": "The checkpoint contains a signature of the tree head (root hash), size of the tree, the transparency log's unique identifier (log ID), hostname and the current time. The result is a string, the format is described here https://github.com/transparency-dev/formats/blob/main/log/README.md The details are here https://github.com/sigstore/rekor/blob/a6e58f72b6b18cc06cefe61808efd562b9726330/pkg/util/signed_note.go#L114 The signature has the same format as InclusionPromise.signed_entry_timestamp. See below for more details."
+        }
+    }
+}

@@ -50,15 +50,6 @@ ruby: docker-image
 		--entrypoint bash ${PROTOC_IMAGE} \
 		-c "cd ./gen/pb-ruby && protoc -I/opt/include -I../../protos/ --ruby_out=lib ../../protos/*.proto"
 
-rust: docker-image
-	@echo "Generating rust protobuf files"
-	docker run \
-		--platform linux/amd64 \
-		-v ${PWD}:/defs \
-		-e "RUST_BACKTRACE=1" \
-		--entrypoint bash ${PROTOC_IMAGE} \
-		-c "cd gen/pb-rust/codegen && cargo run && rm -rf target/"
-
 jsonschema: docker-image-jsonschema
 	@echo "Generating JSON schema files"
 	docker run \
@@ -66,6 +57,18 @@ jsonschema: docker-image-jsonschema
 	       --entrypoint sh \
 	       ${JSONSCHEMA_IMAGE} \
 	       -c "cd defs/gen/jsonschema && ./jsonschema.sh -I ../../protos -I /googleapis/ --jsonschema_out=schemas ../../protos/*.proto"
+
+gen/pb-rust/schemas: jsonschema
+	cp -r gen/jsonschema/schemas gen/pb-rust
+
+rust: docker-image gen/pb-rust/schemas
+	@echo "Generating rust protobuf files"
+	docker run \
+		--platform linux/amd64 \
+		-v ${PWD}:/defs \
+		-e "RUST_BACKTRACE=1" \
+		--entrypoint bash ${PROTOC_IMAGE} \
+		-c "cd gen/pb-rust && cargo build"
 
 # docker already does its own caching so we can attempt a build every time
 .PHONY: docker-image
@@ -92,7 +95,7 @@ clean:
 		gen/pb-typescript/src/__generated__ \
 		gen/pb-python/sigstore_protobuf_specs/dev \
 		gen/pb-python/sigstore_protobuf_specs/io \
-		gen/pb-rust/codegen/target \
+		gen/pb-rust/schemas \
 		gen/pb-rust/target
 	docker rmi -f ${PROTOC_IMAGE}
 

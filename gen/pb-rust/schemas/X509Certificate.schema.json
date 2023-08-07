@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/X509Certificate",
+    "definitions": {
+        "X509Certificate": {
+            "properties": {
+                "rawBytes": {
+                    "type": "string",
+                    "description": "DER-encoded X.509 certificate.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "X 509 Certificate"
+        }
+    }
+}

@@ -13,7 +13,10 @@ keywords = ["sigstore"]
 categories = ["encoding", "parser-implementations"]
 
 [dependencies]
-protobuf = "2.28"
+schemafy = "0.6"
+schemafy_core = "0.6"
+serde = "1.0"
+serde_json = "1.0"
 
-[lib]
-path = "src/mod.rs"
+[dev-dependencies]
+pretty_assertions = "1.4.0"

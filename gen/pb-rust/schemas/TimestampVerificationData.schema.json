@@ -1,0 +1,36 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TimestampVerificationData",
+    "definitions": {
+        "TimestampVerificationData": {
+            "properties": {
+                "rfc3161Timestamps": {
+                    "items": {
+                        "$ref": "#/definitions/dev.sigstore.common.v1.RFC3161SignedTimestamp"
+                    },
+                    "additionalProperties": false,
+                    "type": "array",
+                    "description": "A list of RFC3161 signed timestamps provided by the user. This can be used when the entry has not been stored on a transparency log, or in conjunction for a stronger trust model. Clients MUST verify the hashed message in the message imprint against the signature in the bundle."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Notes on versioning.\n The primary message ('Bundle') MUST be versioned, by populating the\n 'media_type' field. Semver-ish (only major/minor versions) scheme MUST\n be used. The current version as specified by this file is:\n application/vnd.dev.sigstore.bundle+json;version=0.2\n The semantic version is thus '0.2'.",
+            "description": "Notes on versioning. The primary message ('Bundle') MUST be versioned, by populating the 'media_type' field. Semver-ish (only major/minor versions) scheme MUST be used. The current version as specified by this file is: application/vnd.dev.sigstore.bundle+json;version=0.2 The semantic version is thus '0.2'.  Various timestamped counter signatures over the artifacts signature. Currently only RFC3161 signatures are provided. More formats may be added in the future."
+        },
+        "dev.sigstore.common.v1.RFC3161SignedTimestamp": {
+            "properties": {
+                "signedTimestamp": {
+                    "type": "string",
+                    "description": "Signed timestamp is the DER encoded TimeStampResponse. See https://www.rfc-editor.org/rfc/rfc3161.html#section-2.4.2",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "RFC 3161 Signed Timestamp",
+            "description": "This message holds a RFC 3161 timestamp."
+        }
+    }
+}

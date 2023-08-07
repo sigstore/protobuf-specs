@@ -1,0 +1,146 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/CloudEvent",
+    "definitions": {
+        "CloudEvent": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "title": "-- CloudEvent Context Attributes",
+                    "description": "-- CloudEvent Context Attributes  Required Attributes"
+                },
+                "source": {
+                    "type": "string",
+                    "description": "URI-reference"
+                },
+                "specVersion": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "attributes": {
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dev.sigstore.events.v1.CloudEvent.CloudEventAttributeValue",
+                        "additionalProperties": false
+                    },
+                    "type": "object",
+                    "description": "Optional \u0026 Extension Attributes"
+                },
+                "binaryData": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "textData": {
+                    "type": "string"
+                },
+                "protoData": {
+                    "properties": {
+                        "typeUrl": {
+                            "type": "string",
+                            "description": "A URL/resource name that uniquely identifies the type of the serialized protocol buffer message. This string must contain at least one \"/\" character. The last segment of the URL's path must represent the fully qualified name of the type (as in `path/google.protobuf.Duration`). The name should be in a canonical form (e.g., leading \".\" is not accepted). In practice, teams usually precompile into the binary all types that they expect it to use in the context of Any. However, for URLs which use the scheme `http`, `https`, or no scheme, one can optionally set up a type server that maps type URLs to message definitions as follows: * If no scheme is provided, `https` is assumed. * An HTTP GET on the URL must yield a [google.protobuf.Type][]   value in binary format, or produce an error. * Applications are allowed to cache lookup results based on the   URL, or have them precompiled into a binary to avoid any   lookup. Therefore, binary compatibility needs to be preserved   on changes to types. (Use versioned type names to manage   breaking changes.) Note: this functionality is not currently available in the official protobuf release, and it is not used for type URLs beginning with type.googleapis.com. Schemes other than `http`, `https` (or the empty scheme) might be used with implementation specific semantics."
+                        },
+                        "value": {
+                            "type": "string",
+                            "description": "Must be a valid serialized protocol buffer of the above specified type.",
+                            "format": "binary",
+                            "binaryEncoding": "base64"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "type": "object"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [
+                        "binary_data"
+                    ]
+                },
+                {
+                    "required": [
+                        "text_data"
+                    ]
+                },
+                {
+                    "required": [
+                        "proto_data"
+                    ]
+                }
+            ],
+            "title": "Cloud Event"
+        },
+        "dev.sigstore.events.v1.CloudEvent.CloudEventAttributeValue": {
+            "properties": {
+                "ceBoolean": {
+                    "type": "boolean"
+                },
+                "ceInteger": {
+                    "type": "integer"
+                },
+                "ceString": {
+                    "type": "string"
+                },
+                "ceBytes": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "ceUri": {
+                    "type": "string"
+                },
+                "ceUriRef": {
+                    "type": "string"
+                },
+                "ceTimestamp": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [
+                        "ce_boolean"
+                    ]
+                },
+                {
+                    "required": [
+                        "ce_integer"
+                    ]
+                },
+                {
+                    "required": [
+                        "ce_string"
+                    ]
+                },
+                {
+                    "required": [
+                        "ce_bytes"
+                    ]
+                },
+                {
+                    "required": [
+                        "ce_uri"
+                    ]
+                },
+                {
+                    "required": [
+                        "ce_uri_ref"
+                    ]
+                },
+                {
+                    "required": [
+                        "ce_timestamp"
+                    ]
+                }
+            ],
+            "title": "*\n The CloudEvent specification defines\n seven attribute value types...",
+            "description": "* The CloudEvent specification defines seven attribute value types..."
+        }
+    }
+}
