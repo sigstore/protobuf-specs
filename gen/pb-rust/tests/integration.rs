@@ -2,8 +2,7 @@ use pretty_assertions::{assert_eq, assert_ne};
 use serde_json;
 use sigstore_protobuf_specs::{
     Bundle, DevSigstoreBundleV1VerificationMaterial as VerificationMaterial,
-    DevSigstoreCommonV1HashOutput as HashOutput,
-    DevSigstoreCommonV1HashOutputAlgorithm as HashAlgorithm, DevSigstoreCommonV1LogId as LogId,
+    DevSigstoreCommonV1HashOutput as HashOutput, DevSigstoreCommonV1LogId as LogId,
     DevSigstoreCommonV1MessageSignature as MessageSignature,
     DevSigstoreCommonV1X509Certificate as X509Certificate,
     DevSigstoreCommonV1X509CertificateChain as X509CertificateChain,
@@ -75,7 +74,7 @@ fn bundle() {
             }),
             message_signature: Some(MessageSignature {
                 message_digest: Some(HashOutput{
-                    algorithm: Some(HashAlgorithm::Variant0(String::from("SHA2_256"))),
+                    algorithm: Some(String::from("SHA2_256")),
                     digest: Some(String::from("gC3WD/iDM4AvJYXnMEO9IcNBKF4Zkv5bMXVeHK3q4w4="))
                 }),
                 signature: Some(String::from("MGUCMQCOOJqTY6XWgB64izK2WVP07b0SG9M5WPCwKhfTPwMvtsgUi8KeRGwQkvvLYbKHdqUCMEbOXFG0NMqEQxWVb6rmGnexdADuGf6Jl8qAC8tn67p3QfVoXzMvFA61PzxwVwvb8g=="))

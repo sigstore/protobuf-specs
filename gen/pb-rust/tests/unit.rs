@@ -1,6 +1,5 @@
 use sigstore_protobuf_specs::{
     DevSigstoreCommonV1HashOutput as HashOutput,
-    DevSigstoreCommonV1HashOutputAlgorithm as HashAlgorithm,
     DevSigstoreCommonV1MessageSignature as MessageSignature,
 };
 
@@ -8,7 +7,7 @@ use sigstore_protobuf_specs::{
 #[test]
 fn primitives() {
     let hash_output = HashOutput {
-        algorithm: Some(HashAlgorithm::Variant0(String::from("SHA2_256"))),
+        algorithm: Some(String::from("SHA2_256")),
         digest: Some(String::from("gC3WD/iDM4AvJYXnMEO9IcNBKF4Zkv5bMXVeHK3q4w4=")),
     };
 
@@ -25,7 +24,7 @@ fn primitives() {
 fn nested() {
     let message_signature= MessageSignature {
         message_digest: Some(HashOutput {
-            algorithm: Some(HashAlgorithm::Variant0(String::from("SHA_256"))),
+            algorithm: Some(String::from("SHA_256")),
             digest: Some(String::from("gC3WD/iDM4AvJYXnMEO9IcNBKF4Zkv5bMXVeHK3q4w4=")),
         }),
         signature: Some(String::from("MGUCMQCOOJqTY6XWgB64izK2WVP07b0SG9M5WPCwKhfTPwMvtsgUi8KeRGwQkvvLYbKHdqUCMEbOXFG0NMqEQxWVb6rmGnexdADuGf6Jl8qAC8tn67p3QfVoXzMvFA61PzxwVwvb8g=="))
