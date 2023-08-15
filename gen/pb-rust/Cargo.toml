@@ -1,6 +1,6 @@
 [package]
 name = "sigstore_protobuf_specs"
-version = "0.1.0-rc.1"
+version = "0.1.0-rc.2"
 exclude = ["codegen/"]
 authors = ["Sigstore Authors <sigstore-dev@googlegroups.com>"]
 edition = "2021"
