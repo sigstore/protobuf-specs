@@ -7,16 +7,16 @@ assignees: ''
 
 ---
 
-Full release instructions are at: [RELEASE.md](/RELEASE.md)
+Full release instructions are at: [RELEASE.md](RELEASE.md)
 
 ## Pre Release
-- [ ] Check mediatype version of [Bundle](/protos/sigstore_bundle.proto), updating for major/minor releases
-- [ ] Check mediatype version of [TrustedRoot](/protos/sigstore_trustroot.proto), updating for major/minor releases
-- [ ] Update [CHANGELOG](/CHANGELOG.md)
-- [ ] Update [pyproject.toml](/gen/pb-python/pyproject.toml) so the `version` matches the targeted release
-- [ ] Update [package.json](/gen/pb-typescript/package.json) so the `version` matches the targeted release
-- [ ] Update [version.rb](/gen/pb-ruby/lib/sigstore_protobuf_specs/version.rb) so the `version` matches the targeted release
-- [ ] Update [Cargo.toml](/gen/pb-rust/Cargo.toml) so the `version` matches the targeted release
+- [ ] Check mediatype version of [Bundle](protos/sigstore_bundle.proto), updating for major/minor releases
+- [ ] Check mediatype version of [TrustedRoot](protos/sigstore_trustroot.proto), updating for major/minor releases
+- [ ] Update [CHANGELOG](CHANGELOG.md)
+- [ ] Update [pyproject.toml](gen/pb-python/pyproject.toml) so the `version` matches the targeted release
+- [ ] Update [package.json](gen/pb-typescript/package.json) so the `version` matches the targeted release
+- [ ] Update [version.rb](gen/pb-ruby/lib/sigstore_protobuf_specs/version.rb) so the `version` matches the targeted release
+- [ ] Update [Cargo.toml](gen/pb-rust/Cargo.toml) so the `version` matches the targeted release
 
 ## Tag Release
 - [ ] `v<version>`
