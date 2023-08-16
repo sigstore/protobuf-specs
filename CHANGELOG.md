@@ -8,6 +8,30 @@ All versions prior to 0.2.0 are untracked.
 
 ## [Unreleased]
 
+## 0.2.1
+
+### Added
+
+* CloudEvents proto for Rekor pub/sub messages ([#86](https://github.com/sigstore/protobuf-specs/pull/86))
+* Generate jsonschema ([#112](https://github.com/sigstore/protobuf-specs/pull/112))
+* Rust bindings for jsonschema ([#118](https://github.com/sigstore/protobuf-specs/pull/118))
+* Dependabot to update dependencies ([#99](https://github.com/sigstore/protobuf-specs/pull/99)) 
+
+### Changed
+
+There were no changes in this release.
+
+### Fixed
+
+* Docs: Fixed spelling error ([#97](https://github.com/sigstore/protobuf-specs/pull/97))
+* Docs: Clarified log index vs global log index ([#101](https://github.com/sigstore/protobuf-specs/pull/101))
+* Docs: Clarified purpose of SET as a signed timestamp ([#100](https://github.com/sigstore/protobuf-specs/pull/100))
+* Docs: Clarify message digest purpose ([#114](https://github.com/sigstore/protobuf-specs/pull/114))
+
+### Removed
+
+There were no removals in this release.
+
 ## 0.2.0
 
 ### Added
