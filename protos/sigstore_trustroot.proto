@@ -50,7 +50,7 @@ message CertificateAuthority {
         // The URI identifies the certificate authority.
         //
         // It is RECOMMENDED that the URI is the base URL for the certificate
-        // authority, that can be provided to any SDK/Clients provided
+        // authority, that can be provided to any SDK/client provided
         // by the certificate authority to interact with the certificate
         // authority.
         string uri = 2;
