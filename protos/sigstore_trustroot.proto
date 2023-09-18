@@ -47,7 +47,12 @@ message CertificateAuthority {
         // The root certificate MUST be self-signed, and so the subject and
         // issuer are the same.
         dev.sigstore.common.v1.DistinguishedName subject = 1;
-        // The URI at which the CA can be accessed.
+        // The URI identifies the certificate authority.
+        //
+        // It is RECOMMENDED that the URI is the base URL for the certificate
+        // authority, that can be provided to any SDK/Clients provided
+        // by the certificate authority to interact with the certificate
+        // authority.
         string uri = 2;
         // The certificate chain for this CA.
         dev.sigstore.common.v1.X509CertificateChain cert_chain = 3;
