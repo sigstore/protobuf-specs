@@ -48,7 +48,12 @@ class CertificateAuthority(betterproto.Message):
     """
 
     uri: str = betterproto.string_field(2)
-    """The URI at which the CA can be accessed."""
+    """
+    The URI identifies the certificate authority. It is RECOMMENDED that the
+    URI is the base URL for the certificate authority, that can be provided to
+    any SDK/client provided by the certificate authority to interact with the
+    certificate authority.
+    """
 
     cert_chain: "__common_v1__.X509CertificateChain" = betterproto.message_field(3)
     """The certificate chain for this CA."""

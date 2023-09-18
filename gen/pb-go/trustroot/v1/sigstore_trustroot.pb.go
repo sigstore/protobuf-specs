@@ -127,7 +127,12 @@ type CertificateAuthority struct {
 	// The root certificate MUST be self-signed, and so the subject and
 	// issuer are the same.
 	Subject *v1.DistinguishedName `protobuf:"bytes,1,opt,name=subject,proto3" json:"subject,omitempty"`
-	// The URI at which the CA can be accessed.
+	// The URI identifies the certificate authority.
+	//
+	// It is RECOMMENDED that the URI is the base URL for the certificate
+	// authority, that can be provided to any SDK/client provided
+	// by the certificate authority to interact with the certificate
+	// authority.
 	Uri string `protobuf:"bytes,2,opt,name=uri,proto3" json:"uri,omitempty"`
 	// The certificate chain for this CA.
 	CertChain *v1.X509CertificateChain `protobuf:"bytes,3,opt,name=cert_chain,json=certChain,proto3" json:"cert_chain,omitempty"`
