@@ -61,27 +61,27 @@ class ArtifactVerificationOptions(betterproto.Message):
     application specific.
     """
 
-    tlog_options: Optional[
-        "ArtifactVerificationOptionsTlogOptions"
-    ] = betterproto.message_field(3, optional=True, group="_tlog_options")
+    tlog_options: Optional["ArtifactVerificationOptionsTlogOptions"] = (
+        betterproto.message_field(3, optional=True, group="_tlog_options")
+    )
     """
     Optional options for artifact transparency log verification. If none is
     provided, the default verification options are: Threshold: 1 Online
     verification: false Disable: false
     """
 
-    ctlog_options: Optional[
-        "ArtifactVerificationOptionsCtlogOptions"
-    ] = betterproto.message_field(4, optional=True, group="_ctlog_options")
+    ctlog_options: Optional["ArtifactVerificationOptionsCtlogOptions"] = (
+        betterproto.message_field(4, optional=True, group="_ctlog_options")
+    )
     """
     Optional options for certificate transparency log verification. If none is
     provided, the default verification options are: Threshold: 1 Detached SCT:
     false Disable: false
     """
 
-    tsa_options: Optional[
-        "ArtifactVerificationOptionsTimestampAuthorityOptions"
-    ] = betterproto.message_field(5, optional=True, group="_tsa_options")
+    tsa_options: Optional["ArtifactVerificationOptionsTimestampAuthorityOptions"] = (
+        betterproto.message_field(5, optional=True, group="_tsa_options")
+    )
     """
     Optional options for certificate signed timestamp verification. If none is
     provided, the default verification options are: Threshold: 1 Disable: false

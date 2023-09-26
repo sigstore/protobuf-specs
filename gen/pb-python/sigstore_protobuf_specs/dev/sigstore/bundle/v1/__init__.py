@@ -19,9 +19,9 @@ class TimestampVerificationData(betterproto.Message):
     in the future.
     """
 
-    rfc3161_timestamps: List[
-        "__common_v1__.Rfc3161SignedTimestamp"
-    ] = betterproto.message_field(1)
+    rfc3161_timestamps: List["__common_v1__.Rfc3161SignedTimestamp"] = (
+        betterproto.message_field(1)
+    )
     """
     A list of RFC3161 signed timestamps provided by the user. This can be used
     when the entry has not been stored on a transparency log, or in conjunction
@@ -34,7 +34,14 @@ class TimestampVerificationData(betterproto.Message):
 class VerificationMaterial(betterproto.Message):
     """
     VerificationMaterial captures details on the materials used to verify
-    signatures.
+    signatures. This message may be embedded in a DSSE envelope as a signature
+    extension. Specifically, the `ext` field of the extension will expect this
+    message when the signature extension is for Sigstore. This is identified by
+    the `kind` field in the extension, which must be set to
+    application/vnd.dev.sigstore.verificationmaterial;version=0.1 for Sigstore.
+    When used as a DSSE extension, if the `public_key` field is used to
+    indicate the key identifier, it MUST match the `keyid` field of the
+    signature the extension is attached to.
     """
 
     public_key: "__common_v1__.PublicKeyIdentifier" = betterproto.message_field(
