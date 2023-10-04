@@ -78,7 +78,10 @@ class Bundle(betterproto.Message):
     that the signature was computed at the time the certificate was valid as
     described in the Sigstore client spec: "Verification using a Bundle". <http
     s://docs.google.com/document/d/1kbhK2qyPPk8SLavHzYSDM8-Ueul9_oxIMVFuWMWKz0E
-    /edit#heading=h.x8bduppe89ln>
+    /edit#heading=h.x8bduppe89ln> If the verification material contains a
+    public key identifier (key hint) and the `content` is a DSSE envelope, the
+    key hints MUST be exactly the same in the verification material and in the
+    DSSE envelope.
     """
 
     message_signature: "__common_v1__.MessageSignature" = betterproto.message_field(
