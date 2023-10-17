@@ -26,9 +26,9 @@ classifiers = [
   "Topic :: Security :: Cryptography",
 ]
 dependencies = [
-  "betterproto==2.0.0b5",
+  "betterproto==2.0.0b6",
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 
 [project.urls]
 Homepage = "https://pypi.org/project/sigstore-protobuf-specs/"
