@@ -1,7 +1,7 @@
 name: Build Java Release
 on:
   push:
-    tags:        
+    tags:
       # if you change this pattern, make sure jobs.strip-tag still works
       - 'release/java/v[0-9]+.[0-9]+.[0-9]+'
 jobs:
@@ -13,7 +13,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
-      - name: process tag 
+      - name: process tag
         id: version
         run: |
           TAG=${{ github.ref_name }}
@@ -26,7 +26,7 @@ jobs:
       hashes: ${{ steps.hash.outputs.hashes }}
     steps:
       - name: checkout tag
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v3.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           ref: "${{ github.ref }}"
 
