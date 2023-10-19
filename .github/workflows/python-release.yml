@@ -26,3 +26,5 @@ jobs:
 
     - name: publish
       uses: pypa/gh-action-pypi-publish@b7f401de30cb6434a1e19f805ff006643653240e # v1.8.10
+      with:
+        packages-dir: gen/pb-python/dist/
