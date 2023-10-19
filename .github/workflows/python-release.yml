@@ -9,6 +9,9 @@ jobs:
   pypi:
     name: upload release to PyPI
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write # required for trusted publishing to PyPI
+
     steps:
     - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
@@ -23,7 +26,3 @@ jobs:
 
     - name: publish
       uses: pypa/gh-action-pypi-publish@b7f401de30cb6434a1e19f805ff006643653240e # v1.8.10
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_TOKEN }}
-        packages-dir: gen/pb-python/dist/
