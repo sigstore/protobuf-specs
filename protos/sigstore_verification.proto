@@ -56,7 +56,7 @@ message ArtifactVerificationOptions {
                 bool disable = 3;
                 // Verify SET indicates that the timestamp from
                 // the SET should be used when verifying the X.509
-                // certifiacte chain. Note that inclusion promises (SETs)
+                // certificate chain. Note that inclusion promises (SETs)
                 // are optional in a bundle, and so requiring SET may render
                 // bundles invalid during verification if SET is not present.
                 bool verify_set = 4;
