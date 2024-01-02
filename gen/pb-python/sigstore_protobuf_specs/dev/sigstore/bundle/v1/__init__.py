@@ -19,9 +19,9 @@ class TimestampVerificationData(betterproto.Message):
     in the future.
     """
 
-    rfc3161_timestamps: List[
-        "__common_v1__.Rfc3161SignedTimestamp"
-    ] = betterproto.message_field(1)
+    rfc3161_timestamps: List["__common_v1__.Rfc3161SignedTimestamp"] = (
+        betterproto.message_field(1)
+    )
     """
     A list of RFC3161 signed timestamps provided by the user. This can be used
     when the entry has not been stored on a transparency log, or in conjunction

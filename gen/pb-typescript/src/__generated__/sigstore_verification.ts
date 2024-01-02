@@ -48,7 +48,6 @@ export interface ArtifactVerificationOptions {
    * Optional options for certificate transparency log verification.
    * If none is provided, the default verification options are:
    * Threshold: 1
-   * Detached SCT: false
    * Disable: false
    */
   ctlogOptions?:
@@ -78,12 +77,6 @@ export interface ArtifactVerificationOptions_CtlogOptions {
    * appear on.
    */
   threshold: number;
-  /**
-   * Expect detached SCTs.
-   * This is not supported right now as we can't capture an
-   * detached SCT in the bundle.
-   */
-  detachedSct: boolean;
   /** Disable ct transparency log verification */
   disable: boolean;
 }
@@ -273,14 +266,13 @@ export const ArtifactVerificationOptions_TlogOptions = {
 };
 
 function createBaseArtifactVerificationOptions_CtlogOptions(): ArtifactVerificationOptions_CtlogOptions {
-  return { threshold: 0, detachedSct: false, disable: false };
+  return { threshold: 0, disable: false };
 }
 
 export const ArtifactVerificationOptions_CtlogOptions = {
   fromJSON(object: any): ArtifactVerificationOptions_CtlogOptions {
     return {
       threshold: isSet(object.threshold) ? Number(object.threshold) : 0,
-      detachedSct: isSet(object.detachedSct) ? Boolean(object.detachedSct) : false,
       disable: isSet(object.disable) ? Boolean(object.disable) : false,
     };
   },
@@ -288,7 +280,6 @@ export const ArtifactVerificationOptions_CtlogOptions = {
   toJSON(message: ArtifactVerificationOptions_CtlogOptions): unknown {
     const obj: any = {};
     message.threshold !== undefined && (obj.threshold = Math.round(message.threshold));
-    message.detachedSct !== undefined && (obj.detachedSct = message.detachedSct);
     message.disable !== undefined && (obj.disable = message.disable);
     return obj;
   },

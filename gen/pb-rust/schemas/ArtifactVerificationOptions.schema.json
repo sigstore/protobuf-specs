@@ -21,7 +21,7 @@
                 "ctlogOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions",
                     "additionalProperties": false,
-                    "description": "Optional options for certificate transparency log verification. If none is provided, the default verification options are: Threshold: 1 Detached SCT: false Disable: false"
+                    "description": "Optional options for certificate transparency log verification. If none is provided, the default verification options are: Threshold: 1 Disable: false"
                 },
                 "tsaOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions",
@@ -202,10 +202,6 @@
                 "threshold": {
                     "type": "integer",
                     "description": "The number of ct transparency logs the certificate must appear on."
-                },
-                "detachedSct": {
-                    "type": "boolean",
-                    "description": "Expect detached SCTs. This is not supported right now as we can't capture an detached SCT in the bundle."
                 },
                 "disable": {
                     "type": "boolean",
