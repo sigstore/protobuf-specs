@@ -36,7 +36,6 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     end
     add_message "dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions" do
       optional :threshold, :int32, 1
-      optional :detached_sct, :bool, 2
       optional :disable, :bool, 3
     end
     add_message "dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions" do

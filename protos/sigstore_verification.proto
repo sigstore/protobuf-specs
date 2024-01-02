@@ -59,10 +59,7 @@ message ArtifactVerificationOptions {
                 // The number of ct transparency logs the certificate must
                 // appear on.
                 int32 threshold = 1;
-                // Expect detached SCTs.
-                // This is not supported right now as we can't capture an
-                // detached SCT in the bundle.
-                bool detached_sct = 2;
+                reserved 2; // Deprecated: Support for detached SCTs
                 // Disable ct transparency log verification
                 bool disable = 3;
         }
@@ -98,7 +95,6 @@ message ArtifactVerificationOptions {
         // Optional options for certificate transparency log verification.
         // If none is provided, the default verification options are:
         // Threshold: 1
-        // Detached SCT: false
         // Disable: false
         optional CtlogOptions ctlog_options = 4;
         // Optional options for certificate signed timestamp verification.

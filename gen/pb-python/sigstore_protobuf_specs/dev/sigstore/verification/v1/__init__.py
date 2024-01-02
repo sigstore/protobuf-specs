@@ -75,8 +75,7 @@ class ArtifactVerificationOptions(betterproto.Message):
     ] = betterproto.message_field(4, optional=True, group="_ctlog_options")
     """
     Optional options for certificate transparency log verification. If none is
-    provided, the default verification options are: Threshold: 1 Detached SCT:
-    false Disable: false
+    provided, the default verification options are: Threshold: 1 Disable: false
     """
 
     tsa_options: Optional[
@@ -104,12 +103,6 @@ class ArtifactVerificationOptionsTlogOptions(betterproto.Message):
 class ArtifactVerificationOptionsCtlogOptions(betterproto.Message):
     threshold: int = betterproto.int32_field(1)
     """The number of ct transparency logs the certificate must appear on."""
-
-    detached_sct: bool = betterproto.bool_field(2)
-    """
-    Expect detached SCTs. This is not supported right now as we can't capture
-    an detached SCT in the bundle.
-    """
 
     disable: bool = betterproto.bool_field(3)
     """Disable ct transparency log verification"""
