@@ -94,7 +94,14 @@ func (x *TimestampVerificationData) GetRfc3161Timestamps() []*v1.RFC3161SignedTi
 }
 
 // VerificationMaterial captures details on the materials used to verify
-// signatures.
+// signatures. This message may be embedded in a DSSE envelope as a signature
+// extension. Specifically, the `ext` field of the extension will expect this
+// message when the signature extension is for Sigstore. This is identified by
+// the `kind` field in the extension, which must be set to
+// application/vnd.dev.sigstore.verificationmaterial;version=0.1 for Sigstore.
+// When used as a DSSE extension, if the `public_key` field is used to indicate
+// the key identifier, it MUST match the `keyid` field of the signature the
+// extension is attached to.
 type VerificationMaterial struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
