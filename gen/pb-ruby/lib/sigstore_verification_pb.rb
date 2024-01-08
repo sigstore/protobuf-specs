@@ -34,7 +34,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :threshold, :int32, 1
       optional :perform_online_verification, :bool, 2
       optional :disable, :bool, 3
-      optional :verify_set_timestamp, :bool, 4
+      optional :verify_set, :bool, 4
     end
     add_message "dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions" do
       optional :threshold, :int32, 1

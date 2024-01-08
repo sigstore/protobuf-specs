@@ -106,10 +106,12 @@ class ArtifactVerificationOptionsTlogOptions(betterproto.Message):
     disable: bool = betterproto.bool_field(3)
     """Disable verification for transparency logs."""
 
-    verify_set_timestamp: bool = betterproto.bool_field(4)
+    verify_set: bool = betterproto.bool_field(4)
     """
-    Verify SET timestamps indicates that the timestamp from the SET should be
-    used when verifying the X.509 certifiacte chain
+    Verify SET indicates that the timestamp from the SET should be used when
+    verifying the X.509 certifiacte chain. Note that inclusion promises (SETs)
+    are optional in a bundle, and so requiring SET may render bundles invalid
+    during verification if SET is not present.
     """
 
 

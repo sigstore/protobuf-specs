@@ -54,10 +54,12 @@ message ArtifactVerificationOptions {
                 bool perform_online_verification = 2;
                 // Disable verification for transparency logs.
                 bool disable = 3;
-                // Verify SET timestamps indicates that the timestamp from
+                // Verify SET indicates that the timestamp from
                 // the SET should be used when verifying the X.509
-                // certifiacte chain
-                bool verify_set_timestamp = 4;
+                // certifiacte chain. Note that inclusion promises (SETs)
+                // are optional in a bundle, and so requiring SET may render
+                // bundles invalid during verification if SET is not present.
+                bool verify_set = 4;
         }
         message CtlogOptions {
                 // The number of ct transparency logs the certificate must

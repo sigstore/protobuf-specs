@@ -80,11 +80,13 @@ export interface ArtifactVerificationOptions_TlogOptions {
   /** Disable verification for transparency logs. */
   disable: boolean;
   /**
-   * Verify SET timestamps indicates that the timestamp from
+   * Verify SET indicates that the timestamp from
    * the SET should be used when verifying the X.509
-   * certifiacte chain
+   * certifiacte chain. Note that inclusion promises (SETs)
+   * are optional in a bundle, and so requiring SET may render
+   * bundles invalid during verification if SET is not present.
    */
-  verifySetTimestamp: boolean;
+  verifySet: boolean;
 }
 
 export interface ArtifactVerificationOptions_CtlogOptions {
@@ -280,7 +282,7 @@ export const ArtifactVerificationOptions = {
 };
 
 function createBaseArtifactVerificationOptions_TlogOptions(): ArtifactVerificationOptions_TlogOptions {
-  return { threshold: 0, performOnlineVerification: false, disable: false, verifySetTimestamp: false };
+  return { threshold: 0, performOnlineVerification: false, disable: false, verifySet: false };
 }
 
 export const ArtifactVerificationOptions_TlogOptions = {
@@ -291,7 +293,7 @@ export const ArtifactVerificationOptions_TlogOptions = {
         ? Boolean(object.performOnlineVerification)
         : false,
       disable: isSet(object.disable) ? Boolean(object.disable) : false,
-      verifySetTimestamp: isSet(object.verifySetTimestamp) ? Boolean(object.verifySetTimestamp) : false,
+      verifySet: isSet(object.verifySet) ? Boolean(object.verifySet) : false,
     };
   },
 
@@ -301,7 +303,7 @@ export const ArtifactVerificationOptions_TlogOptions = {
     message.performOnlineVerification !== undefined &&
       (obj.performOnlineVerification = message.performOnlineVerification);
     message.disable !== undefined && (obj.disable = message.disable);
-    message.verifySetTimestamp !== undefined && (obj.verifySetTimestamp = message.verifySetTimestamp);
+    message.verifySet !== undefined && (obj.verifySet = message.verifySet);
     return obj;
   },
 };
