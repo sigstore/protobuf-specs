@@ -79,14 +79,6 @@ export interface ArtifactVerificationOptions_TlogOptions {
   performOnlineVerification: boolean;
   /** Disable verification for transparency logs. */
   disable: boolean;
-  /**
-   * Verify SET indicates that the timestamp from
-   * the SET should be used when verifying the X.509
-   * certifiacte chain. Note that inclusion promises (SETs)
-   * are optional in a bundle, and so requiring SET may render
-   * bundles invalid during verification if SET is not present.
-   */
-  verifySet: boolean;
 }
 
 export interface ArtifactVerificationOptions_CtlogOptions {
@@ -106,11 +98,18 @@ export interface ArtifactVerificationOptions_TimestampAuthorityOptions {
   disable: boolean;
 }
 
+export interface ArtifactVerificationOptions_TlogIntegratedTimestampOptions {
+  /** The number of integrated timestamps that are expected. */
+  threshold: number;
+  /** Disable integrated timestamp verification. */
+  disable: boolean;
+}
+
 export interface ArtifactVerificationOptions_ObserverTimestampOptions {
   /**
    * The number of external ovservers of the timestamp,
-   * this is a union of RFC3161 signed timestamps, and SETs
-   * from a transparency log
+   * this is a union of RFC3161 signed timestamps, and
+   * integrated timestamps from a transparency log
    */
   threshold: number;
   /** Disable signed timestamp verification. */
@@ -282,7 +281,7 @@ export const ArtifactVerificationOptions = {
 };
 
 function createBaseArtifactVerificationOptions_TlogOptions(): ArtifactVerificationOptions_TlogOptions {
-  return { threshold: 0, performOnlineVerification: false, disable: false, verifySet: false };
+  return { threshold: 0, performOnlineVerification: false, disable: false };
 }
 
 export const ArtifactVerificationOptions_TlogOptions = {
@@ -293,7 +292,6 @@ export const ArtifactVerificationOptions_TlogOptions = {
         ? Boolean(object.performOnlineVerification)
         : false,
       disable: isSet(object.disable) ? Boolean(object.disable) : false,
-      verifySet: isSet(object.verifySet) ? Boolean(object.verifySet) : false,
     };
   },
 
@@ -303,7 +301,6 @@ export const ArtifactVerificationOptions_TlogOptions = {
     message.performOnlineVerification !== undefined &&
       (obj.performOnlineVerification = message.performOnlineVerification);
     message.disable !== undefined && (obj.disable = message.disable);
-    message.verifySet !== undefined && (obj.verifySet = message.verifySet);
     return obj;
   },
 };
@@ -341,6 +338,26 @@ export const ArtifactVerificationOptions_TimestampAuthorityOptions = {
   },
 
   toJSON(message: ArtifactVerificationOptions_TimestampAuthorityOptions): unknown {
+    const obj: any = {};
+    message.threshold !== undefined && (obj.threshold = Math.round(message.threshold));
+    message.disable !== undefined && (obj.disable = message.disable);
+    return obj;
+  },
+};
+
+function createBaseArtifactVerificationOptions_TlogIntegratedTimestampOptions(): ArtifactVerificationOptions_TlogIntegratedTimestampOptions {
+  return { threshold: 0, disable: false };
+}
+
+export const ArtifactVerificationOptions_TlogIntegratedTimestampOptions = {
+  fromJSON(object: any): ArtifactVerificationOptions_TlogIntegratedTimestampOptions {
+    return {
+      threshold: isSet(object.threshold) ? Number(object.threshold) : 0,
+      disable: isSet(object.disable) ? Boolean(object.disable) : false,
+    };
+  },
+
+  toJSON(message: ArtifactVerificationOptions_TlogIntegratedTimestampOptions): unknown {
     const obj: any = {};
     message.threshold !== undefined && (obj.threshold = Math.round(message.threshold));
     message.disable !== undefined && (obj.disable = message.disable);

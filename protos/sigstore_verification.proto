@@ -54,12 +54,6 @@ message ArtifactVerificationOptions {
                 bool perform_online_verification = 2;
                 // Disable verification for transparency logs.
                 bool disable = 3;
-                // Verify SET indicates that the timestamp from
-                // the SET should be used when verifying the X.509
-                // certificate chain. Note that inclusion promises (SETs)
-                // are optional in a bundle, and so requiring SET may render
-                // bundles invalid during verification if SET is not present.
-                bool verify_set = 4;
         }
         message CtlogOptions {
                 // The number of ct transparency logs the certificate must
@@ -75,10 +69,16 @@ message ArtifactVerificationOptions {
                 // Disable signed timestamp verification.
                 bool disable = 2;
         }
+        message TlogIntegratedTimestampOptions{
+                // The number of integrated timestamps that are expected.
+                int32 threshold = 1;
+                // Disable integrated timestamp verification.
+                bool disable = 2;
+        }
         message ObserverTimestampOptions {
                 // The number of external ovservers of the timestamp,
-                // this is a union of RFC3161 signed timestamps, and SETs
-                // from a transparency log
+                // this is a union of RFC3161 signed timestamps, and
+                // integrated timestamps from a transparency log
                 int32 threshold = 1;
                 // Disable signed timestamp verification.
                 bool disable = 2;

@@ -34,13 +34,16 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :threshold, :int32, 1
       optional :perform_online_verification, :bool, 2
       optional :disable, :bool, 3
-      optional :verify_set, :bool, 4
     end
     add_message "dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions" do
       optional :threshold, :int32, 1
       optional :disable, :bool, 3
     end
     add_message "dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions" do
+      optional :threshold, :int32, 1
+      optional :disable, :bool, 2
+    end
+    add_message "dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogIntegratedTimestampOptions" do
       optional :threshold, :int32, 1
       optional :disable, :bool, 2
     end
@@ -73,6 +76,7 @@ module Sigstore
       ArtifactVerificationOptions::TlogOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions").msgclass
       ArtifactVerificationOptions::CtlogOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions").msgclass
       ArtifactVerificationOptions::TimestampAuthorityOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions").msgclass
+      ArtifactVerificationOptions::TlogIntegratedTimestampOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogIntegratedTimestampOptions").msgclass
       ArtifactVerificationOptions::ObserverTimestampOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.ObserverTimestampOptions").msgclass
       Artifact = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.Artifact").msgclass
       Input = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.Input").msgclass

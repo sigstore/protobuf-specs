@@ -106,14 +106,6 @@ class ArtifactVerificationOptionsTlogOptions(betterproto.Message):
     disable: bool = betterproto.bool_field(3)
     """Disable verification for transparency logs."""
 
-    verify_set: bool = betterproto.bool_field(4)
-    """
-    Verify SET indicates that the timestamp from the SET should be used when
-    verifying the X.509 certifiacte chain. Note that inclusion promises (SETs)
-    are optional in a bundle, and so requiring SET may render bundles invalid
-    during verification if SET is not present.
-    """
-
 
 @dataclass(eq=False, repr=False)
 class ArtifactVerificationOptionsCtlogOptions(betterproto.Message):
@@ -134,11 +126,21 @@ class ArtifactVerificationOptionsTimestampAuthorityOptions(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class ArtifactVerificationOptionsTlogIntegratedTimestampOptions(betterproto.Message):
+    threshold: int = betterproto.int32_field(1)
+    """The number of integrated timestamps that are expected."""
+
+    disable: bool = betterproto.bool_field(2)
+    """Disable integrated timestamp verification."""
+
+
+@dataclass(eq=False, repr=False)
 class ArtifactVerificationOptionsObserverTimestampOptions(betterproto.Message):
     threshold: int = betterproto.int32_field(1)
     """
     The number of external ovservers of the timestamp, this is a union of
-    RFC3161 signed timestamps, and SETs from a transparency log
+    RFC3161 signed timestamps, and integrated timestamps from a transparency
+    log
     """
 
     disable: bool = betterproto.bool_field(2)

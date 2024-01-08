@@ -226,7 +226,7 @@
             "properties": {
                 "threshold": {
                     "type": "integer",
-                    "description": "The number of external ovservers of the timestamp, this is a union of RFC3161 signed timestamps, and SETs from a transparency log"
+                    "description": "The number of external ovservers of the timestamp, this is a union of RFC3161 signed timestamps, and integrated timestamps from a transparency log"
                 },
                 "disable": {
                     "type": "boolean",
@@ -265,10 +265,6 @@
                 "disable": {
                     "type": "boolean",
                     "description": "Disable verification for transparency logs."
-                },
-                "verifySet": {
-                    "type": "boolean",
-                    "description": "Verify SET indicates that the timestamp from the SET should be used when verifying the X.509 certifiacte chain. Note that inclusion promises (SETs) are optional in a bundle, and so requiring SET may render bundles invalid during verification if SET is not present."
                 }
             },
             "additionalProperties": false,
