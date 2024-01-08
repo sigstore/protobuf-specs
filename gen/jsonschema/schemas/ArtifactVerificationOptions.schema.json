@@ -16,7 +16,7 @@
                 "tlogOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions",
                     "additionalProperties": false,
-                    "description": "Optional options for artifact transparency log verification. If none is provided, the default verification options are: Threshold: 1 Online verification: false Disable: false Verify SET Timestamps: true"
+                    "description": "Optional options for artifact transparency log verification. If none is provided, the default verification options are: Threshold: 1 Online verification: false Disable: false"
                 },
                 "ctlogOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions",
@@ -26,12 +26,17 @@
                 "tsaOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions",
                     "additionalProperties": false,
-                    "description": "Optional options for certificate signed timestamp verification. If none is provided, the default verification options are: Threshold: 1 Disable: false"
+                    "description": "Optional options for certificate signed timestamp verification. If none is provided, the default verification options are: Threshold: 0 Disable: true"
+                },
+                "integratedTsOptions": {
+                    "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogIntegratedTimestampOptions",
+                    "additionalProperties": false,
+                    "description": "Optional options for integrated timestamp verification. If none is provided, the default verification options are: Threshold: 0 Disable: true"
                 },
                 "observerOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.ObserverTimestampOptions",
                     "additionalProperties": false,
-                    "description": "Optional options for timestamp verification. If none is provided, the default verification options are: Threshold 1 Disable: false"
+                    "description": "Optional options for observed timestamp verification. If none is provided, the default verification options are: Threshold 1 Disable: false"
                 }
             },
             "additionalProperties": false,
@@ -60,6 +65,11 @@
                 {
                     "required": [
                         "tsa_options"
+                    ]
+                },
+                {
+                    "required": [
+                        "integrated_ts_options"
                     ]
                 },
                 {
@@ -226,11 +236,11 @@
             "properties": {
                 "threshold": {
                     "type": "integer",
-                    "description": "The number of external ovservers of the timestamp, this is a union of RFC3161 signed timestamps, and integrated timestamps from a transparency log"
+                    "description": "The number of external observers of the timestamp. This is a union of RFC3161 signed timestamps, and integrated timestamps from a transparency log, that could include additional timestamp sources in the future."
                 },
                 "disable": {
                     "type": "boolean",
-                    "description": "Disable signed timestamp verification."
+                    "description": "Disable observer timestamp verification."
                 }
             },
             "additionalProperties": false,
@@ -251,6 +261,21 @@
             "additionalProperties": false,
             "type": "object",
             "title": "Timestamp Authority Options"
+        },
+        "dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogIntegratedTimestampOptions": {
+            "properties": {
+                "threshold": {
+                    "type": "integer",
+                    "description": "The number of integrated timestamps that are expected."
+                },
+                "disable": {
+                    "type": "boolean",
+                    "description": "Disable integrated timestamp verification."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Tlog Integrated Timestamp Options"
         },
         "dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions": {
             "properties": {

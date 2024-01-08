@@ -40,7 +40,6 @@ export interface ArtifactVerificationOptions {
    * Threshold: 1
    * Online verification: false
    * Disable: false
-   * Verify SET Timestamps: true
    */
   tlogOptions?:
     | ArtifactVerificationOptions_TlogOptions
@@ -57,14 +56,23 @@ export interface ArtifactVerificationOptions {
   /**
    * Optional options for certificate signed timestamp verification.
    * If none is provided, the default verification options are:
-   * Threshold: 1
-   * Disable: false
+   * Threshold: 0
+   * Disable: true
    */
   tsaOptions?:
     | ArtifactVerificationOptions_TimestampAuthorityOptions
     | undefined;
   /**
-   * Optional options for timestamp verification.
+   * Optional options for integrated timestamp verification.
+   * If none is provided, the default verification options are:
+   * Threshold: 0
+   * Disable: true
+   */
+  integratedTsOptions?:
+    | ArtifactVerificationOptions_TlogIntegratedTimestampOptions
+    | undefined;
+  /**
+   * Optional options for observed timestamp verification.
    * If none is provided, the default verification options are:
    * Threshold 1
    * Disable: false
@@ -107,12 +115,14 @@ export interface ArtifactVerificationOptions_TlogIntegratedTimestampOptions {
 
 export interface ArtifactVerificationOptions_ObserverTimestampOptions {
   /**
-   * The number of external ovservers of the timestamp,
-   * this is a union of RFC3161 signed timestamps, and
-   * integrated timestamps from a transparency log
+   * The number of external observers of the timestamp.
+   * This is a union of RFC3161 signed timestamps, and
+   * integrated timestamps from a transparency log, that
+   * could include additional timestamp sources in the
+   * future.
    */
   threshold: number;
-  /** Disable signed timestamp verification. */
+  /** Disable observer timestamp verification. */
   disable: boolean;
 }
 
@@ -225,6 +235,7 @@ function createBaseArtifactVerificationOptions(): ArtifactVerificationOptions {
     tlogOptions: undefined,
     ctlogOptions: undefined,
     tsaOptions: undefined,
+    integratedTsOptions: undefined,
     observerOptions: undefined,
   };
 }
@@ -249,6 +260,9 @@ export const ArtifactVerificationOptions = {
       tsaOptions: isSet(object.tsaOptions)
         ? ArtifactVerificationOptions_TimestampAuthorityOptions.fromJSON(object.tsaOptions)
         : undefined,
+      integratedTsOptions: isSet(object.integratedTsOptions)
+        ? ArtifactVerificationOptions_TlogIntegratedTimestampOptions.fromJSON(object.integratedTsOptions)
+        : undefined,
       observerOptions: isSet(object.observerOptions)
         ? ArtifactVerificationOptions_ObserverTimestampOptions.fromJSON(object.observerOptions)
         : undefined,
@@ -272,6 +286,9 @@ export const ArtifactVerificationOptions = {
       : undefined);
     message.tsaOptions !== undefined && (obj.tsaOptions = message.tsaOptions
       ? ArtifactVerificationOptions_TimestampAuthorityOptions.toJSON(message.tsaOptions)
+      : undefined);
+    message.integratedTsOptions !== undefined && (obj.integratedTsOptions = message.integratedTsOptions
+      ? ArtifactVerificationOptions_TlogIntegratedTimestampOptions.toJSON(message.integratedTsOptions)
       : undefined);
     message.observerOptions !== undefined && (obj.observerOptions = message.observerOptions
       ? ArtifactVerificationOptions_ObserverTimestampOptions.toJSON(message.observerOptions)

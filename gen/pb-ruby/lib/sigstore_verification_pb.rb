@@ -24,7 +24,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       proto3_optional :tlog_options, :message, 3, "dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions"
       proto3_optional :ctlog_options, :message, 4, "dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions"
       proto3_optional :tsa_options, :message, 5, "dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions"
-      proto3_optional :observer_options, :message, 6, "dev.sigstore.verification.v1.ArtifactVerificationOptions.ObserverTimestampOptions"
+      proto3_optional :integrated_ts_options, :message, 6, "dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogIntegratedTimestampOptions"
+      proto3_optional :observer_options, :message, 7, "dev.sigstore.verification.v1.ArtifactVerificationOptions.ObserverTimestampOptions"
       oneof :signers do
         optional :certificate_identities, :message, 1, "dev.sigstore.verification.v1.CertificateIdentities"
         optional :public_keys, :message, 2, "dev.sigstore.verification.v1.PublicKeyIdentities"

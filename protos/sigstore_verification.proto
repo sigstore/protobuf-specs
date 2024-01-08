@@ -77,10 +77,12 @@ message ArtifactVerificationOptions {
         }
         message ObserverTimestampOptions {
                 // The number of external observers of the timestamp.
-                // this is a union of RFC3161 signed timestamps, and
-                // integrated timestamps from a transparency log
+                // This is a union of RFC3161 signed timestamps, and
+                // integrated timestamps from a transparency log, that
+                // could include additional timestamp sources in the
+                // future.
                 int32 threshold = 1;
-                // Disable signed timestamp verification.
+                // Disable observer timestamp verification.
                 bool disable = 2;
         }
 
@@ -105,7 +107,6 @@ message ArtifactVerificationOptions {
         // Threshold: 1
         // Online verification: false
         // Disable: false
-        // Verify SET Timestamps: true
         optional TlogOptions tlog_options = 3;
         // Optional options for certificate transparency log verification.
         // If none is provided, the default verification options are:
@@ -114,14 +115,19 @@ message ArtifactVerificationOptions {
         optional CtlogOptions ctlog_options = 4;
         // Optional options for certificate signed timestamp verification.
         // If none is provided, the default verification options are:
-        // Threshold: 1
-        // Disable: false
+        // Threshold: 0
+        // Disable: true
         optional TimestampAuthorityOptions tsa_options = 5;
-        // Optional options for timestamp verification.
+        // Optional options for integrated timestamp verification.
+        // If none is provided, the default verification options are:
+        // Threshold: 0
+        // Disable: true
+        optional TlogIntegratedTimestampOptions integrated_ts_options = 6;
+        // Optional options for observed timestamp verification.
         // If none is provided, the default verification options are:
         // Threshold 1
         // Disable: false
-        optional ObserverTimestampOptions observer_options = 6;
+        optional ObserverTimestampOptions observer_options = 7;
 }
 
 message Artifact {
