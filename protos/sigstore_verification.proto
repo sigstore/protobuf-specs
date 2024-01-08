@@ -76,7 +76,7 @@ message ArtifactVerificationOptions {
                 bool disable = 2;
         }
         message ObserverTimestampOptions {
-                // The number of external ovservers of the timestamp,
+                // The number of external observers of the timestamp.
                 // this is a union of RFC3161 signed timestamps, and
                 // integrated timestamps from a transparency log
                 int32 threshold = 1;
