@@ -54,6 +54,10 @@ message ArtifactVerificationOptions {
                 bool perform_online_verification = 2;
                 // Disable verification for transparency logs.
                 bool disable = 3;
+                // Verify SET timestamps indicates that the timestamp from
+                // the SET should be used when verifying the X.509
+                // certifiacte chain
+                bool verify_set_timestamp = 4;
         }
         message CtlogOptions {
                 // The number of ct transparency logs the certificate must
@@ -65,6 +69,14 @@ message ArtifactVerificationOptions {
         }
         message TimestampAuthorityOptions {
                 // The number of signed timestamps that are expected.
+                int32 threshold = 1;
+                // Disable signed timestamp verification.
+                bool disable = 2;
+        }
+        message ObserverTimestampOptions {
+                // The number of external ovservers of the timestamp,
+                // this is a union of RFC3161 signed timestamps, and SETs
+                // from a transparency log
                 int32 threshold = 1;
                 // Disable signed timestamp verification.
                 bool disable = 2;
@@ -91,6 +103,7 @@ message ArtifactVerificationOptions {
         // Threshold: 1
         // Online verification: false
         // Disable: false
+        // Verify SET Timestamps: true
         optional TlogOptions tlog_options = 3;
         // Optional options for certificate transparency log verification.
         // If none is provided, the default verification options are:
@@ -102,6 +115,11 @@ message ArtifactVerificationOptions {
         // Threshold: 1
         // Disable: false
         optional TimestampAuthorityOptions tsa_options = 5;
+        // Optional options for timestamp verification.
+        // If none is provided, the default verification options are:
+        // Threshold 1
+        // Disable: false
+        optional ObserverTimestampOptions observer_options = 6;
 }
 
 message Artifact {

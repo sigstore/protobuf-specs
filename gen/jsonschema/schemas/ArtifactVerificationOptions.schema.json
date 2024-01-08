@@ -16,7 +16,7 @@
                 "tlogOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions",
                     "additionalProperties": false,
-                    "description": "Optional options for artifact transparency log verification. If none is provided, the default verification options are: Threshold: 1 Online verification: false Disable: false"
+                    "description": "Optional options for artifact transparency log verification. If none is provided, the default verification options are: Threshold: 1 Online verification: false Disable: false Verify SET Timestamps: true"
                 },
                 "ctlogOptions": {
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions",
@@ -27,6 +27,11 @@
                     "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions",
                     "additionalProperties": false,
                     "description": "Optional options for certificate signed timestamp verification. If none is provided, the default verification options are: Threshold: 1 Disable: false"
+                },
+                "observerOptions": {
+                    "$ref": "#/definitions/dev.sigstore.verification.v1.ArtifactVerificationOptions.ObserverTimestampOptions",
+                    "additionalProperties": false,
+                    "description": "Optional options for timestamp verification. If none is provided, the default verification options are: Threshold 1 Disable: false"
                 }
             },
             "additionalProperties": false,
@@ -55,6 +60,11 @@
                 {
                     "required": [
                         "tsa_options"
+                    ]
+                },
+                {
+                    "required": [
+                        "observer_options"
                     ]
                 }
             ],
@@ -212,6 +222,21 @@
             "type": "object",
             "title": "Ctlog Options"
         },
+        "dev.sigstore.verification.v1.ArtifactVerificationOptions.ObserverTimestampOptions": {
+            "properties": {
+                "threshold": {
+                    "type": "integer",
+                    "description": "The number of external ovservers of the timestamp, this is a union of RFC3161 signed timestamps, and SETs from a transparency log"
+                },
+                "disable": {
+                    "type": "boolean",
+                    "description": "Disable signed timestamp verification."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Observer Timestamp Options"
+        },
         "dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions": {
             "properties": {
                 "threshold": {
@@ -240,6 +265,10 @@
                 "disable": {
                     "type": "boolean",
                     "description": "Disable verification for transparency logs."
+                },
+                "verifySetTimestamp": {
+                    "type": "boolean",
+                    "description": "Verify SET timestamps indicates that the timestamp from the SET should be used when verifying the X.509 certifiacte chain"
                 }
             },
             "additionalProperties": false,

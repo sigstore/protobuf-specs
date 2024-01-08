@@ -67,7 +67,7 @@ class ArtifactVerificationOptions(betterproto.Message):
     """
     Optional options for artifact transparency log verification. If none is
     provided, the default verification options are: Threshold: 1 Online
-    verification: false Disable: false
+    verification: false Disable: false Verify SET Timestamps: true
     """
 
     ctlog_options: Optional["ArtifactVerificationOptionsCtlogOptions"] = (
@@ -86,6 +86,14 @@ class ArtifactVerificationOptions(betterproto.Message):
     provided, the default verification options are: Threshold: 1 Disable: false
     """
 
+    observer_options: Optional[
+        "ArtifactVerificationOptionsObserverTimestampOptions"
+    ] = betterproto.message_field(6, optional=True, group="_observer_options")
+    """
+    Optional options for timestamp verification. If none is provided, the
+    default verification options are: Threshold 1 Disable: false
+    """
+
 
 @dataclass(eq=False, repr=False)
 class ArtifactVerificationOptionsTlogOptions(betterproto.Message):
@@ -97,6 +105,12 @@ class ArtifactVerificationOptionsTlogOptions(betterproto.Message):
 
     disable: bool = betterproto.bool_field(3)
     """Disable verification for transparency logs."""
+
+    verify_set_timestamp: bool = betterproto.bool_field(4)
+    """
+    Verify SET timestamps indicates that the timestamp from the SET should be
+    used when verifying the X.509 certifiacte chain
+    """
 
 
 @dataclass(eq=False, repr=False)
@@ -112,6 +126,18 @@ class ArtifactVerificationOptionsCtlogOptions(betterproto.Message):
 class ArtifactVerificationOptionsTimestampAuthorityOptions(betterproto.Message):
     threshold: int = betterproto.int32_field(1)
     """The number of signed timestamps that are expected."""
+
+    disable: bool = betterproto.bool_field(2)
+    """Disable signed timestamp verification."""
+
+
+@dataclass(eq=False, repr=False)
+class ArtifactVerificationOptionsObserverTimestampOptions(betterproto.Message):
+    threshold: int = betterproto.int32_field(1)
+    """
+    The number of external ovservers of the timestamp, this is a union of
+    RFC3161 signed timestamps, and SETs from a transparency log
+    """
 
     disable: bool = betterproto.bool_field(2)
     """Disable signed timestamp verification."""
