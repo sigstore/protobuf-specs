@@ -162,6 +162,69 @@ func (PublicKeyDetails) EnumDescriptor() ([]byte, []int) {
 	return file_sigstore_common_proto_rawDescGZIP(), []int{1}
 }
 
+// SupportedAlgorithm captures the signature/hash algorithm combinations allowed
+// in the Sigstore ecosystem.
+//
+// This is modelled as a linear set as we want to provide a small number of
+// opinionated options instead of allowing every possible permutation.
+type SupportedAlgorithm int32
+
+const (
+	SupportedAlgorithm_SUPPORTED_ALGORITHM_UNSPECIFIED SupportedAlgorithm = 0
+	SupportedAlgorithm_ECDSA_SHA2_256_NISTP256         SupportedAlgorithm = 1
+	SupportedAlgorithm_ECDSA_SHA2_256_NISTP521         SupportedAlgorithm = 2
+	SupportedAlgorithm_ECDSA_SHA2_384_NISTP384         SupportedAlgorithm = 3
+	SupportedAlgorithm_ED25519                         SupportedAlgorithm = 4
+	SupportedAlgorithm_ED25519_PH                      SupportedAlgorithm = 5
+)
+
+// Enum value maps for SupportedAlgorithm.
+var (
+	SupportedAlgorithm_name = map[int32]string{
+		0: "SUPPORTED_ALGORITHM_UNSPECIFIED",
+		1: "ECDSA_SHA2_256_NISTP256",
+		2: "ECDSA_SHA2_256_NISTP521",
+		3: "ECDSA_SHA2_384_NISTP384",
+		4: "ED25519",
+		5: "ED25519_PH",
+	}
+	SupportedAlgorithm_value = map[string]int32{
+		"SUPPORTED_ALGORITHM_UNSPECIFIED": 0,
+		"ECDSA_SHA2_256_NISTP256":         1,
+		"ECDSA_SHA2_256_NISTP521":         2,
+		"ECDSA_SHA2_384_NISTP384":         3,
+		"ED25519":                         4,
+		"ED25519_PH":                      5,
+	}
+)
+
+func (x SupportedAlgorithm) Enum() *SupportedAlgorithm {
+	p := new(SupportedAlgorithm)
+	*p = x
+	return p
+}
+
+func (x SupportedAlgorithm) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SupportedAlgorithm) Descriptor() protoreflect.EnumDescriptor {
+	return file_sigstore_common_proto_enumTypes[2].Descriptor()
+}
+
+func (SupportedAlgorithm) Type() protoreflect.EnumType {
+	return &file_sigstore_common_proto_enumTypes[2]
+}
+
+func (x SupportedAlgorithm) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SupportedAlgorithm.Descriptor instead.
+func (SupportedAlgorithm) EnumDescriptor() ([]byte, []int) {
+	return file_sigstore_common_proto_rawDescGZIP(), []int{2}
+}
+
 type SubjectAlternativeNameType int32
 
 const (
@@ -201,11 +264,11 @@ func (x SubjectAlternativeNameType) String() string {
 }
 
 func (SubjectAlternativeNameType) Descriptor() protoreflect.EnumDescriptor {
-	return file_sigstore_common_proto_enumTypes[2].Descriptor()
+	return file_sigstore_common_proto_enumTypes[3].Descriptor()
 }
 
 func (SubjectAlternativeNameType) Type() protoreflect.EnumType {
-	return &file_sigstore_common_proto_enumTypes[2]
+	return &file_sigstore_common_proto_enumTypes[3]
 }
 
 func (x SubjectAlternativeNameType) Number() protoreflect.EnumNumber {
@@ -214,7 +277,7 @@ func (x SubjectAlternativeNameType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SubjectAlternativeNameType.Descriptor instead.
 func (SubjectAlternativeNameType) EnumDescriptor() ([]byte, []int) {
-	return file_sigstore_common_proto_rawDescGZIP(), []int{2}
+	return file_sigstore_common_proto_rawDescGZIP(), []int{3}
 }
 
 // HashOutput captures a digest of a 'message' (generic octet sequence)
@@ -1101,7 +1164,18 @@ var file_sigstore_common_proto_rawDesc = []byte{
 	0x36, 0x10, 0x05, 0x12, 0x20, 0x0a, 0x1c, 0x50, 0x4b, 0x49, 0x58, 0x5f, 0x45, 0x43, 0x44, 0x53,
 	0x41, 0x5f, 0x50, 0x32, 0x35, 0x36, 0x5f, 0x48, 0x4d, 0x41, 0x43, 0x5f, 0x53, 0x48, 0x41, 0x5f,
 	0x32, 0x35, 0x36, 0x10, 0x06, 0x12, 0x10, 0x0a, 0x0c, 0x50, 0x4b, 0x49, 0x58, 0x5f, 0x45, 0x44,
-	0x32, 0x35, 0x35, 0x31, 0x39, 0x10, 0x07, 0x2a, 0x6f, 0x0a, 0x1a, 0x53, 0x75, 0x62, 0x6a, 0x65,
+	0x32, 0x35, 0x35, 0x31, 0x39, 0x10, 0x07, 0x2a, 0xad, 0x01, 0x0a, 0x12, 0x53, 0x75, 0x70, 0x70,
+	0x6f, 0x72, 0x74, 0x65, 0x64, 0x41, 0x6c, 0x67, 0x6f, 0x72, 0x69, 0x74, 0x68, 0x6d, 0x12, 0x23,
+	0x0a, 0x1f, 0x53, 0x55, 0x50, 0x50, 0x4f, 0x52, 0x54, 0x45, 0x44, 0x5f, 0x41, 0x4c, 0x47, 0x4f,
+	0x52, 0x49, 0x54, 0x48, 0x4d, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45,
+	0x44, 0x10, 0x00, 0x12, 0x1b, 0x0a, 0x17, 0x45, 0x43, 0x44, 0x53, 0x41, 0x5f, 0x53, 0x48, 0x41,
+	0x32, 0x5f, 0x32, 0x35, 0x36, 0x5f, 0x4e, 0x49, 0x53, 0x54, 0x50, 0x32, 0x35, 0x36, 0x10, 0x01,
+	0x12, 0x1b, 0x0a, 0x17, 0x45, 0x43, 0x44, 0x53, 0x41, 0x5f, 0x53, 0x48, 0x41, 0x32, 0x5f, 0x32,
+	0x35, 0x36, 0x5f, 0x4e, 0x49, 0x53, 0x54, 0x50, 0x35, 0x32, 0x31, 0x10, 0x02, 0x12, 0x1b, 0x0a,
+	0x17, 0x45, 0x43, 0x44, 0x53, 0x41, 0x5f, 0x53, 0x48, 0x41, 0x32, 0x5f, 0x33, 0x38, 0x34, 0x5f,
+	0x4e, 0x49, 0x53, 0x54, 0x50, 0x33, 0x38, 0x34, 0x10, 0x03, 0x12, 0x0b, 0x0a, 0x07, 0x45, 0x44,
+	0x32, 0x35, 0x35, 0x31, 0x39, 0x10, 0x04, 0x12, 0x0e, 0x0a, 0x0a, 0x45, 0x44, 0x32, 0x35, 0x35,
+	0x31, 0x39, 0x5f, 0x50, 0x48, 0x10, 0x05, 0x2a, 0x6f, 0x0a, 0x1a, 0x53, 0x75, 0x62, 0x6a, 0x65,
 	0x63, 0x74, 0x41, 0x6c, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x74, 0x69, 0x76, 0x65, 0x4e, 0x61, 0x6d,
 	0x65, 0x54, 0x79, 0x70, 0x65, 0x12, 0x2d, 0x0a, 0x29, 0x53, 0x55, 0x42, 0x4a, 0x45, 0x43, 0x54,
 	0x5f, 0x41, 0x4c, 0x54, 0x45, 0x52, 0x4e, 0x41, 0x54, 0x49, 0x56, 0x45, 0x5f, 0x4e, 0x41, 0x4d,
@@ -1131,37 +1205,38 @@ func file_sigstore_common_proto_rawDescGZIP() []byte {
 	return file_sigstore_common_proto_rawDescData
 }
 
-var file_sigstore_common_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_sigstore_common_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
 var file_sigstore_common_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_sigstore_common_proto_goTypes = []interface{}{
 	(HashAlgorithm)(0),                // 0: dev.sigstore.common.v1.HashAlgorithm
 	(PublicKeyDetails)(0),             // 1: dev.sigstore.common.v1.PublicKeyDetails
-	(SubjectAlternativeNameType)(0),   // 2: dev.sigstore.common.v1.SubjectAlternativeNameType
-	(*HashOutput)(nil),                // 3: dev.sigstore.common.v1.HashOutput
-	(*MessageSignature)(nil),          // 4: dev.sigstore.common.v1.MessageSignature
-	(*LogId)(nil),                     // 5: dev.sigstore.common.v1.LogId
-	(*RFC3161SignedTimestamp)(nil),    // 6: dev.sigstore.common.v1.RFC3161SignedTimestamp
-	(*PublicKey)(nil),                 // 7: dev.sigstore.common.v1.PublicKey
-	(*PublicKeyIdentifier)(nil),       // 8: dev.sigstore.common.v1.PublicKeyIdentifier
-	(*ObjectIdentifier)(nil),          // 9: dev.sigstore.common.v1.ObjectIdentifier
-	(*ObjectIdentifierValuePair)(nil), // 10: dev.sigstore.common.v1.ObjectIdentifierValuePair
-	(*DistinguishedName)(nil),         // 11: dev.sigstore.common.v1.DistinguishedName
-	(*X509Certificate)(nil),           // 12: dev.sigstore.common.v1.X509Certificate
-	(*SubjectAlternativeName)(nil),    // 13: dev.sigstore.common.v1.SubjectAlternativeName
-	(*X509CertificateChain)(nil),      // 14: dev.sigstore.common.v1.X509CertificateChain
-	(*TimeRange)(nil),                 // 15: dev.sigstore.common.v1.TimeRange
-	(*timestamppb.Timestamp)(nil),     // 16: google.protobuf.Timestamp
+	(SupportedAlgorithm)(0),           // 2: dev.sigstore.common.v1.SupportedAlgorithm
+	(SubjectAlternativeNameType)(0),   // 3: dev.sigstore.common.v1.SubjectAlternativeNameType
+	(*HashOutput)(nil),                // 4: dev.sigstore.common.v1.HashOutput
+	(*MessageSignature)(nil),          // 5: dev.sigstore.common.v1.MessageSignature
+	(*LogId)(nil),                     // 6: dev.sigstore.common.v1.LogId
+	(*RFC3161SignedTimestamp)(nil),    // 7: dev.sigstore.common.v1.RFC3161SignedTimestamp
+	(*PublicKey)(nil),                 // 8: dev.sigstore.common.v1.PublicKey
+	(*PublicKeyIdentifier)(nil),       // 9: dev.sigstore.common.v1.PublicKeyIdentifier
+	(*ObjectIdentifier)(nil),          // 10: dev.sigstore.common.v1.ObjectIdentifier
+	(*ObjectIdentifierValuePair)(nil), // 11: dev.sigstore.common.v1.ObjectIdentifierValuePair
+	(*DistinguishedName)(nil),         // 12: dev.sigstore.common.v1.DistinguishedName
+	(*X509Certificate)(nil),           // 13: dev.sigstore.common.v1.X509Certificate
+	(*SubjectAlternativeName)(nil),    // 14: dev.sigstore.common.v1.SubjectAlternativeName
+	(*X509CertificateChain)(nil),      // 15: dev.sigstore.common.v1.X509CertificateChain
+	(*TimeRange)(nil),                 // 16: dev.sigstore.common.v1.TimeRange
+	(*timestamppb.Timestamp)(nil),     // 17: google.protobuf.Timestamp
 }
 var file_sigstore_common_proto_depIdxs = []int32{
 	0,  // 0: dev.sigstore.common.v1.HashOutput.algorithm:type_name -> dev.sigstore.common.v1.HashAlgorithm
-	3,  // 1: dev.sigstore.common.v1.MessageSignature.message_digest:type_name -> dev.sigstore.common.v1.HashOutput
+	4,  // 1: dev.sigstore.common.v1.MessageSignature.message_digest:type_name -> dev.sigstore.common.v1.HashOutput
 	1,  // 2: dev.sigstore.common.v1.PublicKey.key_details:type_name -> dev.sigstore.common.v1.PublicKeyDetails
-	15, // 3: dev.sigstore.common.v1.PublicKey.valid_for:type_name -> dev.sigstore.common.v1.TimeRange
-	9,  // 4: dev.sigstore.common.v1.ObjectIdentifierValuePair.oid:type_name -> dev.sigstore.common.v1.ObjectIdentifier
-	2,  // 5: dev.sigstore.common.v1.SubjectAlternativeName.type:type_name -> dev.sigstore.common.v1.SubjectAlternativeNameType
-	12, // 6: dev.sigstore.common.v1.X509CertificateChain.certificates:type_name -> dev.sigstore.common.v1.X509Certificate
-	16, // 7: dev.sigstore.common.v1.TimeRange.start:type_name -> google.protobuf.Timestamp
-	16, // 8: dev.sigstore.common.v1.TimeRange.end:type_name -> google.protobuf.Timestamp
+	16, // 3: dev.sigstore.common.v1.PublicKey.valid_for:type_name -> dev.sigstore.common.v1.TimeRange
+	10, // 4: dev.sigstore.common.v1.ObjectIdentifierValuePair.oid:type_name -> dev.sigstore.common.v1.ObjectIdentifier
+	3,  // 5: dev.sigstore.common.v1.SubjectAlternativeName.type:type_name -> dev.sigstore.common.v1.SubjectAlternativeNameType
+	13, // 6: dev.sigstore.common.v1.X509CertificateChain.certificates:type_name -> dev.sigstore.common.v1.X509Certificate
+	17, // 7: dev.sigstore.common.v1.TimeRange.start:type_name -> google.protobuf.Timestamp
+	17, // 8: dev.sigstore.common.v1.TimeRange.end:type_name -> google.protobuf.Timestamp
 	9,  // [9:9] is the sub-list for method output_type
 	9,  // [9:9] is the sub-list for method input_type
 	9,  // [9:9] is the sub-list for extension type_name
@@ -1343,7 +1418,7 @@ func file_sigstore_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_sigstore_common_proto_rawDesc,
-			NumEnums:      3,
+			NumEnums:      4,
 			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,

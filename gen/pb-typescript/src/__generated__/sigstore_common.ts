@@ -117,6 +117,66 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
   }
 }
 
+/**
+ * SupportedAlgorithm captures the signature/hash algorithm combinations allowed
+ * in the Sigstore ecosystem.
+ *
+ * This is modelled as a linear set as we want to provide a small number of
+ * opinionated options instead of allowing every possible permutation.
+ */
+export enum SupportedAlgorithm {
+  SUPPORTED_ALGORITHM_UNSPECIFIED = 0,
+  ECDSA_SHA2_256_NISTP256 = 1,
+  ECDSA_SHA2_256_NISTP521 = 2,
+  ECDSA_SHA2_384_NISTP384 = 3,
+  ED25519 = 4,
+  ED25519_PH = 5,
+}
+
+export function supportedAlgorithmFromJSON(object: any): SupportedAlgorithm {
+  switch (object) {
+    case 0:
+    case "SUPPORTED_ALGORITHM_UNSPECIFIED":
+      return SupportedAlgorithm.SUPPORTED_ALGORITHM_UNSPECIFIED;
+    case 1:
+    case "ECDSA_SHA2_256_NISTP256":
+      return SupportedAlgorithm.ECDSA_SHA2_256_NISTP256;
+    case 2:
+    case "ECDSA_SHA2_256_NISTP521":
+      return SupportedAlgorithm.ECDSA_SHA2_256_NISTP521;
+    case 3:
+    case "ECDSA_SHA2_384_NISTP384":
+      return SupportedAlgorithm.ECDSA_SHA2_384_NISTP384;
+    case 4:
+    case "ED25519":
+      return SupportedAlgorithm.ED25519;
+    case 5:
+    case "ED25519_PH":
+      return SupportedAlgorithm.ED25519_PH;
+    default:
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum SupportedAlgorithm");
+  }
+}
+
+export function supportedAlgorithmToJSON(object: SupportedAlgorithm): string {
+  switch (object) {
+    case SupportedAlgorithm.SUPPORTED_ALGORITHM_UNSPECIFIED:
+      return "SUPPORTED_ALGORITHM_UNSPECIFIED";
+    case SupportedAlgorithm.ECDSA_SHA2_256_NISTP256:
+      return "ECDSA_SHA2_256_NISTP256";
+    case SupportedAlgorithm.ECDSA_SHA2_256_NISTP521:
+      return "ECDSA_SHA2_256_NISTP521";
+    case SupportedAlgorithm.ECDSA_SHA2_384_NISTP384:
+      return "ECDSA_SHA2_384_NISTP384";
+    case SupportedAlgorithm.ED25519:
+      return "ED25519";
+    case SupportedAlgorithm.ED25519_PH:
+      return "ED25519_PH";
+    default:
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum SupportedAlgorithm");
+  }
+}
+
 export enum SubjectAlternativeNameType {
   SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED = 0,
   EMAIL = 1,

@@ -72,6 +72,14 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :PKIX_ECDSA_P256_HMAC_SHA_256, 6
       value :PKIX_ED25519, 7
     end
+    add_enum "dev.sigstore.common.v1.SupportedAlgorithm" do
+      value :SUPPORTED_ALGORITHM_UNSPECIFIED, 0
+      value :ECDSA_SHA2_256_NISTP256, 1
+      value :ECDSA_SHA2_256_NISTP521, 2
+      value :ECDSA_SHA2_384_NISTP384, 3
+      value :ED25519, 4
+      value :ED25519_PH, 5
+    end
     add_enum "dev.sigstore.common.v1.SubjectAlternativeNameType" do
       value :SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED, 0
       value :EMAIL, 1
@@ -99,6 +107,7 @@ module Sigstore
       TimeRange = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.TimeRange").msgclass
       HashAlgorithm = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.HashAlgorithm").enummodule
       PublicKeyDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.PublicKeyDetails").enummodule
+      SupportedAlgorithm = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.SupportedAlgorithm").enummodule
       SubjectAlternativeNameType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.SubjectAlternativeNameType").enummodule
     end
   end
