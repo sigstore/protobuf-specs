@@ -73,18 +73,22 @@ message VerificationMaterial {
         //
         //    Verifiers MUST validate the chain carefully to ensure that it chains up
         //    to a CA certificate that they independently trust. Verifiers SHOULD
-        //    handle old or non-complying bundles that have additional intermediate and/or
-        //    root CA certificates.
+        //    handle old or non-complying bundles that have superfluous intermediate and/or
+        //    root CA certificates by either ignoring them or explicitly considering them
+        //    untrusted for the purposes of chain building.
         //
         // 3. A single X.509 certificate, which MUST be a leaf certificate conveying
         //    the signing key.
         //
-        // When used with the Public Good Instance (PGI) of Sigstore, form (1) MUST NOT be used,
-        // regardless of bundle version.
+        // When used with the Public Good Instance (PGI) of Sigstore for "keyless" signing
+        // via Fulcio, form (1) MUST NOT be used, regardless of bundle version. Form (1)
+        // MAY be used with the PGI for self-managed keys.
         //
-        // When used in a `0.1` or `0.2` bundle with the PGI, form (2) MUST be used.
+        // When used in a `0.1` or `0.2` bundle with the PGI and "keyless" signing,
+        // form (2) MUST be used.
         //
-        // When used in a `0.3` bundle with the PGI, form (3) MUST be used.
+        // When used in a `0.3` bundle with the PGI and "keyless" signing,
+        // form (3) MUST be used.
         oneof content {
                 dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
                 dev.sigstore.common.v1.X509CertificateChain x509_certificate_chain = 2 [(google.api.field_behavior) = REQUIRED];

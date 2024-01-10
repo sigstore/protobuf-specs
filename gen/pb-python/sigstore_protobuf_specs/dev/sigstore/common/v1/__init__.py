@@ -200,10 +200,9 @@ class SubjectAlternativeName(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class X509CertificateChain(betterproto.Message):
     """
-    A collection of X.509 certificates. NOTE: "Chain" is a misnomer in this
-    context, since there is no one true certificate chain in most PKI schemes.
-    This message should be treated as a generic collection of certificates for
-    path construction.
+    A collection of X.509 certificates. This "chain" can be used in multiple
+    contexts, such as providing a root CA certificate within a TUF root of
+    trust or multiple untrusted certificates for the purpose of chain building.
     """
 
     certificates: List["X509Certificate"] = betterproto.message_field(1)

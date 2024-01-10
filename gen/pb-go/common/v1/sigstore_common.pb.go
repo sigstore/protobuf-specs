@@ -871,9 +871,9 @@ func (*SubjectAlternativeName_Value) isSubjectAlternativeName_Identity() {}
 
 // A collection of X.509 certificates.
 //
-// NOTE: "Chain" is a misnomer in this context, since there is no one true certificate chain
-// in most PKI schemes. This message should be treated as a generic collection of certificates
-// for path construction.
+// This "chain" can be used in multiple contexts, such as providing a root CA
+// certificate within a TUF root of trust or multiple untrusted certificates for
+// the purpose of chain building.
 type X509CertificateChain struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
