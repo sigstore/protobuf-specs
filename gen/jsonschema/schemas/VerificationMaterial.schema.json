@@ -12,6 +12,10 @@
                     "$ref": "#/definitions/dev.sigstore.common.v1.X509CertificateChain",
                     "additionalProperties": false
                 },
+                "certificate": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.X509Certificate",
+                    "additionalProperties": false
+                },
                 "tlogEntries": {
                     "items": {
                         "$ref": "#/definitions/dev.sigstore.rekor.v1.TransparencyLogEntry"
@@ -38,6 +42,11 @@
                     "required": [
                         "x509_certificate_chain"
                     ]
+                },
+                {
+                    "required": [
+                        "certificate"
+                    ]
                 }
             ],
             "title": "Verification Material",
@@ -56,8 +65,8 @@
             },
             "additionalProperties": false,
             "type": "object",
-            "title": "Notes on versioning.\n The primary message ('Bundle') MUST be versioned, by populating the\n 'media_type' field. Semver-ish (only major/minor versions) scheme MUST\n be used. The current version as specified by this file is:\n application/vnd.dev.sigstore.bundle+json;version=0.2\n The semantic version is thus '0.2'.",
-            "description": "Notes on versioning. The primary message ('Bundle') MUST be versioned, by populating the 'media_type' field. Semver-ish (only major/minor versions) scheme MUST be used. The current version as specified by this file is: application/vnd.dev.sigstore.bundle+json;version=0.2 The semantic version is thus '0.2'.  Various timestamped counter signatures over the artifacts signature. Currently only RFC3161 signatures are provided. More formats may be added in the future."
+            "title": "Notes on versioning.\n The primary message ('Bundle') MUST be versioned, by populating the\n 'media_type' field. Semver-ish (only major/minor versions) scheme MUST\n be used. The current version as specified by this file is:\n application/vnd.dev.sigstore.bundle+json;version=0.3\n The semantic version is thus '0.3'.",
+            "description": "Notes on versioning. The primary message ('Bundle') MUST be versioned, by populating the 'media_type' field. Semver-ish (only major/minor versions) scheme MUST be used. The current version as specified by this file is: application/vnd.dev.sigstore.bundle+json;version=0.3 The semantic version is thus '0.3'.  Various timestamped counter signatures over the artifacts signature. Currently only RFC3161 signatures are provided. More formats may be added in the future."
         },
         "dev.sigstore.common.v1.LogId": {
             "properties": {
@@ -120,13 +129,13 @@
                     },
                     "additionalProperties": false,
                     "type": "array",
-                    "description": "The chain of certificates, with indices 0 to n. The first certificate in the array must be the leaf certificate used for signing. Signers MUST NOT include their root CA certificates in their embedded certificate chains, and SHOULD NOT include intermediate CA certificates that appear in independent roots of trust. Verifiers MUST validate the chain carefully to ensure that it chains up to a root CA certificate that they trust, regardless of whether the chain includes additional intermediate/root CA certificates. Verifiers MAY enforce additional constraints, such as requiring that all intermediate CA certificates appear in an independent root of trust. Verifiers SHOULD handle old or non-complying bundles that have additional intermediate/root CA certificates."
+                    "description": "One or more DER-encoded certificates. In some contexts (such as `VerificationMaterial.certificate`), this sequence has an imposed order. Unless explicitly specified, there is otherwise no guaranteed order."
                 }
             },
             "additionalProperties": false,
             "type": "object",
             "title": "X 509 Certificate Chain",
-            "description": "A chain of X.509 certificates."
+            "description": "A collection of X.509 certificates. NOTE: \"Chain\" is a misnomer in this context, since there is no one true certificate chain in most PKI schemes. This message should be treated as a generic collection of certificates for path construction."
         },
         "dev.sigstore.rekor.v1.Checkpoint": {
             "properties": {

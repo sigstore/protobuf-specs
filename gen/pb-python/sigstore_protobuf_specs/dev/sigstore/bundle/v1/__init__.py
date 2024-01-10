@@ -50,6 +50,9 @@ class VerificationMaterial(betterproto.Message):
     x509_certificate_chain: "__common_v1__.X509CertificateChain" = (
         betterproto.message_field(2, group="content")
     )
+    certificate: "__common_v1__.X509Certificate" = betterproto.message_field(
+        5, group="content"
+    )
     tlog_entries: List["__rekor_v1__.TransparencyLogEntry"] = betterproto.message_field(
         3
     )
@@ -76,7 +79,8 @@ class Bundle(betterproto.Message):
     media_type: str = betterproto.string_field(1)
     """
     MUST be application/vnd.dev.sigstore.bundle+json;version=0.1 or
-    application/vnd.dev.sigstore.bundle+json;version=0.2 when encoded as JSON.
+    application/vnd.dev.sigstore.bundle+json;version=0.2 or
+    application/vnd.dev.sigstore.bundle+json;version=0.3 when encoded as JSON.
     """
 
     verification_material: "VerificationMaterial" = betterproto.message_field(2)

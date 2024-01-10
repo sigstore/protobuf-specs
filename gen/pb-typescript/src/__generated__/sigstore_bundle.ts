@@ -1,6 +1,12 @@
 /* eslint-disable */
 import { Envelope } from "./envelope";
-import { MessageSignature, PublicKeyIdentifier, RFC3161SignedTimestamp, X509CertificateChain } from "./sigstore_common";
+import {
+  MessageSignature,
+  PublicKeyIdentifier,
+  RFC3161SignedTimestamp,
+  X509Certificate,
+  X509CertificateChain,
+} from "./sigstore_common";
 import { TransparencyLogEntry } from "./sigstore_rekor";
 
 /**
@@ -33,7 +39,8 @@ export interface TimestampVerificationData {
 export interface VerificationMaterial {
   content?:
     | { $case: "publicKey"; publicKey: PublicKeyIdentifier }
-    | { $case: "x509CertificateChain"; x509CertificateChain: X509CertificateChain };
+    | { $case: "x509CertificateChain"; x509CertificateChain: X509CertificateChain }
+    | { $case: "certificate"; certificate: X509Certificate };
   /**
    * An inclusion proof and an optional signed timestamp from the log.
    * Client verification libraries MAY provide an option to support v0.1
@@ -55,6 +62,7 @@ export interface Bundle {
   /**
    * MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
    * or application/vnd.dev.sigstore.bundle+json;version=0.2
+   * or application/vnd.dev.sigstore.bundle+json;version=0.3
    * when encoded as JSON.
    */
   mediaType: string;
@@ -114,6 +122,8 @@ export const VerificationMaterial = {
           $case: "x509CertificateChain",
           x509CertificateChain: X509CertificateChain.fromJSON(object.x509CertificateChain),
         }
+        : isSet(object.certificate)
+        ? { $case: "certificate", certificate: X509Certificate.fromJSON(object.certificate) }
         : undefined,
       tlogEntries: Array.isArray(object?.tlogEntries)
         ? object.tlogEntries.map((e: any) => TransparencyLogEntry.fromJSON(e))
@@ -131,6 +141,10 @@ export const VerificationMaterial = {
     message.content?.$case === "x509CertificateChain" &&
       (obj.x509CertificateChain = message.content?.x509CertificateChain
         ? X509CertificateChain.toJSON(message.content?.x509CertificateChain)
+        : undefined);
+    message.content?.$case === "certificate" &&
+      (obj.certificate = message.content?.certificate
+        ? X509Certificate.toJSON(message.content?.certificate)
         : undefined);
     if (message.tlogEntries) {
       obj.tlogEntries = message.tlogEntries.map((e) => e ? TransparencyLogEntry.toJSON(e) : undefined);

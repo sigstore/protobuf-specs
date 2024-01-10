@@ -32,8 +32,8 @@ option ruby_package = "Sigstore::Bundle::V1";
 // The primary message ('Bundle') MUST be versioned, by populating the
 // 'media_type' field. Semver-ish (only major/minor versions) scheme MUST
 // be used. The current version as specified by this file is:
-// application/vnd.dev.sigstore.bundle+json;version=0.2
-// The semantic version is thus '0.2'.
+// application/vnd.dev.sigstore.bundle+json;version=0.3
+// The semantic version is thus '0.3'.
 
 // Various timestamped counter signatures over the artifacts signature.
 // Currently only RFC3161 signatures are provided. More formats may be added
@@ -57,9 +57,38 @@ message TimestampVerificationData {
 // the key identifier, it MUST match the `keyid` field of the signature the
 // extension is attached to.
 message VerificationMaterial {
+        // The key material for verification purposes.
+        //
+        // This allows key material to be conveyed in one of three forms:
+        //
+        // 1. An unspecified public key identifier, for retrieving a key
+        //    from an out-of-band mechanism (such as a keyring);
+        //
+        // 2. A sequence of one or more X.509 certificates, of which the first member
+        //    MUST be a leaf certificate conveying the signing key.
+        //
+        //    Signers MUST NOT include root CA certificates in bundles, and SHOULD NOT
+        //    include intermediate CA certificates that appear in an independent root of trust
+        //    (such as the Public Good Instance's trusted root).
+        //
+        //    Verifiers MUST validate the chain carefully to ensure that it chains up
+        //    to a CA certificate that they independently trust. Verifiers SHOULD
+        //    handle old or non-complying bundles that have additional intermediate and/or
+        //    root CA certificates.
+        //
+        // 3. A single X.509 certificate, which MUST be a leaf certificate conveying
+        //    the signing key.
+        //
+        // When used with the Public Good Instance (PGI) of Sigstore, form (1) MUST NOT be used,
+        // regardless of bundle version.
+        //
+        // When used in a `0.1` or `0.2` bundle with the PGI, form (2) MUST be used.
+        //
+        // When used in a `0.3` bundle with the PGI, form (3) MUST be used.
         oneof content {
                 dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
                 dev.sigstore.common.v1.X509CertificateChain x509_certificate_chain = 2 [(google.api.field_behavior) = REQUIRED];
+                dev.sigstore.common.v1.X509Certificate certificate = 5 [(google.api.field_behavior) = REQUIRED];
         }
         // An inclusion proof and an optional signed timestamp from the log.
         // Client verification libraries MAY provide an option to support v0.1
@@ -77,6 +106,7 @@ message VerificationMaterial {
 message Bundle {
         // MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
         // or application/vnd.dev.sigstore.bundle+json;version=0.2
+        // or application/vnd.dev.sigstore.bundle+json;version=0.3
         // when encoded as JSON.
         string media_type = 1;
         // When a signer is identified by a X.509 certificate, a verifier MUST
