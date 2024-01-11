@@ -1,4 +1,4 @@
-use pretty_assertions::{assert_eq, assert_ne};
+use pretty_assertions::assert_eq;
 use serde_json;
 use sigstore_protobuf_specs::{
     Bundle, DevSigstoreBundleV1VerificationMaterial as VerificationMaterial,
@@ -25,6 +25,7 @@ fn bundle() {
             media_type: Some(String::from("application/vnd.dev.sigstore.bundle+json;version=0.1")),
             verification_material: Some(VerificationMaterial{
                 public_key: None,
+                certificate: None,
                 x_509_certificate_chain: Some(X509CertificateChain{
                     certificates: Some(vec![
                         X509Certificate{
