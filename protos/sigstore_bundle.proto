@@ -65,7 +65,8 @@ message VerificationMaterial {
         //    from an out-of-band mechanism (such as a keyring);
         //
         // 2. A sequence of one or more X.509 certificates, of which the first member
-        //    MUST be a leaf certificate conveying the signing key.
+        //    MUST be a leaf certificate conveying the signing key. Subsequent members
+        //    SHOULD be in issuing order, meaning that `n + 1` should be an issuer for `n`.
         //
         //    Signers MUST NOT include root CA certificates in bundles, and SHOULD NOT
         //    include intermediate CA certificates that appear in an independent root of trust
