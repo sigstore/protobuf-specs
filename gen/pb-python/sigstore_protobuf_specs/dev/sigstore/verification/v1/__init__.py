@@ -83,7 +83,23 @@ class ArtifactVerificationOptions(betterproto.Message):
     )
     """
     Optional options for certificate signed timestamp verification. If none is
-    provided, the default verification options are: Threshold: 1 Disable: false
+    provided, the default verification options are: Threshold: 0 Disable: true
+    """
+
+    integrated_ts_options: Optional[
+        "ArtifactVerificationOptionsTlogIntegratedTimestampOptions"
+    ] = betterproto.message_field(6, optional=True, group="_integrated_ts_options")
+    """
+    Optional options for integrated timestamp verification. If none is
+    provided, the default verification options are: Threshold: 0 Disable: true
+    """
+
+    observer_options: Optional[
+        "ArtifactVerificationOptionsObserverTimestampOptions"
+    ] = betterproto.message_field(7, optional=True, group="_observer_options")
+    """
+    Optional options for observed timestamp verification. If none is provided,
+    the default verification options are: Threshold 1 Disable: false
     """
 
 
@@ -115,6 +131,28 @@ class ArtifactVerificationOptionsTimestampAuthorityOptions(betterproto.Message):
 
     disable: bool = betterproto.bool_field(2)
     """Disable signed timestamp verification."""
+
+
+@dataclass(eq=False, repr=False)
+class ArtifactVerificationOptionsTlogIntegratedTimestampOptions(betterproto.Message):
+    threshold: int = betterproto.int32_field(1)
+    """The number of integrated timestamps that are expected."""
+
+    disable: bool = betterproto.bool_field(2)
+    """Disable integrated timestamp verification."""
+
+
+@dataclass(eq=False, repr=False)
+class ArtifactVerificationOptionsObserverTimestampOptions(betterproto.Message):
+    threshold: int = betterproto.int32_field(1)
+    """
+    The number of external observers of the timestamp. This is a union of
+    RFC3161 signed timestamps, and integrated timestamps from a transparency
+    log, that could include additional timestamp sources in the future.
+    """
+
+    disable: bool = betterproto.bool_field(2)
+    """Disable observer timestamp verification."""
 
 
 @dataclass(eq=False, repr=False)

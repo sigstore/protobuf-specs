@@ -24,6 +24,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       proto3_optional :tlog_options, :message, 3, "dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions"
       proto3_optional :ctlog_options, :message, 4, "dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions"
       proto3_optional :tsa_options, :message, 5, "dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions"
+      proto3_optional :integrated_ts_options, :message, 6, "dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogIntegratedTimestampOptions"
+      proto3_optional :observer_options, :message, 7, "dev.sigstore.verification.v1.ArtifactVerificationOptions.ObserverTimestampOptions"
       oneof :signers do
         optional :certificate_identities, :message, 1, "dev.sigstore.verification.v1.CertificateIdentities"
         optional :public_keys, :message, 2, "dev.sigstore.verification.v1.PublicKeyIdentities"
@@ -39,6 +41,14 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :disable, :bool, 3
     end
     add_message "dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions" do
+      optional :threshold, :int32, 1
+      optional :disable, :bool, 2
+    end
+    add_message "dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogIntegratedTimestampOptions" do
+      optional :threshold, :int32, 1
+      optional :disable, :bool, 2
+    end
+    add_message "dev.sigstore.verification.v1.ArtifactVerificationOptions.ObserverTimestampOptions" do
       optional :threshold, :int32, 1
       optional :disable, :bool, 2
     end
@@ -67,6 +77,8 @@ module Sigstore
       ArtifactVerificationOptions::TlogOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions").msgclass
       ArtifactVerificationOptions::CtlogOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions").msgclass
       ArtifactVerificationOptions::TimestampAuthorityOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions").msgclass
+      ArtifactVerificationOptions::TlogIntegratedTimestampOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogIntegratedTimestampOptions").msgclass
+      ArtifactVerificationOptions::ObserverTimestampOptions = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.ArtifactVerificationOptions.ObserverTimestampOptions").msgclass
       Artifact = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.Artifact").msgclass
       Input = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.verification.v1.Input").msgclass
     end
