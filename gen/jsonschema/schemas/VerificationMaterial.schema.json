@@ -129,7 +129,7 @@
                     },
                     "additionalProperties": false,
                     "type": "array",
-                    "description": "One or more DER-encoded certificates. In some contexts (such as `VerificationMaterial.certificate`), this sequence has an imposed order. Unless explicitly specified, there is otherwise no guaranteed order."
+                    "description": "One or more DER-encoded certificates. In some contexts (such as `VerificationMaterial.x509_certificate_chain`), this sequence has an imposed order. Unless explicitly specified, there is otherwise no guaranteed order."
                 }
             },
             "additionalProperties": false,

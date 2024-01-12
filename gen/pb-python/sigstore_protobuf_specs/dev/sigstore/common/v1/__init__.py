@@ -208,8 +208,9 @@ class X509CertificateChain(betterproto.Message):
     certificates: List["X509Certificate"] = betterproto.message_field(1)
     """
     One or more DER-encoded certificates. In some contexts (such as
-    `VerificationMaterial.certificate`), this sequence has an imposed order.
-    Unless explicitly specified, there is otherwise no guaranteed order.
+    `VerificationMaterial.x509_certificate_chain`), this sequence has an
+    imposed order. Unless explicitly specified, there is otherwise no
+    guaranteed order.
     """
 
 

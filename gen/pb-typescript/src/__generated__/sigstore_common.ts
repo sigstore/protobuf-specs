@@ -289,7 +289,7 @@ export interface X509CertificateChain {
   /**
    * One or more DER-encoded certificates.
    *
-   * In some contexts (such as `VerificationMaterial.certificate`), this sequence
+   * In some contexts (such as `VerificationMaterial.x509_certificate_chain`), this sequence
    * has an imposed order. Unless explicitly specified, there is otherwise no
    * guaranteed order.
    */
