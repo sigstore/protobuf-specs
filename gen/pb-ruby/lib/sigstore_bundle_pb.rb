@@ -19,6 +19,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       oneof :content do
         optional :public_key, :message, 1, "dev.sigstore.common.v1.PublicKeyIdentifier"
         optional :x509_certificate_chain, :message, 2, "dev.sigstore.common.v1.X509CertificateChain"
+        optional :certificate, :message, 5, "dev.sigstore.common.v1.X509Certificate"
       end
     end
     add_message "dev.sigstore.bundle.v1.Bundle" do
