@@ -123,6 +123,9 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
  *
  * This is modelled as a linear set as we want to provide a small number of
  * opinionated options instead of allowing every possible permutation.
+ *
+ * Any changes to this enum MUST be reflected in the algorithm registry.
+ * See: docs/algorithm-registry.md
  */
 export enum SupportedAlgorithm {
   SUPPORTED_ALGORITHM_UNSPECIFIED = 0,
