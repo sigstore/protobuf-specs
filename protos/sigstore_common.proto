@@ -82,9 +82,9 @@ message HashOutput {
 // See: docs/algorithm-registry.md
 enum KnownSignatureAlgorithm {
         KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED = 0;
-	RSA_SIGN_PKCS1_2048_SHA256 = 1;
-	RSA_SIGN_PKCS1_3072_SHA256 = 2;
-	RSA_SIGN_PKCS1_4096_SHA256 = 3;
+        RSA_SIGN_PKCS1_2048_SHA256 = 1;
+        RSA_SIGN_PKCS1_3072_SHA256 = 2;
+        RSA_SIGN_PKCS1_4096_SHA256 = 3;
         ECDSA_SHA2_256_NISTP256 = 4;
         ECDSA_SHA2_384_NISTP384 = 5;
         ECDSA_SHA2_512_NISTP521 = 6;
