@@ -1,9 +1,14 @@
 # Algorithm Registry
 
 This file is designed to act as a source of truth regarding what signing
-algorithms are permitted across the Sigstore ecosystem. Any changes to this file
-**must** be reflected in the `SupportedAlgorithm` enumeration in
+algorithms are recommended across the Sigstore ecosystem. Any changes to this
+file **must** be reflected in the `SupportedAlgorithm` enumeration in
 [sigstore_common.proto](../protos/sigstore_common.proto).
+
+Note that Sigstore clients and services aren't required support all algorithms
+in this registry and may support algorithms that aren't in the registry. The
+algorithm registry is more of a guideline than a rule and is meant to serve as
+a secure set of defaults that the community can follow.
 
 Refer to the [Sigstore: Configurable Crypto Algorithms](https://docs.google.com/document/d/18vTKFvTQdRt3OGz6Qd1xf04o-hugRYSup-1EAOWn7MQ/)
 specification for the design rationale for this registry.
