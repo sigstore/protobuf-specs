@@ -79,8 +79,8 @@ message HashOutput {
 enum SupportedAlgorithm {
         SUPPORTED_ALGORITHM_UNSPECIFIED = 0;
         ECDSA_SHA2_256_NISTP256 = 1;
-        ECDSA_SHA2_256_NISTP521 = 2;
         ECDSA_SHA2_384_NISTP384 = 3;
+        ECDSA_SHA2_512_NISTP521 = 2;
         ED25519 = 4;
         ED25519_PH = 5;
 }

@@ -130,8 +130,8 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
 export enum SupportedAlgorithm {
   SUPPORTED_ALGORITHM_UNSPECIFIED = 0,
   ECDSA_SHA2_256_NISTP256 = 1,
-  ECDSA_SHA2_256_NISTP521 = 2,
   ECDSA_SHA2_384_NISTP384 = 3,
+  ECDSA_SHA2_512_NISTP521 = 2,
   ED25519 = 4,
   ED25519_PH = 5,
 }
@@ -144,12 +144,12 @@ export function supportedAlgorithmFromJSON(object: any): SupportedAlgorithm {
     case 1:
     case "ECDSA_SHA2_256_NISTP256":
       return SupportedAlgorithm.ECDSA_SHA2_256_NISTP256;
-    case 2:
-    case "ECDSA_SHA2_256_NISTP521":
-      return SupportedAlgorithm.ECDSA_SHA2_256_NISTP521;
     case 3:
     case "ECDSA_SHA2_384_NISTP384":
       return SupportedAlgorithm.ECDSA_SHA2_384_NISTP384;
+    case 2:
+    case "ECDSA_SHA2_512_NISTP521":
+      return SupportedAlgorithm.ECDSA_SHA2_512_NISTP521;
     case 4:
     case "ED25519":
       return SupportedAlgorithm.ED25519;
@@ -167,10 +167,10 @@ export function supportedAlgorithmToJSON(object: SupportedAlgorithm): string {
       return "SUPPORTED_ALGORITHM_UNSPECIFIED";
     case SupportedAlgorithm.ECDSA_SHA2_256_NISTP256:
       return "ECDSA_SHA2_256_NISTP256";
-    case SupportedAlgorithm.ECDSA_SHA2_256_NISTP521:
-      return "ECDSA_SHA2_256_NISTP521";
     case SupportedAlgorithm.ECDSA_SHA2_384_NISTP384:
       return "ECDSA_SHA2_384_NISTP384";
+    case SupportedAlgorithm.ECDSA_SHA2_512_NISTP521:
+      return "ECDSA_SHA2_512_NISTP521";
     case SupportedAlgorithm.ED25519:
       return "ED25519";
     case SupportedAlgorithm.ED25519_PH:

@@ -75,8 +75,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_enum "dev.sigstore.common.v1.SupportedAlgorithm" do
       value :SUPPORTED_ALGORITHM_UNSPECIFIED, 0
       value :ECDSA_SHA2_256_NISTP256, 1
-      value :ECDSA_SHA2_256_NISTP521, 2
       value :ECDSA_SHA2_384_NISTP384, 3
+      value :ECDSA_SHA2_512_NISTP521, 2
       value :ED25519, 4
       value :ED25519_PH, 5
     end
