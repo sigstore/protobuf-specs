@@ -8,7 +8,7 @@
                     "enum": [
                         "HASH_ALGORITHM_UNSPECIFIED",
                         "SHA2_256",
-                        "SHA2_256_192",
+                        "SHA2_384",
                         "SHA2_512",
                         "SHA3_256",
                         "SHA3_384"
