@@ -37,5 +37,6 @@ signing schemes or as part of a `hashedrekord` entry.
 | SHA2      | sha2-256     |
 |           | sha2-256/192 |
 |           | sha2-384     |
+|           | sha2-512     |
 | SHA3      | sha3-256     |
 |           | sha3-384     |
