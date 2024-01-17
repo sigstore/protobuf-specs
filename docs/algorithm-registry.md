@@ -13,16 +13,6 @@ a secure set of defaults that the community can follow.
 Refer to the [Sigstore: Configurable Crypto Algorithms](https://docs.google.com/document/d/18vTKFvTQdRt3OGz6Qd1xf04o-hugRYSup-1EAOWn7MQ/)
 specification for the design rationale for this registry.
 
-## Hash Algorithms
-
-| Algorithm | Name         |
-|-----------|--------------|
-| SHA2      | sha2-256     |
-|           | sha2-256/192 |
-|           | sha2-384     |
-| SHA3      | sha3-256     |
-|           | sha3-384     |
-
 ## Signature Algorithms
 
 | Algorithm | Name                       | Usage                                             |
@@ -35,3 +25,17 @@ specification for the design rationale for this registry.
 |           | ecdsa-sha2-512-nistp521    | sign/verify                                       |
 | EdDSA     | ed25519                    | sign/verify                                       |
 |           | ed25519-ph                 | sign/verify (recommended only for `hashedrekord`) |
+
+## Hash Algorithms
+
+Generally speaking, these hash algorithms are implied by the above signing suites.
+However, clients *may* need to list or configure them explicitly, e.g. for custom
+signing schemes or as part of a `hashedrekord` entry.
+
+| Algorithm | Name         |
+|-----------|--------------|
+| SHA2      | sha2-256     |
+|           | sha2-256/192 |
+|           | sha2-384     |
+| SHA3      | sha3-256     |
+|           | sha3-384     |
