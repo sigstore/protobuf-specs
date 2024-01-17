@@ -19,4 +19,4 @@ specification for the design rationale for this registry.
 || ecdsa-sha2-256-nistp521 | verify only |
 || ecdsa-sha2-384-nistp384 | sign/verify |
 | EdDSA | ed25519 | sign/verify |
-|| ed25519-ph | sign/verify |
+|| ed25519-ph | sign/verify (used for `hashedrekord`) |
