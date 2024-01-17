@@ -16,7 +16,7 @@ specification for the design rationale for this registry.
 | Algorithm | Name | Usage |
 | --- | --- | --- |
 | ECDSA | ecdsa-sha2-256-nistp256 | sign/verify |
-|| ecdsa-sha2-256-nistp521 | verify only |
 || ecdsa-sha2-384-nistp384 | sign/verify |
+|| ecdsa-sha2-512-nistp521 | sign/verify |
 | EdDSA | ed25519 | sign/verify |
-|| ed25519-ph | sign/verify (used for `hashedrekord`) |
+|| ed25519-ph | sign/verify (recommended only for `hashedrekord`) |
