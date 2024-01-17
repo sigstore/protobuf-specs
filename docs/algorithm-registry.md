@@ -2,7 +2,7 @@
 
 This file is designed to act as a source of truth regarding what signing
 algorithms are recommended across the Sigstore ecosystem. Any changes to this
-file **must** be reflected in the `SupportedAlgorithm` enumeration in
+file **must** be reflected in the `KnownSignatureAlgorithm` enumeration in
 [sigstore_common.proto](../protos/sigstore_common.proto).
 
 Note that Sigstore clients and services aren't required support all algorithms

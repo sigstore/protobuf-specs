@@ -118,8 +118,8 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
 }
 
 /**
- * SupportedAlgorithm captures the signature/hash algorithm combinations allowed
- * in the Sigstore ecosystem.
+ * KnownSignatureAlgorithm captures the signature/hash algorithm combinations
+ * recommended in the Sigstore ecosystem.
  *
  * This is modelled as a linear set as we want to provide a small number of
  * opinionated options instead of allowing every possible permutation.
@@ -127,8 +127,8 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
  * Any changes to this enum MUST be reflected in the algorithm registry.
  * See: docs/algorithm-registry.md
  */
-export enum SupportedAlgorithm {
-  SUPPORTED_ALGORITHM_UNSPECIFIED = 0,
+export enum KnownSignatureAlgorithm {
+  KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED = 0,
   ECDSA_SHA2_256_NISTP256 = 1,
   ECDSA_SHA2_384_NISTP384 = 3,
   ECDSA_SHA2_512_NISTP521 = 2,
@@ -136,47 +136,47 @@ export enum SupportedAlgorithm {
   ED25519_PH = 5,
 }
 
-export function supportedAlgorithmFromJSON(object: any): SupportedAlgorithm {
+export function knownSignatureAlgorithmFromJSON(object: any): KnownSignatureAlgorithm {
   switch (object) {
     case 0:
-    case "SUPPORTED_ALGORITHM_UNSPECIFIED":
-      return SupportedAlgorithm.SUPPORTED_ALGORITHM_UNSPECIFIED;
+    case "KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED":
+      return KnownSignatureAlgorithm.KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED;
     case 1:
     case "ECDSA_SHA2_256_NISTP256":
-      return SupportedAlgorithm.ECDSA_SHA2_256_NISTP256;
+      return KnownSignatureAlgorithm.ECDSA_SHA2_256_NISTP256;
     case 3:
     case "ECDSA_SHA2_384_NISTP384":
-      return SupportedAlgorithm.ECDSA_SHA2_384_NISTP384;
+      return KnownSignatureAlgorithm.ECDSA_SHA2_384_NISTP384;
     case 2:
     case "ECDSA_SHA2_512_NISTP521":
-      return SupportedAlgorithm.ECDSA_SHA2_512_NISTP521;
+      return KnownSignatureAlgorithm.ECDSA_SHA2_512_NISTP521;
     case 4:
     case "ED25519":
-      return SupportedAlgorithm.ED25519;
+      return KnownSignatureAlgorithm.ED25519;
     case 5:
     case "ED25519_PH":
-      return SupportedAlgorithm.ED25519_PH;
+      return KnownSignatureAlgorithm.ED25519_PH;
     default:
-      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum SupportedAlgorithm");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum KnownSignatureAlgorithm");
   }
 }
 
-export function supportedAlgorithmToJSON(object: SupportedAlgorithm): string {
+export function knownSignatureAlgorithmToJSON(object: KnownSignatureAlgorithm): string {
   switch (object) {
-    case SupportedAlgorithm.SUPPORTED_ALGORITHM_UNSPECIFIED:
-      return "SUPPORTED_ALGORITHM_UNSPECIFIED";
-    case SupportedAlgorithm.ECDSA_SHA2_256_NISTP256:
+    case KnownSignatureAlgorithm.KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED:
+      return "KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED";
+    case KnownSignatureAlgorithm.ECDSA_SHA2_256_NISTP256:
       return "ECDSA_SHA2_256_NISTP256";
-    case SupportedAlgorithm.ECDSA_SHA2_384_NISTP384:
+    case KnownSignatureAlgorithm.ECDSA_SHA2_384_NISTP384:
       return "ECDSA_SHA2_384_NISTP384";
-    case SupportedAlgorithm.ECDSA_SHA2_512_NISTP521:
+    case KnownSignatureAlgorithm.ECDSA_SHA2_512_NISTP521:
       return "ECDSA_SHA2_512_NISTP521";
-    case SupportedAlgorithm.ED25519:
+    case KnownSignatureAlgorithm.ED25519:
       return "ED25519";
-    case SupportedAlgorithm.ED25519_PH:
+    case KnownSignatureAlgorithm.ED25519_PH:
       return "ED25519_PH";
     default:
-      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum SupportedAlgorithm");
+      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum KnownSignatureAlgorithm");
   }
 }
 
