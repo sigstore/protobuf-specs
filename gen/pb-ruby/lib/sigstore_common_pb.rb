@@ -61,6 +61,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_enum "dev.sigstore.common.v1.HashAlgorithm" do
       value :HASH_ALGORITHM_UNSPECIFIED, 0
       value :SHA2_256, 1
+      value :SHA2_384, 2
+      value :SHA2_512, 3
+      value :SHA3_256, 4
+      value :SHA3_384, 5
     end
     add_enum "dev.sigstore.common.v1.PublicKeyDetails" do
       value :PUBLIC_KEY_DETAILS_UNSPECIFIED, 0
@@ -71,6 +75,17 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :PKIX_ECDSA_P256_SHA_256, 5
       value :PKIX_ECDSA_P256_HMAC_SHA_256, 6
       value :PKIX_ED25519, 7
+    end
+    add_enum "dev.sigstore.common.v1.KnownSignatureAlgorithm" do
+      value :KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED, 0
+      value :RSA_SIGN_PKCS1_2048_SHA256, 1
+      value :RSA_SIGN_PKCS1_3072_SHA256, 2
+      value :RSA_SIGN_PKCS1_4096_SHA256, 3
+      value :ECDSA_SHA2_256_NISTP256, 4
+      value :ECDSA_SHA2_384_NISTP384, 5
+      value :ECDSA_SHA2_512_NISTP521, 6
+      value :ED25519, 7
+      value :ED25519_PH, 8
     end
     add_enum "dev.sigstore.common.v1.SubjectAlternativeNameType" do
       value :SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED, 0
@@ -99,6 +114,7 @@ module Sigstore
       TimeRange = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.TimeRange").msgclass
       HashAlgorithm = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.HashAlgorithm").enummodule
       PublicKeyDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.PublicKeyDetails").enummodule
+      KnownSignatureAlgorithm = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.KnownSignatureAlgorithm").enummodule
       SubjectAlternativeNameType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.common.v1.SubjectAlternativeNameType").enummodule
     end
   end

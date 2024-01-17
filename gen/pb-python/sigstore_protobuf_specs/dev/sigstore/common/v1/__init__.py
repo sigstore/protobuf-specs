@@ -23,6 +23,10 @@ class HashAlgorithm(betterproto.Enum):
 
     HASH_ALGORITHM_UNSPECIFIED = 0
     SHA2_256 = 1
+    SHA2_384 = 2
+    SHA2_512 = 3
+    SHA3_256 = 4
+    SHA3_384 = 5
 
 
 class PublicKeyDetails(betterproto.Enum):
@@ -47,6 +51,26 @@ class PublicKeyDetails(betterproto.Enum):
     PKIX_ECDSA_P256_HMAC_SHA_256 = 6
     PKIX_ED25519 = 7
     """Ed 25519"""
+
+
+class KnownSignatureAlgorithm(betterproto.Enum):
+    """
+    KnownSignatureAlgorithm captures the public key/hash algorithm combinations
+    recommended in the Sigstore ecosystem. This is modelled as a linear set as
+    we want to provide a small number of opinionated options instead of
+    allowing every possible permutation. Any changes to this enum MUST be
+    reflected in the algorithm registry. See: docs/algorithm-registry.md
+    """
+
+    KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED = 0
+    RSA_SIGN_PKCS1_2048_SHA256 = 1
+    RSA_SIGN_PKCS1_3072_SHA256 = 2
+    RSA_SIGN_PKCS1_4096_SHA256 = 3
+    ECDSA_SHA2_256_NISTP256 = 4
+    ECDSA_SHA2_384_NISTP384 = 5
+    ECDSA_SHA2_512_NISTP521 = 6
+    ED25519 = 7
+    ED25519_PH = 8
 
 
 class SubjectAlternativeNameType(betterproto.Enum):
