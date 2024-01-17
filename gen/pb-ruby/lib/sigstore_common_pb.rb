@@ -74,11 +74,14 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     end
     add_enum "dev.sigstore.common.v1.KnownSignatureAlgorithm" do
       value :KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED, 0
-      value :ECDSA_SHA2_256_NISTP256, 1
-      value :ECDSA_SHA2_384_NISTP384, 3
-      value :ECDSA_SHA2_512_NISTP521, 2
-      value :ED25519, 4
-      value :ED25519_PH, 5
+      value :RSA_SIGN_PKCS1_2048_SHA256, 1
+      value :RSA_SIGN_PKCS1_3072_SHA256, 2
+      value :RSA_SIGN_PKCS1_4096_SHA256, 3
+      value :ECDSA_SHA2_256_NISTP256, 4
+      value :ECDSA_SHA2_384_NISTP384, 5
+      value :ECDSA_SHA2_512_NISTP521, 6
+      value :ED25519, 7
+      value :ED25519_PH, 8
     end
     add_enum "dev.sigstore.common.v1.SubjectAlternativeNameType" do
       value :SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED, 0

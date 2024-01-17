@@ -129,11 +129,14 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
  */
 export enum KnownSignatureAlgorithm {
   KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED = 0,
-  ECDSA_SHA2_256_NISTP256 = 1,
-  ECDSA_SHA2_384_NISTP384 = 3,
-  ECDSA_SHA2_512_NISTP521 = 2,
-  ED25519 = 4,
-  ED25519_PH = 5,
+  RSA_SIGN_PKCS1_2048_SHA256 = 1,
+  RSA_SIGN_PKCS1_3072_SHA256 = 2,
+  RSA_SIGN_PKCS1_4096_SHA256 = 3,
+  ECDSA_SHA2_256_NISTP256 = 4,
+  ECDSA_SHA2_384_NISTP384 = 5,
+  ECDSA_SHA2_512_NISTP521 = 6,
+  ED25519 = 7,
+  ED25519_PH = 8,
 }
 
 export function knownSignatureAlgorithmFromJSON(object: any): KnownSignatureAlgorithm {
@@ -142,18 +145,27 @@ export function knownSignatureAlgorithmFromJSON(object: any): KnownSignatureAlgo
     case "KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED":
       return KnownSignatureAlgorithm.KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED;
     case 1:
+    case "RSA_SIGN_PKCS1_2048_SHA256":
+      return KnownSignatureAlgorithm.RSA_SIGN_PKCS1_2048_SHA256;
+    case 2:
+    case "RSA_SIGN_PKCS1_3072_SHA256":
+      return KnownSignatureAlgorithm.RSA_SIGN_PKCS1_3072_SHA256;
+    case 3:
+    case "RSA_SIGN_PKCS1_4096_SHA256":
+      return KnownSignatureAlgorithm.RSA_SIGN_PKCS1_4096_SHA256;
+    case 4:
     case "ECDSA_SHA2_256_NISTP256":
       return KnownSignatureAlgorithm.ECDSA_SHA2_256_NISTP256;
-    case 3:
+    case 5:
     case "ECDSA_SHA2_384_NISTP384":
       return KnownSignatureAlgorithm.ECDSA_SHA2_384_NISTP384;
-    case 2:
+    case 6:
     case "ECDSA_SHA2_512_NISTP521":
       return KnownSignatureAlgorithm.ECDSA_SHA2_512_NISTP521;
-    case 4:
+    case 7:
     case "ED25519":
       return KnownSignatureAlgorithm.ED25519;
-    case 5:
+    case 8:
     case "ED25519_PH":
       return KnownSignatureAlgorithm.ED25519_PH;
     default:
@@ -165,6 +177,12 @@ export function knownSignatureAlgorithmToJSON(object: KnownSignatureAlgorithm): 
   switch (object) {
     case KnownSignatureAlgorithm.KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED:
       return "KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED";
+    case KnownSignatureAlgorithm.RSA_SIGN_PKCS1_2048_SHA256:
+      return "RSA_SIGN_PKCS1_2048_SHA256";
+    case KnownSignatureAlgorithm.RSA_SIGN_PKCS1_3072_SHA256:
+      return "RSA_SIGN_PKCS1_3072_SHA256";
+    case KnownSignatureAlgorithm.RSA_SIGN_PKCS1_4096_SHA256:
+      return "RSA_SIGN_PKCS1_4096_SHA256";
     case KnownSignatureAlgorithm.ECDSA_SHA2_256_NISTP256:
       return "ECDSA_SHA2_256_NISTP256";
     case KnownSignatureAlgorithm.ECDSA_SHA2_384_NISTP384:

@@ -25,10 +25,13 @@ specification for the design rationale for this registry.
 
 ## Signature Algorithms
 
-| Algorithm | Name                    | Usage                                             |
-|-----------|-------------------------|---------------------------------------------------|
-| ECDSA     | ecdsa-sha2-256-nistp256 | sign/verify                                       |
-|           | ecdsa-sha2-384-nistp384 | sign/verify                                       |
-|           | ecdsa-sha2-512-nistp521 | sign/verify                                       |
-| EdDSA     | ed25519                 | sign/verify                                       |
-|           | ed25519-ph              | sign/verify (recommended only for `hashedrekord`) |
+| Algorithm | Name                       | Usage                                             |
+|-----------|----------------------------|---------------------------------------------------|
+| RSA       | rsa-sign-pkcs1-2048-sha256 | verify only                                       |
+|           | rsa-sign-pkcs1-3072-sha256 | sign/verify                                       |
+|           | rsa-sign-pkcs1-4096-sha256 | sign/verify                                       |
+| ECDSA     | ecdsa-sha2-256-nistp256    | sign/verify                                       |
+|           | ecdsa-sha2-384-nistp384    | sign/verify                                       |
+|           | ecdsa-sha2-512-nistp521    | sign/verify                                       |
+| EdDSA     | ed25519                    | sign/verify                                       |
+|           | ed25519-ph                 | sign/verify (recommended only for `hashedrekord`) |
