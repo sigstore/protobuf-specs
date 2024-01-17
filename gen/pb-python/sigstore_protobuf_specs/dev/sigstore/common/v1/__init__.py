@@ -51,7 +51,7 @@ class PublicKeyDetails(betterproto.Enum):
 
 class KnownSignatureAlgorithm(betterproto.Enum):
     """
-    KnownSignatureAlgorithm captures the signature/hash algorithm combinations
+    KnownSignatureAlgorithm captures the public key/hash algorithm combinations
     recommended in the Sigstore ecosystem. This is modelled as a linear set as
     we want to provide a small number of opinionated options instead of
     allowing every possible permutation. Any changes to this enum MUST be

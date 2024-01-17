@@ -162,7 +162,7 @@ func (PublicKeyDetails) EnumDescriptor() ([]byte, []int) {
 	return file_sigstore_common_proto_rawDescGZIP(), []int{1}
 }
 
-// KnownSignatureAlgorithm captures the signature/hash algorithm combinations
+// KnownSignatureAlgorithm captures the public key/hash algorithm combinations
 // recommended in the Sigstore ecosystem.
 //
 // This is modelled as a linear set as we want to provide a small number of
