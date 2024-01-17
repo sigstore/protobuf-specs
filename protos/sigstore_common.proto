@@ -37,6 +37,10 @@ option ruby_package = "Sigstore::Common::V1";
 enum HashAlgorithm {
         HASH_ALGORITHM_UNSPECIFIED = 0;
         SHA2_256 = 1;
+        SHA2_256_192 = 2;
+        SHA2_512 = 3;
+        SHA3_256 = 4;
+        SHA3_384 = 5;
 }
 
 // Details of a specific public key, capturing the the key encoding method,

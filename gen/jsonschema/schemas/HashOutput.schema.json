@@ -7,7 +7,11 @@
                 "algorithm": {
                     "enum": [
                         "HASH_ALGORITHM_UNSPECIFIED",
-                        "SHA2_256"
+                        "SHA2_256",
+                        "SHA2_256_192",
+                        "SHA2_512",
+                        "SHA3_256",
+                        "SHA3_384"
                     ],
                     "type": "string",
                     "title": "This package defines commonly used message types within the Sigstore\n community.",

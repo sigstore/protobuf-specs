@@ -13,6 +13,10 @@ import { Timestamp } from "./google/protobuf/timestamp";
 export enum HashAlgorithm {
   HASH_ALGORITHM_UNSPECIFIED = 0,
   SHA2_256 = 1,
+  SHA2_256_192 = 2,
+  SHA2_512 = 3,
+  SHA3_256 = 4,
+  SHA3_384 = 5,
 }
 
 export function hashAlgorithmFromJSON(object: any): HashAlgorithm {
@@ -23,6 +27,18 @@ export function hashAlgorithmFromJSON(object: any): HashAlgorithm {
     case 1:
     case "SHA2_256":
       return HashAlgorithm.SHA2_256;
+    case 2:
+    case "SHA2_256_192":
+      return HashAlgorithm.SHA2_256_192;
+    case 3:
+    case "SHA2_512":
+      return HashAlgorithm.SHA2_512;
+    case 4:
+    case "SHA3_256":
+      return HashAlgorithm.SHA3_256;
+    case 5:
+    case "SHA3_384":
+      return HashAlgorithm.SHA3_384;
     default:
       throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum HashAlgorithm");
   }
@@ -34,6 +50,14 @@ export function hashAlgorithmToJSON(object: HashAlgorithm): string {
       return "HASH_ALGORITHM_UNSPECIFIED";
     case HashAlgorithm.SHA2_256:
       return "SHA2_256";
+    case HashAlgorithm.SHA2_256_192:
+      return "SHA2_256_192";
+    case HashAlgorithm.SHA2_512:
+      return "SHA2_512";
+    case HashAlgorithm.SHA3_256:
+      return "SHA3_256";
+    case HashAlgorithm.SHA3_384:
+      return "SHA3_384";
     default:
       throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum HashAlgorithm");
   }

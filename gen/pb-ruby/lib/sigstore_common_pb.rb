@@ -61,6 +61,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_enum "dev.sigstore.common.v1.HashAlgorithm" do
       value :HASH_ALGORITHM_UNSPECIFIED, 0
       value :SHA2_256, 1
+      value :SHA2_256_192, 2
+      value :SHA2_512, 3
+      value :SHA3_256, 4
+      value :SHA3_384, 5
     end
     add_enum "dev.sigstore.common.v1.PublicKeyDetails" do
       value :PUBLIC_KEY_DETAILS_UNSPECIFIED, 0

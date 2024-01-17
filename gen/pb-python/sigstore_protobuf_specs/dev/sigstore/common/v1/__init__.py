@@ -23,6 +23,10 @@ class HashAlgorithm(betterproto.Enum):
 
     HASH_ALGORITHM_UNSPECIFIED = 0
     SHA2_256 = 1
+    SHA2_256_192 = 2
+    SHA2_512 = 3
+    SHA3_256 = 4
+    SHA3_384 = 5
 
 
 class PublicKeyDetails(betterproto.Enum):
