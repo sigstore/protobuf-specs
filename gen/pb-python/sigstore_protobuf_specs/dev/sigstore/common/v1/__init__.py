@@ -73,6 +73,8 @@ class KnownSignatureAlgorithm(betterproto.Enum):
     ECDSA_SHA2_512_NISTP521 = 6
     ED25519 = 7
     ED25519_PH = 8
+    LMS_SHA256 = 9
+    LMOTS_SHA256 = 10
 
 
 class SubjectAlternativeNameType(betterproto.Enum):

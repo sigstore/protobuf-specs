@@ -86,6 +86,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :ECDSA_SHA2_512_NISTP521, 6
       value :ED25519, 7
       value :ED25519_PH, 8
+      value :LMS_SHA256, 9
+      value :LMOTS_SHA256, 10
     end
     add_enum "dev.sigstore.common.v1.SubjectAlternativeNameType" do
       value :SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED, 0

@@ -15,18 +15,30 @@ specification for the design rationale for this registry.
 
 ## Signature Algorithms
 
-| Algorithm | Name                       | Usage       | Notes                                       |
-|-----------|----------------------------|-------------| ------------------------------------------- |
-| RSA       | rsa-sign-pkcs1-2048-sha256 | verify only |                                             |
-|           | rsa-sign-pkcs1-3072-sha256 | sign/verify |                                             |
-|           | rsa-sign-pkcs1-4096-sha256 | sign/verify |                                             |
-| ECDSA     | ecdsa-sha2-256-nistp256    | sign/verify |                                             |
-|           | ecdsa-sha2-384-nistp384    | sign/verify |                                             |
-|           | ecdsa-sha2-512-nistp521    | sign/verify |                                             |
-| EdDSA     | ed25519                    | sign/verify |                                             |
-|           | ed25519-ph                 | sign/verify | Recommended only for `hashedrekord`.        |
-| LMS       | lms-sha2-256               | sign/verify | Stateful; signer selects the `H` parameter. |
-| LM-OTS    | lmots-sha-256-n32-w8       | sign/verify | One-time use only.                          |
+| Algorithm | Name                       | Usage       | Notes                                                                            |
+|-----------|----------------------------|-------------| -------------------------------------------------------------------------------- |
+| RSA       | rsa-sign-pkcs1-2048-sha256 | verify only |                                                                                  |
+|           | rsa-sign-pkcs1-3072-sha256 | sign/verify |                                                                                  |
+|           | rsa-sign-pkcs1-4096-sha256 | sign/verify |                                                                                  |
+| ECDSA     | ecdsa-sha2-256-nistp256    | sign/verify |                                                                                  |
+|           | ecdsa-sha2-384-nistp384    | sign/verify |                                                                                  |
+|           | ecdsa-sha2-512-nistp521    | sign/verify |                                                                                  |
+| EdDSA     | ed25519                    | sign/verify |                                                                                  |
+|           | ed25519-ph                 | sign/verify | Recommended only for `hashedrekord`.                                             |
+| LMS       | lms-sha256                 | sign/verify | Stateful; signer selects the `H` parameter. Not recommended for keyless signing. |
+| LM-OTS    | lmots-sha256               | sign/verify | One-time use only; signer selects `n` and `w`.                                   |
+
+### Parameter configuration for LMS and LM-OTS
+
+LMS and LM-OTS are both hash-based signature schemes. Both require the signing party
+to make parameter choices during key generation.
+
+In both cases, the selected parameters are encoded in the public key representation.
+See [RFC 8554 S5.3](https://www.rfc-editor.org/rfc/rfc8554.html#section-5.3) for LMS and
+[RFC 8554 S4.3](https://www.rfc-editor.org/rfc/rfc8554.html#section-4.3) for LM-OTS public key
+formats. Additionally, see [RFC 8708 S4](https://www.rfc-editor.org/rfc/rfc8708.html) for
+`SubjectPublicKeyInfo` and `AlgorithmIdentifier` encodings for both LMS and LM-OTS
+public keys.
 
 ## Hash Algorithms
 

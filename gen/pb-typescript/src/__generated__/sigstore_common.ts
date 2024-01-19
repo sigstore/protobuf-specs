@@ -161,6 +161,8 @@ export enum KnownSignatureAlgorithm {
   ECDSA_SHA2_512_NISTP521 = 6,
   ED25519 = 7,
   ED25519_PH = 8,
+  LMS_SHA256 = 9,
+  LMOTS_SHA256 = 10,
 }
 
 export function knownSignatureAlgorithmFromJSON(object: any): KnownSignatureAlgorithm {
@@ -192,6 +194,12 @@ export function knownSignatureAlgorithmFromJSON(object: any): KnownSignatureAlgo
     case 8:
     case "ED25519_PH":
       return KnownSignatureAlgorithm.ED25519_PH;
+    case 9:
+    case "LMS_SHA256":
+      return KnownSignatureAlgorithm.LMS_SHA256;
+    case 10:
+    case "LMOTS_SHA256":
+      return KnownSignatureAlgorithm.LMOTS_SHA256;
     default:
       throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum KnownSignatureAlgorithm");
   }
@@ -217,6 +225,10 @@ export function knownSignatureAlgorithmToJSON(object: KnownSignatureAlgorithm): 
       return "ED25519";
     case KnownSignatureAlgorithm.ED25519_PH:
       return "ED25519_PH";
+    case KnownSignatureAlgorithm.LMS_SHA256:
+      return "LMS_SHA256";
+    case KnownSignatureAlgorithm.LMOTS_SHA256:
+      return "LMOTS_SHA256";
     default:
       throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum KnownSignatureAlgorithm");
   }
