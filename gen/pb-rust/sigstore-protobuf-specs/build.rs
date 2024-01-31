@@ -1,16 +1,9 @@
-use anyhow::Context;
-
 /// Find the standard protobuf include directory.
 fn protobuf_include_path() -> String {
     let mut protobuf_root = which::which("protoc")
-        .context("couldn't find protoc!")
+        .ok()
         // dirname(/bin/protoc) / ../
-        .and_then(|path| {
-            path.ancestors()
-                .nth(2)
-                .map(|p| p.to_path_buf())
-                .with_context(|| format!("couldn't traverse path: {path:?}"))
-        })
+        .and_then(|path| path.ancestors().nth(2).map(|p| p.to_path_buf()))
         .expect("protobuf installation directory not found!");
     protobuf_root.push("include");
     protobuf_root.to_str().unwrap().to_owned()
