@@ -3,7 +3,7 @@ use sigstore_protobuf_specs::dev::sigstore::common::v1::{HashOutput, LogId, Mess
 /// HashOutput, a structure using only primitive types
 #[test]
 fn primitives() {
-    let hash_output_json = r#"{"algorithm":0,"digest":[1,2,3]}"#;
+    let hash_output_json = r#"{"digest":"AQID"}"#;
     let hash_output_rs = HashOutput {
         algorithm: 0i32,
         digest: vec![1u8, 2u8, 3u8],
@@ -21,7 +21,7 @@ fn primitives() {
 /// LogId, a structure with a field using camelCase
 #[test]
 fn camel_case() {
-    let log_id_json = r#"{"keyId":[0]}"#;
+    let log_id_json = r#"{"keyId":"AA=="}"#;
     let log_id_rs = LogId { key_id: vec![0] };
 
     let serialize = serde_json::to_string(&log_id_rs);
@@ -38,15 +38,15 @@ fn camel_case() {
 fn nested() {
     let message_signature_json = r#"{
             "messageDigest": {
-                "algorithm": 0,
-                "digest": [1,2,3]
+                "algorithm": "SHA2_256",
+                "digest": "AQID"
             },
-            "signature": [1]
+            "signature": "AQ=="
         }"#;
 
     let message_signature_rs = MessageSignature {
         message_digest: Some(HashOutput {
-            algorithm: 0i32,
+            algorithm: 1i32,
             digest: vec![1u8, 2u8, 3u8],
         }),
         signature: vec![1u8],

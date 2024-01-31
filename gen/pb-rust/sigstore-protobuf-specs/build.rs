@@ -19,10 +19,14 @@ fn main() -> anyhow::Result<()> {
     ];
 
     let mut config = prost_build::Config::new();
-    config.include_file("mod.rs").type_attribute(
-        ".",
-        "#[derive(derive::Deserialize_proto, derive::Serialize_proto)]",
-    );
+    config
+        .include_file("mod.rs")
+        .type_attribute(
+            ".",
+            "#[derive(derive::Deserialize_proto, derive::Serialize_proto)]",
+        )
+        // Disable problematic comments interpreted as doctests.
+        .disable_comments([".io.intoto.Envelope"]);
 
     prost_reflect_build::Builder::new()
         .file_descriptor_set_bytes("crate::FILE_DESCRIPTOR_SET_BYTES")
