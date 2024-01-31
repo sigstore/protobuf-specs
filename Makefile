@@ -13,8 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PROTOC_IMAGE=protobuf-specs-build
-JSONSCHEMA_IMAGE=jsonschema-specs-build
+PROTOC_IMAGE = protobuf-specs-build
+JSONSCHEMA_IMAGE = jsonschema-specs-build
+
+RUST_ACTION ?= build
 
 # generate all language protobuf code
 all: go python typescript ruby rust jsonschema
@@ -58,17 +60,15 @@ jsonschema: docker-image-jsonschema
 	       ${JSONSCHEMA_IMAGE} \
 	       -c "cd defs/gen/jsonschema && ./jsonschema.sh -I ../../protos -I /googleapis/ --jsonschema_out=schemas ../../protos/*.proto"
 
-gen/pb-rust/schemas: jsonschema
-	cp -r gen/jsonschema/schemas gen/pb-rust
-
-rust: docker-image gen/pb-rust/schemas
-	@echo "Generating rust protobuf files"
+rust: docker-image
+	@echo "Running `cargo ${RUST_ACTION}`"
 	docker run \
 		--platform linux/amd64 \
 		-v ${PWD}:/defs \
 		-e "RUST_BACKTRACE=1" \
+		-e "CARGO_REGISTRY_TOKEN" \
 		--entrypoint bash ${PROTOC_IMAGE} \
-		-c "cd gen/pb-rust && cargo build"
+		-c "cd gen/pb-rust && cargo ${RUST_ACTION}"
 
 # docker already does its own caching so we can attempt a build every time
 .PHONY: docker-image
