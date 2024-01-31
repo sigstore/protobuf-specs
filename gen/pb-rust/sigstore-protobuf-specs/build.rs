@@ -10,13 +10,13 @@ fn protobuf_include_path() -> String {
 }
 
 fn main() -> anyhow::Result<()> {
-    let mut includes = vec![
-        protobuf_include_path(),
+    let includes = vec![
         concat!(env!("CARGO_MANIFEST_DIR"), "/../../../protos").to_owned(),
+        // WKTs path
+        protobuf_include_path(),
+        // googleapi types path
+        std::env::var("SIGSTORE_PROTOBUF_EXTRA_INCLUDE").unwrap_or("/opt/include".to_owned()),
     ];
-    if let Ok(extra) = std::env::var("SIGSTORE_PROTOBUF_EXTRA_INCLUDE") {
-        includes.push(extra)
-    }
 
     let mut config = prost_build::Config::new();
     config.include_file("mod.rs").type_attribute(
