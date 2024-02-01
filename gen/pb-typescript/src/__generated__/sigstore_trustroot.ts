@@ -87,10 +87,19 @@ export interface CertificateAuthority {
  * The embedded transparency logs, CT logs, CAs and TSAs MUST include any
  * previously used instance -- otherwise signatures made in the past cannot
  * be verified.
- * The currently used instances MUST NOT have their 'end' timestamp set in
- * their 'valid_for' attribute for easy identification.
+ *
  * All the listed instances SHOULD be sorted by the 'valid_for' in ascending
- * order, that is, the oldest instance first and the current instance last.
+ * order, that is, the oldest instance first. Only the last instance is
+ * allowed to have their 'end' timestamp unset. All previous instances MUST
+ * have a closed interval of validity. The last instance MAY have a closed
+ * interval.
+ *
+ * To be able to manage planned rotations of either transparency logs or
+ * certificate authorities, clienst MUST accept lists of instances where
+ * the last instance have a 'valid_for' that belongs to the future.
+ * This should not be a problem as clients SHOULD first seek the trust root
+ * for a suitable instance before creating a per artifact trust root (that
+ * is, a sub-set of the complete trust root) that is used for verification.
  */
 export interface TrustedRoot {
   /** MUST be application/vnd.dev.sigstore.trustedroot+json;version=0.1 */
