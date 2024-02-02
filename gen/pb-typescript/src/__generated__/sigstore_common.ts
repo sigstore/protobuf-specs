@@ -66,6 +66,16 @@ export function hashAlgorithmToJSON(object: HashAlgorithm): string {
 /**
  * Details of a specific public key, capturing the the key encoding method,
  * and signature algorithm.
+ *
+ * PublicKeyDetails captures the public key/hash algorithm combinations
+ * recommended in the Sigstore ecosystem.
+ *
+ * This is modelled as a linear set as we want to provide a small number of
+ * opinionated options instead of allowing every possible permutation.
+ *
+ * Any changes to this enum MUST be reflected in the algorithm registry.
+ * See: docs/algorithm-registry.md
+ *
  * To avoid the possibility of contradicting formats such as PKCS1 with
  * ED25519 the valid permutations are listed as a linear set instead of a
  * cartesian set (i.e one combined variable instead of two, one for encoding
@@ -73,18 +83,38 @@ export function hashAlgorithmToJSON(object: HashAlgorithm): string {
  */
 export enum PublicKeyDetails {
   PUBLIC_KEY_DETAILS_UNSPECIFIED = 0,
-  /** PKCS1_RSA_PKCS1V5 - RSA */
+  /**
+   * PKCS1_RSA_PKCS1V5 - RSA
+   *
+   * @deprecated
+   */
   PKCS1_RSA_PKCS1V5 = 1,
-  /** PKCS1_RSA_PSS - See RFC8017 */
+  /**
+   * PKCS1_RSA_PSS - See RFC8017
+   *
+   * @deprecated
+   */
   PKCS1_RSA_PSS = 2,
+  /** @deprecated */
   PKIX_RSA_PKCS1V5 = 3,
+  /** @deprecated */
   PKIX_RSA_PSS = 4,
-  /** PKIX_ECDSA_P256_SHA_256 - ECDSA */
-  PKIX_ECDSA_P256_SHA_256 = 5,
-  /** PKIX_ECDSA_P256_HMAC_SHA_256 - See RFC6979 */
+  PKIX_RSA_PKCS1_2048_SHA256 = 9,
+  PKIX_RSA_PKCS1_3072_SHA256 = 10,
+  PKIX_RSA_PKCS1_4096_SHA256 = 11,
+  /**
+   * PKIX_ECDSA_P256_HMAC_SHA_256 - ECDSA
+   *
+   * @deprecated
+   */
   PKIX_ECDSA_P256_HMAC_SHA_256 = 6,
+  /** PKIX_ECDSA_P256_SHA_256 - See NIST FIPS 186-4 */
+  PKIX_ECDSA_P256_SHA_256 = 5,
+  PKIX_ECDSA_P384_SHA_384 = 12,
+  PKIX_ECDSA_P521_SHA_512 = 13,
   /** PKIX_ED25519 - Ed 25519 */
   PKIX_ED25519 = 7,
+  PKIX_ED25519_PH = 8,
 }
 
 export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
@@ -104,15 +134,33 @@ export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
     case 4:
     case "PKIX_RSA_PSS":
       return PublicKeyDetails.PKIX_RSA_PSS;
-    case 5:
-    case "PKIX_ECDSA_P256_SHA_256":
-      return PublicKeyDetails.PKIX_ECDSA_P256_SHA_256;
+    case 9:
+    case "PKIX_RSA_PKCS1_2048_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PKCS1_2048_SHA256;
+    case 10:
+    case "PKIX_RSA_PKCS1_3072_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PKCS1_3072_SHA256;
+    case 11:
+    case "PKIX_RSA_PKCS1_4096_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PKCS1_4096_SHA256;
     case 6:
     case "PKIX_ECDSA_P256_HMAC_SHA_256":
       return PublicKeyDetails.PKIX_ECDSA_P256_HMAC_SHA_256;
+    case 5:
+    case "PKIX_ECDSA_P256_SHA_256":
+      return PublicKeyDetails.PKIX_ECDSA_P256_SHA_256;
+    case 12:
+    case "PKIX_ECDSA_P384_SHA_384":
+      return PublicKeyDetails.PKIX_ECDSA_P384_SHA_384;
+    case 13:
+    case "PKIX_ECDSA_P521_SHA_512":
+      return PublicKeyDetails.PKIX_ECDSA_P521_SHA_512;
     case 7:
     case "PKIX_ED25519":
       return PublicKeyDetails.PKIX_ED25519;
+    case 8:
+    case "PKIX_ED25519_PH":
+      return PublicKeyDetails.PKIX_ED25519_PH;
     default:
       throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
   }
@@ -130,95 +178,26 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
       return "PKIX_RSA_PKCS1V5";
     case PublicKeyDetails.PKIX_RSA_PSS:
       return "PKIX_RSA_PSS";
-    case PublicKeyDetails.PKIX_ECDSA_P256_SHA_256:
-      return "PKIX_ECDSA_P256_SHA_256";
+    case PublicKeyDetails.PKIX_RSA_PKCS1_2048_SHA256:
+      return "PKIX_RSA_PKCS1_2048_SHA256";
+    case PublicKeyDetails.PKIX_RSA_PKCS1_3072_SHA256:
+      return "PKIX_RSA_PKCS1_3072_SHA256";
+    case PublicKeyDetails.PKIX_RSA_PKCS1_4096_SHA256:
+      return "PKIX_RSA_PKCS1_4096_SHA256";
     case PublicKeyDetails.PKIX_ECDSA_P256_HMAC_SHA_256:
       return "PKIX_ECDSA_P256_HMAC_SHA_256";
+    case PublicKeyDetails.PKIX_ECDSA_P256_SHA_256:
+      return "PKIX_ECDSA_P256_SHA_256";
+    case PublicKeyDetails.PKIX_ECDSA_P384_SHA_384:
+      return "PKIX_ECDSA_P384_SHA_384";
+    case PublicKeyDetails.PKIX_ECDSA_P521_SHA_512:
+      return "PKIX_ECDSA_P521_SHA_512";
     case PublicKeyDetails.PKIX_ED25519:
       return "PKIX_ED25519";
+    case PublicKeyDetails.PKIX_ED25519_PH:
+      return "PKIX_ED25519_PH";
     default:
       throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
-  }
-}
-
-/**
- * KnownSignatureAlgorithm captures the public key/hash algorithm combinations
- * recommended in the Sigstore ecosystem.
- *
- * This is modelled as a linear set as we want to provide a small number of
- * opinionated options instead of allowing every possible permutation.
- *
- * Any changes to this enum MUST be reflected in the algorithm registry.
- * See: docs/algorithm-registry.md
- */
-export enum KnownSignatureAlgorithm {
-  KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED = 0,
-  RSA_SIGN_PKCS1_2048_SHA256 = 1,
-  RSA_SIGN_PKCS1_3072_SHA256 = 2,
-  RSA_SIGN_PKCS1_4096_SHA256 = 3,
-  ECDSA_SHA2_256_NISTP256 = 4,
-  ECDSA_SHA2_384_NISTP384 = 5,
-  ECDSA_SHA2_512_NISTP521 = 6,
-  ED25519 = 7,
-  ED25519_PH = 8,
-}
-
-export function knownSignatureAlgorithmFromJSON(object: any): KnownSignatureAlgorithm {
-  switch (object) {
-    case 0:
-    case "KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED":
-      return KnownSignatureAlgorithm.KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED;
-    case 1:
-    case "RSA_SIGN_PKCS1_2048_SHA256":
-      return KnownSignatureAlgorithm.RSA_SIGN_PKCS1_2048_SHA256;
-    case 2:
-    case "RSA_SIGN_PKCS1_3072_SHA256":
-      return KnownSignatureAlgorithm.RSA_SIGN_PKCS1_3072_SHA256;
-    case 3:
-    case "RSA_SIGN_PKCS1_4096_SHA256":
-      return KnownSignatureAlgorithm.RSA_SIGN_PKCS1_4096_SHA256;
-    case 4:
-    case "ECDSA_SHA2_256_NISTP256":
-      return KnownSignatureAlgorithm.ECDSA_SHA2_256_NISTP256;
-    case 5:
-    case "ECDSA_SHA2_384_NISTP384":
-      return KnownSignatureAlgorithm.ECDSA_SHA2_384_NISTP384;
-    case 6:
-    case "ECDSA_SHA2_512_NISTP521":
-      return KnownSignatureAlgorithm.ECDSA_SHA2_512_NISTP521;
-    case 7:
-    case "ED25519":
-      return KnownSignatureAlgorithm.ED25519;
-    case 8:
-    case "ED25519_PH":
-      return KnownSignatureAlgorithm.ED25519_PH;
-    default:
-      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum KnownSignatureAlgorithm");
-  }
-}
-
-export function knownSignatureAlgorithmToJSON(object: KnownSignatureAlgorithm): string {
-  switch (object) {
-    case KnownSignatureAlgorithm.KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED:
-      return "KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED";
-    case KnownSignatureAlgorithm.RSA_SIGN_PKCS1_2048_SHA256:
-      return "RSA_SIGN_PKCS1_2048_SHA256";
-    case KnownSignatureAlgorithm.RSA_SIGN_PKCS1_3072_SHA256:
-      return "RSA_SIGN_PKCS1_3072_SHA256";
-    case KnownSignatureAlgorithm.RSA_SIGN_PKCS1_4096_SHA256:
-      return "RSA_SIGN_PKCS1_4096_SHA256";
-    case KnownSignatureAlgorithm.ECDSA_SHA2_256_NISTP256:
-      return "ECDSA_SHA2_256_NISTP256";
-    case KnownSignatureAlgorithm.ECDSA_SHA2_384_NISTP384:
-      return "ECDSA_SHA2_384_NISTP384";
-    case KnownSignatureAlgorithm.ECDSA_SHA2_512_NISTP521:
-      return "ECDSA_SHA2_512_NISTP521";
-    case KnownSignatureAlgorithm.ED25519:
-      return "ED25519";
-    case KnownSignatureAlgorithm.ED25519_PH:
-      return "ED25519_PH";
-    default:
-      throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum KnownSignatureAlgorithm");
   }
 }
 
