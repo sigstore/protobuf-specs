@@ -17,9 +17,12 @@ specification for the design rationale for this registry.
 
 | Algorithm | Name                       | Usage       | Notes                                                                            |
 |-----------|----------------------------|-------------| -------------------------------------------------------------------------------- |
-| RSA       | rsa-sign-pkcs1-2048-sha256 | verify only |                                                                                  |
+| RSA       | rsa-sign-pkcs1-2048-sha256 | verify only | Not recommended.                                                                 |
 |           | rsa-sign-pkcs1-3072-sha256 | sign/verify |                                                                                  |
 |           | rsa-sign-pkcs1-4096-sha256 | sign/verify |                                                                                  |
+|           | rsa-sign-pss-2048-sha256   | verify only | Not recommended.                                                                 |
+|           | rsa-sign-pss-3072-sha256   | sign/verify |                                                                                  |
+|           | rsa-sign-pss-4096-sha256   | sign/verify |                                                                                  |
 | ECDSA     | ecdsa-sha2-256-nistp256    | sign/verify |                                                                                  |
 |           | ecdsa-sha2-384-nistp384    | sign/verify |                                                                                  |
 |           | ecdsa-sha2-512-nistp521    | sign/verify |                                                                                  |

@@ -102,9 +102,10 @@ export enum PublicKeyDetails {
   PKIX_RSA_PKCS1_2048_SHA256 = 9,
   PKIX_RSA_PKCS1_3072_SHA256 = 10,
   PKIX_RSA_PKCS1_4096_SHA256 = 11,
-  RSA_PSS_2048_SHA256 = 16,
-  RSA_PSS_3072_SHA256 = 17,
-  RSA_PSS_4096_SHA256 = 18,
+  /** PKIX_RSA_PSS_2048_SHA256 - See RFC4055 */
+  PKIX_RSA_PSS_2048_SHA256 = 16,
+  PKIX_RSA_PSS_3072_SHA256 = 17,
+  PKIX_RSA_PSS_4096_SHA256 = 18,
   /**
    * PKIX_ECDSA_P256_HMAC_SHA_256 - ECDSA
    *
@@ -150,14 +151,14 @@ export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
     case "PKIX_RSA_PKCS1_4096_SHA256":
       return PublicKeyDetails.PKIX_RSA_PKCS1_4096_SHA256;
     case 16:
-    case "RSA_PSS_2048_SHA256":
-      return PublicKeyDetails.RSA_PSS_2048_SHA256;
+    case "PKIX_RSA_PSS_2048_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PSS_2048_SHA256;
     case 17:
-    case "RSA_PSS_3072_SHA256":
-      return PublicKeyDetails.RSA_PSS_3072_SHA256;
+    case "PKIX_RSA_PSS_3072_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PSS_3072_SHA256;
     case 18:
-    case "RSA_PSS_4096_SHA256":
-      return PublicKeyDetails.RSA_PSS_4096_SHA256;
+    case "PKIX_RSA_PSS_4096_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PSS_4096_SHA256;
     case 6:
     case "PKIX_ECDSA_P256_HMAC_SHA_256":
       return PublicKeyDetails.PKIX_ECDSA_P256_HMAC_SHA_256;
@@ -205,12 +206,12 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
       return "PKIX_RSA_PKCS1_3072_SHA256";
     case PublicKeyDetails.PKIX_RSA_PKCS1_4096_SHA256:
       return "PKIX_RSA_PKCS1_4096_SHA256";
-    case PublicKeyDetails.RSA_PSS_2048_SHA256:
-      return "RSA_PSS_2048_SHA256";
-    case PublicKeyDetails.RSA_PSS_3072_SHA256:
-      return "RSA_PSS_3072_SHA256";
-    case PublicKeyDetails.RSA_PSS_4096_SHA256:
-      return "RSA_PSS_4096_SHA256";
+    case PublicKeyDetails.PKIX_RSA_PSS_2048_SHA256:
+      return "PKIX_RSA_PSS_2048_SHA256";
+    case PublicKeyDetails.PKIX_RSA_PSS_3072_SHA256:
+      return "PKIX_RSA_PSS_3072_SHA256";
+    case PublicKeyDetails.PKIX_RSA_PSS_4096_SHA256:
+      return "PKIX_RSA_PSS_4096_SHA256";
     case PublicKeyDetails.PKIX_ECDSA_P256_HMAC_SHA_256:
       return "PKIX_ECDSA_P256_HMAC_SHA_256";
     case PublicKeyDetails.PKIX_ECDSA_P256_SHA_256:
