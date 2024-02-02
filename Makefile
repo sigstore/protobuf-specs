@@ -95,7 +95,6 @@ clean:
 		gen/pb-typescript/src/__generated__ \
 		gen/pb-python/sigstore_protobuf_specs/dev \
 		gen/pb-python/sigstore_protobuf_specs/io \
-		gen/pb-rust/schemas \
 		gen/pb-rust/target
 	docker rmi -f ${PROTOC_IMAGE}
 
