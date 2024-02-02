@@ -34,10 +34,15 @@ class HashAlgorithm(betterproto.Enum):
 class PublicKeyDetails(betterproto.Enum):
     """
     Details of a specific public key, capturing the the key encoding method,
-    and signature algorithm. To avoid the possibility of contradicting formats
-    such as PKCS1 with ED25519 the valid permutations are listed as a linear
-    set instead of a cartesian set (i.e one combined variable instead of two,
-    one for encoding and one for the signature algorithm).
+    and signature algorithm. PublicKeyDetails captures the public key/hash
+    algorithm combinations recommended in the Sigstore ecosystem. This is
+    modelled as a linear set as we want to provide a small number of
+    opinionated options instead of allowing every possible permutation. Any
+    changes to this enum MUST be reflected in the algorithm registry. See:
+    docs/algorithm-registry.md To avoid the possibility of contradicting
+    formats such as PKCS1 with ED25519 the valid permutations are listed as a
+    linear set instead of a cartesian set (i.e one combined variable instead of
+    two, one for encoding and one for the signature algorithm).
     """
 
     PUBLIC_KEY_DETAILS_UNSPECIFIED = 0
@@ -47,32 +52,19 @@ class PublicKeyDetails(betterproto.Enum):
     PKCS1_RSA_PSS = 2
     PKIX_RSA_PKCS1V5 = 3
     PKIX_RSA_PSS = 4
-    PKIX_ECDSA_P256_SHA_256 = 5
+    PKIX_RSA_PKCS1_2048_SHA256 = 9
+    PKIX_RSA_PKCS1_3072_SHA256 = 10
+    PKIX_RSA_PKCS1_4096_SHA256 = 11
+    PKIX_ECDSA_P256_HMAC_SHA_256 = 6
     """ECDSA"""
 
-    PKIX_ECDSA_P256_HMAC_SHA_256 = 6
+    PKIX_ECDSA_P256_SHA_256 = 5
+    PKIX_ECDSA_P384_SHA_384 = 12
+    PKIX_ECDSA_P521_SHA_512 = 13
     PKIX_ED25519 = 7
     """Ed 25519"""
 
-
-class KnownSignatureAlgorithm(betterproto.Enum):
-    """
-    KnownSignatureAlgorithm captures the public key/hash algorithm combinations
-    recommended in the Sigstore ecosystem. This is modelled as a linear set as
-    we want to provide a small number of opinionated options instead of
-    allowing every possible permutation. Any changes to this enum MUST be
-    reflected in the algorithm registry. See: docs/algorithm-registry.md
-    """
-
-    KNOWN_SIGNATURE_ALGORITHM_UNSPECIFIED = 0
-    RSA_SIGN_PKCS1_2048_SHA256 = 1
-    RSA_SIGN_PKCS1_3072_SHA256 = 2
-    RSA_SIGN_PKCS1_4096_SHA256 = 3
-    ECDSA_SHA2_256_NISTP256 = 4
-    ECDSA_SHA2_384_NISTP384 = 5
-    ECDSA_SHA2_512_NISTP521 = 6
-    ED25519 = 7
-    ED25519_PH = 8
+    PKIX_ED25519_PH = 8
 
 
 class SubjectAlternativeNameType(betterproto.Enum):
