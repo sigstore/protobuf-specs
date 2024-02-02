@@ -127,13 +127,21 @@
                         "PKCS1_RSA_PSS",
                         "PKIX_RSA_PKCS1V5",
                         "PKIX_RSA_PSS",
-                        "PKIX_ECDSA_P256_SHA_256",
+                        "PKIX_RSA_PKCS1_2048_SHA256",
+                        "PKIX_RSA_PKCS1_3072_SHA256",
+                        "PKIX_RSA_PKCS1_4096_SHA256",
                         "PKIX_ECDSA_P256_HMAC_SHA_256",
-                        "PKIX_ED25519"
+                        "PKIX_ECDSA_P256_SHA_256",
+                        "PKIX_ECDSA_P384_SHA_384",
+                        "PKIX_ECDSA_P521_SHA_512",
+                        "PKIX_ED25519",
+                        "PKIX_ED25519_PH",
+                        "EXPERIMENTAL_LMS_SHA256",
+                        "EXPERIMENTAL_LMOTS_SHA256"
                     ],
                     "type": "string",
                     "title": "Public Key Details",
-                    "description": "Details of a specific public key, capturing the the key encoding method, and signature algorithm. To avoid the possibility of contradicting formats such as PKCS1 with ED25519 the valid permutations are listed as a linear set instead of a cartesian set (i.e one combined variable instead of two, one for encoding and one for the signature algorithm)."
+                    "description": "Details of a specific public key, capturing the the key encoding method, and signature algorithm. PublicKeyDetails captures the public key/hash algorithm combinations recommended in the Sigstore ecosystem. This is modelled as a linear set as we want to provide a small number of opinionated options instead of allowing every possible permutation. Any changes to this enum MUST be reflected in the algorithm registry. See: docs/algorithm-registry.md To avoid the possibility of contradicting formats such as PKCS1 with ED25519 the valid permutations are listed as a linear set instead of a cartesian set (i.e one combined variable instead of two, one for encoding and one for the signature algorithm)."
                 },
                 "validFor": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.TimeRange",
