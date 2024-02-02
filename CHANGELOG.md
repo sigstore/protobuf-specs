@@ -8,19 +8,23 @@ All versions prior to 0.2.0 are untracked.
 
 ## [Unreleased]
 
-### Added
+### 0.3.0
 
 * Options for more generic observer time ([#179](https://github.com/sigstore/protobuf-specs/pull/179))
 * **BREAKING**: `VerificationMaterials.contents` now has an additional `certificate` variant,
   which is preferred in `0.3` bundles with the Sigstore PGI ([#191](https://github.com/sigstore/protobuf-specs/pull/191))
-* Added algorithm registry documentation and associated new `KnownSignatureAlgorithm` message
-  ([#194](https://github.com/sigstore/protobuf-specs/pull/194))
+* Added algorithm registry documentation and update `PublicKeyDetails` message
+  ([#194](https://github.com/sigstore/protobuf-specs/pull/194), [#212](https://github.com/sigstore/protobuf-specs/pull/212))
+
 
 ### Changed
 
 * Deprecated support for detached SCTs ([#188](https://github.com/sigstore/protobuf-specs/pull/188))
 
 ### Fixed
+
+* Docs: Clarified rotation of verification materials in the trust root
+  ([#210](https://github.com/sigstore/protobuf-specs/pull/210)
 
 ## 0.2.1
 
