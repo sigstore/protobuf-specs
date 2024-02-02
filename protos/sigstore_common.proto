@@ -69,6 +69,9 @@ enum PublicKeyDetails {
         PKIX_RSA_PKCS1_2048_SHA256 = 9;
         PKIX_RSA_PKCS1_3072_SHA256 = 10;
         PKIX_RSA_PKCS1_4096_SHA256 = 11;
+        RSA_PSS_2048_SHA256 = 16;
+        RSA_PSS_3072_SHA256 = 17;
+        RSA_PSS_4096_SHA256 = 18;
 
         // ECDSA
         PKIX_ECDSA_P256_HMAC_SHA_256 = 6 [deprecated = true]; // See RFC6979
@@ -85,7 +88,7 @@ enum PublicKeyDetails {
         EXPERIMENTAL_LMOTS_SHA256 = 15;
 
         // Reserved for future additions of public key/signature algorithm types.
-        reserved 16 to 50;
+        reserved 19 to 50;
 }
 
 // HashOutput captures a digest of a 'message' (generic octet sequence)
