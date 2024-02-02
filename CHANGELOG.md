@@ -15,11 +15,11 @@ All versions prior to 0.2.0 are untracked.
   which is preferred in `0.3` bundles with the Sigstore PGI ([#191](https://github.com/sigstore/protobuf-specs/pull/191))
 * Added algorithm registry documentation and update `PublicKeyDetails` message
   ([#194](https://github.com/sigstore/protobuf-specs/pull/194), [#212](https://github.com/sigstore/protobuf-specs/pull/212))
-    * Deterministic ECDSA is deprecated
-    * NIST-P384 and NIST-P521 curves added
-    * Existing (and underspecified) RSA key types are deprecated. New
-      RSA keytypes are defined that specifies size of public modulus
-      and hash algorithm. RSA now only supports
+    * Deterministic ECDSA is **deprecated**
+    * NIST-P384 and NIST-P521 curves **added**
+    * Existing (and underspecified) RSA key types are
+      **deprecated**. New RSA keytypes are defined that specifies size
+      of public modulus and hash algorithm. RSA now only supports
       [PKCS#1](https://datatracker.ietf.org/doc/html/rfc8017#section-8.2)
       signature scheme, and PKIX
       ([SubjectPublicKeyInfo](https://datatracker.ietf.org/doc/html/rfc5280#section-4.1))
