@@ -85,9 +85,13 @@ enum PublicKeyDetails {
         PKIX_ED25519 = 7; // See RFC8032
         PKIX_ED25519_PH = 8;
 
-        // **EXPERIMENTAL**: LMS and LM-OTS variants.
-        EXPERIMENTAL_LMS_SHA256 = 14;
-        EXPERIMENTAL_LMOTS_SHA256 = 15;
+        // LMS and LM-OTS
+        //
+        // These keys and signatures may be used by private Sigstore
+        // deployments, but are not currently supported by the public
+        // good instance.
+        LMS_SHA256 = 14;
+        LMOTS_SHA256 = 15;
 
         // Reserved for future additions of public key/signature algorithm types.
         reserved 19 to 50;
