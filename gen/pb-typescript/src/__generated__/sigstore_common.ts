@@ -99,9 +99,14 @@ export enum PublicKeyDetails {
   PKIX_RSA_PKCS1V5 = 3,
   /** @deprecated */
   PKIX_RSA_PSS = 4,
-  PKIX_RSA_PKCS1_2048_SHA256 = 9,
-  PKIX_RSA_PKCS1_3072_SHA256 = 10,
-  PKIX_RSA_PKCS1_4096_SHA256 = 11,
+  /** PKIX_RSA_PKCS1V15_2048_SHA256 - RSA public key in PKIX format, PKCS#1v1.5 signature */
+  PKIX_RSA_PKCS1V15_2048_SHA256 = 9,
+  PKIX_RSA_PKCS1V15_3072_SHA256 = 10,
+  PKIX_RSA_PKCS1V15_4096_SHA256 = 11,
+  /** PKIX_RSA_PSS_2048_SHA256 - RSA public key in PKIX format, RSASSA-PSS signature */
+  PKIX_RSA_PSS_2048_SHA256 = 16,
+  PKIX_RSA_PSS_3072_SHA256 = 17,
+  PKIX_RSA_PSS_4096_SHA256 = 18,
   /**
    * PKIX_ECDSA_P256_HMAC_SHA_256 - ECDSA
    *
@@ -115,6 +120,9 @@ export enum PublicKeyDetails {
   /** PKIX_ED25519 - Ed 25519 */
   PKIX_ED25519 = 7,
   PKIX_ED25519_PH = 8,
+  /** EXPERIMENTAL_LMS_SHA256 - *EXPERIMENTAL**: LMS and LM-OTS variants. */
+  EXPERIMENTAL_LMS_SHA256 = 14,
+  EXPERIMENTAL_LMOTS_SHA256 = 15,
 }
 
 export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
@@ -135,14 +143,23 @@ export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
     case "PKIX_RSA_PSS":
       return PublicKeyDetails.PKIX_RSA_PSS;
     case 9:
-    case "PKIX_RSA_PKCS1_2048_SHA256":
-      return PublicKeyDetails.PKIX_RSA_PKCS1_2048_SHA256;
+    case "PKIX_RSA_PKCS1V15_2048_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PKCS1V15_2048_SHA256;
     case 10:
-    case "PKIX_RSA_PKCS1_3072_SHA256":
-      return PublicKeyDetails.PKIX_RSA_PKCS1_3072_SHA256;
+    case "PKIX_RSA_PKCS1V15_3072_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PKCS1V15_3072_SHA256;
     case 11:
-    case "PKIX_RSA_PKCS1_4096_SHA256":
-      return PublicKeyDetails.PKIX_RSA_PKCS1_4096_SHA256;
+    case "PKIX_RSA_PKCS1V15_4096_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PKCS1V15_4096_SHA256;
+    case 16:
+    case "PKIX_RSA_PSS_2048_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PSS_2048_SHA256;
+    case 17:
+    case "PKIX_RSA_PSS_3072_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PSS_3072_SHA256;
+    case 18:
+    case "PKIX_RSA_PSS_4096_SHA256":
+      return PublicKeyDetails.PKIX_RSA_PSS_4096_SHA256;
     case 6:
     case "PKIX_ECDSA_P256_HMAC_SHA_256":
       return PublicKeyDetails.PKIX_ECDSA_P256_HMAC_SHA_256;
@@ -161,6 +178,12 @@ export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
     case 8:
     case "PKIX_ED25519_PH":
       return PublicKeyDetails.PKIX_ED25519_PH;
+    case 14:
+    case "EXPERIMENTAL_LMS_SHA256":
+      return PublicKeyDetails.EXPERIMENTAL_LMS_SHA256;
+    case 15:
+    case "EXPERIMENTAL_LMOTS_SHA256":
+      return PublicKeyDetails.EXPERIMENTAL_LMOTS_SHA256;
     default:
       throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
   }
@@ -178,12 +201,18 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
       return "PKIX_RSA_PKCS1V5";
     case PublicKeyDetails.PKIX_RSA_PSS:
       return "PKIX_RSA_PSS";
-    case PublicKeyDetails.PKIX_RSA_PKCS1_2048_SHA256:
-      return "PKIX_RSA_PKCS1_2048_SHA256";
-    case PublicKeyDetails.PKIX_RSA_PKCS1_3072_SHA256:
-      return "PKIX_RSA_PKCS1_3072_SHA256";
-    case PublicKeyDetails.PKIX_RSA_PKCS1_4096_SHA256:
-      return "PKIX_RSA_PKCS1_4096_SHA256";
+    case PublicKeyDetails.PKIX_RSA_PKCS1V15_2048_SHA256:
+      return "PKIX_RSA_PKCS1V15_2048_SHA256";
+    case PublicKeyDetails.PKIX_RSA_PKCS1V15_3072_SHA256:
+      return "PKIX_RSA_PKCS1V15_3072_SHA256";
+    case PublicKeyDetails.PKIX_RSA_PKCS1V15_4096_SHA256:
+      return "PKIX_RSA_PKCS1V15_4096_SHA256";
+    case PublicKeyDetails.PKIX_RSA_PSS_2048_SHA256:
+      return "PKIX_RSA_PSS_2048_SHA256";
+    case PublicKeyDetails.PKIX_RSA_PSS_3072_SHA256:
+      return "PKIX_RSA_PSS_3072_SHA256";
+    case PublicKeyDetails.PKIX_RSA_PSS_4096_SHA256:
+      return "PKIX_RSA_PSS_4096_SHA256";
     case PublicKeyDetails.PKIX_ECDSA_P256_HMAC_SHA_256:
       return "PKIX_ECDSA_P256_HMAC_SHA_256";
     case PublicKeyDetails.PKIX_ECDSA_P256_SHA_256:
@@ -196,6 +225,10 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
       return "PKIX_ED25519";
     case PublicKeyDetails.PKIX_ED25519_PH:
       return "PKIX_ED25519_PH";
+    case PublicKeyDetails.EXPERIMENTAL_LMS_SHA256:
+      return "EXPERIMENTAL_LMS_SHA256";
+    case PublicKeyDetails.EXPERIMENTAL_LMOTS_SHA256:
+      return "EXPERIMENTAL_LMOTS_SHA256";
     default:
       throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
   }

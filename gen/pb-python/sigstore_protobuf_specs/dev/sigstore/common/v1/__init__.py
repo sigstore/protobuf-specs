@@ -52,9 +52,16 @@ class PublicKeyDetails(betterproto.Enum):
     PKCS1_RSA_PSS = 2
     PKIX_RSA_PKCS1V5 = 3
     PKIX_RSA_PSS = 4
-    PKIX_RSA_PKCS1_2048_SHA256 = 9
-    PKIX_RSA_PKCS1_3072_SHA256 = 10
-    PKIX_RSA_PKCS1_4096_SHA256 = 11
+    PKIX_RSA_PKCS1V15_2048_SHA256 = 9
+    """RSA public key in PKIX format, PKCS#1v1.5 signature"""
+
+    PKIX_RSA_PKCS1V15_3072_SHA256 = 10
+    PKIX_RSA_PKCS1V15_4096_SHA256 = 11
+    PKIX_RSA_PSS_2048_SHA256 = 16
+    """RSA public key in PKIX format, RSASSA-PSS signature"""
+
+    PKIX_RSA_PSS_3072_SHA256 = 17
+    PKIX_RSA_PSS_4096_SHA256 = 18
     PKIX_ECDSA_P256_HMAC_SHA_256 = 6
     """ECDSA"""
 
@@ -65,6 +72,10 @@ class PublicKeyDetails(betterproto.Enum):
     """Ed 25519"""
 
     PKIX_ED25519_PH = 8
+    EXPERIMENTAL_LMS_SHA256 = 14
+    """**EXPERIMENTAL**: LMS and LM-OTS variants."""
+
+    EXPERIMENTAL_LMOTS_SHA256 = 15
 
 
 class SubjectAlternativeNameType(betterproto.Enum):

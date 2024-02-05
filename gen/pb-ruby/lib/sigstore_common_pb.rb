@@ -72,15 +72,20 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :PKCS1_RSA_PSS, 2
       value :PKIX_RSA_PKCS1V5, 3
       value :PKIX_RSA_PSS, 4
-      value :PKIX_RSA_PKCS1_2048_SHA256, 9
-      value :PKIX_RSA_PKCS1_3072_SHA256, 10
-      value :PKIX_RSA_PKCS1_4096_SHA256, 11
+      value :PKIX_RSA_PKCS1V15_2048_SHA256, 9
+      value :PKIX_RSA_PKCS1V15_3072_SHA256, 10
+      value :PKIX_RSA_PKCS1V15_4096_SHA256, 11
+      value :PKIX_RSA_PSS_2048_SHA256, 16
+      value :PKIX_RSA_PSS_3072_SHA256, 17
+      value :PKIX_RSA_PSS_4096_SHA256, 18
       value :PKIX_ECDSA_P256_HMAC_SHA_256, 6
       value :PKIX_ECDSA_P256_SHA_256, 5
       value :PKIX_ECDSA_P384_SHA_384, 12
       value :PKIX_ECDSA_P521_SHA_512, 13
       value :PKIX_ED25519, 7
       value :PKIX_ED25519_PH, 8
+      value :EXPERIMENTAL_LMS_SHA256, 14
+      value :EXPERIMENTAL_LMOTS_SHA256, 15
     end
     add_enum "dev.sigstore.common.v1.SubjectAlternativeNameType" do
       value :SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED, 0
