@@ -24,6 +24,8 @@ All versions prior to 0.2.0 are untracked.
       signature scheme, and PKIX
       ([SubjectPublicKeyInfo](https://datatracker.ietf.org/doc/html/rfc5280#section-4.1))
       encoding.
+    * Experimental support for
+      [LMS](https://datatracker.ietf.org/doc/html/rfc8554) key types.
 
 ### Changed
 
