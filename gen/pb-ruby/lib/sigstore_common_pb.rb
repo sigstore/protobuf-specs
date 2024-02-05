@@ -78,12 +78,6 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :PKIX_RSA_PSS_2048_SHA256, 16
       value :PKIX_RSA_PSS_3072_SHA256, 17
       value :PKIX_RSA_PSS_4096_SHA256, 18
-      value :PKCS1_RSA_PKCS1V15_2048_SHA256, 19
-      value :PKCS1_RSA_PKCS1V15_3072_SHA256, 20
-      value :PKCS1_RSA_PKCS1V15_4096_SHA256, 21
-      value :PKCS1_RSA_PSS_2048_SHA256, 22
-      value :PKCS1_RSA_PSS_3072_SHA256, 23
-      value :PKCS1_RSA_PSS_4096_SHA256, 24
       value :PKIX_ECDSA_P256_HMAC_SHA_256, 6
       value :PKIX_ECDSA_P256_SHA_256, 5
       value :PKIX_ECDSA_P384_SHA_384, 12

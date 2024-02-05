@@ -62,16 +62,6 @@ class PublicKeyDetails(betterproto.Enum):
 
     PKIX_RSA_PSS_3072_SHA256 = 17
     PKIX_RSA_PSS_4096_SHA256 = 18
-    PKCS1_RSA_PKCS1V15_2048_SHA256 = 19
-    """RSA public key in PKCS#1 format, PKCS#1v1.5 signature"""
-
-    PKCS1_RSA_PKCS1V15_3072_SHA256 = 20
-    PKCS1_RSA_PKCS1V15_4096_SHA256 = 21
-    PKCS1_RSA_PSS_2048_SHA256 = 22
-    """RSA public key in PKCS#1 format, RSASSA-PSS signature"""
-
-    PKCS1_RSA_PSS_3072_SHA256 = 23
-    PKCS1_RSA_PSS_4096_SHA256 = 24
     PKIX_ECDSA_P256_HMAC_SHA_256 = 6
     """ECDSA"""
 

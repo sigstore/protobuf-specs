@@ -107,14 +107,6 @@ export enum PublicKeyDetails {
   PKIX_RSA_PSS_2048_SHA256 = 16,
   PKIX_RSA_PSS_3072_SHA256 = 17,
   PKIX_RSA_PSS_4096_SHA256 = 18,
-  /** PKCS1_RSA_PKCS1V15_2048_SHA256 - RSA public key in PKCS#1 format, PKCS#1v1.5 signature */
-  PKCS1_RSA_PKCS1V15_2048_SHA256 = 19,
-  PKCS1_RSA_PKCS1V15_3072_SHA256 = 20,
-  PKCS1_RSA_PKCS1V15_4096_SHA256 = 21,
-  /** PKCS1_RSA_PSS_2048_SHA256 - RSA public key in PKCS#1 format, RSASSA-PSS signature */
-  PKCS1_RSA_PSS_2048_SHA256 = 22,
-  PKCS1_RSA_PSS_3072_SHA256 = 23,
-  PKCS1_RSA_PSS_4096_SHA256 = 24,
   /**
    * PKIX_ECDSA_P256_HMAC_SHA_256 - ECDSA
    *
@@ -168,24 +160,6 @@ export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
     case 18:
     case "PKIX_RSA_PSS_4096_SHA256":
       return PublicKeyDetails.PKIX_RSA_PSS_4096_SHA256;
-    case 19:
-    case "PKCS1_RSA_PKCS1V15_2048_SHA256":
-      return PublicKeyDetails.PKCS1_RSA_PKCS1V15_2048_SHA256;
-    case 20:
-    case "PKCS1_RSA_PKCS1V15_3072_SHA256":
-      return PublicKeyDetails.PKCS1_RSA_PKCS1V15_3072_SHA256;
-    case 21:
-    case "PKCS1_RSA_PKCS1V15_4096_SHA256":
-      return PublicKeyDetails.PKCS1_RSA_PKCS1V15_4096_SHA256;
-    case 22:
-    case "PKCS1_RSA_PSS_2048_SHA256":
-      return PublicKeyDetails.PKCS1_RSA_PSS_2048_SHA256;
-    case 23:
-    case "PKCS1_RSA_PSS_3072_SHA256":
-      return PublicKeyDetails.PKCS1_RSA_PSS_3072_SHA256;
-    case 24:
-    case "PKCS1_RSA_PSS_4096_SHA256":
-      return PublicKeyDetails.PKCS1_RSA_PSS_4096_SHA256;
     case 6:
     case "PKIX_ECDSA_P256_HMAC_SHA_256":
       return PublicKeyDetails.PKIX_ECDSA_P256_HMAC_SHA_256;
@@ -239,18 +213,6 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
       return "PKIX_RSA_PSS_3072_SHA256";
     case PublicKeyDetails.PKIX_RSA_PSS_4096_SHA256:
       return "PKIX_RSA_PSS_4096_SHA256";
-    case PublicKeyDetails.PKCS1_RSA_PKCS1V15_2048_SHA256:
-      return "PKCS1_RSA_PKCS1V15_2048_SHA256";
-    case PublicKeyDetails.PKCS1_RSA_PKCS1V15_3072_SHA256:
-      return "PKCS1_RSA_PKCS1V15_3072_SHA256";
-    case PublicKeyDetails.PKCS1_RSA_PKCS1V15_4096_SHA256:
-      return "PKCS1_RSA_PKCS1V15_4096_SHA256";
-    case PublicKeyDetails.PKCS1_RSA_PSS_2048_SHA256:
-      return "PKCS1_RSA_PSS_2048_SHA256";
-    case PublicKeyDetails.PKCS1_RSA_PSS_3072_SHA256:
-      return "PKCS1_RSA_PSS_3072_SHA256";
-    case PublicKeyDetails.PKCS1_RSA_PSS_4096_SHA256:
-      return "PKCS1_RSA_PSS_4096_SHA256";
     case PublicKeyDetails.PKIX_ECDSA_P256_HMAC_SHA_256:
       return "PKIX_ECDSA_P256_HMAC_SHA_256";
     case PublicKeyDetails.PKIX_ECDSA_P256_SHA_256:
