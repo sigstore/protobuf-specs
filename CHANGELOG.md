@@ -8,7 +8,7 @@ All versions prior to 0.2.0 are untracked.
 
 ## [Unreleased]
 
-### 0.3.0
+## 0.3.0
 
 * Options for more generic observer time ([#179](https://github.com/sigstore/protobuf-specs/pull/179))
 * **BREAKING**: `VerificationMaterials.contents` now has an additional `certificate` variant,
