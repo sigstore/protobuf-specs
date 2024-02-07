@@ -120,9 +120,23 @@ export enum PublicKeyDetails {
   /** PKIX_ED25519 - Ed 25519 */
   PKIX_ED25519 = 7,
   PKIX_ED25519_PH = 8,
-  /** EXPERIMENTAL_LMS_SHA256 - *EXPERIMENTAL**: LMS and LM-OTS variants. */
-  EXPERIMENTAL_LMS_SHA256 = 14,
-  EXPERIMENTAL_LMOTS_SHA256 = 15,
+  /**
+   * LMS_SHA256 - LMS and LM-OTS
+   *
+   * These keys and signatures may be used by private Sigstore
+   * deployments, but are not currently supported by the public
+   * good instance.
+   *
+   * USER WARNING: LMS and LM-OTS are both stateful signature schemes.
+   * Using them correctly requires discretion and careful consideration
+   * to ensure that individual secret keys are not used more than once.
+   * In addition, LM-OTS is a single-use scheme, meaning that it
+   * MUST NOT be used for more than one signature per LM-OTS key.
+   * If you cannot maintain these invariants, you MUST NOT use these
+   * schemes.
+   */
+  LMS_SHA256 = 14,
+  LMOTS_SHA256 = 15,
 }
 
 export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
@@ -179,11 +193,11 @@ export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
     case "PKIX_ED25519_PH":
       return PublicKeyDetails.PKIX_ED25519_PH;
     case 14:
-    case "EXPERIMENTAL_LMS_SHA256":
-      return PublicKeyDetails.EXPERIMENTAL_LMS_SHA256;
+    case "LMS_SHA256":
+      return PublicKeyDetails.LMS_SHA256;
     case 15:
-    case "EXPERIMENTAL_LMOTS_SHA256":
-      return PublicKeyDetails.EXPERIMENTAL_LMOTS_SHA256;
+    case "LMOTS_SHA256":
+      return PublicKeyDetails.LMOTS_SHA256;
     default:
       throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
   }
@@ -225,10 +239,10 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
       return "PKIX_ED25519";
     case PublicKeyDetails.PKIX_ED25519_PH:
       return "PKIX_ED25519_PH";
-    case PublicKeyDetails.EXPERIMENTAL_LMS_SHA256:
-      return "EXPERIMENTAL_LMS_SHA256";
-    case PublicKeyDetails.EXPERIMENTAL_LMOTS_SHA256:
-      return "EXPERIMENTAL_LMOTS_SHA256";
+    case PublicKeyDetails.LMS_SHA256:
+      return "LMS_SHA256";
+    case PublicKeyDetails.LMOTS_SHA256:
+      return "LMOTS_SHA256";
     default:
       throw new tsProtoGlobalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
   }

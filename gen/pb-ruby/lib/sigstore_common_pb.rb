@@ -84,8 +84,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :PKIX_ECDSA_P521_SHA_512, 13
       value :PKIX_ED25519, 7
       value :PKIX_ED25519_PH, 8
-      value :EXPERIMENTAL_LMS_SHA256, 14
-      value :EXPERIMENTAL_LMOTS_SHA256, 15
+      value :LMS_SHA256, 14
+      value :LMOTS_SHA256, 15
     end
     add_enum "dev.sigstore.common.v1.SubjectAlternativeNameType" do
       value :SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED, 0

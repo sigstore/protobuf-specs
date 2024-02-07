@@ -43,8 +43,8 @@
                         "PKIX_ECDSA_P521_SHA_512",
                         "PKIX_ED25519",
                         "PKIX_ED25519_PH",
-                        "EXPERIMENTAL_LMS_SHA256",
-                        "EXPERIMENTAL_LMOTS_SHA256"
+                        "LMS_SHA256",
+                        "LMOTS_SHA256"
                     ],
                     "type": "string",
                     "title": "Public Key Details",

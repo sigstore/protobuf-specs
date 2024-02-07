@@ -72,10 +72,19 @@ class PublicKeyDetails(betterproto.Enum):
     """Ed 25519"""
 
     PKIX_ED25519_PH = 8
-    EXPERIMENTAL_LMS_SHA256 = 14
-    """**EXPERIMENTAL**: LMS and LM-OTS variants."""
+    LMS_SHA256 = 14
+    """
+    LMS and LM-OTS These keys and signatures may be used by private Sigstore
+    deployments, but are not currently supported by the public good instance.
+    USER WARNING: LMS and LM-OTS are both stateful signature schemes. Using
+    them correctly requires discretion and careful consideration to ensure that
+    individual secret keys are not used more than once. In addition, LM-OTS is
+    a single-use scheme, meaning that it MUST NOT be used for more than one
+    signature per LM-OTS key. If you cannot maintain these invariants, you MUST
+    NOT use these schemes.
+    """
 
-    EXPERIMENTAL_LMOTS_SHA256 = 15
+    LMOTS_SHA256 = 15
 
 
 class SubjectAlternativeNameType(betterproto.Enum):
