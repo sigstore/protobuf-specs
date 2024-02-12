@@ -1,3 +1,5 @@
+use std::path::Path;
+
 /// Find the standard protobuf include directory.
 fn protobuf_include_path() -> String {
     let mut protobuf_root = which::which("protoc")
@@ -17,6 +19,13 @@ fn main() -> anyhow::Result<()> {
         // googleapi types path
         std::env::var("SIGSTORE_PROTOBUF_EXTRA_INCLUDE").unwrap_or("/opt/include".to_owned()),
     ];
+
+    for include in &includes {
+        let include = Path::new(include);
+        if !include.is_dir() {
+            panic!("invalid include dir: {:?}", include);
+        }
+    }
 
     let mut config = prost_build::Config::new();
     config
