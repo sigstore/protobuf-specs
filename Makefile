@@ -61,7 +61,6 @@ jsonschema: docker-image-jsonschema
 	       -c "cd defs/gen/jsonschema && ./jsonschema.sh -I ../../protos -I /googleapis/ --jsonschema_out=schemas ../../protos/*.proto"
 
 rust: docker-image
-	@echo "Running `cargo ${RUST_ACTION}`"
 	docker run \
 		--platform linux/amd64 \
 		-v ${PWD}:/defs \
