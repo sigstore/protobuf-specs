@@ -24,13 +24,10 @@ jobs:
   publish:
     name: Publish to crates.io
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: gen/pb-rust
 
     steps:
     - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-    - run: cargo publish
+    - run: make rust RUST_ACTION=publish
       env:
         CARGO_REGISTRY_TOKEN: "${{ secrets.CARGO_REGISTRY_TOKEN }}"
