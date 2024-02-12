@@ -48,14 +48,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "derive"
-version = "0.1.0"
-dependencies = [
- "quote",
- "syn",
-]
-
-[[package]]
 name = "either"
 version = "1.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -413,11 +405,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "sigstore-protobuf-specs-derive"
+version = "0.0.1"
+dependencies = [
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "sigstore_protobuf_specs"
 version = "0.3.0"
 dependencies = [
  "anyhow",
- "derive",
  "glob",
  "prost",
  "prost-build",
@@ -426,6 +425,7 @@ dependencies = [
  "prost-types",
  "serde",
  "serde_json",
+ "sigstore-protobuf-specs-derive",
  "which 6.0.0",
 ]
 
