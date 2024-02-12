@@ -23,7 +23,7 @@ fn main() -> anyhow::Result<()> {
         .include_file("mod.rs")
         .type_attribute(
             ".",
-            "#[derive(derive::Deserialize_proto, derive::Serialize_proto)]",
+            "#[derive(sigstore_protobuf_specs_derive::Deserialize_proto, sigstore_protobuf_specs_derive::Serialize_proto)]",
         )
         // Disable problematic comments interpreted as doctests.
         .disable_comments([".io.intoto.Envelope"]);

@@ -1,0 +1,18 @@
+[package]
+name = "sigstore-protobuf-specs-derive"
+version = "0.1.0"
+edition = "2021"
+authors = ["Sigstore Authors <sigstore-dev@googlegroups.com>"]
+homepage = "https://github.com/sigstore/protobuf-specs"
+repository = "https://github.com/sigstore/protobuf-specs"
+description = "Derive macros for sigstore-protobuf-specs. This is an implementation detail, you do not need this dependency."
+readme = "README.md"
+license-file = "LICENSE"
+keywords = ["sigstore"]
+
+[dependencies]
+syn = "2.0"
+quote = "1.0"
+
+[lib]
+proc-macro = true
