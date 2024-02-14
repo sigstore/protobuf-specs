@@ -73,7 +73,7 @@ jobs:
           name: ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
           files: ./release/*
-          draft: true
+          prerelease: true
 
   provenance:
     needs: [build, strip-tag, create-release]
@@ -87,4 +87,3 @@ jobs:
       upload-assets: true
       base64-subjects: "${{ needs.build.outputs.hashes }}"
       upload-tag-name: "${{ github.ref_name }}" # Upload to tag rather than generate a new release
-      draft-release: true
