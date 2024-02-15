@@ -7,7 +7,7 @@ homepage = "https://github.com/sigstore/protobuf-specs"
 repository = "https://github.com/sigstore/protobuf-specs"
 description = "Derive macros for sigstore-protobuf-specs. This is an implementation detail, you do not need this dependency."
 readme = "../README.md"
-license-file = "../LICENSE"
+license = "Apache-2.0"
 keywords = ["sigstore"]
 
 [dependencies]
