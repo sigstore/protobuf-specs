@@ -1,4 +1,7 @@
-static FILE_DESCRIPTOR_SET_BYTES: &'static [u8] =
-    include_bytes!(concat!(env!("OUT_DIR"), "/file_descriptor_set.bin"));
+static FILE_DESCRIPTOR_SET_BYTES: &'static [u8] = include_bytes!(concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/src/generated/file_descriptor_set.bin"
+));
 
-include!(concat!(env!("OUT_DIR"), "/mod.rs"));
+mod generated;
+pub use generated::*;

@@ -2,5 +2,6 @@
 resolver = "2"
 members = [
     "sigstore-protobuf-specs",
-    "sigstore-protobuf-specs-derive"
+    "sigstore-protobuf-specs-codegen",
+    "sigstore-protobuf-specs-derive",
 ]
