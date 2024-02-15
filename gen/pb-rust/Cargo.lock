@@ -405,6 +405,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "sigstore-protobuf-specs-codegen"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "glob",
+ "prost-build",
+ "prost-reflect-build",
+ "which 6.0.0",
+]
+
+[[package]]
 name = "sigstore-protobuf-specs-derive"
 version = "0.0.1"
 dependencies = [

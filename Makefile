@@ -16,7 +16,7 @@
 PROTOC_IMAGE = protobuf-specs-build
 JSONSCHEMA_IMAGE = jsonschema-specs-build
 
-RUST_ACTION ?= build
+RUST_ACTION ?= run -p sigstore-protobuf-specs-codegen
 
 # generate all language protobuf code
 all: go python typescript ruby rust jsonschema
