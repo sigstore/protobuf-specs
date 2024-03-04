@@ -14,5 +14,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'sigstore_protobuf_specs/version'
-Dir[File.join(__dir__, '*.rb')].each { |file| require file }
+require_relative 'sigstore_protobuf_specs/version'
+Dir['*_pb.rb', base: __dir__].each { |file| require_relative file }
