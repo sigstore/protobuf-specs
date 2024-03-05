@@ -52,7 +52,9 @@ pub struct CertificateAuthority {
     /// authority.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
-    /// The certificate chain for this CA.
+    /// The certificate chain for this CA. The last certificate in the chain
+    /// MUST be the trust anchor. The trust anchor MAY be a self-signed root
+    /// CA certificate or MAY be an intermediate CA certificate.
     #[prost(message, optional, tag = "3")]
     pub cert_chain: ::core::option::Option<
         super::super::common::v1::X509CertificateChain,

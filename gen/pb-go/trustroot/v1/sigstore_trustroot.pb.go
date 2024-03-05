@@ -134,7 +134,9 @@ type CertificateAuthority struct {
 	// by the certificate authority to interact with the certificate
 	// authority.
 	Uri string `protobuf:"bytes,2,opt,name=uri,proto3" json:"uri,omitempty"`
-	// The certificate chain for this CA.
+	// The certificate chain for this CA. The last certificate in the chain
+	// MUST be the trust anchor. The trust anchor MAY be a self-signed root
+	// CA certificate or MAY be an intermediate CA certificate.
 	CertChain *v1.X509CertificateChain `protobuf:"bytes,3,opt,name=cert_chain,json=certChain,proto3" json:"cert_chain,omitempty"`
 	// The time the *entire* chain was valid. This is at max the
 	// longest interval when *all* certificates in the chain were valid,

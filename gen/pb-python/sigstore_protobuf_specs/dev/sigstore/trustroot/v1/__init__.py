@@ -58,7 +58,11 @@ class CertificateAuthority(betterproto.Message):
     """
 
     cert_chain: "__common_v1__.X509CertificateChain" = betterproto.message_field(3)
-    """The certificate chain for this CA."""
+    """
+    The certificate chain for this CA. The last certificate in the chain MUST
+    be the trust anchor. The trust anchor MAY be a self-signed root CA
+    certificate or MAY be an intermediate CA certificate.
+    """
 
     valid_for: "__common_v1__.TimeRange" = betterproto.message_field(4)
     """
