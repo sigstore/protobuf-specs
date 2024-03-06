@@ -16,7 +16,7 @@
                 "certChain": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.X509CertificateChain",
                     "additionalProperties": false,
-                    "description": "The certificate chain for this CA."
+                    "description": "The certificate chain for this CA. The last certificate in the chain MUST be the trust anchor. The trust anchor MAY be a self-signed root CA certificate or MAY be an intermediate CA certificate."
                 },
                 "validFor": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.TimeRange",
