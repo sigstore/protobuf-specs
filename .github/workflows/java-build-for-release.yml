@@ -16,10 +16,10 @@ jobs:
       - name: Verify tag on branch
         # Check main is one of the branches where the tagged commit exists
         run: |
-          branches=$(git branch --contains ${{ github.ref }}) --format "%(refname:short)"
+          branches=($(git branch --contains ${{ github.ref }} --format "%(refname:short)"))
           found=false
-          for b in $raw; do
-            if [ "$x" = "main" ]; then
+          for b in "${branches[@]}"; do
+            if [ "$b" = "main" ]; then
               found=true
             fi
           done
