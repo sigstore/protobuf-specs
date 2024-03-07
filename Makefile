@@ -21,59 +21,56 @@ RUST_ACTION ?= run -p sigstore-protobuf-specs-codegen
 # generate all language protobuf code
 all: go python typescript ruby jsonschema rust
 
+CUSER=$(shell id -u ${USER})
+CGROUP=$(shell id -g ${USER})
+DOCKER_RUN=docker run --platform linux/amd64 -u ${CUSER}:${CGROUP} -v ${PWD}:/defs
+DOCKER_BUILD=docker build --platform linux/amd64 --build-arg uid=${CUSER}
+
 # generate Go protobuf code
 go: docker-image
 	@echo "Generating go protobuf files"
-	docker run --platform linux/amd64 -v ${PWD}:/defs ${PROTOC_IMAGE} -d protos -l go --go-module-prefix github.com/sigstore/protobuf-specs/gen/pb-go
+	${DOCKER_RUN} ${PROTOC_IMAGE} \
+		-d /defs/protos \
+		-o /defs/gen/pb-go \
+		-l go --go-module-prefix github.com/sigstore/protobuf-specs/gen/pb-go
 
 python: docker-image
 	@echo "Generating python protobuf files"
 # we need to manually fix the PYTHONPATH due to: https://github.com/namely/docker-protoc/pull/356
-	docker run \
-		--platform linux/amd64 \
-		-v ${PWD}:/defs \
-		-e PYTHONPATH="/opt/mypy-protobuf/" \
+	${DOCKER_RUN} -e PYTHONPATH="/opt/mypy-protobuf/" \
 		--entrypoint bash ${PROTOC_IMAGE} \
-		-c "cd ./gen/pb-python/sigstore_protobuf_specs && protoc -I/opt/include -I../../../protos/ --python_betterproto_out=. ../../../protos/*.proto"
+		-c "cd /defs/gen/pb-python/sigstore_protobuf_specs && protoc -I/opt/include -I../../../protos/ --python_betterproto_out=. ../../../protos/*.proto"
 
 typescript: docker-image
 	@echo "Generating javascript protobuf files"
-	docker run \
-		--platform linux/amd64 \
-		-v ${PWD}:/defs \
-		${PROTOC_IMAGE} \
-		-d protos -l typescript -o ./gen/pb-typescript/src/__generated__ --ts_opt oneof=unions,forceLong=string,env=node,exportCommonSymbols=false,outputPartialMethods=false,outputEncodeMethods=false,unrecognizedEnum=false
+	${DOCKER_RUN} ${PROTOC_IMAGE} \
+		-d /defs/protos -l typescript \
+		-o /defs/gen/pb-typescript/src/__generated__ \
+		--ts_opt oneof=unions,forceLong=string,env=node,exportCommonSymbols=false,outputPartialMethods=false,outputEncodeMethods=false,unrecognizedEnum=false
 
 ruby: docker-image
 	@echo "Generating ruby protobuf files"
-	docker run \
-		--platform linux/amd64 \
-		-v ${PWD}:/defs \
-		--entrypoint bash ${PROTOC_IMAGE} \
-		-c "cd ./gen/pb-ruby && protoc -I/opt/include -I../../protos/ --ruby_out=lib ../../protos/*.proto"
+	${DOCKER_RUN} --entrypoint bash ${PROTOC_IMAGE} \
+		-c "cd /defs/gen/pb-ruby && protoc -I/opt/include -I../../protos/ --ruby_out=lib ../../protos/*.proto"
 
 jsonschema: docker-image-jsonschema
 	@echo "Generating JSON schema files"
-	docker run \
-	       -v ${PWD}:/defs \
-	       --entrypoint sh \
-	       ${JSONSCHEMA_IMAGE} \
-	       -c "cd defs/gen/jsonschema && ./jsonschema.sh -I ../../protos -I /googleapis/ --jsonschema_out=schemas ../../protos/*.proto"
+	${DOCKER_RUN} --entrypoint sh \
+		${JSONSCHEMA_IMAGE} \
+		-c "cd /defs/gen/jsonschema && ./jsonschema.sh -I ../../protos -I /home/builder/googleapis/ --jsonschema_out=schemas ../../protos/*.proto"
 
-rust: docker-image
-	docker run \
-		--platform linux/amd64 \
-		-v ${PWD}:/defs \
-		-e "RUST_BACKTRACE=1" \
-		-e "CARGO_REGISTRY_TOKEN" \
+rust: docker-image gen/pb-rust/schemas
+	@echo "Generating rust protobuf files"
+	${DOCKER_RUN} -e "RUST_BACKTRACE=1" \
+		-e "CARGO_REGISTRY_TOKEN"
 		--entrypoint bash ${PROTOC_IMAGE} \
-		-c "cd gen/pb-rust && cargo ${RUST_ACTION}"
+		-c "cd /defs/gen/pb-rust && cargo build"
 
 # docker already does its own caching so we can attempt a build every time
 .PHONY: docker-image
 docker-image:
 	@echo "Building development docker image"
-	docker build -t ${PROTOC_IMAGE} .
+	${DOCKER_BUILD} -t ${PROTOC_IMAGE} .
 
 # to recover from a situation where a stale layer exist, just  purging the
 # docker image via `make clean` is not enough. Re-building without layer
@@ -81,12 +78,12 @@ docker-image:
 .PHONY: docker-image-no-cache
 docker-image-no-cache:
 	@echo "Building development docker image with disabled cache"
-	docker build --no-cache -t ${PROTOC_IMAGE} .
+	${DOCKER_BUILD} --no-cache -t ${PROTOC_IMAGE} .
 
 .PHONY: docker-image-jsonschema
 docker-image-jsonschema:
 	@echo "Building docker image for generating JSON schema files"
-	docker build -t ${JSONSCHEMA_IMAGE} -f Dockerfile.jsonschema .
+	${DOCKER_BUILD} -t ${JSONSCHEMA_IMAGE} -f Dockerfile.jsonschema .
 
 # clean up generated files (not working? try sudo make clean)
 clean:
@@ -95,7 +92,7 @@ clean:
 		gen/pb-python/sigstore_protobuf_specs/dev \
 		gen/pb-python/sigstore_protobuf_specs/io \
 		gen/pb-rust/target
-	docker rmi -f ${PROTOC_IMAGE}
+	docker rmi -f ${PROTOC_IMAGE} ${JSONSCHEMA_IMAGE}
 
 help:
 	docker run --pull always --platform linux/amd64 -v ${PWD}:/defs ${PROTOC_IMAGE}

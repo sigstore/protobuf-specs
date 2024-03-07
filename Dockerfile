@@ -6,15 +6,23 @@ RUN set -ex && \
     apt-get install -y --no-install-recommends \
     python3-pip
 
-# Install Rust cargo.
-RUN set -ex && \
-    apt-get install -y --no-install-recommends \
-        curl \
-        build-essential
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
-ENV PATH="/root/.cargo/bin:${PATH}"
-
 # Install Python dev dependencies.
 COPY ./dev-requirements.txt /tmp/
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install --requirement /tmp/dev-requirements.txt
+
+# Install Rust cargo.
+RUN set -ex && \
+    apt-get install -y --no-install-recommends \
+        curl \
+    build-essential
+
+# Switch user
+ARG uid=1000
+RUN useradd -u ${uid} -s /bin/sh -m builder
+
+USER builder
+WORKDIR /home/builder
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
+ENV PATH="/home/builder/.cargo/bin:${PATH}"
