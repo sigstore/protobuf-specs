@@ -15,7 +15,7 @@ RUN python3 -m pip install --upgrade pip && \
 RUN set -ex && \
     apt-get install -y --no-install-recommends \
         curl \
-    build-essential
+        build-essential
 
 # Switch user
 ARG uid=1000
