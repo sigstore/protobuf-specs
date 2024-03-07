@@ -59,12 +59,12 @@ jsonschema: docker-image-jsonschema
 		${JSONSCHEMA_IMAGE} \
 		-c "cd /defs/gen/jsonschema && ./jsonschema.sh -I ../../protos -I /home/builder/googleapis/ --jsonschema_out=schemas ../../protos/*.proto"
 
-rust: docker-image gen/pb-rust/schemas
+rust: docker-image
 	@echo "Generating rust protobuf files"
 	${DOCKER_RUN} -e "RUST_BACKTRACE=1" \
-		-e "CARGO_REGISTRY_TOKEN"
+		-e "CARGO_REGISTRY_TOKEN" \
 		--entrypoint bash ${PROTOC_IMAGE} \
-		-c "cd /defs/gen/pb-rust && cargo build"
+		-c "cd /defs/gen/pb-rust && cargo ${RUST_ACTION}"
 
 # docker already does its own caching so we can attempt a build every time
 .PHONY: docker-image
