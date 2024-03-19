@@ -80,6 +80,15 @@ message InclusionPromise {
         bytes signed_entry_timestamp = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
+// The RekorBundle is the signed material used to produce the Signed Entry
+// Timestamp signature. See notes on the InclusionPromise above.
+message RekorBundle {
+	bytes body = 1 [(google.api.field_behavior) = REQUIRED];
+	int64 integrated_time = 2 [(google.api.field_behavior) = REQUIRED];
+	string log_id = 3 [(google.api.field_behavior) = REQUIRED];
+	int64 log_index = 4 [(google.api.field_behavior) = REQUIRED];
+}
+
 // TransparencyLogEntry captures all the details required from Rekor to
 // reconstruct an entry, given that the payload is provided via other means.
 // This type can easily be created from the existing response from Rekor.
@@ -113,10 +122,11 @@ message TransparencyLogEntry {
         // The contents of this field are the same as the `body` field in
         // a Rekor response, meaning that it does **not** include the "full"
         // canonicalized form (of log index, ID, etc.) which are
-        // exposed as separate fields. The verifier is responsible for
-        // combining the `canonicalized_body`, `log_index`, `log_id`,
+        // exposed as separate fields. It is possible for the verifier to
+        // combine the `canonicalized_body`, `log_index`, `log_id`,
         // and `integrated_time` into the payload that the SET's signature
-        // is generated over.
+        // is generated over. Alternatively, the full canonicalized form of the
+	// entry may be retrieved from the RekorBundle field.
         // This field is intended to be used in cases where the SET cannot be
         // produced determinisitically (e.g. inconsistent JSON field ordering,
         // differing whitespace, etc).
@@ -127,4 +137,11 @@ message TransparencyLogEntry {
         // If not set, clients are responsible for constructing an equivalent
         // payload from other sources to verify the signature.
         bytes canonicalized_body = 7;
+	// The Rekor Bundle is the payload or signed material used to produce the
+	// Signed Entry Timestamp (SET) seen in the InclusionPromise field. This
+	// data is signed by the Rekor public key to produce the SET. While this
+	// information is available to be reconstructed from other fields in the
+	// TLE, the bundle represents the canonicalized form that can be used to
+	// manually verify or audit the SET.
+	RekorBundle rekor_bundle = 8 [(google.api.field_behavior) = REQUIRED];
 }

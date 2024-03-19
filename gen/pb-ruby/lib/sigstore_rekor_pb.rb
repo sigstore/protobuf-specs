@@ -25,6 +25,12 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "dev.sigstore.rekor.v1.InclusionPromise" do
       optional :signed_entry_timestamp, :bytes, 1
     end
+    add_message "dev.sigstore.rekor.v1.RekorBundle" do
+      optional :body, :bytes, 1
+      optional :integrated_time, :int64, 2
+      optional :log_id, :string, 3
+      optional :log_index, :int64, 4
+    end
     add_message "dev.sigstore.rekor.v1.TransparencyLogEntry" do
       optional :log_index, :int64, 1
       optional :log_id, :message, 2, "dev.sigstore.common.v1.LogId"
@@ -33,6 +39,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :inclusion_promise, :message, 5, "dev.sigstore.rekor.v1.InclusionPromise"
       optional :inclusion_proof, :message, 6, "dev.sigstore.rekor.v1.InclusionProof"
       optional :canonicalized_body, :bytes, 7
+      optional :rekor_bundle, :message, 8, "dev.sigstore.rekor.v1.RekorBundle"
     end
   end
 end
@@ -44,6 +51,7 @@ module Sigstore
       Checkpoint = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.Checkpoint").msgclass
       InclusionProof = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.InclusionProof").msgclass
       InclusionPromise = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.InclusionPromise").msgclass
+      RekorBundle = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.RekorBundle").msgclass
       TransparencyLogEntry = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.rekor.v1.TransparencyLogEntry").msgclass
     end
   end

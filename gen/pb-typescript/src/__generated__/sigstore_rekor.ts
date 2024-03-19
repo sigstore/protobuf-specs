@@ -71,6 +71,17 @@ export interface InclusionPromise {
 }
 
 /**
+ * The RekorBundle is the signed material used to produce the Signed Entry
+ * Timestamp signature. See notes on the InclusionPromise above.
+ */
+export interface RekorBundle {
+  body: Buffer;
+  integratedTime: string;
+  logId: string;
+  logIndex: string;
+}
+
+/**
  * TransparencyLogEntry captures all the details required from Rekor to
  * reconstruct an entry, given that the payload is provided via other means.
  * This type can easily be created from the existing response from Rekor.
@@ -120,10 +131,11 @@ export interface TransparencyLogEntry {
    * The contents of this field are the same as the `body` field in
    * a Rekor response, meaning that it does **not** include the "full"
    * canonicalized form (of log index, ID, etc.) which are
-   * exposed as separate fields. The verifier is responsible for
-   * combining the `canonicalized_body`, `log_index`, `log_id`,
+   * exposed as separate fields. It is possible for the verifier to
+   * combine the `canonicalized_body`, `log_index`, `log_id`,
    * and `integrated_time` into the payload that the SET's signature
-   * is generated over.
+   * is generated over. Alternatively, the full canonicalized form of the
+   * entry may be retrieved from the RekorBundle field.
    * This field is intended to be used in cases where the SET cannot be
    * produced determinisitically (e.g. inconsistent JSON field ordering,
    * differing whitespace, etc).
@@ -135,6 +147,15 @@ export interface TransparencyLogEntry {
    * payload from other sources to verify the signature.
    */
   canonicalizedBody: Buffer;
+  /**
+   * The Rekor Bundle is the payload or signed material used to produce the
+   * Signed Entry Timestamp (SET) seen in the InclusionPromise field. This
+   * data is signed by the Rekor public key to produce the SET. While this
+   * information is available to be reconstructed from other fields in the
+   * TLE, the bundle represents the canonicalized form that can be used to
+   * manually verify or audit the SET.
+   */
+  rekorBundle: RekorBundle | undefined;
 }
 
 function createBaseKindVersion(): KindVersion {
@@ -228,6 +249,31 @@ export const InclusionPromise = {
   },
 };
 
+function createBaseRekorBundle(): RekorBundle {
+  return { body: Buffer.alloc(0), integratedTime: "0", logId: "", logIndex: "0" };
+}
+
+export const RekorBundle = {
+  fromJSON(object: any): RekorBundle {
+    return {
+      body: isSet(object.body) ? Buffer.from(bytesFromBase64(object.body)) : Buffer.alloc(0),
+      integratedTime: isSet(object.integratedTime) ? String(object.integratedTime) : "0",
+      logId: isSet(object.logId) ? String(object.logId) : "",
+      logIndex: isSet(object.logIndex) ? String(object.logIndex) : "0",
+    };
+  },
+
+  toJSON(message: RekorBundle): unknown {
+    const obj: any = {};
+    message.body !== undefined &&
+      (obj.body = base64FromBytes(message.body !== undefined ? message.body : Buffer.alloc(0)));
+    message.integratedTime !== undefined && (obj.integratedTime = message.integratedTime);
+    message.logId !== undefined && (obj.logId = message.logId);
+    message.logIndex !== undefined && (obj.logIndex = message.logIndex);
+    return obj;
+  },
+};
+
 function createBaseTransparencyLogEntry(): TransparencyLogEntry {
   return {
     logIndex: "0",
@@ -237,6 +283,7 @@ function createBaseTransparencyLogEntry(): TransparencyLogEntry {
     inclusionPromise: undefined,
     inclusionProof: undefined,
     canonicalizedBody: Buffer.alloc(0),
+    rekorBundle: undefined,
   };
 }
 
@@ -252,6 +299,7 @@ export const TransparencyLogEntry = {
       canonicalizedBody: isSet(object.canonicalizedBody)
         ? Buffer.from(bytesFromBase64(object.canonicalizedBody))
         : Buffer.alloc(0),
+      rekorBundle: isSet(object.rekorBundle) ? RekorBundle.fromJSON(object.rekorBundle) : undefined,
     };
   },
 
@@ -270,6 +318,8 @@ export const TransparencyLogEntry = {
       (obj.canonicalizedBody = base64FromBytes(
         message.canonicalizedBody !== undefined ? message.canonicalizedBody : Buffer.alloc(0),
       ));
+    message.rekorBundle !== undefined &&
+      (obj.rekorBundle = message.rekorBundle ? RekorBundle.toJSON(message.rekorBundle) : undefined);
     return obj;
   },
 };
