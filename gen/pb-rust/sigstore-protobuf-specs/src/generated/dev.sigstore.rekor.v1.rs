@@ -94,6 +94,27 @@ pub struct InclusionPromise {
     #[prost(bytes = "vec", tag = "1")]
     pub signed_entry_timestamp: ::prost::alloc::vec::Vec<u8>,
 }
+/// The RekorBundle is the signed material used to produce the Signed Entry
+/// Timestamp signature. See notes on the InclusionPromise above.
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.rekor.v1.RekorBundle")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RekorBundle {
+    #[prost(bytes = "vec", tag = "1")]
+    pub body: ::prost::alloc::vec::Vec<u8>,
+    #[prost(int64, tag = "2")]
+    pub integrated_time: i64,
+    #[prost(string, tag = "3")]
+    pub log_id: ::prost::alloc::string::String,
+    #[prost(int64, tag = "4")]
+    pub log_index: i64,
+}
 /// TransparencyLogEntry captures all the details required from Rekor to
 /// reconstruct an entry, given that the payload is provided via other means.
 /// This type can easily be created from the existing response from Rekor.
@@ -142,10 +163,11 @@ pub struct TransparencyLogEntry {
     /// The contents of this field are the same as the `body` field in
     /// a Rekor response, meaning that it does **not** include the "full"
     /// canonicalized form (of log index, ID, etc.) which are
-    /// exposed as separate fields. The verifier is responsible for
-    /// combining the `canonicalized_body`, `log_index`, `log_id`,
+    /// exposed as separate fields. It is possible for the verifier to
+    /// combine the `canonicalized_body`, `log_index`, `log_id`,
     /// and `integrated_time` into the payload that the SET's signature
-    /// is generated over.
+    /// is generated over. Alternatively, the full canonicalized form of the
+    /// entry may be retrieved from the RekorBundle field.
     /// This field is intended to be used in cases where the SET cannot be
     /// produced determinisitically (e.g. inconsistent JSON field ordering,
     /// differing whitespace, etc).
@@ -157,4 +179,12 @@ pub struct TransparencyLogEntry {
     /// payload from other sources to verify the signature.
     #[prost(bytes = "vec", tag = "7")]
     pub canonicalized_body: ::prost::alloc::vec::Vec<u8>,
+    /// The Rekor Bundle is the payload or signed material used to produce the
+    /// Signed Entry Timestamp (SET) seen in the InclusionPromise field. This
+    /// data is signed by the Rekor public key to produce the SET. While this
+    /// information is available to be reconstructed from other fields in the
+    /// TLE, the bundle represents the canonicalized form that can be used to
+    /// manually verify or audit the SET.
+    #[prost(message, optional, tag = "8")]
+    pub rekor_bundle: ::core::option::Option<RekorBundle>,
 }

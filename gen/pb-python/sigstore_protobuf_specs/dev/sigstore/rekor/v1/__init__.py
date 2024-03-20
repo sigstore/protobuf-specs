@@ -94,6 +94,19 @@ class InclusionPromise(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class RekorBundle(betterproto.Message):
+    """
+    The RekorBundle is the signed material used to produce the Signed Entry
+    Timestamp signature. See notes on the InclusionPromise above.
+    """
+
+    body: bytes = betterproto.bytes_field(1)
+    integrated_time: int = betterproto.int64_field(2)
+    log_id: str = betterproto.string_field(3)
+    log_index: int = betterproto.int64_field(4)
+
+
+@dataclass(eq=False, repr=False)
 class TransparencyLogEntry(betterproto.Message):
     """
     TransparencyLogEntry captures all the details required from Rekor to
@@ -140,13 +153,25 @@ class TransparencyLogEntry(betterproto.Message):
     Signed Entry Timestamp (SET) during verification. The contents of this
     field are the same as the `body` field in a Rekor response, meaning that it
     does **not** include the "full" canonicalized form (of log index, ID, etc.)
-    which are exposed as separate fields. The verifier is responsible for
-    combining the `canonicalized_body`, `log_index`, `log_id`, and
+    which are exposed as separate fields. It is possible for the verifier to
+    combine the `canonicalized_body`, `log_index`, `log_id`, and
     `integrated_time` into the payload that the SET's signature is generated
-    over. This field is intended to be used in cases where the SET cannot be
-    produced determinisitically (e.g. inconsistent JSON field ordering,
-    differing whitespace, etc). If set, clients MUST verify that the signature
-    referenced in the `canonicalized_body` matches the signature provided in
-    the `Bundle.content`. If not set, clients are responsible for constructing
-    an equivalent payload from other sources to verify the signature.
+    over. Alternatively, the full canonicalized form of the entry may be
+    retrieved from the RekorBundle field. This field is intended to be used in
+    cases where the SET cannot be produced determinisitically (e.g.
+    inconsistent JSON field ordering, differing whitespace, etc). If set,
+    clients MUST verify that the signature referenced in the
+    `canonicalized_body` matches the signature provided in the
+    `Bundle.content`. If not set, clients are responsible for constructing an
+    equivalent payload from other sources to verify the signature.
+    """
+
+    rekor_bundle: "RekorBundle" = betterproto.message_field(8)
+    """
+    The Rekor Bundle is the payload or signed material used to produce the
+    Signed Entry Timestamp (SET) seen in the InclusionPromise field. This data
+    is signed by the Rekor public key to produce the SET. While this
+    information is available to be reconstructed from other fields in the TLE,
+    the bundle represents the canonicalized form that can be used to manually
+    verify or audit the SET.
     """
