@@ -37,14 +37,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   end
 end
 
-module Dev
-  module Sigstore
-    module Events
-      module V1
-        CloudEvent = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.events.v1.CloudEvent").msgclass
-        CloudEvent::CloudEventAttributeValue = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.events.v1.CloudEvent.CloudEventAttributeValue").msgclass
-        CloudEventBatch = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.events.v1.CloudEventBatch").msgclass
-      end
-    end
+module Sigstore
+  module Events
+    CloudEvent = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.events.v1.CloudEvent").msgclass
+    CloudEvent::CloudEventAttributeValue = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.events.v1.CloudEvent.CloudEventAttributeValue").msgclass
+    CloudEventBatch = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.events.v1.CloudEventBatch").msgclass
   end
 end
