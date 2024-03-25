@@ -3,7 +3,7 @@ import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
 plugins {
     `java-library`
     `maven-publish`
-    id("com.google.protobuf") version "0.9.1"
+    id("com.google.protobuf") version "0.9.4"
     id("com.diffplug.spotless") version "6.11.0"
 }
 
