@@ -4,7 +4,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("com.google.protobuf") version "0.9.1"
-    id("com.diffplug.spotless") version "6.11.0"
+    id("com.diffplug.spotless") version "6.25.0"
 }
 
 description = "Code generated library for the Sigstore bundle format protobufs"
