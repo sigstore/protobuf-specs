@@ -31,3 +31,7 @@ updates:
     directory: "/java"
     schedule:
       interval: "daily"
+    groups:
+      protobuf:
+        patterns:
+          - "*protobuf*"
