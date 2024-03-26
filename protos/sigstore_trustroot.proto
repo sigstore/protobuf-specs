@@ -117,3 +117,43 @@ message TrustedRoot {
         // A set of trusted timestamping authorities.
         repeated CertificateAuthority timestamp_authorities = 5;
 }
+
+
+// SigningConfig represents the trusted entities/state needed by Sigstore
+// signing. In particular, it primarily contains service URLs that a Sigstore
+// signer may need to connect to for the online aspects of signing.
+message SigningConfig {
+        // A URL to a Fulcio-compatible CA, capable of receiving
+        // Certificate Signing Requests (CSRs) and responding with
+        // issued certificates.
+        //
+        // This URL **MUST** be the "base" URL for the CA, which clients
+        // should construct an appropriate CSR endpoint on top of.
+        // For example, if `fulcio_url` is `https://example.com/ca`, then
+        // the client **MAY** construct the CSR endpoint as
+        // `https://example.com/ca/api/v2/signingCert`.
+        string fulcio_url = 1;
+
+        // A URL to an OpenID Connect identity provider.
+        //
+        // This URL **MUST** be the "base" URL for the OIDC IdP, which clients
+        // should perform well-known OpenID Connect discovery against.
+        string oidc_url = 2;
+
+        // A URL to a Rekor-compatible transparency log.
+        //
+        // This URL **MUST** be the "base" URL for the transparency log,
+        // which clients should construct appropriate API endpoints on top of.
+        string rekor_url = 3;
+}
+
+// ClientTrustConfig describes the complete state needed by a client
+// to perform both signing and verification operations against a particular
+// instance of Sigstore.
+message ClientTrustConfig {
+        // The root of trust, which MUST be present.
+        TrustedRoot trusted_root = 1 [(google.api.field_behavior) = REQUIRED];
+
+        //
+        SigningConfig signing_config = 2 [(google.api.field_behavior) = REQUIRED];
+}
