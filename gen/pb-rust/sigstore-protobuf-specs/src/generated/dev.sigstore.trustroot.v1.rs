@@ -151,11 +151,11 @@ pub struct SigningConfig {
     ///
     /// This URL **MUST** be the "base" URL for the CA, which clients
     /// should construct an appropriate CSR endpoint on top of.
-    /// For example, if `fulcio_url` is `<https://example.com/ca`,> then
+    /// For example, if `ca_url` is `<https://example.com/ca`,> then
     /// the client **MAY** construct the CSR endpoint as
     /// `<https://example.com/ca/api/v2/signingCert`.>
     #[prost(string, tag = "1")]
-    pub fulcio_url: ::prost::alloc::string::String,
+    pub ca_url: ::prost::alloc::string::String,
     /// A URL to an OpenID Connect identity provider.
     ///
     /// This URL **MUST** be the "base" URL for the OIDC IdP, which clients
@@ -167,7 +167,13 @@ pub struct SigningConfig {
     /// This URL **MUST** be the "base" URL for the transparency log,
     /// which clients should construct appropriate API endpoints on top of.
     #[prost(string, tag = "3")]
-    pub rekor_url: ::prost::alloc::string::String,
+    pub tlog_url: ::prost::alloc::string::String,
+    /// A URL to a Sigstore-compatible Time Stamping Authority (TSA).
+    ///
+    /// This URL **MUST** be the "base" URL for the TSA, which clients
+    /// should construct appropriate API endpoints on top of.
+    #[prost(string, tag = "4")]
+    pub tsa_url: ::prost::alloc::string::String,
 }
 /// ClientTrustConfig describes the complete state needed by a client
 /// to perform both signing and verification operations against a particular

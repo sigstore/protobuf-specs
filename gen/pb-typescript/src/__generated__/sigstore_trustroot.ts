@@ -142,11 +142,11 @@ export interface SigningConfig {
    *
    * This URL **MUST** be the "base" URL for the CA, which clients
    * should construct an appropriate CSR endpoint on top of.
-   * For example, if `fulcio_url` is `https://example.com/ca`, then
+   * For example, if `ca_url` is `https://example.com/ca`, then
    * the client **MAY** construct the CSR endpoint as
    * `https://example.com/ca/api/v2/signingCert`.
    */
-  fulcioUrl: string;
+  caUrl: string;
   /**
    * A URL to an OpenID Connect identity provider.
    *
@@ -160,7 +160,14 @@ export interface SigningConfig {
    * This URL **MUST** be the "base" URL for the transparency log,
    * which clients should construct appropriate API endpoints on top of.
    */
-  rekorUrl: string;
+  tlogUrl: string;
+  /**
+   * A URL to a Sigstore-compatible Time Stamping Authority (TSA).
+   *
+   * This URL **MUST** be the "base" URL for the TSA, which clients
+   * should construct appropriate API endpoints on top of.
+   */
+  tsaUrl: string;
 }
 
 /**
@@ -282,23 +289,25 @@ export const TrustedRoot = {
 };
 
 function createBaseSigningConfig(): SigningConfig {
-  return { fulcioUrl: "", oidcUrl: "", rekorUrl: "" };
+  return { caUrl: "", oidcUrl: "", tlogUrl: "", tsaUrl: "" };
 }
 
 export const SigningConfig = {
   fromJSON(object: any): SigningConfig {
     return {
-      fulcioUrl: isSet(object.fulcioUrl) ? String(object.fulcioUrl) : "",
+      caUrl: isSet(object.caUrl) ? String(object.caUrl) : "",
       oidcUrl: isSet(object.oidcUrl) ? String(object.oidcUrl) : "",
-      rekorUrl: isSet(object.rekorUrl) ? String(object.rekorUrl) : "",
+      tlogUrl: isSet(object.tlogUrl) ? String(object.tlogUrl) : "",
+      tsaUrl: isSet(object.tsaUrl) ? String(object.tsaUrl) : "",
     };
   },
 
   toJSON(message: SigningConfig): unknown {
     const obj: any = {};
-    message.fulcioUrl !== undefined && (obj.fulcioUrl = message.fulcioUrl);
+    message.caUrl !== undefined && (obj.caUrl = message.caUrl);
     message.oidcUrl !== undefined && (obj.oidcUrl = message.oidcUrl);
-    message.rekorUrl !== undefined && (obj.rekorUrl = message.rekorUrl);
+    message.tlogUrl !== undefined && (obj.tlogUrl = message.tlogUrl);
+    message.tsaUrl !== undefined && (obj.tsaUrl = message.tsaUrl);
     return obj;
   },
 };

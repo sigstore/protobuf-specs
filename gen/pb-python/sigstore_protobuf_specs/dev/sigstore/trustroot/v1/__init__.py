@@ -134,12 +134,12 @@ class SigningConfig(betterproto.Message):
     signer may need to connect to for the online aspects of signing.
     """
 
-    fulcio_url: str = betterproto.string_field(1)
+    ca_url: str = betterproto.string_field(1)
     """
     A URL to a Fulcio-compatible CA, capable of receiving Certificate Signing
     Requests (CSRs) and responding with issued certificates. This URL **MUST**
     be the "base" URL for the CA, which clients should construct an appropriate
-    CSR endpoint on top of. For example, if `fulcio_url` is
+    CSR endpoint on top of. For example, if `ca_url` is
     `https://example.com/ca`, then the client **MAY** construct the CSR
     endpoint as `https://example.com/ca/api/v2/signingCert`.
     """
@@ -151,10 +151,17 @@ class SigningConfig(betterproto.Message):
     Connect discovery against.
     """
 
-    rekor_url: str = betterproto.string_field(3)
+    tlog_url: str = betterproto.string_field(3)
     """
     A URL to a Rekor-compatible transparency log. This URL **MUST** be the
     "base" URL for the transparency log, which clients should construct
+    appropriate API endpoints on top of.
+    """
+
+    tsa_url: str = betterproto.string_field(4)
+    """
+    A URL to a Sigstore-compatible Time Stamping Authority (TSA). This URL
+    **MUST** be the "base" URL for the TSA, which clients should construct
     appropriate API endpoints on top of.
     """
 

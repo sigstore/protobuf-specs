@@ -28,9 +28,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :timestamp_authorities, :message, 5, "dev.sigstore.trustroot.v1.CertificateAuthority"
     end
     add_message "dev.sigstore.trustroot.v1.SigningConfig" do
-      optional :fulcio_url, :string, 1
+      optional :ca_url, :string, 1
       optional :oidc_url, :string, 2
-      optional :rekor_url, :string, 3
+      optional :tlog_url, :string, 3
+      optional :tsa_url, :string, 4
     end
     add_message "dev.sigstore.trustroot.v1.ClientTrustConfig" do
       optional :trusted_root, :message, 1, "dev.sigstore.trustroot.v1.TrustedRoot"
