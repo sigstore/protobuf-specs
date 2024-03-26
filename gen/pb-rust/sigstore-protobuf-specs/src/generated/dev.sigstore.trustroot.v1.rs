@@ -132,3 +132,60 @@ pub struct TrustedRoot {
     #[prost(message, repeated, tag = "5")]
     pub timestamp_authorities: ::prost::alloc::vec::Vec<CertificateAuthority>,
 }
+/// SigningConfig represents the trusted entities/state needed by Sigstore
+/// signing. In particular, it primarily contains service URLs that a Sigstore
+/// signer may need to connect to for the online aspects of signing.
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.trustroot.v1.SigningConfig")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SigningConfig {
+    /// A URL to a Fulcio-compatible CA, capable of receiving
+    /// Certificate Signing Requests (CSRs) and responding with
+    /// issued certificates.
+    ///
+    /// This URL **MUST** be the "base" URL for the CA, which clients
+    /// should construct an appropriate CSR endpoint on top of.
+    /// For example, if `fulcio_url` is `<https://example.com/ca`,> then
+    /// the client **MAY** construct the CSR endpoint as
+    /// `<https://example.com/ca/api/v2/signingCert`.>
+    #[prost(string, tag = "1")]
+    pub fulcio_url: ::prost::alloc::string::String,
+    /// A URL to an OpenID Connect identity provider.
+    ///
+    /// This URL **MUST** be the "base" URL for the OIDC IdP, which clients
+    /// should perform well-known OpenID Connect discovery against.
+    #[prost(string, tag = "2")]
+    pub oidc_url: ::prost::alloc::string::String,
+    /// A URL to a Rekor-compatible transparency log.
+    ///
+    /// This URL **MUST** be the "base" URL for the transparency log,
+    /// which clients should construct appropriate API endpoints on top of.
+    #[prost(string, tag = "3")]
+    pub rekor_url: ::prost::alloc::string::String,
+}
+/// ClientTrustConfig describes the complete state needed by a client
+/// to perform both signing and verification operations against a particular
+/// instance of Sigstore.
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.trustroot.v1.ClientTrustConfig")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClientTrustConfig {
+    /// The root of trust, which MUST be present.
+    #[prost(message, optional, tag = "1")]
+    pub trusted_root: ::core::option::Option<TrustedRoot>,
+    /// Configuration for signing clients, which MUST be present.
+    #[prost(message, optional, tag = "2")]
+    pub signing_config: ::core::option::Option<SigningConfig>,
+}

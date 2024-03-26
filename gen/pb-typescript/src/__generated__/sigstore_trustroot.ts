@@ -129,6 +129,54 @@ export interface TrustedRoot {
   timestampAuthorities: CertificateAuthority[];
 }
 
+/**
+ * SigningConfig represents the trusted entities/state needed by Sigstore
+ * signing. In particular, it primarily contains service URLs that a Sigstore
+ * signer may need to connect to for the online aspects of signing.
+ */
+export interface SigningConfig {
+  /**
+   * A URL to a Fulcio-compatible CA, capable of receiving
+   * Certificate Signing Requests (CSRs) and responding with
+   * issued certificates.
+   *
+   * This URL **MUST** be the "base" URL for the CA, which clients
+   * should construct an appropriate CSR endpoint on top of.
+   * For example, if `fulcio_url` is `https://example.com/ca`, then
+   * the client **MAY** construct the CSR endpoint as
+   * `https://example.com/ca/api/v2/signingCert`.
+   */
+  fulcioUrl: string;
+  /**
+   * A URL to an OpenID Connect identity provider.
+   *
+   * This URL **MUST** be the "base" URL for the OIDC IdP, which clients
+   * should perform well-known OpenID Connect discovery against.
+   */
+  oidcUrl: string;
+  /**
+   * A URL to a Rekor-compatible transparency log.
+   *
+   * This URL **MUST** be the "base" URL for the transparency log,
+   * which clients should construct appropriate API endpoints on top of.
+   */
+  rekorUrl: string;
+}
+
+/**
+ * ClientTrustConfig describes the complete state needed by a client
+ * to perform both signing and verification operations against a particular
+ * instance of Sigstore.
+ */
+export interface ClientTrustConfig {
+  /** The root of trust, which MUST be present. */
+  trustedRoot:
+    | TrustedRoot
+    | undefined;
+  /** Configuration for signing clients, which MUST be present. */
+  signingConfig: SigningConfig | undefined;
+}
+
 function createBaseTransparencyLogInstance(): TransparencyLogInstance {
   return { baseUrl: "", hashAlgorithm: 0, publicKey: undefined, logId: undefined };
 }
@@ -229,6 +277,50 @@ export const TrustedRoot = {
     } else {
       obj.timestampAuthorities = [];
     }
+    return obj;
+  },
+};
+
+function createBaseSigningConfig(): SigningConfig {
+  return { fulcioUrl: "", oidcUrl: "", rekorUrl: "" };
+}
+
+export const SigningConfig = {
+  fromJSON(object: any): SigningConfig {
+    return {
+      fulcioUrl: isSet(object.fulcioUrl) ? String(object.fulcioUrl) : "",
+      oidcUrl: isSet(object.oidcUrl) ? String(object.oidcUrl) : "",
+      rekorUrl: isSet(object.rekorUrl) ? String(object.rekorUrl) : "",
+    };
+  },
+
+  toJSON(message: SigningConfig): unknown {
+    const obj: any = {};
+    message.fulcioUrl !== undefined && (obj.fulcioUrl = message.fulcioUrl);
+    message.oidcUrl !== undefined && (obj.oidcUrl = message.oidcUrl);
+    message.rekorUrl !== undefined && (obj.rekorUrl = message.rekorUrl);
+    return obj;
+  },
+};
+
+function createBaseClientTrustConfig(): ClientTrustConfig {
+  return { trustedRoot: undefined, signingConfig: undefined };
+}
+
+export const ClientTrustConfig = {
+  fromJSON(object: any): ClientTrustConfig {
+    return {
+      trustedRoot: isSet(object.trustedRoot) ? TrustedRoot.fromJSON(object.trustedRoot) : undefined,
+      signingConfig: isSet(object.signingConfig) ? SigningConfig.fromJSON(object.signingConfig) : undefined,
+    };
+  },
+
+  toJSON(message: ClientTrustConfig): unknown {
+    const obj: any = {};
+    message.trustedRoot !== undefined &&
+      (obj.trustedRoot = message.trustedRoot ? TrustedRoot.toJSON(message.trustedRoot) : undefined);
+    message.signingConfig !== undefined &&
+      (obj.signingConfig = message.signingConfig ? SigningConfig.toJSON(message.signingConfig) : undefined);
     return obj;
   },
 };

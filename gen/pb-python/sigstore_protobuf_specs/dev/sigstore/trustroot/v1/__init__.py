@@ -124,3 +124,51 @@ class TrustedRoot(betterproto.Message):
 
     timestamp_authorities: List["CertificateAuthority"] = betterproto.message_field(5)
     """A set of trusted timestamping authorities."""
+
+
+@dataclass(eq=False, repr=False)
+class SigningConfig(betterproto.Message):
+    """
+    SigningConfig represents the trusted entities/state needed by Sigstore
+    signing. In particular, it primarily contains service URLs that a Sigstore
+    signer may need to connect to for the online aspects of signing.
+    """
+
+    fulcio_url: str = betterproto.string_field(1)
+    """
+    A URL to a Fulcio-compatible CA, capable of receiving Certificate Signing
+    Requests (CSRs) and responding with issued certificates. This URL **MUST**
+    be the "base" URL for the CA, which clients should construct an appropriate
+    CSR endpoint on top of. For example, if `fulcio_url` is
+    `https://example.com/ca`, then the client **MAY** construct the CSR
+    endpoint as `https://example.com/ca/api/v2/signingCert`.
+    """
+
+    oidc_url: str = betterproto.string_field(2)
+    """
+    A URL to an OpenID Connect identity provider. This URL **MUST** be the
+    "base" URL for the OIDC IdP, which clients should perform well-known OpenID
+    Connect discovery against.
+    """
+
+    rekor_url: str = betterproto.string_field(3)
+    """
+    A URL to a Rekor-compatible transparency log. This URL **MUST** be the
+    "base" URL for the transparency log, which clients should construct
+    appropriate API endpoints on top of.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class ClientTrustConfig(betterproto.Message):
+    """
+    ClientTrustConfig describes the complete state needed by a client to
+    perform both signing and verification operations against a particular
+    instance of Sigstore.
+    """
+
+    trusted_root: "TrustedRoot" = betterproto.message_field(1)
+    """The root of trust, which MUST be present."""
+
+    signing_config: "SigningConfig" = betterproto.message_field(2)
+    """Configuration for signing clients, which MUST be present."""

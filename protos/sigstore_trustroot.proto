@@ -15,6 +15,7 @@
 syntax = "proto3";
 package dev.sigstore.trustroot.v1;
 
+import "google/api/field_behavior.proto";
 import "sigstore_common.proto";
 
 option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/trustroot/v1";
