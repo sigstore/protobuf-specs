@@ -3,7 +3,7 @@
 set -u
 set -e
 
-protoc --plugin=/root/go/bin/protoc-gen-jsonschema \
+protoc --plugin=/home/builder/go/bin/protoc-gen-jsonschema \
        --jsonschema_opt=disallow_additional_properties \
        --jsonschema_opt=enforce_oneof \
        --jsonschema_opt=enums_as_strings_only \
