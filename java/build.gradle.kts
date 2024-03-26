@@ -3,7 +3,7 @@ import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
 plugins {
     `java-library`
     `maven-publish`
-    id("com.google.protobuf") version "0.9.1"
+    id("com.google.protobuf") version "0.9.4"
     id("com.diffplug.spotless") version "6.25.0"
 }
 
@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.google.protobuf:protobuf-java:3.21.9")
+    implementation("com.google.protobuf:protobuf-java:4.26.0")
     implementation("com.google.api.grpc:proto-google-common-protos:2.37.1")
 }
 
@@ -39,7 +39,7 @@ java {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.21.9"
+        artifact = "com.google.protobuf:protoc:4.26.0"
     }
 }
 
