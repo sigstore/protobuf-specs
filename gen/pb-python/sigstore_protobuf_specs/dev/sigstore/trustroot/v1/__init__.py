@@ -160,9 +160,9 @@ class SigningConfig(betterproto.Message):
 
     tsa_url: str = betterproto.string_field(4)
     """
-    A URL to a Sigstore-compatible Time Stamping Authority (TSA). This URL
-    **MUST** be the "base" URL for the TSA, which clients should construct
-    appropriate API endpoints on top of.
+    A URL to an RFC 3161 Time Stamping Authority (TSA). This URL **MUST** be
+    the **full** URL for the TSA, meaning that it should be suitable for
+    submitting Time Stamp Requests (TSRs) to via HTTP, per RFC 3161.
     """
 
 
