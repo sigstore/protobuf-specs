@@ -30,8 +30,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "dev.sigstore.trustroot.v1.SigningConfig" do
       optional :ca_url, :string, 1
       optional :oidc_url, :string, 2
-      optional :tlog_url, :string, 3
-      optional :tsa_url, :string, 4
+      repeated :tlog_urls, :string, 3
+      repeated :tsa_urls, :string, 4
     end
     add_message "dev.sigstore.trustroot.v1.ClientTrustConfig" do
       optional :trusted_root, :message, 1, "dev.sigstore.trustroot.v1.TrustedRoot"

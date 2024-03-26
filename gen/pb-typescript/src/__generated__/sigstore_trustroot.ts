@@ -155,20 +155,20 @@ export interface SigningConfig {
    */
   oidcUrl: string;
   /**
-   * A URL to a Rekor-compatible transparency log.
+   * One or more URLs to Rekor-compatible transparency log.
    *
-   * This URL **MUST** be the "base" URL for the transparency log,
+   * Each URL **MUST** be the "base" URL for the transparency log,
    * which clients should construct appropriate API endpoints on top of.
    */
-  tlogUrl: string;
+  tlogUrls: string[];
   /**
-   * A URL to an RFC 3161 Time Stamping Authority (TSA).
+   * One ore more URLs to RFC 3161 Time Stamping Authority (TSA).
    *
-   * This URL **MUST** be the **full** URL for the TSA, meaning that it
+   * Each URL **MUST** be the **full** URL for the TSA, meaning that it
    * should be suitable for submitting Time Stamp Requests (TSRs) to
    * via HTTP, per RFC 3161.
    */
-  tsaUrl: string;
+  tsaUrls: string[];
 }
 
 /**
@@ -290,7 +290,7 @@ export const TrustedRoot = {
 };
 
 function createBaseSigningConfig(): SigningConfig {
-  return { caUrl: "", oidcUrl: "", tlogUrl: "", tsaUrl: "" };
+  return { caUrl: "", oidcUrl: "", tlogUrls: [], tsaUrls: [] };
 }
 
 export const SigningConfig = {
@@ -298,8 +298,8 @@ export const SigningConfig = {
     return {
       caUrl: isSet(object.caUrl) ? String(object.caUrl) : "",
       oidcUrl: isSet(object.oidcUrl) ? String(object.oidcUrl) : "",
-      tlogUrl: isSet(object.tlogUrl) ? String(object.tlogUrl) : "",
-      tsaUrl: isSet(object.tsaUrl) ? String(object.tsaUrl) : "",
+      tlogUrls: Array.isArray(object?.tlogUrls) ? object.tlogUrls.map((e: any) => String(e)) : [],
+      tsaUrls: Array.isArray(object?.tsaUrls) ? object.tsaUrls.map((e: any) => String(e)) : [],
     };
   },
 
@@ -307,8 +307,16 @@ export const SigningConfig = {
     const obj: any = {};
     message.caUrl !== undefined && (obj.caUrl = message.caUrl);
     message.oidcUrl !== undefined && (obj.oidcUrl = message.oidcUrl);
-    message.tlogUrl !== undefined && (obj.tlogUrl = message.tlogUrl);
-    message.tsaUrl !== undefined && (obj.tsaUrl = message.tsaUrl);
+    if (message.tlogUrls) {
+      obj.tlogUrls = message.tlogUrls.map((e) => e);
+    } else {
+      obj.tlogUrls = [];
+    }
+    if (message.tsaUrls) {
+      obj.tsaUrls = message.tsaUrls.map((e) => e);
+    } else {
+      obj.tsaUrls = [];
+    }
     return obj;
   },
 };

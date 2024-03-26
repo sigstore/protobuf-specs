@@ -162,19 +162,19 @@ pub struct SigningConfig {
     /// should perform well-known OpenID Connect discovery against.
     #[prost(string, tag = "2")]
     pub oidc_url: ::prost::alloc::string::String,
-    /// A URL to a Rekor-compatible transparency log.
+    /// One or more URLs to Rekor-compatible transparency log.
     ///
-    /// This URL **MUST** be the "base" URL for the transparency log,
+    /// Each URL **MUST** be the "base" URL for the transparency log,
     /// which clients should construct appropriate API endpoints on top of.
-    #[prost(string, tag = "3")]
-    pub tlog_url: ::prost::alloc::string::String,
-    /// A URL to an RFC 3161 Time Stamping Authority (TSA).
+    #[prost(string, repeated, tag = "3")]
+    pub tlog_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// One ore more URLs to RFC 3161 Time Stamping Authority (TSA).
     ///
-    /// This URL **MUST** be the **full** URL for the TSA, meaning that it
+    /// Each URL **MUST** be the **full** URL for the TSA, meaning that it
     /// should be suitable for submitting Time Stamp Requests (TSRs) to
     /// via HTTP, per RFC 3161.
-    #[prost(string, tag = "4")]
-    pub tsa_url: ::prost::alloc::string::String,
+    #[prost(string, repeated, tag = "4")]
+    pub tsa_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// ClientTrustConfig describes the complete state needed by a client
 /// to perform both signing and verification operations against a particular
