@@ -154,6 +154,6 @@ message ClientTrustConfig {
         // The root of trust, which MUST be present.
         TrustedRoot trusted_root = 1 [(google.api.field_behavior) = REQUIRED];
 
-        //
+        // Configuration for signing clients, which MUST be present.
         SigningConfig signing_config = 2 [(google.api.field_behavior) = REQUIRED];
 }
