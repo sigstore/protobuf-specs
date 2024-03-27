@@ -159,9 +159,11 @@ message SigningConfig {
 // to perform both signing and verification operations against a particular
 // instance of Sigstore.
 message ClientTrustConfig {
+        // MUST be application/vnd.dev.sigstore.clienttrustconfig.v0.1+json
+        string media_type = 1;
         // The root of trust, which MUST be present.
-        TrustedRoot trusted_root = 1 [(google.api.field_behavior) = REQUIRED];
+        TrustedRoot trusted_root = 2 [(google.api.field_behavior) = REQUIRED];
 
         // Configuration for signing clients, which MUST be present.
-        SigningConfig signing_config = 2 [(google.api.field_behavior) = REQUIRED];
+        SigningConfig signing_config = 3 [(google.api.field_behavior) = REQUIRED];
 }
