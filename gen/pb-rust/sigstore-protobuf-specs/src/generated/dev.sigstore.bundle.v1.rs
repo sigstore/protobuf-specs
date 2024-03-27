@@ -151,10 +151,13 @@ pub mod verification_material {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Bundle {
-    /// MUST be application/vnd.dev.sigstore.bundle+json;version=0.1
-    /// or application/vnd.dev.sigstore.bundle+json;version=0.2
-    /// or application/vnd.dev.sigstore.bundle+json;version=0.3
+    /// MUST be application/vnd.dev.sigstore.bundle.v0.3+json when
     /// when encoded as JSON.
+    /// Clients must to be able to accept media type using the previously
+    /// defined formats:
+    /// * application/vnd.dev.sigstore.bundle+json;version=0.1
+    /// * application/vnd.dev.sigstore.bundle+json;version=0.2
+    /// * application/vnd.dev.sigstore.bundle+json;version=0.3
     #[prost(string, tag = "1")]
     pub media_type: ::prost::alloc::string::String,
     /// When a signer is identified by a X.509 certificate, a verifier MUST

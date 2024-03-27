@@ -6,7 +6,7 @@
             "properties": {
                 "mediaType": {
                     "type": "string",
-                    "description": "MUST be application/vnd.dev.sigstore.trustedroot+json;version=0.1"
+                    "description": "MUST be application/vnd.dev.sigstore.trustedroot.v0.1+json when encoded as JSON. Clients MUST be able to process and parse content with the media type defined in the old format: application/vnd.dev.sigstore.trustedroot+json;version=0.1"
                 },
                 "tlogs": {
                     "items": {

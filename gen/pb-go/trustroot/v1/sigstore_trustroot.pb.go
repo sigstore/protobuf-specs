@@ -243,7 +243,11 @@ type TrustedRoot struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// MUST be application/vnd.dev.sigstore.trustedroot+json;version=0.1
+	// MUST be application/vnd.dev.sigstore.trustedroot.v0.1+json
+	// when encoded as JSON.
+	// Clients MUST be able to process and parse content with the media
+	// type defined in the old format:
+	// application/vnd.dev.sigstore.trustedroot+json;version=0.1
 	MediaType string `protobuf:"bytes,1,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
 	// A set of trusted Rekor servers.
 	Tlogs []*TransparencyLogInstance `protobuf:"bytes,2,rep,name=tlogs,proto3" json:"tlogs,omitempty"`
