@@ -3,6 +3,7 @@
 
 require 'google/protobuf'
 
+require 'google/api/field_behavior_pb'
 require 'sigstore_common_pb'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
@@ -26,6 +27,17 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :ctlogs, :message, 4, "dev.sigstore.trustroot.v1.TransparencyLogInstance"
       repeated :timestamp_authorities, :message, 5, "dev.sigstore.trustroot.v1.CertificateAuthority"
     end
+    add_message "dev.sigstore.trustroot.v1.SigningConfig" do
+      optional :ca_url, :string, 1
+      optional :oidc_url, :string, 2
+      repeated :tlog_urls, :string, 3
+      repeated :tsa_urls, :string, 4
+    end
+    add_message "dev.sigstore.trustroot.v1.ClientTrustConfig" do
+      optional :media_type, :string, 1
+      optional :trusted_root, :message, 2, "dev.sigstore.trustroot.v1.TrustedRoot"
+      optional :signing_config, :message, 3, "dev.sigstore.trustroot.v1.SigningConfig"
+    end
   end
 end
 
@@ -35,6 +47,8 @@ module Sigstore
       TransparencyLogInstance = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.trustroot.v1.TransparencyLogInstance").msgclass
       CertificateAuthority = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.trustroot.v1.CertificateAuthority").msgclass
       TrustedRoot = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.trustroot.v1.TrustedRoot").msgclass
+      SigningConfig = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.trustroot.v1.SigningConfig").msgclass
+      ClientTrustConfig = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("dev.sigstore.trustroot.v1.ClientTrustConfig").msgclass
     end
   end
 end
