@@ -34,8 +34,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :tsa_urls, :string, 4
     end
     add_message "dev.sigstore.trustroot.v1.ClientTrustConfig" do
-      optional :trusted_root, :message, 1, "dev.sigstore.trustroot.v1.TrustedRoot"
-      optional :signing_config, :message, 2, "dev.sigstore.trustroot.v1.SigningConfig"
+      optional :media_type, :string, 1
+      optional :trusted_root, :message, 2, "dev.sigstore.trustroot.v1.TrustedRoot"
+      optional :signing_config, :message, 3, "dev.sigstore.trustroot.v1.SigningConfig"
     end
   end
 end

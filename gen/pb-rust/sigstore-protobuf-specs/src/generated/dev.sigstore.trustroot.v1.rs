@@ -189,10 +189,13 @@ pub struct SigningConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientTrustConfig {
+    /// MUST be application/vnd.dev.sigstore.clienttrustconfig.v0.1+json
+    #[prost(string, tag = "1")]
+    pub media_type: ::prost::alloc::string::String,
     /// The root of trust, which MUST be present.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag = "2")]
     pub trusted_root: ::core::option::Option<TrustedRoot>,
     /// Configuration for signing clients, which MUST be present.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag = "3")]
     pub signing_config: ::core::option::Option<SigningConfig>,
 }

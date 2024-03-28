@@ -175,8 +175,11 @@ class ClientTrustConfig(betterproto.Message):
     instance of Sigstore.
     """
 
-    trusted_root: "TrustedRoot" = betterproto.message_field(1)
+    media_type: str = betterproto.string_field(1)
+    """MUST be application/vnd.dev.sigstore.clienttrustconfig.v0.1+json"""
+
+    trusted_root: "TrustedRoot" = betterproto.message_field(2)
     """The root of trust, which MUST be present."""
 
-    signing_config: "SigningConfig" = betterproto.message_field(2)
+    signing_config: "SigningConfig" = betterproto.message_field(3)
     """Configuration for signing clients, which MUST be present."""

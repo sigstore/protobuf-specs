@@ -177,6 +177,8 @@ export interface SigningConfig {
  * instance of Sigstore.
  */
 export interface ClientTrustConfig {
+  /** MUST be application/vnd.dev.sigstore.clienttrustconfig.v0.1+json */
+  mediaType: string;
   /** The root of trust, which MUST be present. */
   trustedRoot:
     | TrustedRoot
@@ -322,12 +324,13 @@ export const SigningConfig = {
 };
 
 function createBaseClientTrustConfig(): ClientTrustConfig {
-  return { trustedRoot: undefined, signingConfig: undefined };
+  return { mediaType: "", trustedRoot: undefined, signingConfig: undefined };
 }
 
 export const ClientTrustConfig = {
   fromJSON(object: any): ClientTrustConfig {
     return {
+      mediaType: isSet(object.mediaType) ? String(object.mediaType) : "",
       trustedRoot: isSet(object.trustedRoot) ? TrustedRoot.fromJSON(object.trustedRoot) : undefined,
       signingConfig: isSet(object.signingConfig) ? SigningConfig.fromJSON(object.signingConfig) : undefined,
     };
@@ -335,6 +338,7 @@ export const ClientTrustConfig = {
 
   toJSON(message: ClientTrustConfig): unknown {
     const obj: any = {};
+    message.mediaType !== undefined && (obj.mediaType = message.mediaType);
     message.trustedRoot !== undefined &&
       (obj.trustedRoot = message.trustedRoot ? TrustedRoot.toJSON(message.trustedRoot) : undefined);
     message.signingConfig !== undefined &&

@@ -4,6 +4,10 @@
     "definitions": {
         "ClientTrustConfig": {
             "properties": {
+                "mediaType": {
+                    "type": "string",
+                    "description": "MUST be application/vnd.dev.sigstore.clienttrustconfig.v0.1+json"
+                },
                 "trustedRoot": {
                     "$ref": "#/definitions/dev.sigstore.trustroot.v1.TrustedRoot",
                     "additionalProperties": false,
