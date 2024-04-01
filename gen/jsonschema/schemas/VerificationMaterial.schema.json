@@ -65,8 +65,8 @@
             },
             "additionalProperties": false,
             "type": "object",
-            "title": "Notes on versioning.\n The primary message ('Bundle') MUST be versioned, by populating the\n 'media_type' field. Semver-ish (only major/minor versions) scheme MUST\n be used. The current version as specified by this file is:\n application/vnd.dev.sigstore.bundle+json;version=0.3\n The semantic version is thus '0.3'.",
-            "description": "Notes on versioning. The primary message ('Bundle') MUST be versioned, by populating the 'media_type' field. Semver-ish (only major/minor versions) scheme MUST be used. The current version as specified by this file is: application/vnd.dev.sigstore.bundle+json;version=0.3 The semantic version is thus '0.3'.  Various timestamped counter signatures over the artifacts signature. Currently only RFC3161 signatures are provided. More formats may be added in the future."
+            "title": "Notes on versioning.\n The primary message ('Bundle') MUST be versioned, by populating the\n 'media_type' field. Semver-ish (only major/minor versions) scheme MUST\n be used. The current version as specified by this file is:\n application/vnd.dev.sigstore.bundle.v0.3+json\n The semantic version is thus '0.3'.",
+            "description": "Notes on versioning. The primary message ('Bundle') MUST be versioned, by populating the 'media_type' field. Semver-ish (only major/minor versions) scheme MUST be used. The current version as specified by this file is: application/vnd.dev.sigstore.bundle.v0.3+json The semantic version is thus '0.3'.  Various timestamped counter signatures over the artifacts signature. Currently only RFC3161 signatures are provided. More formats may be added in the future."
         },
         "dev.sigstore.common.v1.LogId": {
             "properties": {

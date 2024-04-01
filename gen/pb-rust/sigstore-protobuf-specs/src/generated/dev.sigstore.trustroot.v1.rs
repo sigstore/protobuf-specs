@@ -109,7 +109,11 @@ pub struct CertificateAuthority {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrustedRoot {
-    /// MUST be application/vnd.dev.sigstore.trustedroot+json;version=0.1
+    /// MUST be application/vnd.dev.sigstore.trustedroot.v0.1+json
+    /// when encoded as JSON.
+    /// Clients MUST be able to process and parse content with the media
+    /// type defined in the old format:
+    /// application/vnd.dev.sigstore.trustedroot+json;version=0.1
     #[prost(string, tag = "1")]
     pub media_type: ::prost::alloc::string::String,
     /// A set of trusted Rekor servers.
