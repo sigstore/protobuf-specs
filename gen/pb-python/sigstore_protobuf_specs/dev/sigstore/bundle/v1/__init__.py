@@ -80,9 +80,11 @@ class VerificationMaterial(betterproto.Message):
 class Bundle(betterproto.Message):
     media_type: str = betterproto.string_field(1)
     """
-    MUST be application/vnd.dev.sigstore.bundle+json;version=0.1 or
-    application/vnd.dev.sigstore.bundle+json;version=0.2 or
-    application/vnd.dev.sigstore.bundle+json;version=0.3 when encoded as JSON.
+    MUST be application/vnd.dev.sigstore.bundle.v0.3+json when when encoded as
+    JSON. Clients must to be able to accept media type using the previously
+    defined formats: * application/vnd.dev.sigstore.bundle+json;version=0.1 *
+    application/vnd.dev.sigstore.bundle+json;version=0.2 *
+    application/vnd.dev.sigstore.bundle+json;version=0.3
     """
 
     verification_material: "VerificationMaterial" = betterproto.message_field(2)

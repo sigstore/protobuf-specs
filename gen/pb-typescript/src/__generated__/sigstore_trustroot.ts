@@ -108,7 +108,13 @@ export interface CertificateAuthority {
  * is, a sub-set of the complete trust root) that is used for verification.
  */
 export interface TrustedRoot {
-  /** MUST be application/vnd.dev.sigstore.trustedroot+json;version=0.1 */
+  /**
+   * MUST be application/vnd.dev.sigstore.trustedroot.v0.1+json
+   * when encoded as JSON.
+   * Clients MUST be able to process and parse content with the media
+   * type defined in the old format:
+   * application/vnd.dev.sigstore.trustedroot+json;version=0.1
+   */
   mediaType: string;
   /** A set of trusted Rekor servers. */
   tlogs: TransparencyLogInstance[];
