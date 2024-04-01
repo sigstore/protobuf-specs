@@ -8,6 +8,22 @@ All versions prior to 0.2.0 are untracked.
 
 ## [Unreleased]
 
+## 0.3.1
+
+* Added client configuration message for signing ([#277](https://github.com/sigstore/protobuf-specs/pull/277))
+* Added a new format for the media type that is compatible with OCI registries ([#279](https://github.com/sigstore/protobuf-specs/pull/279))
+* Added events.proto for Ruby package ([#264](https://github.com/sigstore/protobuf-specs/pull/264))
+* Targeted Node16 for Typescript package ([#230](https://github.com/sigstore/protobuf-specs/pull/230))
+
+### Changed
+
+* Docs: Removed timestamp from checkpoint ([#247](https://github.com/sigstore/protobuf-specs/pull/247))
+* Remove EXPERIMENTAL prefix from LMS schemes ([#214](https://github.com/sigstore/protobuf-specs/pull/214))
+
+### Fixed
+
+* Docs: Clarified trust anchor in chain ([#245]([https://github.com/sigstore/protobuf-specs/pull/210](https://github.com/sigstore/protobuf-specs/pull/245))
+
 ## 0.3.0
 
 * Options for more generic observer time ([#179](https://github.com/sigstore/protobuf-specs/pull/179))
