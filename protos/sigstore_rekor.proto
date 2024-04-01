@@ -128,3 +128,12 @@ message TransparencyLogEntry {
         // payload from other sources to verify the signature.
         bytes canonicalized_body = 7;
 }
+
+// The RekorBundle is the signed material used to produce the Signed Entry
+// Timestamp signature. See notes on the InclusionPromise above.
+message RekorBundle {
+	bytes body = 1 [(google.api.field_behavior) = REQUIRED];
+	int64 integrated_time = 2 [(google.api.field_behavior) = REQUIRED];
+	string log_id = 3 [(google.api.field_behavior) = REQUIRED];
+	int64 log_index = 4 [(google.api.field_behavior) = REQUIRED];
+}

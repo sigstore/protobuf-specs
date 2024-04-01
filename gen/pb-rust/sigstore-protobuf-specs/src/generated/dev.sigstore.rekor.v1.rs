@@ -158,3 +158,24 @@ pub struct TransparencyLogEntry {
     #[prost(bytes = "vec", tag = "7")]
     pub canonicalized_body: ::prost::alloc::vec::Vec<u8>,
 }
+/// The RekorBundle is the signed material used to produce the Signed Entry
+/// Timestamp signature. See notes on the InclusionPromise above.
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.rekor.v1.RekorBundle")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RekorBundle {
+    #[prost(bytes = "vec", tag = "1")]
+    pub body: ::prost::alloc::vec::Vec<u8>,
+    #[prost(int64, tag = "2")]
+    pub integrated_time: i64,
+    #[prost(string, tag = "3")]
+    pub log_id: ::prost::alloc::string::String,
+    #[prost(int64, tag = "4")]
+    pub log_index: i64,
+}

@@ -137,6 +137,17 @@ export interface TransparencyLogEntry {
   canonicalizedBody: Buffer;
 }
 
+/**
+ * The RekorBundle is the signed material used to produce the Signed Entry
+ * Timestamp signature. See notes on the InclusionPromise above.
+ */
+export interface RekorBundle {
+  body: Buffer;
+  integratedTime: string;
+  logId: string;
+  logIndex: string;
+}
+
 function createBaseKindVersion(): KindVersion {
   return { kind: "", version: "" };
 }
@@ -270,6 +281,31 @@ export const TransparencyLogEntry = {
       (obj.canonicalizedBody = base64FromBytes(
         message.canonicalizedBody !== undefined ? message.canonicalizedBody : Buffer.alloc(0),
       ));
+    return obj;
+  },
+};
+
+function createBaseRekorBundle(): RekorBundle {
+  return { body: Buffer.alloc(0), integratedTime: "0", logId: "", logIndex: "0" };
+}
+
+export const RekorBundle = {
+  fromJSON(object: any): RekorBundle {
+    return {
+      body: isSet(object.body) ? Buffer.from(bytesFromBase64(object.body)) : Buffer.alloc(0),
+      integratedTime: isSet(object.integratedTime) ? String(object.integratedTime) : "0",
+      logId: isSet(object.logId) ? String(object.logId) : "",
+      logIndex: isSet(object.logIndex) ? String(object.logIndex) : "0",
+    };
+  },
+
+  toJSON(message: RekorBundle): unknown {
+    const obj: any = {};
+    message.body !== undefined &&
+      (obj.body = base64FromBytes(message.body !== undefined ? message.body : Buffer.alloc(0)));
+    message.integratedTime !== undefined && (obj.integratedTime = message.integratedTime);
+    message.logId !== undefined && (obj.logId = message.logId);
+    message.logIndex !== undefined && (obj.logIndex = message.logIndex);
     return obj;
   },
 };

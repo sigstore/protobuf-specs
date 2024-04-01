@@ -150,3 +150,16 @@ class TransparencyLogEntry(betterproto.Message):
     the `Bundle.content`. If not set, clients are responsible for constructing
     an equivalent payload from other sources to verify the signature.
     """
+
+
+@dataclass(eq=False, repr=False)
+class RekorBundle(betterproto.Message):
+    """
+    The RekorBundle is the signed material used to produce the Signed Entry
+    Timestamp signature. See notes on the InclusionPromise above.
+    """
+
+    body: bytes = betterproto.bytes_field(1)
+    integrated_time: int = betterproto.int64_field(2)
+    log_id: str = betterproto.string_field(3)
+    log_index: int = betterproto.int64_field(4)
