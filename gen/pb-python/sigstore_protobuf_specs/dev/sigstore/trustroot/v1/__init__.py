@@ -129,3 +129,62 @@ class TrustedRoot(betterproto.Message):
 
     timestamp_authorities: List["CertificateAuthority"] = betterproto.message_field(5)
     """A set of trusted timestamping authorities."""
+
+
+@dataclass(eq=False, repr=False)
+class SigningConfig(betterproto.Message):
+    """
+    SigningConfig represents the trusted entities/state needed by Sigstore
+    signing. In particular, it primarily contains service URLs that a Sigstore
+    signer may need to connect to for the online aspects of signing.
+    """
+
+    ca_url: str = betterproto.string_field(1)
+    """
+    A URL to a Fulcio-compatible CA, capable of receiving Certificate Signing
+    Requests (CSRs) and responding with issued certificates. This URL **MUST**
+    be the "base" URL for the CA, which clients should construct an appropriate
+    CSR endpoint on top of. For example, if `ca_url` is
+    `https://example.com/ca`, then the client **MAY** construct the CSR
+    endpoint as `https://example.com/ca/api/v2/signingCert`.
+    """
+
+    oidc_url: str = betterproto.string_field(2)
+    """
+    A URL to an OpenID Connect identity provider. This URL **MUST** be the
+    "base" URL for the OIDC IdP, which clients should perform well-known OpenID
+    Connect discovery against.
+    """
+
+    tlog_urls: List[str] = betterproto.string_field(3)
+    """
+    One or more URLs to Rekor-compatible transparency log. Each URL **MUST** be
+    the "base" URL for the transparency log, which clients should construct
+    appropriate API endpoints on top of.
+    """
+
+    tsa_urls: List[str] = betterproto.string_field(4)
+    """
+    One ore more URLs to RFC 3161 Time Stamping Authority (TSA). Each URL
+    **MUST** be the **full** URL for the TSA, meaning that it should be
+    suitable for submitting Time Stamp Requests (TSRs) to via HTTP, per RFC
+    3161.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class ClientTrustConfig(betterproto.Message):
+    """
+    ClientTrustConfig describes the complete state needed by a client to
+    perform both signing and verification operations against a particular
+    instance of Sigstore.
+    """
+
+    media_type: str = betterproto.string_field(1)
+    """MUST be application/vnd.dev.sigstore.clienttrustconfig.v0.1+json"""
+
+    trusted_root: "TrustedRoot" = betterproto.message_field(2)
+    """The root of trust, which MUST be present."""
+
+    signing_config: "SigningConfig" = betterproto.message_field(3)
+    """Configuration for signing clients, which MUST be present."""

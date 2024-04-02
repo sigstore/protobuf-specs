@@ -135,6 +135,64 @@ export interface TrustedRoot {
   timestampAuthorities: CertificateAuthority[];
 }
 
+/**
+ * SigningConfig represents the trusted entities/state needed by Sigstore
+ * signing. In particular, it primarily contains service URLs that a Sigstore
+ * signer may need to connect to for the online aspects of signing.
+ */
+export interface SigningConfig {
+  /**
+   * A URL to a Fulcio-compatible CA, capable of receiving
+   * Certificate Signing Requests (CSRs) and responding with
+   * issued certificates.
+   *
+   * This URL **MUST** be the "base" URL for the CA, which clients
+   * should construct an appropriate CSR endpoint on top of.
+   * For example, if `ca_url` is `https://example.com/ca`, then
+   * the client **MAY** construct the CSR endpoint as
+   * `https://example.com/ca/api/v2/signingCert`.
+   */
+  caUrl: string;
+  /**
+   * A URL to an OpenID Connect identity provider.
+   *
+   * This URL **MUST** be the "base" URL for the OIDC IdP, which clients
+   * should perform well-known OpenID Connect discovery against.
+   */
+  oidcUrl: string;
+  /**
+   * One or more URLs to Rekor-compatible transparency log.
+   *
+   * Each URL **MUST** be the "base" URL for the transparency log,
+   * which clients should construct appropriate API endpoints on top of.
+   */
+  tlogUrls: string[];
+  /**
+   * One ore more URLs to RFC 3161 Time Stamping Authority (TSA).
+   *
+   * Each URL **MUST** be the **full** URL for the TSA, meaning that it
+   * should be suitable for submitting Time Stamp Requests (TSRs) to
+   * via HTTP, per RFC 3161.
+   */
+  tsaUrls: string[];
+}
+
+/**
+ * ClientTrustConfig describes the complete state needed by a client
+ * to perform both signing and verification operations against a particular
+ * instance of Sigstore.
+ */
+export interface ClientTrustConfig {
+  /** MUST be application/vnd.dev.sigstore.clienttrustconfig.v0.1+json */
+  mediaType: string;
+  /** The root of trust, which MUST be present. */
+  trustedRoot:
+    | TrustedRoot
+    | undefined;
+  /** Configuration for signing clients, which MUST be present. */
+  signingConfig: SigningConfig | undefined;
+}
+
 function createBaseTransparencyLogInstance(): TransparencyLogInstance {
   return { baseUrl: "", hashAlgorithm: 0, publicKey: undefined, logId: undefined };
 }
@@ -235,6 +293,62 @@ export const TrustedRoot = {
     } else {
       obj.timestampAuthorities = [];
     }
+    return obj;
+  },
+};
+
+function createBaseSigningConfig(): SigningConfig {
+  return { caUrl: "", oidcUrl: "", tlogUrls: [], tsaUrls: [] };
+}
+
+export const SigningConfig = {
+  fromJSON(object: any): SigningConfig {
+    return {
+      caUrl: isSet(object.caUrl) ? String(object.caUrl) : "",
+      oidcUrl: isSet(object.oidcUrl) ? String(object.oidcUrl) : "",
+      tlogUrls: Array.isArray(object?.tlogUrls) ? object.tlogUrls.map((e: any) => String(e)) : [],
+      tsaUrls: Array.isArray(object?.tsaUrls) ? object.tsaUrls.map((e: any) => String(e)) : [],
+    };
+  },
+
+  toJSON(message: SigningConfig): unknown {
+    const obj: any = {};
+    message.caUrl !== undefined && (obj.caUrl = message.caUrl);
+    message.oidcUrl !== undefined && (obj.oidcUrl = message.oidcUrl);
+    if (message.tlogUrls) {
+      obj.tlogUrls = message.tlogUrls.map((e) => e);
+    } else {
+      obj.tlogUrls = [];
+    }
+    if (message.tsaUrls) {
+      obj.tsaUrls = message.tsaUrls.map((e) => e);
+    } else {
+      obj.tsaUrls = [];
+    }
+    return obj;
+  },
+};
+
+function createBaseClientTrustConfig(): ClientTrustConfig {
+  return { mediaType: "", trustedRoot: undefined, signingConfig: undefined };
+}
+
+export const ClientTrustConfig = {
+  fromJSON(object: any): ClientTrustConfig {
+    return {
+      mediaType: isSet(object.mediaType) ? String(object.mediaType) : "",
+      trustedRoot: isSet(object.trustedRoot) ? TrustedRoot.fromJSON(object.trustedRoot) : undefined,
+      signingConfig: isSet(object.signingConfig) ? SigningConfig.fromJSON(object.signingConfig) : undefined,
+    };
+  },
+
+  toJSON(message: ClientTrustConfig): unknown {
+    const obj: any = {};
+    message.mediaType !== undefined && (obj.mediaType = message.mediaType);
+    message.trustedRoot !== undefined &&
+      (obj.trustedRoot = message.trustedRoot ? TrustedRoot.toJSON(message.trustedRoot) : undefined);
+    message.signingConfig !== undefined &&
+      (obj.signingConfig = message.signingConfig ? SigningConfig.toJSON(message.signingConfig) : undefined);
     return obj;
   },
 };
