@@ -62,20 +62,18 @@ main() {
   done
   cd "$RELEASE_DIR"
 
-  # cosign sign all the files
-  echo "Signing with cosign"
-  for file in *; do
-      # skip intoto attestations, they are already signed
-     if [[ "$file" == *.intoto.jsonl ]] ; then
-       continue;
-     fi
-     COSIGN_EXPERIMENTAL=1 cosign sign-blob --yes "$file" --output-signature="$file.sig" --output-certificate="$file.pem" --bundle "$file.bundle"
-  done
+  jar -xf *.jar
+  rm protobuf-specs-*-bundle.jar
+  rm META-INF/MANIFEST.MF
+  rmdir META-INF
 
   # then gpg sign all the files (including sigstore files)
   # this command uses gpgs default password acceptance mechansim accept a passcode
   echo "Signing with gpg"
   for file in *; do
+    if [[ $file == *.sigstore.json ]]; then
+      continue;
+    fi
     gpg --batch --detach-sign --armor -o "$file.asc" "$file"
   done
 
