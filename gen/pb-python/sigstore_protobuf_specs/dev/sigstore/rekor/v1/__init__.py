@@ -28,14 +28,17 @@ class KindVersion(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class Checkpoint(betterproto.Message):
     """
-    The checkpoint MUST contain a signature of the tree head (root hash), size
-    of the tree and the transparency log's unique identifier (log ID). It MAY
-    also be followed by any optional data. The result is a string,  the format
-    is described here https://github.com/transparency-
-    dev/formats/blob/main/log/README.md The details are here https://github.com
-    /sigstore/rekor/blob/a6e58f72b6b18cc06cefe61808efd562b9726330/pkg/util/sign
-    ed_note.go#L114 The signature has the same format as
-    InclusionPromise.signed_entry_timestamp. See below for more details.
+    The checkpoint MUST contain an origin string as a unique log identifier,
+    the tree size, and the root hash. It MAY also be followed by optional data,
+    and clients MUST NOT assume optional data. The checkpoint MUST also contain
+    a signature over the root hash (tree head). The checkpoint MAY contain
+    additional signatures, but the first SHOULD be the signature from the log.
+    Checkpoint contents are concatenated with newlines into a single string.
+    The checkpoint format is described in https://github.com/transparency-
+    dev/formats/blob/main/log/README.md and
+    https://github.com/C2SP/C2SP/blob/main/tlog-checkpoint.md. An example
+    implementation can be found in
+    https://github.com/sigstore/rekor/blob/main/pkg/util/signed_note.go
     """
 
     envelope: str = betterproto.string_field(1)

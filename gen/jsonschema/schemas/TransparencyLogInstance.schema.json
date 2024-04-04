@@ -29,7 +29,12 @@
                 "logId": {
                     "$ref": "#/definitions/dev.sigstore.common.v1.LogId",
                     "additionalProperties": false,
-                    "description": "The unique identifier for this transparency log."
+                    "description": "The unique identifier for this transparency log. Represented as the SHA-256 hash of the log's public key, calculated over the DER encoding of the key represented as SubjectPublicKeyInfo. See https://www.rfc-editor.org/rfc/rfc6962#section-3.2"
+                },
+                "checkpointKeyId": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.LogId",
+                    "additionalProperties": false,
+                    "description": "The checkpoint key identifier for the log used in a checkpoint. Optional, not provided for logs that do not generate checkpoints. For logs that do generate checkpoints, if not set, assume log_id equals checkpoint_key_id. Follows the specification described here for ECDSA and Ed25519 signatures: https://github.com/C2SP/C2SP/blob/main/signed-note.md#signatures For RSA signatures, the key ID will match the ECDSA format, the hashed DER-encoded SPKI public key. Publicly witnessed logs MUST NOT use RSA-signed checkpoints, since witnesses do not support RSA signatures. This is provided for convenience. Clients can also calculate the checkpoint key ID given the log's public key. SHOULD be set for logs generating Ed25519 signatures. SHOULD be 4 bytes long, as a truncated hash."
                 }
             },
             "additionalProperties": false,
@@ -41,7 +46,7 @@
             "properties": {
                 "keyId": {
                     "type": "string",
-                    "description": "The unique id of the log, represented as the SHA-256 hash of the log's public key, calculated over the DER encoding of the key represented as SubjectPublicKeyInfo. See https://www.rfc-editor.org/rfc/rfc6962#section-3.2",
+                    "description": "The unique identity of the log, represented by its public key.",
                     "format": "binary",
                     "binaryEncoding": "base64"
                 }

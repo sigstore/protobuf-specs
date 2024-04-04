@@ -25,8 +25,29 @@ pub struct TransparencyLogInstance {
     #[prost(message, optional, tag = "3")]
     pub public_key: ::core::option::Option<super::super::common::v1::PublicKey>,
     /// The unique identifier for this transparency log.
+    /// Represented as the SHA-256 hash of the log's public key,
+    /// calculated over the DER encoding of the key represented as
+    /// SubjectPublicKeyInfo.
+    /// See <https://www.rfc-editor.org/rfc/rfc6962#section-3.2>
     #[prost(message, optional, tag = "4")]
     pub log_id: ::core::option::Option<super::super::common::v1::LogId>,
+    /// The checkpoint key identifier for the log used in a checkpoint.
+    /// Optional, not provided for logs that do not generate checkpoints.
+    /// For logs that do generate checkpoints, if not set, assume
+    /// log_id equals checkpoint_key_id.
+    /// Follows the specification described here
+    /// for ECDSA and Ed25519 signatures:
+    /// <https://github.com/C2SP/C2SP/blob/main/signed-note.md#signatures>
+    /// For RSA signatures, the key ID will match the ECDSA format, the
+    /// hashed DER-encoded SPKI public key. Publicly witnessed logs MUST NOT
+    /// use RSA-signed checkpoints, since witnesses do not support
+    /// RSA signatures.
+    /// This is provided for convenience. Clients can also calculate the
+    /// checkpoint key ID given the log's public key.
+    /// SHOULD be set for logs generating Ed25519 signatures.
+    /// SHOULD be 4 bytes long, as a truncated hash.
+    #[prost(message, optional, tag = "5")]
+    pub checkpoint_key_id: ::core::option::Option<super::super::common::v1::LogId>,
 }
 /// CertificateAuthority enlists the information required to identify which
 /// CA to use and perform signature verification.

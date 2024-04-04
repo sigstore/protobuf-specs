@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/CheckpointKeyId",
+    "definitions": {
+        "CheckpointKeyId": {
+            "properties": {
+                "keyId": {
+                    "type": "string",
+                    "description": "The key ID in a checkpoint, as a prefix to the signature. SHOULD be 4 bytes long, as a truncated hash.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Checkpoint Key Id",
+            "description": "The checkpoint key ID, following the specification described here for ECDSA and Ed25519 signatures: https://github.com/C2SP/C2SP/blob/main/signed-note.md#signatures For RSA signatures, the key ID will match the ECDSA format of the hashed DER-encoded SPKI public key. Publicly witnessed logs MUST NOT use RSA-signed checkpoints, since witnesses do not support RSA signatures. This is provided for convenience. Clients can also calculate the checkpoint key ID given the log's public key."
+        }
+    }
+}

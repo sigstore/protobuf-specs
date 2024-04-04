@@ -30,8 +30,34 @@ export interface TransparencyLogInstance {
   publicKey:
     | PublicKey
     | undefined;
-  /** The unique identifier for this transparency log. */
-  logId: LogId | undefined;
+  /**
+   * The unique identifier for this transparency log.
+   * Represented as the SHA-256 hash of the log's public key,
+   * calculated over the DER encoding of the key represented as
+   * SubjectPublicKeyInfo.
+   * See https://www.rfc-editor.org/rfc/rfc6962#section-3.2
+   */
+  logId:
+    | LogId
+    | undefined;
+  /**
+   * The checkpoint key identifier for the log used in a checkpoint.
+   * Optional, not provided for logs that do not generate checkpoints.
+   * For logs that do generate checkpoints, if not set, assume
+   * log_id equals checkpoint_key_id.
+   * Follows the specification described here
+   * for ECDSA and Ed25519 signatures:
+   * https://github.com/C2SP/C2SP/blob/main/signed-note.md#signatures
+   * For RSA signatures, the key ID will match the ECDSA format, the
+   * hashed DER-encoded SPKI public key. Publicly witnessed logs MUST NOT
+   * use RSA-signed checkpoints, since witnesses do not support
+   * RSA signatures.
+   * This is provided for convenience. Clients can also calculate the
+   * checkpoint key ID given the log's public key.
+   * SHOULD be set for logs generating Ed25519 signatures.
+   * SHOULD be 4 bytes long, as a truncated hash.
+   */
+  checkpointKeyId: LogId | undefined;
 }
 
 /**
@@ -194,7 +220,7 @@ export interface ClientTrustConfig {
 }
 
 function createBaseTransparencyLogInstance(): TransparencyLogInstance {
-  return { baseUrl: "", hashAlgorithm: 0, publicKey: undefined, logId: undefined };
+  return { baseUrl: "", hashAlgorithm: 0, publicKey: undefined, logId: undefined, checkpointKeyId: undefined };
 }
 
 export const TransparencyLogInstance = {
@@ -204,6 +230,7 @@ export const TransparencyLogInstance = {
       hashAlgorithm: isSet(object.hashAlgorithm) ? hashAlgorithmFromJSON(object.hashAlgorithm) : 0,
       publicKey: isSet(object.publicKey) ? PublicKey.fromJSON(object.publicKey) : undefined,
       logId: isSet(object.logId) ? LogId.fromJSON(object.logId) : undefined,
+      checkpointKeyId: isSet(object.checkpointKeyId) ? LogId.fromJSON(object.checkpointKeyId) : undefined,
     };
   },
 
@@ -214,6 +241,8 @@ export const TransparencyLogInstance = {
     message.publicKey !== undefined &&
       (obj.publicKey = message.publicKey ? PublicKey.toJSON(message.publicKey) : undefined);
     message.logId !== undefined && (obj.logId = message.logId ? LogId.toJSON(message.logId) : undefined);
+    message.checkpointKeyId !== undefined &&
+      (obj.checkpointKeyId = message.checkpointKeyId ? LogId.toJSON(message.checkpointKeyId) : undefined);
     return obj;
   },
 };

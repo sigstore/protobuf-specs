@@ -55,10 +55,7 @@ pub struct MessageSignature {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogId {
-    /// The unique id of the log, represented as the SHA-256 hash
-    /// of the log's public key, calculated over the DER encoding
-    /// of the key represented as SubjectPublicKeyInfo.
-    /// See <https://www.rfc-editor.org/rfc/rfc6962#section-3.2>
+    /// The unique identity of the log, represented by its public key.
     #[prost(bytes = "vec", tag = "1")]
     pub key_id: ::prost::alloc::vec::Vec<u8>,
 }
