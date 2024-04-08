@@ -13,6 +13,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :hash_algorithm, :enum, 2, "dev.sigstore.common.v1.HashAlgorithm"
       optional :public_key, :message, 3, "dev.sigstore.common.v1.PublicKey"
       optional :log_id, :message, 4, "dev.sigstore.common.v1.LogId"
+      optional :checkpoint_key_id, :message, 5, "dev.sigstore.common.v1.LogId"
     end
     add_message "dev.sigstore.trustroot.v1.CertificateAuthority" do
       optional :subject, :message, 1, "dev.sigstore.common.v1.DistinguishedName"

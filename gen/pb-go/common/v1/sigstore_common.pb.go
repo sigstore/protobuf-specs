@@ -426,10 +426,7 @@ type LogId struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The unique id of the log, represented as the SHA-256 hash
-	// of the log's public key, calculated over the DER encoding
-	// of the key represented as SubjectPublicKeyInfo.
-	// See https://www.rfc-editor.org/rfc/rfc6962#section-3.2
+	// The unique identity of the log, represented by its public key.
 	KeyId []byte `protobuf:"bytes,1,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
 }
 
