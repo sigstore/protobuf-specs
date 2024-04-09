@@ -54,6 +54,7 @@ ruby: docker-image
 
 jsonschema: docker-image-jsonschema
 	@echo "Generating JSON schema files"
+	mkdir -p gen/jsonschema/schemas
 	docker run \
 	       -v ${PWD}:/defs \
 	       --entrypoint sh \
@@ -94,7 +95,8 @@ clean:
 		gen/pb-typescript/src/__generated__ \
 		gen/pb-python/sigstore_protobuf_specs/dev \
 		gen/pb-python/sigstore_protobuf_specs/io \
-		gen/pb-rust/target
+		gen/pb-rust/target \
+		gen/jsonschema/schemas
 	docker rmi -f ${PROTOC_IMAGE}
 
 help:
