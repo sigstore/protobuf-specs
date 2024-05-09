@@ -109,5 +109,11 @@ class Bundle(betterproto.Message):
     A DSSE envelope can contain arbitrary payloads. Verifiers must verify that
     the payload type is a supported and expected type. This is part of the DSSE
     protocol which is defined here: <https://github.com/secure-systems-
-    lab/dsse/blob/master/protocol.md>
+    lab/dsse/blob/master/protocol.md> DSSE envelopes in a bundle MUST have
+    exactly one signture. This is a limitation from the DSSE spec, as it can
+    contain multiple signatures. There are two primary reasons: 1. It simplfies
+    the verification logic and policy 2. The bundle (currently) can only
+    contain a single    instance of the required verification materials During
+    verification a client MUST reject an envelope if it the number of
+    signatures is not equal to one.
     """
