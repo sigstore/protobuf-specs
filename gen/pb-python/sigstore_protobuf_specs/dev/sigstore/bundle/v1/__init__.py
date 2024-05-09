@@ -114,6 +114,6 @@ class Bundle(betterproto.Message):
     contain multiple signatures. There are two primary reasons: 1. It simplfies
     the verification logic and policy 2. The bundle (currently) can only
     contain a single    instance of the required verification materials During
-    verification a client MUST reject an envelope if it the number of
-    signatures is not equal to one.
+    verification a client MUST reject an envelope if the number of signatures
+    is not equal to one.
     """

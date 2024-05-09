@@ -197,7 +197,7 @@ pub mod bundle {
         /// 2. The bundle (currently) can only contain a single
         ///     instance of the required verification materials
         /// During verification a client MUST reject an envelope if
-        /// it the number of signatures is not equal to one.
+        /// the number of signatures is not equal to one.
         #[prost(message, tag = "4")]
         DsseEnvelope(super::super::super::super::super::io::intoto::Envelope),
     }

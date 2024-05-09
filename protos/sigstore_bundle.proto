@@ -141,7 +141,7 @@ message Bundle {
                 // 2. The bundle (currently) can only contain a single
                 //    instance of the required verification materials
                 // During verification a client MUST reject an envelope if
-                // it the number of signatures is not equal to one.
+                // the number of signatures is not equal to one.
                 io.intoto.Envelope dsse_envelope = 4 [(google.api.field_behavior) = REQUIRED];
         }
         // Reserved for future additions of artifact types.

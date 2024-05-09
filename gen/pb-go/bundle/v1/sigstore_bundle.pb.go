@@ -375,7 +375,7 @@ type Bundle_DsseEnvelope struct {
 	//     instance of the required verification materials
 	//
 	// During verification a client MUST reject an envelope if
-	// it the number of signatures is not equal to one.
+	// the number of signatures is not equal to one.
 	DsseEnvelope *dsse.Envelope `protobuf:"bytes,4,opt,name=dsse_envelope,json=dsseEnvelope,proto3,oneof"`
 }
 
