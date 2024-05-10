@@ -8,6 +8,16 @@ All versions prior to 0.2.0 are untracked.
 
 ## [Unreleased]
 
+### Added
+
+* Added `TransparencyLogInstance.checkpoint_key_id` as an optional key identifier
+  for logs that generate checkpoints ([#284](https://github.com/sigstore/protobuf-specs/pull/284))
+
+### Changed
+
+* Docs: Clarified DSSE envelope signature cardinality ([#318](https://github.com/sigstore/protobuf-specs/pull/318))
+* Docs: Clarifier behavior of key identifiers ([#284](https://github.com/sigstore/protobuf-specs/pull/284))
+
 ## 0.3.1
 
 * Added client configuration message for signing ([#277](https://github.com/sigstore/protobuf-specs/pull/277))
