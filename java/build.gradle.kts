@@ -1,29 +1,23 @@
-import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
-
 plugins {
     `java-library`
     `maven-publish`
-    id("com.google.protobuf") version "0.9.4"
+    id("dev.sigstore.sign") version "0.8.0"
     id("com.diffplug.spotless") version "6.25.0"
+    `signing`
 }
 
-description = "Code generated library for the Sigstore bundle format protobufs"
-
-sourceSets {
-    main {
-        proto {
-            srcDir("../protos/")
-        }
-    }
-}
+description = "Sigstore protobuf spec protos bundled into a jar"
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation("com.google.protobuf:protobuf-java:4.26.1")
-    implementation("com.google.api.grpc:proto-google-common-protos:2.37.1")
+sourceSets {
+    main {
+        resources {
+            srcDirs("../protos")
+        }
+    }
 }
 
 // gradle reproducible jar builds
@@ -35,12 +29,6 @@ tasks.withType<AbstractArchiveTask>().configureEach {
 java {
     withJavadocJar()
     withSourcesJar()
-}
-
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:4.26.1"
-    }
 }
 
 spotless {
@@ -62,19 +50,11 @@ val repoUrl = "https://github.com/sigstore/protobuf-specs"
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
+        create<MavenPublication>("proto") {
 
             artifactId = project.name
             from(components["java"])
 
-            versionMapping {
-                usage(Usage.JAVA_RUNTIME) {
-                    fromResolutionResult()
-                }
-                usage(Usage.JAVA_API) {
-                    fromResolutionOf("runtimeClasspath")
-                }
-            }
             pom {
                 name.set(
                     (project.findProperty("artifact.name") as? String)
@@ -114,20 +94,48 @@ publishing {
             }
         }
     }
+    repositories {
+        maven {
+            name = "releaseStaging"
+            url = uri(layout.buildDirectory.dir("releaseStaging"))
+        }
+    }
 }
 
-// this task should be used by github actions to create release artifacts along with a slsa
-// attestation.
-tasks.register("createReleaseBundle") {
-    val releaseDir = layout.buildDirectory.dir("release")
-    outputs.dir(releaseDir)
-    dependsOn((publishing.publications["mavenJava"] as DefaultMavenPublication).publishableArtifacts)
-    doLast {
-        project.copy {
-            from((publishing.publications["mavenJava"] as DefaultMavenPublication).publishableArtifacts.files)
-            into(releaseDir)
-            rename("pom-default.xml", "${project.name}-${project.version}.pom")
-            rename("module.json", "${project.name}-${project.version}.module")
-        }
+tasks.register<Jar>("createReleaseBundle") {
+    dependsOn("publishProtoPublicationToReleaseStagingRepository")
+    from(layout.buildDirectory.dir("releaseStaging/dev/sigstore/protobuf-specs/$version")) {
+        include("*.jar")
+        include("*.pom")
+        include("*.module")
+        include("*.sigstore")
+        include("*.sigstore.json")
+        include("*.asc")
+    }
+    archiveFileName = "${project.name}-${project.version}-bundle.jar"
+}
+
+signing {
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications["proto"])
+}
+
+tasks.withType<Sign>().configureEach {
+    onlyIf("Is a release") {
+        project.hasProperty("release")
+    }
+    onlyIf("PGP Signing is not skipped") {
+        !project.hasProperty("skipPgpSigning")
+    }
+}
+
+tasks.withType<dev.sigstore.sign.tasks.SigstoreSignFilesTask>().configureEach {
+    onlyIf("Is a release") {
+        project.hasProperty("release")
+    }
+    onlyIf("Sigstore Signing is not skipped") {
+        !project.hasProperty("skipSigstoreSigning")
     }
 }
