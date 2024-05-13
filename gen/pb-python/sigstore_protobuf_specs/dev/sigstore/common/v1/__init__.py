@@ -158,9 +158,7 @@ class Rfc3161SignedTimestamp(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class PublicKey(betterproto.Message):
-    raw_bytes: Optional[bytes] = betterproto.bytes_field(
-        1, optional=True, group="_raw_bytes"
-    )
+    raw_bytes: bytes = betterproto.bytes_field(1)
     """
     DER-encoded public key, encoding method is specified by the key_details
     attribute.
