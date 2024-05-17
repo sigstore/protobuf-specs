@@ -101,11 +101,6 @@
             "oneOf": [
                 {
                     "required": [
-                        "raw_bytes"
-                    ]
-                },
-                {
-                    "required": [
                         "valid_for"
                     ]
                 }

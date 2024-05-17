@@ -87,8 +87,8 @@ pub struct Rfc3161SignedTimestamp {
 pub struct PublicKey {
     /// DER-encoded public key, encoding method is specified by the
     /// key_details attribute.
-    #[prost(bytes = "vec", optional, tag = "1")]
-    pub raw_bytes: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub raw_bytes: ::prost::alloc::vec::Vec<u8>,
     /// Key encoding and signature algorithm to use for this key.
     #[prost(enumeration = "PublicKeyDetails", tag = "2")]
     pub key_details: i32,

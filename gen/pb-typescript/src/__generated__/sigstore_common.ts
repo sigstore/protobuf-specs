@@ -350,9 +350,7 @@ export interface PublicKey {
    * DER-encoded public key, encoding method is specified by the
    * key_details attribute.
    */
-  rawBytes?:
-    | Buffer
-    | undefined;
+  rawBytes: Buffer;
   /** Key encoding and signature algorithm to use for this key. */
   keyDetails: PublicKeyDetails;
   /** Optional validity period for this key, *inclusive* of the endpoints. */
@@ -517,13 +515,13 @@ export const RFC3161SignedTimestamp = {
 };
 
 function createBasePublicKey(): PublicKey {
-  return { rawBytes: undefined, keyDetails: 0, validFor: undefined };
+  return { rawBytes: Buffer.alloc(0), keyDetails: 0, validFor: undefined };
 }
 
 export const PublicKey = {
   fromJSON(object: any): PublicKey {
     return {
-      rawBytes: isSet(object.rawBytes) ? Buffer.from(bytesFromBase64(object.rawBytes)) : undefined,
+      rawBytes: isSet(object.rawBytes) ? Buffer.from(bytesFromBase64(object.rawBytes)) : Buffer.alloc(0),
       keyDetails: isSet(object.keyDetails) ? publicKeyDetailsFromJSON(object.keyDetails) : 0,
       validFor: isSet(object.validFor) ? TimeRange.fromJSON(object.validFor) : undefined,
     };
@@ -532,7 +530,7 @@ export const PublicKey = {
   toJSON(message: PublicKey): unknown {
     const obj: any = {};
     message.rawBytes !== undefined &&
-      (obj.rawBytes = message.rawBytes !== undefined ? base64FromBytes(message.rawBytes) : undefined);
+      (obj.rawBytes = base64FromBytes(message.rawBytes !== undefined ? message.rawBytes : Buffer.alloc(0)));
     message.keyDetails !== undefined && (obj.keyDetails = publicKeyDetailsToJSON(message.keyDetails));
     message.validFor !== undefined &&
       (obj.validFor = message.validFor ? TimeRange.toJSON(message.validFor) : undefined);
