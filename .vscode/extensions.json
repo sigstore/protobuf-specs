@@ -1,0 +1,20 @@
+{
+    "recommendations": [
+        "dustypomerleau.rust-syntax",
+        "dfranx.shadered",
+        "lorenzopirro.rust-flash-snippets",
+        "nyxiative.rust-and-friends",
+        "xuangeaha.print-divider",
+        "yoavbls.pretty-ts-errors",
+        "arm.cortex-analysis",
+        "arm.embedded-debug",
+        "wjz.iceworks-aljk",
+        "johnpapa.angular2",
+        "mikael.angular-beastcode",
+        "tonylandi.acmecrossassembler",
+        "devsense.phptools-vscode",
+        "mcu-debug.peripheral-viewer",
+        "xuangeaha.just-enough-git",
+        "eamodio.gitlens"
+    ]
+}
