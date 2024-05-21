@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - name: Set up Ruby ${{ matrix.python-version }}
-        uses: ruby/setup-ruby@1198b074305f9356bd56dd4b311757cc0dab2f1c # v1.175.1
+        uses: ruby/setup-ruby@7dc18ff0ca6e3630d3f29d2a85ebf6cc27ae9d6c # v1.177.0
         with:
           ruby-version: ${{ matrix.python-version }}
 
