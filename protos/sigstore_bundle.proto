@@ -16,6 +16,7 @@ syntax = "proto3";
 package dev.sigstore.bundle.v1;
 
 import "google/api/field_behavior.proto";
+import "google/protobuf/descriptor.proto";
 
 // https://raw.githubusercontent.com/secure-systems-lab/dsse/9c813476bd36de70a5738c72e784f123ecea16af/envelope.proto
 import "envelope.proto";
@@ -27,6 +28,10 @@ option java_package = "dev.sigstore.proto.bundle.v1";
 option java_multiple_files = true;
 option java_outer_classname = "BundleProto";
 option ruby_package = "Sigstore::Bundle::V1";
+
+extend .google.protobuf.OneofOptions {
+  repeated .google.api.FieldBehavior oneof_behavior = 1053;
+}
 
 // Notes on versioning.
 // The primary message ('Bundle') MUST be versioned, by populating the
@@ -91,9 +96,11 @@ message VerificationMaterial {
         // When used in a `0.3` bundle with the PGI and "keyless" signing,
         // form (3) MUST be used.
         oneof content {
-                dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
-                dev.sigstore.common.v1.X509CertificateChain x509_certificate_chain = 2 [(google.api.field_behavior) = REQUIRED];
-                dev.sigstore.common.v1.X509Certificate certificate = 5 [(google.api.field_behavior) = REQUIRED];
+                option (oneof_behavior) = REQUIRED;
+
+                dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1;
+                dev.sigstore.common.v1.X509CertificateChain x509_certificate_chain = 2;
+                dev.sigstore.common.v1.X509Certificate certificate = 5;
         }
         // An inclusion proof and an optional signed timestamp from the log.
         // Client verification libraries MAY provide an option to support v0.1
@@ -128,7 +135,9 @@ message Bundle {
         // DSSE envelope.
         VerificationMaterial verification_material = 2 [(google.api.field_behavior) = REQUIRED];
         oneof content {
-                dev.sigstore.common.v1.MessageSignature message_signature = 3 [(google.api.field_behavior) = REQUIRED];
+                option (oneof_behavior) = REQUIRED;
+
+                dev.sigstore.common.v1.MessageSignature message_signature = 3;
                 // A DSSE envelope can contain arbitrary payloads.
                 // Verifiers must verify that the payload type is a
                 // supported and expected type. This is part of the DSSE
@@ -142,7 +151,7 @@ message Bundle {
                 //    instance of the required verification materials
                 // During verification a client MUST reject an envelope if
                 // the number of signatures is not equal to one.
-                io.intoto.Envelope dsse_envelope = 4 [(google.api.field_behavior) = REQUIRED];
+                io.intoto.Envelope dsse_envelope = 4;
         }
         // Reserved for future additions of artifact types.
         reserved 5 to 50;

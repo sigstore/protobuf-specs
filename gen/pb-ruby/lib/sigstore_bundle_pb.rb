@@ -4,6 +4,7 @@
 require 'google/protobuf'
 
 require 'google/api/field_behavior_pb'
+require 'google/protobuf/descriptor_pb'
 require 'envelope_pb'
 require 'sigstore_common_pb'
 require 'sigstore_rekor_pb'
