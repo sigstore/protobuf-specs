@@ -59,7 +59,7 @@ jobs:
           name: project-release-artifacts
           path: ./release/
       - name: Create release
-        uses: softprops/action-gh-release@a74c6b72af54cfa997e81df42d94703d6313a2d0 # v2.0.6
+        uses: softprops/action-gh-release@fb2d03176f42a1f0dd433ca263f314051d3edd44 # v2.0.7
         with:
           name: ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
