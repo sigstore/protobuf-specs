@@ -23,7 +23,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :signed_timestamp, :bytes, 1
     end
     add_message "dev.sigstore.common.v1.PublicKey" do
-      proto3_optional :raw_bytes, :bytes, 1
+      optional :raw_bytes, :bytes, 1
       optional :key_details, :enum, 2, "dev.sigstore.common.v1.PublicKeyDetails"
       proto3_optional :valid_for, :message, 3, "dev.sigstore.common.v1.TimeRange"
     end

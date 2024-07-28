@@ -147,7 +147,7 @@ message RFC3161SignedTimestamp {
 message PublicKey {
         // DER-encoded public key, encoding method is specified by the
         // key_details attribute.
-        optional bytes raw_bytes = 1;
+        bytes raw_bytes = 1 [(google.api.field_behavior) = REQUIRED];
         // Key encoding and signature algorithm to use for this key.
         PublicKeyDetails key_details = 2;
         // Optional validity period for this key, *inclusive* of the endpoints.
