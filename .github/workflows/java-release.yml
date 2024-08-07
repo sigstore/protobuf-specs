@@ -41,7 +41,7 @@ jobs:
           # we have to do some post processing with pgp signatures, cause those secrets aren't online yet
           ./gradlew clean createReleaseBundle -Pversion=${{ needs.strip-tag.outputs.version }} -Prelease -PskipPgpSigning
       - name: Upload build artifacts
-        uses: actions/upload-artifact@89ef406dd8d7e03cfd12d9e0a4a378f454709029 # v4.3.5
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
         with:
           name: project-release-artifacts
           path: ./java/build/libs/protobuf-specs-*-bundle.jar
