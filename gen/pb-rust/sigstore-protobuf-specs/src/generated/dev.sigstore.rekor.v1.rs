@@ -131,9 +131,10 @@ pub struct TransparencyLogEntry {
     pub integrated_time: i64,
     /// The inclusion promise/signed entry timestamp from the log.
     /// Required for v0.1 bundles, and MUST be verified.
-    /// Optional for >= v0.2 bundles if another source of signed time
-    /// is present.
-    /// MUST be verified if no other source of signed time is present,
+    /// Optional for >= v0.2 bundles if another suitable source of
+    /// time is present (such as another source of signed time,
+    /// or the current system time for long-lived certificates).
+    /// MUST be verified if no other suitable source of time is present,
     /// and SHOULD be verified otherwise.
     #[prost(message, optional, tag = "5")]
     pub inclusion_promise: ::core::option::Option<InclusionPromise>,
