@@ -326,8 +326,10 @@ type TransparencyLogEntry struct {
 	IntegratedTime int64 `protobuf:"varint,4,opt,name=integrated_time,json=integratedTime,proto3" json:"integrated_time,omitempty"`
 	// The inclusion promise/signed entry timestamp from the log.
 	// Required for v0.1 bundles, and MUST be verified.
-	// Optional for >= v0.2 bundles, and SHOULD be verified when present.
-	// Also may be used as a signed timestamp.
+	// Optional for >= v0.2 bundles if another source of signed time
+	// is present.
+	// MUST be verified if no other source of signed time is present,
+	// and SHOULD be verified otherwise.
 	InclusionPromise *InclusionPromise `protobuf:"bytes,5,opt,name=inclusion_promise,json=inclusionPromise,proto3" json:"inclusion_promise,omitempty"`
 	// The inclusion proof can be used for offline or online verification
 	// that the entry was appended to the log, and that the log has not been

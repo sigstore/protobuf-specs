@@ -127,8 +127,9 @@ class TransparencyLogEntry(betterproto.Message):
     inclusion_promise: "InclusionPromise" = betterproto.message_field(5)
     """
     The inclusion promise/signed entry timestamp from the log. Required for
-    v0.1 bundles, and MUST be verified. Optional for >= v0.2 bundles, and
-    SHOULD be verified when present. Also may be used as a signed timestamp.
+    v0.1 bundles, and MUST be verified. Optional for >= v0.2 bundles if another
+    source of signed time is present. MUST be verified if no other source of
+    signed time is present, and SHOULD be verified otherwise.
     """
 
     inclusion_proof: "InclusionProof" = betterproto.message_field(6)
