@@ -29,6 +29,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :timestamp_authorities, :message, 5, "dev.sigstore.trustroot.v1.CertificateAuthority"
     end
     add_message "dev.sigstore.trustroot.v1.SigningConfig" do
+      optional :media_type, :string, 5
       optional :ca_url, :string, 1
       optional :oidc_url, :string, 2
       repeated :tlog_urls, :string, 3

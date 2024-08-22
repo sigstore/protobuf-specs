@@ -159,6 +159,9 @@ class SigningConfig(betterproto.Message):
     signer may need to connect to for the online aspects of signing.
     """
 
+    media_type: str = betterproto.string_field(5)
+    """MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json"""
+
     ca_url: str = betterproto.string_field(1)
     """
     A URL to a Fulcio-compatible CA, capable of receiving Certificate Signing

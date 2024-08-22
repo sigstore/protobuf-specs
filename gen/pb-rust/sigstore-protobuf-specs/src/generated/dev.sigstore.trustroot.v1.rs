@@ -170,6 +170,9 @@ pub struct TrustedRoot {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SigningConfig {
+    /// MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json
+    #[prost(string, tag = "5")]
+    pub media_type: ::prost::alloc::string::String,
     /// A URL to a Fulcio-compatible CA, capable of receiving
     /// Certificate Signing Requests (CSRs) and responding with
     /// issued certificates.

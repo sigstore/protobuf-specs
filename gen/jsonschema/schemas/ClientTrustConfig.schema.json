@@ -188,6 +188,10 @@
         },
         "dev.sigstore.trustroot.v1.SigningConfig": {
             "properties": {
+                "mediaType": {
+                    "type": "string",
+                    "description": "MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json"
+                },
                 "caUrl": {
                     "type": "string",
                     "description": "A URL to a Fulcio-compatible CA, capable of receiving Certificate Signing Requests (CSRs) and responding with issued certificates. This URL **MUST** be the \"base\" URL for the CA, which clients should construct an appropriate CSR endpoint on top of. For example, if `ca_url` is `https://example.com/ca`, then the client **MAY** construct the CSR endpoint as `https://example.com/ca/api/v2/signingCert`."
