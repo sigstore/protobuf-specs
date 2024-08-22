@@ -167,6 +167,8 @@ export interface TrustedRoot {
  * signer may need to connect to for the online aspects of signing.
  */
 export interface SigningConfig {
+  /** MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json */
+  mediaType: string;
   /**
    * A URL to a Fulcio-compatible CA, capable of receiving
    * Certificate Signing Requests (CSRs) and responding with
@@ -327,12 +329,13 @@ export const TrustedRoot = {
 };
 
 function createBaseSigningConfig(): SigningConfig {
-  return { caUrl: "", oidcUrl: "", tlogUrls: [], tsaUrls: [] };
+  return { mediaType: "", caUrl: "", oidcUrl: "", tlogUrls: [], tsaUrls: [] };
 }
 
 export const SigningConfig = {
   fromJSON(object: any): SigningConfig {
     return {
+      mediaType: isSet(object.mediaType) ? String(object.mediaType) : "",
       caUrl: isSet(object.caUrl) ? String(object.caUrl) : "",
       oidcUrl: isSet(object.oidcUrl) ? String(object.oidcUrl) : "",
       tlogUrls: Array.isArray(object?.tlogUrls) ? object.tlogUrls.map((e: any) => String(e)) : [],
@@ -342,6 +345,7 @@ export const SigningConfig = {
 
   toJSON(message: SigningConfig): unknown {
     const obj: any = {};
+    message.mediaType !== undefined && (obj.mediaType = message.mediaType);
     message.caUrl !== undefined && (obj.caUrl = message.caUrl);
     message.oidcUrl !== undefined && (obj.oidcUrl = message.oidcUrl);
     if (message.tlogUrls) {

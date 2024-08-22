@@ -148,6 +148,9 @@ message TrustedRoot {
 // signing. In particular, it primarily contains service URLs that a Sigstore
 // signer may need to connect to for the online aspects of signing.
 message SigningConfig {
+        // MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json
+        string media_type = 5;
+
         // A URL to a Fulcio-compatible CA, capable of receiving
         // Certificate Signing Requests (CSRs) and responding with
         // issued certificates.
