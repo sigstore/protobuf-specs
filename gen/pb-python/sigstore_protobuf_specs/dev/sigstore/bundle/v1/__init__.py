@@ -3,10 +3,22 @@
 # plugin: python-betterproto
 # This file has been @generated
 
-from dataclasses import dataclass
-from typing import List
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from dataclasses import dataclass
+else:
+    from pydantic.dataclasses import dataclass
+
+from typing import (
+    List,
+    Optional,
+)
 
 import betterproto
+from pydantic import model_validator
+from pydantic.dataclasses import rebuild_dataclass
 
 from .....io import intoto as ____io_intoto__
 from ...common import v1 as __common_v1__
@@ -47,14 +59,14 @@ class VerificationMaterial(betterproto.Message):
      extension is attached to.
     """
 
-    public_key: "__common_v1__.PublicKeyIdentifier" = betterproto.message_field(
-        1, group="content"
+    public_key: Optional["__common_v1__.PublicKeyIdentifier"] = (
+        betterproto.message_field(1, optional=True, group="content")
     )
-    x509_certificate_chain: "__common_v1__.X509CertificateChain" = (
-        betterproto.message_field(2, group="content")
+    x509_certificate_chain: Optional["__common_v1__.X509CertificateChain"] = (
+        betterproto.message_field(2, optional=True, group="content")
     )
-    certificate: "__common_v1__.X509Certificate" = betterproto.message_field(
-        5, group="content"
+    certificate: Optional["__common_v1__.X509Certificate"] = betterproto.message_field(
+        5, optional=True, group="content"
     )
     tlog_entries: List["__rekor_v1__.TransparencyLogEntry"] = betterproto.message_field(
         3
@@ -76,6 +88,10 @@ class VerificationMaterial(betterproto.Message):
     Timestamp may also come from
      tlog_entries.inclusion_promise.signed_entry_timestamp.
     """
+
+    @model_validator(mode="after")
+    def check_oneof(cls, values):
+        return cls._validate_field_groups(values)
 
 
 @dataclass(eq=False, repr=False)
@@ -104,11 +120,11 @@ class Bundle(betterproto.Message):
      DSSE envelope.
     """
 
-    message_signature: "__common_v1__.MessageSignature" = betterproto.message_field(
-        3, group="content"
+    message_signature: Optional["__common_v1__.MessageSignature"] = (
+        betterproto.message_field(3, optional=True, group="content")
     )
-    dsse_envelope: "____io_intoto__.Envelope" = betterproto.message_field(
-        4, group="content"
+    dsse_envelope: Optional["____io_intoto__.Envelope"] = betterproto.message_field(
+        4, optional=True, group="content"
     )
     """
     A DSSE envelope can contain arbitrary payloads.
@@ -125,3 +141,12 @@ class Bundle(betterproto.Message):
      During verification a client MUST reject an envelope if
      the number of signatures is not equal to one.
     """
+
+    @model_validator(mode="after")
+    def check_oneof(cls, values):
+        return cls._validate_field_groups(values)
+
+
+rebuild_dataclass(TimestampVerificationData)  # type: ignore
+rebuild_dataclass(VerificationMaterial)  # type: ignore
+rebuild_dataclass(Bundle)  # type: ignore

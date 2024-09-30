@@ -3,10 +3,18 @@
 # plugin: python-betterproto
 # This file has been @generated
 
-from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from dataclasses import dataclass
+else:
+    from pydantic.dataclasses import dataclass
+
 from typing import List
 
 import betterproto
+from pydantic.dataclasses import rebuild_dataclass
 
 from ...common import v1 as __common_v1__
 
@@ -237,3 +245,9 @@ class ClientTrustConfig(betterproto.Message):
 
     signing_config: "SigningConfig" = betterproto.message_field(3)
     """Configuration for signing clients, which MUST be present."""
+
+
+rebuild_dataclass(TransparencyLogInstance)  # type: ignore
+rebuild_dataclass(CertificateAuthority)  # type: ignore
+rebuild_dataclass(TrustedRoot)  # type: ignore
+rebuild_dataclass(ClientTrustConfig)  # type: ignore

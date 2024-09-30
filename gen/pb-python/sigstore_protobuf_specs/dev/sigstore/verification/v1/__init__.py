@@ -3,13 +3,22 @@
 # plugin: python-betterproto
 # This file has been @generated
 
-from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from dataclasses import dataclass
+else:
+    from pydantic.dataclasses import dataclass
+
 from typing import (
     List,
     Optional,
 )
 
 import betterproto
+from pydantic import model_validator
+from pydantic.dataclasses import rebuild_dataclass
 
 from ...bundle import v1 as __bundle_v1__
 from ...common import v1 as __common_v1__
@@ -49,10 +58,12 @@ class ArtifactVerificationOptions(betterproto.Message):
      used during verification of a single artifact.
     """
 
-    certificate_identities: "CertificateIdentities" = betterproto.message_field(
-        1, group="signers"
+    certificate_identities: Optional["CertificateIdentities"] = (
+        betterproto.message_field(1, optional=True, group="signers")
     )
-    public_keys: "PublicKeyIdentities" = betterproto.message_field(2, group="signers")
+    public_keys: Optional["PublicKeyIdentities"] = betterproto.message_field(
+        2, optional=True, group="signers"
+    )
     """
     To simplify verification implementation, the logic for
      bundle verification should be implemented as a
@@ -116,6 +127,10 @@ class ArtifactVerificationOptions(betterproto.Message):
      Disable: false
     """
 
+    @model_validator(mode="after")
+    def check_oneof(cls, values):
+        return cls._validate_field_groups(values)
+
 
 @dataclass(eq=False, repr=False)
 class ArtifactVerificationOptionsTlogOptions(betterproto.Message):
@@ -176,11 +191,17 @@ class ArtifactVerificationOptionsObserverTimestampOptions(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class Artifact(betterproto.Message):
-    artifact_uri: str = betterproto.string_field(1, group="data")
+    artifact_uri: Optional[str] = betterproto.string_field(
+        1, optional=True, group="data"
+    )
     """Location of the artifact"""
 
-    artifact: bytes = betterproto.bytes_field(2, group="data")
+    artifact: Optional[bytes] = betterproto.bytes_field(2, optional=True, group="data")
     """The raw bytes of the artifact"""
+
+    @model_validator(mode="after")
+    def check_oneof(cls, values):
+        return cls._validate_field_groups(values)
 
 
 @dataclass(eq=False, repr=False)
@@ -211,3 +232,10 @@ class Input(betterproto.Message):
     If the bundle contains a message signature, the artifact must be
      provided.
     """
+
+
+rebuild_dataclass(CertificateIdentity)  # type: ignore
+rebuild_dataclass(CertificateIdentities)  # type: ignore
+rebuild_dataclass(PublicKeyIdentities)  # type: ignore
+rebuild_dataclass(ArtifactVerificationOptions)  # type: ignore
+rebuild_dataclass(Input)  # type: ignore
