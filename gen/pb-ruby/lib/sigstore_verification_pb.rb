@@ -56,6 +56,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       oneof :data do
         optional :artifact_uri, :string, 1
         optional :artifact, :bytes, 2
+        optional :artifact_digest, :message, 3, "dev.sigstore.common.v1.HashOutput"
       end
     end
     add_message "dev.sigstore.verification.v1.Input" do

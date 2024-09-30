@@ -182,6 +182,11 @@ class Artifact(betterproto.Message):
     artifact: bytes = betterproto.bytes_field(2, group="data")
     """The raw bytes of the artifact"""
 
+    artifact_digest: "__common_v1__.HashOutput" = betterproto.message_field(
+        3, group="data"
+    )
+    """Digest of the artifact"""
+
 
 @dataclass(eq=False, repr=False)
 class Input(betterproto.Message):

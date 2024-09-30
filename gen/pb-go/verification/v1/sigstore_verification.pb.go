@@ -365,6 +365,7 @@ type Artifact struct {
 	//
 	//	*Artifact_ArtifactUri
 	//	*Artifact_Artifact
+	//	*Artifact_ArtifactDigest
 	Data isArtifact_Data `protobuf_oneof:"data"`
 }
 
@@ -421,6 +422,13 @@ func (x *Artifact) GetArtifact() []byte {
 	return nil
 }
 
+func (x *Artifact) GetArtifactDigest() *v1.HashOutput {
+	if x, ok := x.GetData().(*Artifact_ArtifactDigest); ok {
+		return x.ArtifactDigest
+	}
+	return nil
+}
+
 type isArtifact_Data interface {
 	isArtifact_Data()
 }
@@ -435,9 +443,16 @@ type Artifact_Artifact struct {
 	Artifact []byte `protobuf:"bytes,2,opt,name=artifact,proto3,oneof"`
 }
 
+type Artifact_ArtifactDigest struct {
+	// Digest of the artifact
+	ArtifactDigest *v1.HashOutput `protobuf:"bytes,3,opt,name=artifact_digest,json=artifactDigest,proto3,oneof"`
+}
+
 func (*Artifact_ArtifactUri) isArtifact_Data() {}
 
 func (*Artifact_Artifact) isArtifact_Data() {}
+
+func (*Artifact_ArtifactDigest) isArtifact_Data() {}
 
 // Input captures all that is needed to call the bundle verification method,
 // to verify a single artifact referenced by the bundle.
@@ -946,11 +961,16 @@ var file_sigstore_verification_proto_rawDesc = []byte{
 	0x6f, 0x6e, 0x73, 0x42, 0x18, 0x0a, 0x16, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74,
 	0x65, 0x64, 0x5f, 0x74, 0x73, 0x5f, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x42, 0x13, 0x0a,
 	0x11, 0x5f, 0x6f, 0x62, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x5f, 0x6f, 0x70, 0x74, 0x69, 0x6f,
-	0x6e, 0x73, 0x22, 0x55, 0x0a, 0x08, 0x41, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x12, 0x23,
-	0x0a, 0x0c, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x5f, 0x75, 0x72, 0x69, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x0b, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74,
-	0x55, 0x72, 0x69, 0x12, 0x1c, 0x0a, 0x08, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x0c, 0x48, 0x00, 0x52, 0x08, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63,
+	0x6e, 0x73, 0x22, 0xa4, 0x01, 0x0a, 0x08, 0x41, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x12,
+	0x23, 0x0a, 0x0c, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x5f, 0x75, 0x72, 0x69, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x0b, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63,
+	0x74, 0x55, 0x72, 0x69, 0x12, 0x1c, 0x0a, 0x08, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x48, 0x00, 0x52, 0x08, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61,
+	0x63, 0x74, 0x12, 0x4d, 0x0a, 0x0f, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x5f, 0x64,
+	0x69, 0x67, 0x65, 0x73, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x64, 0x65,
+	0x76, 0x2e, 0x73, 0x69, 0x67, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f,
+	0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x48, 0x61, 0x73, 0x68, 0x4f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x48,
+	0x00, 0x52, 0x0e, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x44, 0x69, 0x67, 0x65, 0x73,
 	0x74, 0x42, 0x06, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x22, 0xec, 0x02, 0x0a, 0x05, 0x49, 0x6e,
 	0x70, 0x75, 0x74, 0x12, 0x56, 0x0a, 0x13, 0x61, 0x72, 0x74, 0x69, 0x66, 0x61, 0x63, 0x74, 0x5f,
 	0x74, 0x72, 0x75, 0x73, 0x74, 0x5f, 0x72, 0x6f, 0x6f, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
@@ -1015,8 +1035,9 @@ var file_sigstore_verification_proto_goTypes = []interface{}{
 	(*v1.SubjectAlternativeName)(nil),                                  // 11: dev.sigstore.common.v1.SubjectAlternativeName
 	(*v1.ObjectIdentifierValuePair)(nil),                               // 12: dev.sigstore.common.v1.ObjectIdentifierValuePair
 	(*v1.PublicKey)(nil),                                               // 13: dev.sigstore.common.v1.PublicKey
-	(*v11.TrustedRoot)(nil),                                            // 14: dev.sigstore.trustroot.v1.TrustedRoot
-	(*v12.Bundle)(nil),                                                 // 15: dev.sigstore.bundle.v1.Bundle
+	(*v1.HashOutput)(nil),                                              // 14: dev.sigstore.common.v1.HashOutput
+	(*v11.TrustedRoot)(nil),                                            // 15: dev.sigstore.trustroot.v1.TrustedRoot
+	(*v12.Bundle)(nil),                                                 // 16: dev.sigstore.bundle.v1.Bundle
 }
 var file_sigstore_verification_proto_depIdxs = []int32{
 	11, // 0: dev.sigstore.verification.v1.CertificateIdentity.san:type_name -> dev.sigstore.common.v1.SubjectAlternativeName
@@ -1030,15 +1051,16 @@ var file_sigstore_verification_proto_depIdxs = []int32{
 	8,  // 8: dev.sigstore.verification.v1.ArtifactVerificationOptions.tsa_options:type_name -> dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions
 	9,  // 9: dev.sigstore.verification.v1.ArtifactVerificationOptions.integrated_ts_options:type_name -> dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogIntegratedTimestampOptions
 	10, // 10: dev.sigstore.verification.v1.ArtifactVerificationOptions.observer_options:type_name -> dev.sigstore.verification.v1.ArtifactVerificationOptions.ObserverTimestampOptions
-	14, // 11: dev.sigstore.verification.v1.Input.artifact_trust_root:type_name -> dev.sigstore.trustroot.v1.TrustedRoot
-	3,  // 12: dev.sigstore.verification.v1.Input.artifact_verification_options:type_name -> dev.sigstore.verification.v1.ArtifactVerificationOptions
-	15, // 13: dev.sigstore.verification.v1.Input.bundle:type_name -> dev.sigstore.bundle.v1.Bundle
-	4,  // 14: dev.sigstore.verification.v1.Input.artifact:type_name -> dev.sigstore.verification.v1.Artifact
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	14, // 11: dev.sigstore.verification.v1.Artifact.artifact_digest:type_name -> dev.sigstore.common.v1.HashOutput
+	15, // 12: dev.sigstore.verification.v1.Input.artifact_trust_root:type_name -> dev.sigstore.trustroot.v1.TrustedRoot
+	3,  // 13: dev.sigstore.verification.v1.Input.artifact_verification_options:type_name -> dev.sigstore.verification.v1.ArtifactVerificationOptions
+	16, // 14: dev.sigstore.verification.v1.Input.bundle:type_name -> dev.sigstore.bundle.v1.Bundle
+	4,  // 15: dev.sigstore.verification.v1.Input.artifact:type_name -> dev.sigstore.verification.v1.Artifact
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_sigstore_verification_proto_init() }
@@ -1187,6 +1209,7 @@ func file_sigstore_verification_proto_init() {
 	file_sigstore_verification_proto_msgTypes[4].OneofWrappers = []interface{}{
 		(*Artifact_ArtifactUri)(nil),
 		(*Artifact_Artifact)(nil),
+		(*Artifact_ArtifactDigest)(nil),
 	}
 	file_sigstore_verification_proto_msgTypes[5].OneofWrappers = []interface{}{}
 	type x struct{}

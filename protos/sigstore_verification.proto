@@ -136,6 +136,8 @@ message Artifact {
                 string artifact_uri = 1;
                 // The raw bytes of the artifact
                 bytes artifact = 2;
+                // Digest of the artifact
+                dev.sigstore.common.v1.HashOutput artifact_digest = 3;
         }
 }
 

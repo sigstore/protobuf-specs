@@ -653,6 +653,11 @@
                     "description": "The raw bytes of the artifact",
                     "format": "binary",
                     "binaryEncoding": "base64"
+                },
+                "artifactDigest": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.HashOutput",
+                    "additionalProperties": false,
+                    "description": "Digest of the artifact"
                 }
             },
             "additionalProperties": false,
@@ -666,6 +671,11 @@
                 {
                     "required": [
                         "artifact"
+                    ]
+                },
+                {
+                    "required": [
+                        "artifact_digest"
                     ]
                 }
             ],

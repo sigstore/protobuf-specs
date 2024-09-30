@@ -247,7 +247,7 @@ pub mod artifact_verification_options {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Artifact {
-    #[prost(oneof = "artifact::Data", tags = "1, 2")]
+    #[prost(oneof = "artifact::Data", tags = "1, 2, 3")]
     pub data: ::core::option::Option<artifact::Data>,
 }
 /// Nested message and enum types in `Artifact`.
@@ -265,6 +265,9 @@ pub mod artifact {
         /// The raw bytes of the artifact
         #[prost(bytes, tag = "2")]
         Artifact(::prost::alloc::vec::Vec<u8>),
+        /// Digest of the artifact
+        #[prost(message, tag = "3")]
+        ArtifactDigest(super::super::super::common::v1::HashOutput),
     }
 }
 /// Input captures all that is needed to call the bundle verification method,
