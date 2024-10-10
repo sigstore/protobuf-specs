@@ -1,0 +1,78 @@
+// Copyright 2024 The Sigstore Authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+package dev.sigstore.signing.v1;
+
+import "sigstore_trustroot.proto";
+import "sigstore_common.proto";
+import "sigstore_bundle.proto";
+import "sigstore_verification.proto";
+
+option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/signing/v1";
+option java_package = "dev.sigstore.proto.signing.v1";
+option java_multiple_files = true;
+option java_outer_classname = "SigningProto";
+option ruby_package = "Sigstore::Signing::V1";
+
+message FulcioSigningMaterial {
+  // The OIDC identity token to use for retrieving a signing certificate from fulcio.
+  string identity_token = 1;
+  // The type of key to use for signing.
+  optional dev.sigstore.common.v1.PublicKeyDetails key_details = 2;
+}
+
+message SigningOptions {
+  oneof signing_materials {
+    // The OIDC identity token to use for retrieving a signing certificate from fulcio.
+    FulcioSigningMaterial fulcio_signing_material = 1;
+  }
+}
+
+message BundleContentOptions {
+  message MessageSignature {
+    dev.sigstore.common.v1.HashAlgorithm hash_algorithm = 1;
+  }
+  message DSSE {
+    bytes payload = 1;
+    string payloadType = 2;
+  }
+  oneof content {
+    MessageSignature message_signature = 1;
+    DSSE dsse_envelope = 2;
+  }
+}
+
+message TSAOptions {
+}
+
+// Input captures all that is needed to call the signing method.
+message SigningInput {
+  dev.sigstore.trustroot.v1.TrustedRoot trusted_root = 1;
+  SigningOptions signing_options = 2;
+  BundleContentOptions bundle_content_options = 3;
+  TSAOptions tsa_options = 4;
+  optional dev.sigstore.verification.v1.Artifact artifact = 5;
+}
+
+message SigningResult {
+  message Error {
+    string message = 1;
+  }
+
+  oneof output {
+    dev.sigstore.bundle.v1.Bundle bundle = 1;
+    Error error = 2;
+  }
+}
