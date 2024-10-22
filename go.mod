@@ -1,6 +1,6 @@
 module github.com/sigstore/protobuf-specs
 
-go 1.22
+go 1.22.0
 
 require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20230726155614-23370e0ffb3e
