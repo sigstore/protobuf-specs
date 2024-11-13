@@ -1,5 +1,5 @@
 # 3.18.2
-FROM alpine@sha256:b89d9c93e9ed3597455c90a0b88a8bbb5cb7188438f70953fede212a0c4394e0
+FROM alpine@sha256:1e42bbe2508154c9126d48c2b8a75420c3544343bf86fd041fb7527e017a4b4a
 RUN apk add --update protoc protobuf-dev go git
 RUN go install github.com/chrusty/protoc-gen-jsonschema/cmd/protoc-gen-jsonschema@1.4.1
 # This is required to get the field_behavior.proto file
