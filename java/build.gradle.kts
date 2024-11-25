@@ -1,7 +1,7 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("dev.sigstore.sign") version "1.0.0"
+    id("dev.sigstore.sign") version "1.1.0"
     id("com.diffplug.spotless") version "6.25.0"
     `signing`
 }
