@@ -98,7 +98,11 @@ export interface TransparencyLogEntry {
   kindVersion:
     | KindVersion
     | undefined;
-  /** The UNIX timestamp from the log when the entry was persisted. */
+  /**
+   * The UNIX timestamp from the log when the entry was persisted.
+   * The integration time MUST NOT be trusted if inclusion_promise
+   * is omitted.
+   */
   integratedTime: string;
   /**
    * The inclusion promise/signed entry timestamp from the log.

@@ -127,6 +127,8 @@ pub struct TransparencyLogEntry {
     #[prost(message, optional, tag = "3")]
     pub kind_version: ::core::option::Option<KindVersion>,
     /// The UNIX timestamp from the log when the entry was persisted.
+    /// The integration time MUST NOT be trusted if inclusion_promise
+    /// is omitted.
     #[prost(int64, tag = "4")]
     pub integrated_time: i64,
     /// The inclusion promise/signed entry timestamp from the log.
