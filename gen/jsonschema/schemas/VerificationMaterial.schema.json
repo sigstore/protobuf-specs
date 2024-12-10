@@ -231,7 +231,7 @@
                 },
                 "integratedTime": {
                     "type": "string",
-                    "description": "The UNIX timestamp from the log when the entry was persisted."
+                    "description": "The UNIX timestamp from the log when the entry was persisted. The integration time MUST NOT be trusted if inclusion_promise is omitted."
                 },
                 "inclusionPromise": {
                     "$ref": "#/definitions/dev.sigstore.rekor.v1.InclusionPromise",

@@ -123,7 +123,11 @@ class TransparencyLogEntry(betterproto.Message):
     """
 
     integrated_time: int = betterproto.int64_field(4)
-    """The UNIX timestamp from the log when the entry was persisted."""
+    """
+    The UNIX timestamp from the log when the entry was persisted.
+     The integration time MUST NOT be trusted if inclusion_promise
+     is omitted.
+    """
 
     inclusion_promise: "InclusionPromise" = betterproto.message_field(5)
     """
