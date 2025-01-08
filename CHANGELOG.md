@@ -10,6 +10,26 @@ All versions prior to 0.2.0 are untracked.
 
 ### Added
 
+### Changed
+
+## 0.3.3
+
+* Allowed specifying artifact digest for verification
+  ([#406](https://github.com/sigstore/protobuf-specs/pull/406)
+* Added version to `SigningConfig` message
+  ([#383](https://github.com/sigstore/protobuf-specs/pull/383)
+
+### Changed
+
+* Docs: Clarify that integration time is only trustworthy with a Signed Entry
+  Timestamp ([#442](https://github.com/sigstore/protobuf-specs/pull/442)
+* Docs: Clarify inclusion promise requirement ([#380](https://github.com/sigstore/protobuf-specs/pull/380)
+* Docs: Clarify that artifact digest verification should not be used with
+  in-toto attestations
+  ([#461](https://github.com/sigstore/protobuf-specs/pull/461)
+
+## 0.3.2
+
 * Added `TransparencyLogInstance.checkpoint_key_id` as an optional key identifier
   for logs that generate checkpoints ([#284](https://github.com/sigstore/protobuf-specs/pull/284))
 
