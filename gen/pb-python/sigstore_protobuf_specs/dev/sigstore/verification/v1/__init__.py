@@ -185,7 +185,12 @@ class Artifact(betterproto.Message):
     artifact_digest: "__common_v1__.HashOutput" = betterproto.message_field(
         3, group="data"
     )
-    """Digest of the artifact"""
+    """
+    Digest of the artifact. SHOULD NOT be used when verifying an
+     in-toto attestation as the subject digest cannot be
+     reconstructed. This option will not work with Ed25519
+     signatures, use Ed25519Ph or another algorithm instead.
+    """
 
 
 @dataclass(eq=False, repr=False)
