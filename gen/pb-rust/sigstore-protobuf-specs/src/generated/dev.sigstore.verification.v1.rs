@@ -265,7 +265,10 @@ pub mod artifact {
         /// The raw bytes of the artifact
         #[prost(bytes, tag = "2")]
         Artifact(::prost::alloc::vec::Vec<u8>),
-        /// Digest of the artifact
+        /// Digest of the artifact. SHOULD NOT be used when verifying an
+        /// in-toto attestation as the subject digest cannot be
+        /// reconstructed. This option will not work with Ed25519
+        /// signatures, use Ed25519Ph or another algorithm instead.
         #[prost(message, tag = "3")]
         ArtifactDigest(super::super::super::common::v1::HashOutput),
     }
