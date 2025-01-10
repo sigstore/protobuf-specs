@@ -3,9 +3,16 @@
 # plugin: python-betterproto
 # This file has been @generated
 
-from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from dataclasses import dataclass
+else:
+    from pydantic.dataclasses import dataclass
 
 import betterproto
+from pydantic.dataclasses import rebuild_dataclass
 
 
 class FieldBehavior(betterproto.Enum):
@@ -64,3 +71,9 @@ class FieldBehavior(betterproto.Enum):
      in any arbitrary order, rather than the order the user originally
      provided. Additionally, the list's order may or may not be stable.
     """
+
+    @classmethod
+    def __get_pydantic_core_schema__(cls, _source_type, _handler):
+        from pydantic_core import core_schema
+
+        return core_schema.int_schema(ge=0)
