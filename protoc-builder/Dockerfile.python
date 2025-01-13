@@ -1,0 +1,14 @@
+FROM python:3.9-bullseye@sha256:1323a0125d30e4acc2d9cb713fefde3dbd931bcf512a0658e71f6e216461786d
+
+RUN pip3 install --upgrade --quiet pip
+
+# the specific versions of python protobuf tools are in hack/dev-requirements.txt so that Dependabot can bump them for updates
+ADD hack/dev-requirements.txt .
+
+RUN pip3 install -r dev-requirements.txt
+
+COPY --from=protoc-base /protobuf/bin/protoc /usr/local/bin/
+COPY --from=protoc-base /protobuf/include/google /opt/include/google
+COPY --from=protoc-base /googleapis /googleapis
+
+ENTRYPOINT ["/usr/local/bin/protoc" ]

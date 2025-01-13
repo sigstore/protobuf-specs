@@ -16,6 +16,7 @@ fn main() -> anyhow::Result<()> {
         concat!(env!("CARGO_MANIFEST_DIR"), "/../../../protos").to_owned(),
         // WKTs path
         protobuf_include_path(),
+        "/googleapis".to_owned(),
         // googleapis types path: set `SIGSTORE_PROTOBUF_EXTRA_INCLUDE` to override.
         std::env::var("SIGSTORE_PROTOBUF_EXTRA_INCLUDE").unwrap_or("/opt/include".to_owned()),
     ];
