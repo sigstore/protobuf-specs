@@ -74,7 +74,7 @@ jsonschema: docker-image
 
 rust: docker-image
 	@echo "Generating rust proto Docker image"
-	cd protoc-builder && docker build -t ${PROTOC_RUST_IMAGE} -f Dockerfile.rust .
+	cd protoc-builder && docker build --platform ${PLATFORM} -t ${PROTOC_RUST_IMAGE} -f Dockerfile.rust .
 	docker run --platform ${PLATFORM} -v ${PWD}:/defs \
 	  -e "RUST_BACKTRACE=1" -e "CARGO_REGISTRY_TOKEN" ${PROTOC_RUST_IMAGE} \
 	  -c "cd /defs/gen/pb-rust && cargo ${RUST_ACTION}"
