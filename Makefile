@@ -99,8 +99,8 @@ docker-image-no-cache:
 
 # clean up generated files (not working? try sudo make clean)
 clean:
-	rm -rf gen/pb-go \
-		gen/pb-typescript/src/__generated__ \
+	rm -rf gen/pb-go/* \
+		gen/pb-typescript/src/__generated__/* \
 		gen/pb-python/sigstore_protobuf_specs/dev \
 		gen/pb-python/sigstore_protobuf_specs/io \
 		gen/pb-rust/target \
