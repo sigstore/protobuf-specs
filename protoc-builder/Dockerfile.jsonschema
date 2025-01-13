@@ -1,0 +1,17 @@
+# TODO: use golang image
+FROM alpine@sha256:56fa17d2a7e7f168a043a2712e63aed1f8543aeafdcee47c58dcffe38ed51099
+RUN apk add --update protoc protobuf-dev go git
+
+ADD hack/jsonschema/go.* hack/jsonschema/tools.go tools/
+
+# the specific versions of these tools are in hack/go.mod so that Dependabot can bump them for updates
+RUN cd tools && go build --trimpath -o /usr/local/bin/protoc-gen-jsonschema github.com/chrusty/protoc-gen-jsonschema/cmd/protoc-gen-jsonschema
+
+# This is required to get the field_behavior.proto file
+# NOTE: --filter=tree:0 performs a treeless clone; we do this to optimize cloning
+# this otherwise relatively heavy repository.
+RUN git clone --filter=tree:0 https://github.com/googleapis/googleapis.git /googleapis \
+    && cd /googleapis \
+    && git checkout 95f0f2b2aee51e460646320d6e8f2ce75c463f5a
+
+ENTRYPOINT ["/usr/bin/protoc", "--plugin=protoc-gen-jsonschema=/usr/local/bin/protoc-gen-jsonschema" ]

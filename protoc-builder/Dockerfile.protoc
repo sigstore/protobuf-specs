@@ -1,0 +1,29 @@
+# syntax=docker/dockerfile-upstream:master
+# This container grabs the protoc compiler and the googleapi includes
+# /protobuf will contain the extracted protoc
+# /googleapis will contain the various googleapis proto imports one might need
+FROM alpine:3.21@sha256:56fa17d2a7e7f168a043a2712e63aed1f8543aeafdcee47c58dcffe38ed51099 AS protoc-builder
+
+# Create output directories
+RUN mkdir /protobuf /googleapis
+
+# Download specific release of protoc
+# TODO: add dependabot-like feature to check for release updates
+ARG PROTOC_VERSION=v21.6
+ARG PROTOC_CHECKSUM=sha256:6a9fc36363a2d05d73fc363a46cd57d849068d33305db39f77daac8ba073e818
+
+ADD --checksum=${PROTOC_CHECKSUM} https://github.com/protocolbuffers/protobuf/releases/download/${PROTOC_VERSION}/protoc-${PROTOC_VERSION#v}-linux-x86_64.zip /tmp/protoc.zip
+RUN unzip -d /protobuf /tmp/protoc.zip
+RUN chmod 755 /protobuf/bin/protoc
+
+# fetch specific commit of googleapis
+# TODO: add dependabot-like feature to check for release updates
+RUN apk add git
+ARG GOOGLE_APIS_VERSION=6ef9eaea379fc1cc0355e06a5a20b594543ee693
+#ARG GOOGLE_APIS_VERSION=95f0f2b2aee51e460646320d6e8f2ce75c463f5a
+RUN git clone --filter=tree:0 https://github.com/googleapis/googleapis.git /googleapis && \
+    cd /googleapis && git checkout ${GOOGLE_APIS_VERSION}
+
+FROM scratch
+COPY --from=protoc-builder /protobuf /protobuf
+COPY --from=protoc-builder /googleapis /googleapis
