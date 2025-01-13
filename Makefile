@@ -91,13 +91,13 @@ docker-image:
 .PHONY: docker-image-no-cache
 docker-image-no-cache:
 	@echo "Building development docker images with disabled cache"
-	cd protoc-builder && docker build --no-cache -t ${PROTOC_IMAGE} -f Dockerfile.protoc .
-	cd protoc-builder && docker build --no-cache -t ${PROTOC_GO_IMAGE} -f Dockerfile.go .
-	cd protoc-builder && docker build --no-cache -t ${PROTOC_JSONSCHEMA_IMAGE} -f Dockerfile.jsonschema .
-	cd protoc-builder && docker build --no-cache -t ${PROTOC_PYTHON_IMAGE} -f Dockerfile.python .
-	cd protoc-builder && docker build --no-cache -t ${PROTOC_RUBY_IMAGE} -f Dockerfile.ruby .
-	cd protoc-builder && docker build --no-cache -t ${PROTOC_RUST_IMAGE} -f Dockerfile.rust .
-	cd protoc-builder && docker build --no-cache -t ${PROTOC_TYPESCRIPT_IMAGE} -f Dockerfile.typescript .
+	cd protoc-builder && docker build --no-cache --platform ${PLATFORM} -t ${PROTOC_IMAGE} -f Dockerfile.protoc .
+	cd protoc-builder && docker build --no-cache --platform ${PLATFORM} -t ${PROTOC_GO_IMAGE} -f Dockerfile.go .
+	cd protoc-builder && docker build --no-cache --platform ${PLATFORM} -t ${PROTOC_JSONSCHEMA_IMAGE} -f Dockerfile.jsonschema .
+	cd protoc-builder && docker build --no-cache --platform ${PLATFORM} -t ${PROTOC_PYTHON_IMAGE} -f Dockerfile.python .
+	cd protoc-builder && docker build --no-cache --platform ${PLATFORM} -t ${PROTOC_RUBY_IMAGE} -f Dockerfile.ruby .
+	cd protoc-builder && docker build --no-cache --platform ${PLATFORM} -t ${PROTOC_RUST_IMAGE} -f Dockerfile.rust .
+	cd protoc-builder && docker build --no-cache --platform ${PLATFORM} -t ${PROTOC_TYPESCRIPT_IMAGE} -f Dockerfile.typescript .
 
 # clean up generated files (not working? try sudo make clean)
 clean:
