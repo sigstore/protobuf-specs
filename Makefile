@@ -26,7 +26,7 @@ RUST_ACTION ?= run -p sigstore-protobuf-specs-codegen
 PLATFORM ?= linux/amd64
 UID ?= $(shell id -u)
 GID ?= $(shell id -g)
-DOCKER_BUILD = docker build --platform ${PLATFORM} --build-arg UID=${UID} --build-arg GID=${GID}
+DOCKER_BUILD = docker build --platform ${PLATFORM} --build-arg UID=${UID}
 DOCKER_RUN = docker run --platform ${PLATFORM} --user ${UID}:${GID}
 
 PROTOS = $(shell find protos/ -iname "*.proto" | sed 's|^|/defs/|')
