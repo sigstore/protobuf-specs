@@ -1,4 +1,4 @@
-FROM golang:1.19-bullseye AS go-builder
+FROM golang:1.23.4-alpine@sha256:c23339199a08b0e12032856908589a6d41a0dab141b8b3b21f156fc571a3f1d3 AS go-builder
 
 ADD hack/go/go.* hack/go/tools.go tools/
 
@@ -6,7 +6,7 @@ ADD hack/go/go.* hack/go/tools.go tools/
 RUN cd tools && go build --trimpath google.golang.org/grpc/cmd/protoc-gen-go-grpc
 RUN cd tools && go build --trimpath google.golang.org/protobuf/cmd/protoc-gen-go
 
-FROM gcr.io/distroless/cc-debian12:nonroot@sha256:6970a2b2cb07c68f3e15d1b5d2ba857e53da911d5d321f48a842d6b0d26984cf
+FROM gcr.io/distroless/static-debian12:nonroot@sha256:6ec5aa99dc335666e79dc64e4a6c8b89c33a543a1967f20d360922a80dd21f02
 
 COPY --from=go-builder /go/tools/protoc-* /usr/local/bin/
 COPY --from=protoc-base:go /protobuf/bin/protoc /usr/local/bin/
