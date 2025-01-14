@@ -7,8 +7,8 @@ ADD hack/dev-requirements.txt .
 
 RUN pip3 install -r dev-requirements.txt
 
-COPY --from=protoc-base /protobuf/bin/protoc /usr/local/bin/
-COPY --from=protoc-base /protobuf/include/google /opt/include/google
-COPY --from=protoc-base /googleapis /googleapis
+COPY --from=protoc-base:python /protobuf/bin/protoc /usr/local/bin/
+COPY --from=protoc-base:python /protobuf/include/google /opt/include/google
+COPY --from=protoc-base:python /googleapis /googleapis
 
 ENTRYPOINT ["/usr/local/bin/protoc" ]

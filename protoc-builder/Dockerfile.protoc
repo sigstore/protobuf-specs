@@ -22,19 +22,17 @@ USER myuser
 
 # Download specific release of protoc
 # TODO: add dependabot-like feature to check for release updates
-ARG PROTOC_VERSION=v21.6
-ARG PROTOC_CHECKSUM=sha256:6a9fc36363a2d05d73fc363a46cd57d849068d33305db39f77daac8ba073e818
+ARG PROTOC_VERSION
+ARG PROTOC_CHECKSUM
 
 ADD --chown=myuser --checksum=${PROTOC_CHECKSUM} https://github.com/protocolbuffers/protobuf/releases/download/${PROTOC_VERSION}/protoc-${PROTOC_VERSION#v}-linux-x86_64.zip /tmp/protoc.zip
 RUN unzip -d /protobuf /tmp/protoc.zip
 RUN chmod 755 /protobuf/bin/protoc
 
 # fetch specific commit of googleapis
-# TODO: add dependabot-like feature to check for release updates
-ARG GOOGLE_APIS_VERSION=6ef9eaea379fc1cc0355e06a5a20b594543ee693
-#ARG GOOGLE_APIS_VERSION=95f0f2b2aee51e460646320d6e8f2ce75c463f5a
+ARG GOOGLEAPIS_COMMIT
 RUN git clone --filter=tree:0 https://github.com/googleapis/googleapis.git /googleapis && \
-    cd /googleapis && git checkout ${GOOGLE_APIS_VERSION}
+    cd /googleapis && git checkout ${GOOGLEAPIS_COMMIT}
 
 FROM scratch
 COPY --from=protoc-builder /protobuf /protobuf
