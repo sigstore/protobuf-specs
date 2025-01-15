@@ -1,4 +1,4 @@
-FROM python:3.9-bullseye@sha256:1323a0125d30e4acc2d9cb713fefde3dbd931bcf512a0658e71f6e216461786d
+FROM python:3.13.1-alpine@sha256:b6f01a01e34091438a29b6dda4664199e34731fb2581ebb6fe255a2ebf441099
 
 RUN pip3 install --upgrade --quiet pip
 
