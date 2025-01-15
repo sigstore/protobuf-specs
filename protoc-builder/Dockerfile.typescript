@@ -1,4 +1,4 @@
-FROM node:18 AS typescript-builder
+FROM node:23 AS typescript-builder
 RUN mkdir /app
 COPY hack/package*.json /app
 WORKDIR /app
