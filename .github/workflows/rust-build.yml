@@ -23,10 +23,14 @@ on:
     paths:
       - "**.proto"
       - "gen/pb-rust/**"
+      - "protoc-builder/Dockerfile.rust"
+      - "protoc-builder/versions.mk"
   pull_request:
     paths:
       - "**.proto"
       - "gen/pb-rust/**"
+      - "protoc-builder/Dockerfile.rust"
+      - "protoc-builder/versions.mk"
 
 env:
   CARGO_TERM_COLOR: always
