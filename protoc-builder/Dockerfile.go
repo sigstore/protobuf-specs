@@ -1,4 +1,4 @@
-FROM golang:1.19-bullseye AS go-builder
+FROM golang:1.23-bullseye AS go-builder
 
 ADD hack/go/go.* hack/go/tools.go tools/
 
