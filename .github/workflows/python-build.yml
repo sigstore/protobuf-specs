@@ -23,10 +23,16 @@ on:
     paths:
       - '**.proto'
       - 'gen/pb-python/**'
+      - 'protoc-builder/Dockerfile.python'
+      - 'protoc-builder/versions.mk'
+      - 'protoc-builder/hack/dev-requirements.txt'
   pull_request:
     paths:
       - '**.proto'
       - 'gen/pb-python/**'
+      - 'protoc-builder/Dockerfile.python'
+      - 'protoc-builder/versions.mk'
+      - 'protoc-builder/hack/dev-requirements.txt'
 
 jobs:
   build:

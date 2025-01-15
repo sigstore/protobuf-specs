@@ -35,6 +35,10 @@ updates:
     directory: "/protoc-builder"
     schedule:
       interval: "monthly"
+  - package-ecosystem: "gomod"
+    directory: "/protoc-builder/hack/go"
+    schedule:
+      interval: "monthly"
   - package-ecosystem: "pip"
     directory: "/protoc-builder/hack"
     schedule:

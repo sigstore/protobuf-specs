@@ -23,10 +23,14 @@ on:
     paths:
       - '**.proto'
       - 'gen/pb-ruby/**'
+      - 'protoc-builder/Dockerfile.ruby'
+      - 'protoc-builder/versions.mk'
   pull_request:
     paths:
       - '**.proto'
       - 'gen/pb-ruby/**'
+      - 'protoc-builder/Dockerfile.ruby'
+      - 'protoc-builder/versions.mk'
 
 jobs:
   build:

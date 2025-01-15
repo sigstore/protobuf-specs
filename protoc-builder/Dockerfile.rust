@@ -1,4 +1,4 @@
-FROM rust:1.84.0@sha256:f7cbb35003d4ffb5543f8ad6480c1e36bbae5c3609523c9f0c2e223668ee9c1a
+FROM rust:1.84.0@sha256:ec7dae306d01d4c52d2b6cce4a62a8da2f2e54df543e527e1656ae7c4ef632b3
 
 COPY --from=protoc-base:rust /protobuf/bin/protoc /usr/local/bin/
 COPY --from=protoc-base:rust /protobuf/include/google /opt/include/google
