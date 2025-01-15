@@ -25,6 +25,6 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency 'google-protobuf', '~> 3.21', '>= 3.21.12'
-  spec.add_runtime_dependency 'googleapis-common-protos-types', '~> 1.4'
+  spec.add_runtime_dependency 'google-protobuf', '~> 4.29', '>= 4.29.3'
+  spec.add_runtime_dependency 'googleapis-common-protos-types', '~> 1.18'
 end

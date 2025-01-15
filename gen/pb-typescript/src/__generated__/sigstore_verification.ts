@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { Bundle } from "./sigstore_bundle";
-import { ObjectIdentifierValuePair, PublicKey, SubjectAlternativeName } from "./sigstore_common";
+import { HashOutput, ObjectIdentifierValuePair, PublicKey, SubjectAlternativeName } from "./sigstore_common";
 import { TrustedRoot } from "./sigstore_trustroot";
 
 /** The identity of a X.509 Certificate signer. */
@@ -127,7 +127,10 @@ export interface ArtifactVerificationOptions_ObserverTimestampOptions {
 }
 
 export interface Artifact {
-  data?: { $case: "artifactUri"; artifactUri: string } | { $case: "artifact"; artifact: Buffer };
+  data?: { $case: "artifactUri"; artifactUri: string } | { $case: "artifact"; artifact: Buffer } | {
+    $case: "artifactDigest";
+    artifactDigest: HashOutput;
+  };
 }
 
 /**
@@ -413,6 +416,8 @@ export const Artifact = {
         ? { $case: "artifactUri", artifactUri: String(object.artifactUri) }
         : isSet(object.artifact)
         ? { $case: "artifact", artifact: Buffer.from(bytesFromBase64(object.artifact)) }
+        : isSet(object.artifactDigest)
+        ? { $case: "artifactDigest", artifactDigest: HashOutput.fromJSON(object.artifactDigest) }
         : undefined,
     };
   },
@@ -422,6 +427,8 @@ export const Artifact = {
     message.data?.$case === "artifactUri" && (obj.artifactUri = message.data?.artifactUri);
     message.data?.$case === "artifact" &&
       (obj.artifact = message.data?.artifact !== undefined ? base64FromBytes(message.data?.artifact) : undefined);
+    message.data?.$case === "artifactDigest" &&
+      (obj.artifactDigest = message.data?.artifactDigest ? HashOutput.toJSON(message.data?.artifactDigest) : undefined);
     return obj;
   },
 };

@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "sigstore-protobuf-specs"
-version = "0.3.2"
+version = "0.3.5"
 description = "A library for serializing and deserializing Sigstore messages"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -25,7 +25,7 @@ classifiers = [
   "Topic :: Security",
   "Topic :: Security :: Cryptography",
 ]
-dependencies = ["betterproto==2.0.0b6"]
+dependencies = ["betterproto==2.0.0b7", "pydantic >= 2, < 3"]
 requires-python = ">=3.8"
 
 [project.urls]

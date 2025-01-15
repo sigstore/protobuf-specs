@@ -1,0 +1,11 @@
+{
+    "name": "hack",
+    "description": "hack to leverage dependabot updates for protobuf typescript generation utilities",
+    "version": "0.0.1",
+    "dependencies": {
+      "grpc_tools_node_protoc_ts": "5.3.2",
+      "grpc-tools": "1.12.3",
+      "protoc-gen-grpc-web": "1.4.1",
+      "ts-proto": "1.138.0"
+    }
+}

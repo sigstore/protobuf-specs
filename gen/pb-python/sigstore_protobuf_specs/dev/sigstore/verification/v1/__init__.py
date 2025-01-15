@@ -3,13 +3,22 @@
 # plugin: python-betterproto
 # This file has been @generated
 
-from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from dataclasses import dataclass
+else:
+    from pydantic.dataclasses import dataclass
+
 from typing import (
     List,
     Optional,
 )
 
 import betterproto
+from pydantic import model_validator
+from pydantic.dataclasses import rebuild_dataclass
 
 from ...bundle import v1 as __bundle_v1__
 from ...common import v1 as __common_v1__
@@ -26,9 +35,9 @@ class CertificateIdentity(betterproto.Message):
     san: "__common_v1__.SubjectAlternativeName" = betterproto.message_field(2)
     oids: List["__common_v1__.ObjectIdentifierValuePair"] = betterproto.message_field(3)
     """
-    An unordered list of OIDs that must be verified. All OID/values provided in
-    this list MUST exactly match against the values in the certificate for
-    verification to be successful.
+    An unordered list of OIDs that must be verified.
+     All OID/values provided in this list MUST exactly match against
+     the values in the certificate for verification to be successful.
     """
 
 
@@ -46,63 +55,81 @@ class PublicKeyIdentities(betterproto.Message):
 class ArtifactVerificationOptions(betterproto.Message):
     """
     A light-weight set of options/policies for identifying trusted signers,
-    used during verification of a single artifact.
+     used during verification of a single artifact.
     """
 
-    certificate_identities: "CertificateIdentities" = betterproto.message_field(
-        1, group="signers"
+    certificate_identities: Optional["CertificateIdentities"] = (
+        betterproto.message_field(1, optional=True, group="signers")
     )
-    public_keys: "PublicKeyIdentities" = betterproto.message_field(2, group="signers")
+    public_keys: Optional["PublicKeyIdentities"] = betterproto.message_field(
+        2, optional=True, group="signers"
+    )
     """
-    To simplify verification implementation, the logic for bundle verification
-    should be implemented as a higher-order function, where one of argument
-    should be an interface over the set of trusted public keys, like this:
-    `Verify(bytes artifact, bytes signature, string key_id)`. This way the
-    caller is in full control of mapping the identified (or hinted) key in the
-    bundle to one of the trusted keys, as this process is inherently
-    application specific.
+    To simplify verification implementation, the logic for
+     bundle verification should be implemented as a
+     higher-order function, where one of argument should be an
+     interface over the set of trusted public keys, like this:
+     `Verify(bytes artifact, bytes signature, string key_id)`.
+     This way the caller is in full control of mapping the
+     identified (or hinted) key in the bundle to one of the
+     trusted keys, as this process is inherently application
+     specific.
     """
 
     tlog_options: Optional["ArtifactVerificationOptionsTlogOptions"] = (
-        betterproto.message_field(3, optional=True, group="_tlog_options")
+        betterproto.message_field(3, optional=True)
     )
     """
-    Optional options for artifact transparency log verification. If none is
-    provided, the default verification options are: Threshold: 1 Online
-    verification: false Disable: false
+    Optional options for artifact transparency log verification.
+     If none is provided, the default verification options are:
+     Threshold: 1
+     Online verification: false
+     Disable: false
     """
 
     ctlog_options: Optional["ArtifactVerificationOptionsCtlogOptions"] = (
-        betterproto.message_field(4, optional=True, group="_ctlog_options")
+        betterproto.message_field(4, optional=True)
     )
     """
-    Optional options for certificate transparency log verification. If none is
-    provided, the default verification options are: Threshold: 1 Disable: false
+    Optional options for certificate transparency log verification.
+     If none is provided, the default verification options are:
+     Threshold: 1
+     Disable: false
     """
 
     tsa_options: Optional["ArtifactVerificationOptionsTimestampAuthorityOptions"] = (
-        betterproto.message_field(5, optional=True, group="_tsa_options")
+        betterproto.message_field(5, optional=True)
     )
     """
-    Optional options for certificate signed timestamp verification. If none is
-    provided, the default verification options are: Threshold: 0 Disable: true
+    Optional options for certificate signed timestamp verification.
+     If none is provided, the default verification options are:
+     Threshold: 0
+     Disable: true
     """
 
     integrated_ts_options: Optional[
         "ArtifactVerificationOptionsTlogIntegratedTimestampOptions"
-    ] = betterproto.message_field(6, optional=True, group="_integrated_ts_options")
+    ] = betterproto.message_field(6, optional=True)
     """
-    Optional options for integrated timestamp verification. If none is
-    provided, the default verification options are: Threshold: 0 Disable: true
+    Optional options for integrated timestamp verification.
+     If none is provided, the default verification options are:
+     Threshold: 0
+     Disable: true
     """
 
     observer_options: Optional[
         "ArtifactVerificationOptionsObserverTimestampOptions"
-    ] = betterproto.message_field(7, optional=True, group="_observer_options")
+    ] = betterproto.message_field(7, optional=True)
     """
-    Optional options for observed timestamp verification. If none is provided,
-    the default verification options are: Threshold 1 Disable: false
+    Optional options for observed timestamp verification.
+     If none is provided, the default verification options are:
+     Threshold 1
+     Disable: false
     """
+
+    @model_validator(mode="after")
+    def check_oneof(cls, values):
+        return cls._validate_field_groups(values)
 
 
 @dataclass(eq=False, repr=False)
@@ -120,7 +147,10 @@ class ArtifactVerificationOptionsTlogOptions(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class ArtifactVerificationOptionsCtlogOptions(betterproto.Message):
     threshold: int = betterproto.int32_field(1)
-    """The number of ct transparency logs the certificate must appear on."""
+    """
+    The number of ct transparency logs the certificate must
+     appear on.
+    """
 
     disable: bool = betterproto.bool_field(3)
     """Disable ct transparency log verification"""
@@ -148,9 +178,11 @@ class ArtifactVerificationOptionsTlogIntegratedTimestampOptions(betterproto.Mess
 class ArtifactVerificationOptionsObserverTimestampOptions(betterproto.Message):
     threshold: int = betterproto.int32_field(1)
     """
-    The number of external observers of the timestamp. This is a union of
-    RFC3161 signed timestamps, and integrated timestamps from a transparency
-    log, that could include additional timestamp sources in the future.
+    The number of external observers of the timestamp.
+     This is a union of RFC3161 signed timestamps, and
+     integrated timestamps from a transparency log, that
+     could include additional timestamp sources in the
+     future.
     """
 
     disable: bool = betterproto.bool_field(2)
@@ -159,38 +191,62 @@ class ArtifactVerificationOptionsObserverTimestampOptions(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class Artifact(betterproto.Message):
-    artifact_uri: str = betterproto.string_field(1, group="data")
+    artifact_uri: Optional[str] = betterproto.string_field(
+        1, optional=True, group="data"
+    )
     """Location of the artifact"""
 
-    artifact: bytes = betterproto.bytes_field(2, group="data")
+    artifact: Optional[bytes] = betterproto.bytes_field(2, optional=True, group="data")
     """The raw bytes of the artifact"""
+
+    artifact_digest: Optional["__common_v1__.HashOutput"] = betterproto.message_field(
+        3, optional=True, group="data"
+    )
+    """
+    Digest of the artifact. SHOULD NOT be used when verifying an
+     in-toto attestation as the subject digest cannot be
+     reconstructed. This option will not work with Ed25519
+     signatures, use Ed25519Ph or another algorithm instead.
+    """
+
+    @model_validator(mode="after")
+    def check_oneof(cls, values):
+        return cls._validate_field_groups(values)
 
 
 @dataclass(eq=False, repr=False)
 class Input(betterproto.Message):
     """
     Input captures all that is needed to call the bundle verification method,
-    to verify a single artifact referenced by the bundle.
+     to verify a single artifact referenced by the bundle.
     """
 
     artifact_trust_root: "__trustroot_v1__.TrustedRoot" = betterproto.message_field(1)
     """
-    The verification materials provided during a bundle verification. The
-    running process is usually preloaded with a "global"
-    dev.sisgtore.trustroot.TrustedRoot.v1 instance. Prior to verifying an
-    artifact (i.e a bundle), and/or based on current policy, some selection is
-    expected to happen, to filter out the exact certificate authority to use,
-    which transparency logs are relevant etc. The result should b ecaptured in
-    the `artifact_trust_root`.
+    The verification materials provided during a bundle verification.
+     The running process is usually preloaded with a "global"
+     dev.sisgtore.trustroot.TrustedRoot.v1 instance. Prior to
+     verifying an artifact (i.e a bundle), and/or based on current
+     policy, some selection is expected to happen, to filter out the
+     exact certificate authority to use, which transparency logs are
+     relevant etc. The result should b ecaptured in the
+     `artifact_trust_root`.
     """
 
     artifact_verification_options: "ArtifactVerificationOptions" = (
         betterproto.message_field(2)
     )
     bundle: "__bundle_v1__.Bundle" = betterproto.message_field(3)
-    artifact: Optional["Artifact"] = betterproto.message_field(
-        4, optional=True, group="_artifact"
-    )
+    artifact: Optional["Artifact"] = betterproto.message_field(4, optional=True)
     """
-    If the bundle contains a message signature, the artifact must be provided.
+    If the bundle contains a message signature, the artifact must be
+     provided.
     """
+
+
+rebuild_dataclass(CertificateIdentity)  # type: ignore
+rebuild_dataclass(CertificateIdentities)  # type: ignore
+rebuild_dataclass(PublicKeyIdentities)  # type: ignore
+rebuild_dataclass(ArtifactVerificationOptions)  # type: ignore
+rebuild_dataclass(Artifact)  # type: ignore
+rebuild_dataclass(Input)  # type: ignore

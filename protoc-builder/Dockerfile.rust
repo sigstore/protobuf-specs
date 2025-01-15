@@ -1,0 +1,8 @@
+FROM rust:1.84.0@sha256:ec7dae306d01d4c52d2b6cce4a62a8da2f2e54df543e527e1656ae7c4ef632b3
+
+COPY --from=protoc-base:rust /protobuf/bin/protoc /usr/local/bin/
+COPY --from=protoc-base:rust /protobuf/include/google /opt/include/google
+COPY --from=protoc-base:rust /googleapis /googleapis
+
+# this is not protoc because we will call Rust's prost crate to do the compilation
+ENTRYPOINT [ "/bin/bash" ]

@@ -1,0 +1,14 @@
+FROM python:3.13.1-alpine@sha256:b6f01a01e34091438a29b6dda4664199e34731fb2581ebb6fe255a2ebf441099
+
+RUN pip3 install --upgrade --quiet pip
+
+# the specific versions of python protobuf tools are in hack/dev-requirements.txt so that Dependabot can bump them for updates
+ADD hack/dev-requirements.txt .
+
+RUN pip3 install -r dev-requirements.txt
+
+COPY --from=protoc-base:python /protobuf/bin/protoc /usr/local/bin/
+COPY --from=protoc-base:python /protobuf/include/google /opt/include/google
+COPY --from=protoc-base:python /googleapis /googleapis
+
+ENTRYPOINT ["/usr/local/bin/protoc" ]

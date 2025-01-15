@@ -136,6 +136,11 @@ message Artifact {
                 string artifact_uri = 1;
                 // The raw bytes of the artifact
                 bytes artifact = 2;
+                // Digest of the artifact. SHOULD NOT be used when verifying an
+                // in-toto attestation as the subject digest cannot be
+                // reconstructed. This option will not work with Ed25519
+                // signatures, use Ed25519Ph or another algorithm instead.
+                dev.sigstore.common.v1.HashOutput artifact_digest = 3;
         }
 }
 

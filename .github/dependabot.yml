@@ -23,10 +23,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "daily"
   - package-ecosystem: "gradle"
     directory: "/java"
     schedule:
@@ -35,3 +31,19 @@ updates:
       protobuf:
         patterns:
           - "*protobuf*"
+  - package-ecosystem: "docker"
+    directory: "/protoc-builder"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "gomod"
+    directory: "/protoc-builder/hack/go"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "pip"
+    directory: "/protoc-builder/hack"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "cargo"
+    directory: "/gen/pb-rust"
+    schedule:
+      interval: "monthly"

@@ -13,6 +13,11 @@
                     "description": "The raw bytes of the artifact",
                     "format": "binary",
                     "binaryEncoding": "base64"
+                },
+                "artifactDigest": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.HashOutput",
+                    "additionalProperties": false,
+                    "description": "Digest of the artifact. SHOULD NOT be used when verifying an in-toto attestation as the subject digest cannot be reconstructed. This option will not work with Ed25519 signatures, use Ed25519Ph or another algorithm instead."
                 }
             },
             "additionalProperties": false,
@@ -27,9 +32,41 @@
                     "required": [
                         "artifact"
                     ]
+                },
+                {
+                    "required": [
+                        "artifact_digest"
+                    ]
                 }
             ],
             "title": "Artifact"
+        },
+        "dev.sigstore.common.v1.HashOutput": {
+            "properties": {
+                "algorithm": {
+                    "enum": [
+                        "HASH_ALGORITHM_UNSPECIFIED",
+                        "SHA2_256",
+                        "SHA2_384",
+                        "SHA2_512",
+                        "SHA3_256",
+                        "SHA3_384"
+                    ],
+                    "type": "string",
+                    "title": "This package defines commonly used message types within the Sigstore\n community.",
+                    "description": "This package defines commonly used message types within the Sigstore community.  Only a subset of the secure hash standard algorithms are supported. See \u003chttps://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf\u003e for more details. UNSPECIFIED SHOULD not be used, primary reason for inclusion is to force any proto JSON serialization to emit the used hash algorithm, as default option is to *omit* the default value of an enum (which is the first value, represented by '0'."
+                },
+                "digest": {
+                    "type": "string",
+                    "description": "This is the raw octets of the message digest as computed by the hash algorithm.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Hash Output",
+            "description": "HashOutput captures a digest of a 'message' (generic octet sequence) and the corresponding hash algorithm used."
         }
     }
 }

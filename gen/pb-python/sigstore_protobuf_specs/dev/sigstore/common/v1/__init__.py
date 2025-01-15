@@ -3,7 +3,14 @@
 # plugin: python-betterproto
 # This file has been @generated
 
-from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from dataclasses import dataclass
+else:
+    from pydantic.dataclasses import dataclass
+
 from datetime import datetime
 from typing import (
     List,
@@ -11,41 +18,56 @@ from typing import (
 )
 
 import betterproto
+from pydantic import model_validator
+from pydantic.dataclasses import rebuild_dataclass
 
 
 class HashAlgorithm(betterproto.Enum):
     """
-    Only a subset of the secure hash standard algorithms are supported. See
-    <https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf> for more
-    details. UNSPECIFIED SHOULD not be used, primary reason for inclusion is to
-    force any proto JSON serialization to emit the used hash algorithm, as
-    default option is to *omit* the default value of an enum (which is the
-    first value, represented by '0'.
+    Only a subset of the secure hash standard algorithms are supported.
+     See <https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf> for more
+     details.
+     UNSPECIFIED SHOULD not be used, primary reason for inclusion is to force
+     any proto JSON serialization to emit the used hash algorithm, as default
+     option is to *omit* the default value of an enum (which is the first
+     value, represented by '0'.
     """
 
-    HASH_ALGORITHM_UNSPECIFIED = 0
+    UNSPECIFIED = 0
     SHA2_256 = 1
     SHA2_384 = 2
     SHA2_512 = 3
     SHA3_256 = 4
     SHA3_384 = 5
 
+    @classmethod
+    def __get_pydantic_core_schema__(cls, _source_type, _handler):
+        from pydantic_core import core_schema
+
+        return core_schema.int_schema(ge=0)
+
 
 class PublicKeyDetails(betterproto.Enum):
     """
     Details of a specific public key, capturing the the key encoding method,
-    and signature algorithm. PublicKeyDetails captures the public key/hash
-    algorithm combinations recommended in the Sigstore ecosystem. This is
-    modelled as a linear set as we want to provide a small number of
-    opinionated options instead of allowing every possible permutation. Any
-    changes to this enum MUST be reflected in the algorithm registry. See:
-    docs/algorithm-registry.md To avoid the possibility of contradicting
-    formats such as PKCS1 with ED25519 the valid permutations are listed as a
-    linear set instead of a cartesian set (i.e one combined variable instead of
-    two, one for encoding and one for the signature algorithm).
+     and signature algorithm.
+
+     PublicKeyDetails captures the public key/hash algorithm combinations
+     recommended in the Sigstore ecosystem.
+
+     This is modelled as a linear set as we want to provide a small number of
+     opinionated options instead of allowing every possible permutation.
+
+     Any changes to this enum MUST be reflected in the algorithm registry.
+     See: docs/algorithm-registry.md
+
+     To avoid the possibility of contradicting formats such as PKCS1 with
+     ED25519 the valid permutations are listed as a linear set instead of a
+     cartesian set (i.e one combined variable instead of two, one for encoding
+     and one for the signature algorithm).
     """
 
-    PUBLIC_KEY_DETAILS_UNSPECIFIED = 0
+    UNSPECIFIED = 0
     PKCS1_RSA_PKCS1V5 = 1
     """RSA"""
 
@@ -74,43 +96,60 @@ class PublicKeyDetails(betterproto.Enum):
     PKIX_ED25519_PH = 8
     LMS_SHA256 = 14
     """
-    LMS and LM-OTS These keys and signatures may be used by private Sigstore
-    deployments, but are not currently supported by the public good instance.
-    USER WARNING: LMS and LM-OTS are both stateful signature schemes. Using
-    them correctly requires discretion and careful consideration to ensure that
-    individual secret keys are not used more than once. In addition, LM-OTS is
-    a single-use scheme, meaning that it MUST NOT be used for more than one
-    signature per LM-OTS key. If you cannot maintain these invariants, you MUST
-    NOT use these schemes.
+    LMS and LM-OTS
+    
+     These keys and signatures may be used by private Sigstore
+     deployments, but are not currently supported by the public
+     good instance.
+    
+     USER WARNING: LMS and LM-OTS are both stateful signature schemes.
+     Using them correctly requires discretion and careful consideration
+     to ensure that individual secret keys are not used more than once.
+     In addition, LM-OTS is a single-use scheme, meaning that it
+     MUST NOT be used for more than one signature per LM-OTS key.
+     If you cannot maintain these invariants, you MUST NOT use these
+     schemes.
     """
 
     LMOTS_SHA256 = 15
 
+    @classmethod
+    def __get_pydantic_core_schema__(cls, _source_type, _handler):
+        from pydantic_core import core_schema
+
+        return core_schema.int_schema(ge=0)
+
 
 class SubjectAlternativeNameType(betterproto.Enum):
-    SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED = 0
+    UNSPECIFIED = 0
     EMAIL = 1
     URI = 2
     OTHER_NAME = 3
     """
-    OID 1.3.6.1.4.1.57264.1.7 See
-    https://github.com/sigstore/fulcio/blob/main/docs/oid-info.md#1361415726417
-    --othername-san for more details.
+    OID 1.3.6.1.4.1.57264.1.7
+     See https://github.com/sigstore/fulcio/blob/main/docs/oid-info.md#1361415726417--othername-san
+     for more details.
     """
+
+    @classmethod
+    def __get_pydantic_core_schema__(cls, _source_type, _handler):
+        from pydantic_core import core_schema
+
+        return core_schema.int_schema(ge=0)
 
 
 @dataclass(eq=False, repr=False)
 class HashOutput(betterproto.Message):
     """
-    HashOutput captures a digest of a 'message' (generic octet sequence) and
-    the corresponding hash algorithm used.
+    HashOutput captures a digest of a 'message' (generic octet sequence)
+     and the corresponding hash algorithm used.
     """
 
     algorithm: "HashAlgorithm" = betterproto.enum_field(1)
     digest: bytes = betterproto.bytes_field(2)
     """
-    This is the raw octets of the message digest as computed by the hash
-    algorithm.
+    This is the raw octets of the message digest as computed by
+     the hash algorithm.
     """
 
 
@@ -120,20 +159,21 @@ class MessageSignature(betterproto.Message):
 
     message_digest: "HashOutput" = betterproto.message_field(1)
     """
-    Message digest can be used to identify the artifact. Clients MUST NOT
-    attempt to use this digest to verify the associated signature; it is
-    intended solely for identification.
+    Message digest can be used to identify the artifact.
+     Clients MUST NOT attempt to use this digest to verify the associated
+     signature; it is intended solely for identification.
     """
 
     signature: bytes = betterproto.bytes_field(2)
     """
-    The raw bytes as returned from the signature algorithm. The signature
-    algorithm (and so the format of the signature bytes) are determined by the
-    contents of the 'verification_material', either a key-pair or a
-    certificate. If using a certificate, the certificate contains the required
-    information on the signature algorithm. When using a key pair, the
-    algorithm MUST be part of the public key, which MUST be communicated out-
-    of-band.
+    The raw bytes as returned from the signature algorithm.
+     The signature algorithm (and so the format of the signature bytes)
+     are determined by the contents of the 'verification_material',
+     either a key-pair or a certificate. If using a certificate, the
+     certificate contains the required information on the signature
+     algorithm.
+     When using a key pair, the algorithm MUST be part of the public
+     key, which MUST be communicated out-of-band.
     """
 
 
@@ -151,45 +191,44 @@ class Rfc3161SignedTimestamp(betterproto.Message):
 
     signed_timestamp: bytes = betterproto.bytes_field(1)
     """
-    Signed timestamp is the DER encoded TimeStampResponse. See https://www.rfc-
-    editor.org/rfc/rfc3161.html#section-2.4.2
+    Signed timestamp is the DER encoded TimeStampResponse.
+     See https://www.rfc-editor.org/rfc/rfc3161.html#section-2.4.2
     """
 
 
 @dataclass(eq=False, repr=False)
 class PublicKey(betterproto.Message):
-    raw_bytes: Optional[bytes] = betterproto.bytes_field(
-        1, optional=True, group="_raw_bytes"
-    )
+    raw_bytes: Optional[bytes] = betterproto.bytes_field(1, optional=True)
     """
-    DER-encoded public key, encoding method is specified by the key_details
-    attribute.
+    DER-encoded public key, encoding method is specified by the
+     key_details attribute.
     """
 
     key_details: "PublicKeyDetails" = betterproto.enum_field(2)
     """Key encoding and signature algorithm to use for this key."""
 
-    valid_for: Optional["TimeRange"] = betterproto.message_field(
-        3, optional=True, group="_valid_for"
-    )
+    valid_for: Optional["TimeRange"] = betterproto.message_field(3, optional=True)
     """Optional validity period for this key, *inclusive* of the endpoints."""
 
 
 @dataclass(eq=False, repr=False)
 class PublicKeyIdentifier(betterproto.Message):
     """
-    PublicKeyIdentifier can be used to identify an (out of band) delivered key,
-    to verify a signature.
+    PublicKeyIdentifier can be used to identify an (out of band) delivered
+     key, to verify a signature.
     """
 
     hint: str = betterproto.string_field(1)
     """
-    Optional unauthenticated hint on which key to use. The format of the hint
-    must be agreed upon out of band by the signer and the verifiers, and so is
-    not subject to this specification. Example use-case is to specify the
-    public key to use, from a trusted key-ring. Implementors are RECOMMENDED to
-    derive the value from the public key as described in RFC 6962. See:
-    <https://www.rfc-editor.org/rfc/rfc6962#section-3.2>
+    Optional unauthenticated hint on which key to use.
+     The format of the hint must be agreed upon out of band by the
+     signer and the verifiers, and so is not subject to this
+     specification.
+     Example use-case is to specify the public key to use, from a
+     trusted key-ring.
+     Implementors are RECOMMENDED to derive the value from the public
+     key as described in RFC 6962.
+     See: <https://www.rfc-editor.org/rfc/rfc6962#section-3.2>
     """
 
 
@@ -223,37 +262,57 @@ class X509Certificate(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class SubjectAlternativeName(betterproto.Message):
     type: "SubjectAlternativeNameType" = betterproto.enum_field(1)
-    regexp: str = betterproto.string_field(2, group="identity")
-    """A regular expression describing the expected value for the SAN."""
+    regexp: Optional[str] = betterproto.string_field(2, optional=True, group="identity")
+    """
+    A regular expression describing the expected value for
+     the SAN.
+    """
 
-    value: str = betterproto.string_field(3, group="identity")
+    value: Optional[str] = betterproto.string_field(3, optional=True, group="identity")
     """The exact value to match against."""
+
+    @model_validator(mode="after")
+    def check_oneof(cls, values):
+        return cls._validate_field_groups(values)
 
 
 @dataclass(eq=False, repr=False)
 class X509CertificateChain(betterproto.Message):
     """
-    A collection of X.509 certificates. This "chain" can be used in multiple
-    contexts, such as providing a root CA certificate within a TUF root of
-    trust or multiple untrusted certificates for the purpose of chain building.
+    A collection of X.509 certificates.
+
+     This "chain" can be used in multiple contexts, such as providing a root CA
+     certificate within a TUF root of trust or multiple untrusted certificates for
+     the purpose of chain building.
     """
 
     certificates: List["X509Certificate"] = betterproto.message_field(1)
     """
-    One or more DER-encoded certificates. In some contexts (such as
-    `VerificationMaterial.x509_certificate_chain`), this sequence has an
-    imposed order. Unless explicitly specified, there is otherwise no
-    guaranteed order.
+    One or more DER-encoded certificates.
+    
+     In some contexts (such as `VerificationMaterial.x509_certificate_chain`), this sequence
+     has an imposed order. Unless explicitly specified, there is otherwise no
+     guaranteed order.
     """
 
 
 @dataclass(eq=False, repr=False)
 class TimeRange(betterproto.Message):
     """
-    The time range is closed and includes both the start and end times, (i.e.,
-    [start, end]). End is optional to be able to capture a period that has
-    started but has no known end.
+    The time range is closed and includes both the start and end times,
+     (i.e., [start, end]).
+     End is optional to be able to capture a period that has started but
+     has no known end.
     """
 
     start: datetime = betterproto.message_field(1)
-    end: Optional[datetime] = betterproto.message_field(2, optional=True, group="_end")
+    end: Optional[datetime] = betterproto.message_field(2, optional=True)
+
+
+rebuild_dataclass(HashOutput)  # type: ignore
+rebuild_dataclass(MessageSignature)  # type: ignore
+rebuild_dataclass(PublicKey)  # type: ignore
+rebuild_dataclass(ObjectIdentifierValuePair)  # type: ignore
+rebuild_dataclass(SubjectAlternativeName)  # type: ignore
+rebuild_dataclass(X509CertificateChain)  # type: ignore
+rebuild_dataclass(TimeRange)  # type: ignore

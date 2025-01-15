@@ -1,0 +1,39 @@
+# syntax=docker/dockerfile-upstream:master
+# This container grabs the protoc compiler and the googleapi includes
+# /protobuf will contain the extracted protoc
+# /googleapis will contain the various googleapis proto imports one might need
+FROM debian:bullseye-slim@sha256:6344a6747740d465bff88e833e43ef881a8c4dd51950dba5b30664c93f74cbef AS protoc-builder
+
+# Create output directories
+RUN mkdir /protobuf /googleapis
+# Install needed utilities
+RUN apt-get update && apt-get install -y unzip git
+
+# Set up user and group to match host we're building the container on
+ARG UID
+
+RUN adduser --uid ${UID} --disabled-password myuser
+
+# Set permissions on the output directories so the user can write to them
+RUN chown myuser /protobuf /googleapis
+
+# Switch to user to execute the remaining commands
+USER myuser
+
+# Download specific release of protoc
+# TODO: add dependabot-like feature to check for release updates
+ARG PROTOC_VERSION
+ARG PROTOC_CHECKSUM
+
+ADD --chown=myuser --checksum=${PROTOC_CHECKSUM} https://github.com/protocolbuffers/protobuf/releases/download/${PROTOC_VERSION}/protoc-${PROTOC_VERSION#v}-linux-x86_64.zip /tmp/protoc.zip
+RUN unzip -d /protobuf /tmp/protoc.zip
+RUN chmod 755 /protobuf/bin/protoc
+
+# fetch specific commit of googleapis
+ARG GOOGLEAPIS_COMMIT
+RUN git clone --filter=tree:0 https://github.com/googleapis/googleapis.git /googleapis && \
+    cd /googleapis && git checkout ${GOOGLEAPIS_COMMIT}
+
+FROM scratch
+COPY --from=protoc-builder /protobuf /protobuf
+COPY --from=protoc-builder /googleapis /googleapis
