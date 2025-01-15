@@ -12,7 +12,6 @@
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.trustroot.v1.TransparencyLogInstance")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransparencyLogInstance {
     /// The base URL at which can be used to URLs for the client.
@@ -59,7 +58,6 @@ pub struct TransparencyLogInstance {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.trustroot.v1.CertificateAuthority")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateAuthority {
     /// The root certificate MUST be self-signed, and so the subject and
@@ -128,7 +126,6 @@ pub struct CertificateAuthority {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.trustroot.v1.TrustedRoot")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrustedRoot {
     /// MUST be application/vnd.dev.sigstore.trustedroot.v0.1+json
@@ -168,7 +165,6 @@ pub struct TrustedRoot {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.trustroot.v1.SigningConfig")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SigningConfig {
     /// MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json
@@ -215,7 +211,6 @@ pub struct SigningConfig {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.trustroot.v1.ClientTrustConfig")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientTrustConfig {
     /// MUST be application/vnd.dev.sigstore.clienttrustconfig.v0.1+json

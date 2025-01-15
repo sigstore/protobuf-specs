@@ -9,7 +9,6 @@
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.bundle.v1.TimestampVerificationData")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimestampVerificationData {
     /// A list of RFC3161 signed timestamps provided by the user.
@@ -38,7 +37,6 @@ pub struct TimestampVerificationData {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.bundle.v1.VerificationMaterial")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerificationMaterial {
     /// An inclusion proof and an optional signed timestamp from the log.
@@ -131,7 +129,6 @@ pub mod verification_material {
         sigstore_protobuf_specs_derive::Deserialize_proto,
         sigstore_protobuf_specs_derive::Serialize_proto
     )]
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
         #[prost(message, tag = "1")]
@@ -149,7 +146,6 @@ pub mod verification_material {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.bundle.v1.Bundle")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Bundle {
     /// MUST be application/vnd.dev.sigstore.bundle.v0.3+json when
@@ -181,7 +177,6 @@ pub mod bundle {
         sigstore_protobuf_specs_derive::Deserialize_proto,
         sigstore_protobuf_specs_derive::Serialize_proto
     )]
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
         #[prost(message, tag = "3")]

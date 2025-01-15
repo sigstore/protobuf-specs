@@ -7,7 +7,6 @@
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v1.KindVersion")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KindVersion {
     /// Kind is the type of entry being stored in the log.
@@ -35,7 +34,6 @@ pub struct KindVersion {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v1.Checkpoint")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Checkpoint {
     #[prost(string, tag = "1")]
@@ -50,7 +48,6 @@ pub struct Checkpoint {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v1.InclusionProof")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InclusionProof {
     /// The index of the entry in the tree it was written to.
@@ -92,7 +89,6 @@ pub struct InclusionProof {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v1.InclusionPromise")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InclusionPromise {
     #[prost(bytes = "vec", tag = "1")]
@@ -113,7 +109,6 @@ pub struct InclusionPromise {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v1.TransparencyLogEntry")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransparencyLogEntry {
     /// The global index of the entry, used when querying the log by index.

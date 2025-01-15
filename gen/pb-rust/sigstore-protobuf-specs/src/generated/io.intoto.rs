@@ -6,7 +6,6 @@
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "io.intoto.Envelope")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Envelope {
     #[prost(bytes = "vec", tag = "1")]
@@ -23,7 +22,6 @@ pub struct Envelope {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "io.intoto.Signature")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Signature {
     /// Signature itself. (In JSON, this is encoded as base64.)

@@ -6,7 +6,6 @@
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.events.v1.CloudEvent")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudEvent {
     /// Required Attributes
@@ -40,7 +39,6 @@ pub mod cloud_event {
         message_name = "dev.sigstore.events.v1.CloudEvent.CloudEventAttributeValue"
     )]
     #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CloudEventAttributeValue {
         #[prost(
@@ -55,7 +53,6 @@ pub mod cloud_event {
             sigstore_protobuf_specs_derive::Deserialize_proto,
             sigstore_protobuf_specs_derive::Serialize_proto
         )]
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Attr {
             #[prost(bool, tag = "1")]
@@ -79,7 +76,6 @@ pub mod cloud_event {
         sigstore_protobuf_specs_derive::Deserialize_proto,
         sigstore_protobuf_specs_derive::Serialize_proto
     )]
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         #[prost(bytes, tag = "6")]
@@ -97,7 +93,6 @@ pub mod cloud_event {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.events.v1.CloudEventBatch")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudEventBatch {
     #[prost(message, repeated, tag = "1")]
