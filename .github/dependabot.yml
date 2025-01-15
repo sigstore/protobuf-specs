@@ -39,3 +39,7 @@ updates:
     directory: "/protoc-builder/hack"
     schedule:
       interval: "monthly"
+  - package-ecosystem: "cargo"
+    directory: "/gen/pb-rust"
+    schedule:
+      interval: "monthly"
