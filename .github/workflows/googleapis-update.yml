@@ -5,6 +5,8 @@ on:
     - cron: '0 0 1 * *'
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   update_protobuf_version:
     runs-on: ubuntu-latest
