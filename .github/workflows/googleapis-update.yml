@@ -32,6 +32,7 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global --type bool push.autoSetupRemote true
           git add -A
           git checkout -b googleapis-${RUN_ID}
           git commit -sam "Update GOOGLEAPIS_COMMIT in versions.mk"
