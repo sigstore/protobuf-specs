@@ -21,7 +21,6 @@ jobs:
           persist-credentials: true
 
       - name: Update versions.mk with latest release version
-        id: extract_metadata
         run: |
           export PROTOC_VERSION="$(awk -F'[:@]' '/FROM ghcr.io\/homebrew\/core\/protobuf/{print $2; exit}' protoc-builder/hack/Dockerfile.protobuf)"
           echo "Detected protobuf v${PROTOC_VERSION}... computing digest of artifact"
