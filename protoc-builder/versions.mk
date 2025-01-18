@@ -34,7 +34,7 @@ DEFAULT_PROTOC_CHECKSUM=sha256:6a9fc36363a2d05d73fc363a46cd57d849068d33305db39f7
 
 # TODO: add dependabot-like feature to check for release updates
 # git commit from https://github.com/googleapis/googleapis
-DEFAULT_GOOGLEAPIS_COMMIT=6ef9eaea379fc1cc0355e06a5a20b594543ee693
+DEFAULT_GOOGLEAPIS_COMMIT=3776db131e34e42ec8d287203020cb4282166aa5
 
 ##################################################################################
 ### DO NOT EDIT BELOW THIS LINE, AS THESE VALUES ARE USED IN THE CORE MAKEFILE ###
