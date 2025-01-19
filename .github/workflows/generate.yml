@@ -49,8 +49,8 @@ jobs:
         make clean
 
     - name: Compile protobufs
-      run: |
       if: steps.filter.outputs.src == 'true'
+      run: |
         make all
 
     - name: Ensure no files were modified as a result of the codegen
