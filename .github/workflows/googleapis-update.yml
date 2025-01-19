@@ -27,6 +27,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           (cd /tmp && git clone --depth=1 https://github.com/googleapis/googleapis)
+          # comment
           export LATEST_COMMIT_HASH=$(cd /tmp/googleapis && git log -n 1 --format=%H)
           sed -i "s/^\(DEFAULT_GOOGLEAPIS_COMMIT\s*=\s*\).*/\1${LATEST_COMMIT_HASH}/" protoc-builder/versions.mk
 

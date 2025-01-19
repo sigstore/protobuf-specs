@@ -24,6 +24,8 @@ RUST_PROTOC_VERSION=v29.3
 RUST_PROTOC_CHECKSUM=sha256:3e866620c5be27664f3d2fa2d656b5f3e09b5152b42f1bedbf427b333e90021a
 RUST_GOOGLEAPIS_COMMIT=fc2697ec5327db9073b4e0aa140248f19b15d7ef
 
+# change
+#
 # TODO: add dependabot-like feature to check for release updates
 # release tag from https://github.com/protocolbuffers/protobuf
 DEFAULT_PROTOC_VERSION=v21.6
