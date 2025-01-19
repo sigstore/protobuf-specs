@@ -32,5 +32,5 @@ uploaded to a github release `release/java/v1.2.3`
 ## Why is the gradle wrapper jar checked in?
 
 The file `gradle-wrapper.jar` is usually checked into java projects that are built with gradle.
-This file is validated by the gradle/wrapper-validation-action in the java-build.yml workflow.
+This file is validated by the gradle/wrapper-validation-action in the gradle-wrapper-validation.yml workflow.
 More info at: https://github.com/gradle/wrapper-validation-action

@@ -51,3 +51,13 @@ updates:
     directory: "/protoc-builder/hack"
     schedule:
       interval: "monthly"
+  # this monitors Homebrew builds of protobuf compiler to monitor protobuf releases;
+  # but still downloads the release asset from GitHub (since it is statically linked)
+  # the "protobuf" label triggers a workflow to update versions.mk
+  - package-ecosystem: "docker"
+    directory: "/protoc-builder/hack"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "protobuf"
