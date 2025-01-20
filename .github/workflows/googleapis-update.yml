@@ -24,7 +24,7 @@ jobs:
       - name: Extract latest commit hash from googleapis/googleapis and create PR
         env:
           RUN_ID: ${{ github.run_id }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GOOGLEAPIS_SIGSTOREBOT_TOKEN }}
         run: |
           (cd /tmp && git clone --depth=1 https://github.com/googleapis/googleapis)
           export LATEST_COMMIT_HASH=$(cd /tmp/googleapis && git log -n 1 --format=%H)
@@ -32,8 +32,8 @@ jobs:
 
           make all
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "Sigstore Bot"
+          git config user.email "86837369+sigstore-bot@users.noreply.github.com"
           git config --global --type bool push.autoSetupRemote true
           git add -A
           git checkout -b googleapis-${RUN_ID}
