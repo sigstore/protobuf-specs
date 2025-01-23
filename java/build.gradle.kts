@@ -94,7 +94,7 @@ publishing {
             }
         }
     }
-    
+
     repositories {
         maven {
             name = "sonatype"
