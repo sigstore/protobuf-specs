@@ -1,6 +1,5 @@
 name: Build Java Release
 on:
-  workflow_dispatch: # for testing (remove later)
   push:
     tags:
       # if you change this pattern, make sure jobs.strip-tag still works
