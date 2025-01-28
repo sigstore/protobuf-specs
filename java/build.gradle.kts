@@ -94,25 +94,14 @@ publishing {
             }
         }
     }
+
     repositories {
         maven {
-            name = "releaseStaging"
-            url = uri(layout.buildDirectory.dir("releaseStaging"))
+            name = "sonatype"
+            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials(PasswordCredentials::class)
         }
     }
-}
-
-tasks.register<Jar>("createReleaseBundle") {
-    dependsOn("publishProtoPublicationToReleaseStagingRepository")
-    from(layout.buildDirectory.dir("releaseStaging/dev/sigstore/protobuf-specs/$version")) {
-        include("*.jar")
-        include("*.pom")
-        include("*.module")
-        include("*.sigstore")
-        include("*.sigstore.json")
-        include("*.asc")
-    }
-    archiveFileName = "${project.name}-${project.version}-bundle.jar"
 }
 
 signing {

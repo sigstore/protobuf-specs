@@ -40,35 +40,29 @@ jobs:
           java-version: 11 
           distribution: 'temurin'
 
-      - name: Build project
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@6fc4af4b145ae7821d527454aa9bd537d1f2dc5f # v0.8.1
+        with:
+          workload_identity_provider: projects/306323169285/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider
+          service_account: protobuf-specs-releaser@sigstore-secrets.iam.gserviceaccount.com
+
+      - uses: google-github-actions/get-secretmanager-secrets@e5bb06c2ca53b244f978d33348d18317a7f263ce # v2.2.2
+        id: secrets
+        with:
+          secrets: |-
+            signing_key:sigstore-secrets/sigstore-java-pgp-priv-key
+            signing_password:sigstore-secrets/sigstore-java-pgp-priv-key-password
+            sonatype_username:sigstore-secrets/sigstore-java-sonatype-username
+            sonatype_password:sigstore-secrets/sigstore-java-sonatype-password
+
+      - name: Build, Sign and Push to Maven Central
+        # TODO: someone still needs to close and release this, but that can be automated next
         working-directory: ./java
         env:
           VERSION: ${{ needs.strip-tag.outputs.version }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ steps.secrets.outputs.signing_key }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ steps.secrets.outputs.signing_password }}
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ steps.secrets.outputs.sonatype_username }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ steps.secrets.outputs.sonatype_password }}
         run: |
-          # override the version in gradle.properties
-          # we have to do some post processing with pgp signatures, cause those secrets aren't online yet
-          ./gradlew clean createReleaseBundle -Pversion=${VERSION} -Prelease -PskipPgpSigning
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
-        with:
-          name: project-release-artifacts
-          path: ./java/build/libs/protobuf-specs-*-bundle.jar
-          if-no-files-found: error
-
-  create-release:
-    runs-on: ubuntu-latest
-    needs: [build]
-    permissions:
-      contents: write # To draft a release
-    steps:
-      - name: Download gradle release artifacts
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
-        with:
-          name: project-release-artifacts
-          path: ./release/
-      - name: Create release
-        env:
-          REF_NAME: ${{ github.ref_name }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create -t "${REF_NAME}" ${REF_NAME} ./release/*
+          ./gradlew clean :publishProtoPublicationToSonatypeRepository -Pversion=${VERSION} -Prelease
