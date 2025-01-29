@@ -12,6 +12,34 @@ All versions prior to 0.2.0 are untracked.
 
 ### Changed
 
+## 0.4.0
+
+* Announced deprecation of JSONSchema outputs from this project
+  ([#493](https://github.com/sigstore/protobuf-specs/pull/493)
+
+### Fixed
+
+* Fix toolchain to write generated code as the user running the build instead of root
+  ([#473](https://github.com/sigstore/protobuf-specs/pull/473)
+
+### Changed
+
+* Recreated toolchain for code generation instead of depending on third-party container image
+  ([#469](https://github.com/sigstore/protobuf-specs/pull/469)
+  ([#475](https://github.com/sigstore/protobuf-specs/pull/475)
+* Updated code generation tools for Go library to latest stable releases
+  ([#476](https://github.com/sigstore/protobuf-specs/pull/476)
+* Updated code generation tools for JSONSchema files to latest stable releases
+  ([#478](https://github.com/sigstore/protobuf-specs/pull/478)
+* Updated code generation tools for Python library to latest stable releases
+  ([#479](https://github.com/sigstore/protobuf-specs/pull/479)
+* Updated code generation tools for Ruby library to latest stable releases
+  ([#481](https://github.com/sigstore/protobuf-specs/pull/481)
+* Updated code generation tools for Rust library to latest stable releases
+  ([#486](https://github.com/sigstore/protobuf-specs/pull/486)
+* Updated code generation tools for Typescript library to latest stable releases
+  ([#488](https://github.com/sigstore/protobuf-specs/pull/488)
+
 ## 0.3.3
 
 * Allowed specifying artifact digest for verification
