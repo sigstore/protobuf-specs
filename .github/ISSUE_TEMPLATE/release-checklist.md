@@ -25,7 +25,6 @@ Full release instructions are at: [RELEASE.md](/sigstore/protobuf-specs/blob/mai
 - [ ] `release/ruby/v<version>`
 - [ ] `release/rust/v<version>`
 - [ ] `release/typescript/v<version>`
-- [ ] `release/jsonschema/v<version>`
 
 ## Publish Release
 - [ ] Java to Maven Central
