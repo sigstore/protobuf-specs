@@ -37,6 +37,18 @@ jobs:
       with:
         ruby-version: '3.2'
 
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@71f986410dfbc7added4569d411d040a91dc6935 # v2.1.8
+      with:
+        workload_identity_provider: projects/306323169285/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider
+        service_account: protobuf-specs-releaser@sigstore-secrets.iam.gserviceaccount.com
+
+    - uses: google-github-actions/get-secretmanager-secrets@a8440875e1c2892062aef9061228d4f1af8f919b # v2.2.3
+      id: secrets
+      with:
+        secrets: |-
+          rubygems_auth_token:sigstore-secrets/protobuf-specs-rubygems-auth-token
+
     - name: Build
       run: |
         gem build sigstore_protobuf_specs.gemspec
@@ -48,4 +60,4 @@ jobs:
         chmod 0600 $HOME/.gem/credentials
         gem push *.gem
       env:
-        RUBYGEMS_AUTH_TOKEN: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
+        RUBYGEMS_AUTH_TOKEN: "${{ steps.secrets.outputs.rubygems_auth_token }}"
