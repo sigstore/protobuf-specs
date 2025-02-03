@@ -30,6 +30,18 @@ jobs:
       with:
         persist-credentials: false
 
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@71f986410dfbc7added4569d411d040a91dc6935 # v2.1.8
+      with:
+        workload_identity_provider: projects/306323169285/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider
+        service_account: protobuf-specs-releaser@sigstore-secrets.iam.gserviceaccount.com
+
+    - uses: google-github-actions/get-secretmanager-secrets@a8440875e1c2892062aef9061228d4f1af8f919b # v2.2.3
+      id: secrets
+      with:
+        secrets: |-
+          cargo_registry_token:sigstore-secrets/protobuf-specs-cargo-registry-token
+
     - run: RUST_ACTION='publish -p sigstore_protobuf_specs' make rust
       env:
-        CARGO_REGISTRY_TOKEN: "${{ secrets.CARGO_REGISTRY_TOKEN }}"
+        CARGO_REGISTRY_TOKEN: "${{ steps.secrets.outputs.cargo_registry_token }}"
