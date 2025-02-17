@@ -188,11 +188,15 @@ class SigningConfig(betterproto.Message):
     """
 
     media_type: str = betterproto.string_field(5)
-    """MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json"""
+    """
+    MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json or
+     application/vnd.dev.sigstore.signingconfig.v0.2+json
+    """
 
     ca_url: str = betterproto.string_field(1)
     """
-    A URL to a Fulcio-compatible CA, capable of receiving
+    Deprecated: Use certificate_authority_urls
+     A URL to a Fulcio-compatible CA, capable of receiving
      Certificate Signing Requests (CSRs) and responding with
      issued certificates.
     
@@ -205,7 +209,8 @@ class SigningConfig(betterproto.Message):
 
     oidc_url: str = betterproto.string_field(2)
     """
-    A URL to an OpenID Connect identity provider.
+    Deprecated: Use openid_connect_provider_urls
+     A URL to an OpenID Connect identity provider.
     
      This URL **MUST** be the "base" URL for the OIDC IdP, which clients
      should perform well-known OpenID Connect discovery against.
@@ -213,7 +218,8 @@ class SigningConfig(betterproto.Message):
 
     tlog_urls: List[str] = betterproto.string_field(3)
     """
-    One or more URLs to Rekor-compatible transparency log.
+    Deprecated: Use rekor_log_urls
+     One or more URLs to Rekor-compatible transparency logs.
     
      Each URL **MUST** be the "base" URL for the transparency log,
      which clients should construct appropriate API endpoints on top of.
@@ -221,11 +227,99 @@ class SigningConfig(betterproto.Message):
 
     tsa_urls: List[str] = betterproto.string_field(4)
     """
-    One ore more URLs to RFC 3161 Time Stamping Authority (TSA).
+    Deprecated: Use timestamp_authority_urls
+     One or more URLs to RFC 3161 Time Stamping Authorities (TSA).
     
      Each URL **MUST** be the **full** URL for the TSA, meaning that it
      should be suitable for submitting Time Stamp Requests (TSRs) to
      via HTTP, per RFC 3161.
+    """
+
+    certificate_authority_urls: List["Service"] = betterproto.message_field(6)
+    """
+    URLs to Fulcio-compatible CAs, capable of receiving
+     Certificate Signing Requests (CSRs) and responding with
+     issued certificates.
+    
+     These URLs **MUST** be the "base" URL for the CAs, which clients
+     should construct an appropriate CSR endpoint on top of.
+     For example, if a CA URL is `https://example.com/ca`, then
+     the client **MAY** construct the CSR endpoint as
+     `https://example.com/ca/api/v2/signingCert`.
+    
+     Clients must select only Service with the highest API version
+     that the client is compatible with and that is within its
+     validity period. Clients should select the first Service
+     that meets this requirement.
+    """
+
+    openid_connect_provider_urls: List["Service"] = betterproto.message_field(7)
+    """
+    URLs to OpenID Connect identity providers.
+    
+     These URLs **MUST** be the "base" URLs for the OIDC IdPs, which clients
+     should perform well-known OpenID Connect discovery against.
+    
+     Clients must select only Service with the highest API version
+     that the client is compatible with and that is within its
+     validity period. Clients should select the first Service
+     that meets this requirement.
+    """
+
+    rekor_log_urls: List["Service"] = betterproto.message_field(8)
+    """
+    URLs to Rekor-compatible transparency logs.
+    
+     These URL **MUST** be the "base" URLs for the transparency logs,
+     which clients should construct appropriate API endpoints on top of.
+    
+     Clients must select ALL Services with the highest API version
+     that the client is compatible with and that are within its
+     validity period.
+    """
+
+    timestamp_authority_urls: List["Service"] = betterproto.message_field(9)
+    """
+    URLs to RFC 3161 Time Stamping Authorities (TSA).
+    
+     These URLs **MUST** be the **full** URL for the TSA, meaning that it
+     should be suitable for submitting Time Stamp Requests (TSRs) to
+     via HTTP, per RFC 3161.
+    
+     Clients must select ALL Services with the highest API version
+     that the client is compatible with and that are within its
+     validity period.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class Service(betterproto.Message):
+    """
+    Service represents an instance of a service that is a part of Sigstore infrastructure.
+     Clients must use the API version hint to determine the service with the
+     highest API version that the client is compatible with. Clients must also
+     only connect to services within the specified validity period and that has the
+     newest validity start date.
+    """
+
+    url: str = betterproto.string_field(1)
+    """
+    URL of the service. Must include scheme and authority. May include path.
+    """
+
+    major_api_version: int = betterproto.uint32_field(2)
+    """
+    Specifies the major API version. A value of 0 represents a service that
+     has not yet been released.
+    """
+
+    valid_for: "__common_v1__.TimeRange" = betterproto.message_field(3)
+    """
+    Validity period of a service. A service that has only a start date
+     should be considered the most recent instance of that service, but
+     the client must not assume there is only one valid instance.
+     The TimeRange should be considered valid *inclusive* of the
+     endpoints.
     """
 
 
@@ -250,4 +344,6 @@ class ClientTrustConfig(betterproto.Message):
 rebuild_dataclass(TransparencyLogInstance)  # type: ignore
 rebuild_dataclass(CertificateAuthority)  # type: ignore
 rebuild_dataclass(TrustedRoot)  # type: ignore
+rebuild_dataclass(SigningConfig)  # type: ignore
+rebuild_dataclass(Service)  # type: ignore
 rebuild_dataclass(ClientTrustConfig)  # type: ignore
