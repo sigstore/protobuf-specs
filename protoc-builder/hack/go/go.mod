@@ -1,12 +1,15 @@
 module github.com/sigstore/protobuf-specs/protoc-builder/hack/go
 
-go 1.21
+go 1.24
 
-toolchain go1.23.4
+toolchain go1.24.0
 
-require (
-	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1
-	google.golang.org/protobuf v1.36.4
+tool (
+	google.golang.org/grpc/cmd/protoc-gen-go-grpc
+	google.golang.org/protobuf/cmd/protoc-gen-go
 )
 
-require golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
+require (
+	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.5.1 // indirect
+	google.golang.org/protobuf v1.36.5 // indirect
+)
