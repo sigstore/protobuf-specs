@@ -173,9 +173,13 @@ export interface TrustedRoot {
  * signer may need to connect to for the online aspects of signing.
  */
 export interface SigningConfig {
-  /** MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json */
+  /**
+   * MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json or
+   * application/vnd.dev.sigstore.signingconfig.v0.2+json
+   */
   mediaType: string;
   /**
+   * Deprecated: Use certificate_authority_urls
    * A URL to a Fulcio-compatible CA, capable of receiving
    * Certificate Signing Requests (CSRs) and responding with
    * issued certificates.
@@ -188,6 +192,7 @@ export interface SigningConfig {
    */
   caUrl: string;
   /**
+   * Deprecated: Use openid_connect_provider_urls
    * A URL to an OpenID Connect identity provider.
    *
    * This URL **MUST** be the "base" URL for the OIDC IdP, which clients
@@ -195,20 +200,99 @@ export interface SigningConfig {
    */
   oidcUrl: string;
   /**
-   * One or more URLs to Rekor-compatible transparency log.
+   * Deprecated: Use rekor_log_urls
+   * One or more URLs to Rekor-compatible transparency logs.
    *
    * Each URL **MUST** be the "base" URL for the transparency log,
    * which clients should construct appropriate API endpoints on top of.
    */
   tlogUrls: string[];
   /**
-   * One ore more URLs to RFC 3161 Time Stamping Authority (TSA).
+   * Deprecated: Use timestamp_authority_urls
+   * One or more URLs to RFC 3161 Time Stamping Authorities (TSA).
    *
    * Each URL **MUST** be the **full** URL for the TSA, meaning that it
    * should be suitable for submitting Time Stamp Requests (TSRs) to
    * via HTTP, per RFC 3161.
    */
   tsaUrls: string[];
+  /**
+   * URLs to Fulcio-compatible CAs, capable of receiving
+   * Certificate Signing Requests (CSRs) and responding with
+   * issued certificates.
+   *
+   * These URLs **MUST** be the "base" URL for the CAs, which clients
+   * should construct an appropriate CSR endpoint on top of.
+   * For example, if a CA URL is `https://example.com/ca`, then
+   * the client **MAY** construct the CSR endpoint as
+   * `https://example.com/ca/api/v2/signingCert`.
+   *
+   * Clients must select only Service with the highest API version
+   * that the client is compatible with and that is within its
+   * validity period. Clients should select the first Service
+   * that meets this requirement.
+   */
+  certificateAuthorityUrls: Service[];
+  /**
+   * URLs to OpenID Connect identity providers.
+   *
+   * These URLs **MUST** be the "base" URLs for the OIDC IdPs, which clients
+   * should perform well-known OpenID Connect discovery against.
+   *
+   * Clients must select only Service with the highest API version
+   * that the client is compatible with and that is within its
+   * validity period. Clients should select the first Service
+   * that meets this requirement.
+   */
+  openidConnectProviderUrls: Service[];
+  /**
+   * URLs to Rekor-compatible transparency logs.
+   *
+   * These URL **MUST** be the "base" URLs for the transparency logs,
+   * which clients should construct appropriate API endpoints on top of.
+   *
+   * Clients must select ALL Services with the highest API version
+   * that the client is compatible with and that are within its
+   * validity period.
+   */
+  rekorLogUrls: Service[];
+  /**
+   * URLs to RFC 3161 Time Stamping Authorities (TSA).
+   *
+   * These URLs **MUST** be the **full** URL for the TSA, meaning that it
+   * should be suitable for submitting Time Stamp Requests (TSRs) to
+   * via HTTP, per RFC 3161.
+   *
+   * Clients must select ALL Services with the highest API version
+   * that the client is compatible with and that are within its
+   * validity period.
+   */
+  timestampAuthorityUrls: Service[];
+}
+
+/**
+ * Service represents an instance of a service that is a part of Sigstore infrastructure.
+ * Clients must use the API version hint to determine the service with the
+ * highest API version that the client is compatible with. Clients must also
+ * only connect to services within the specified validity period and that has the
+ * newest validity start date.
+ */
+export interface Service {
+  /** URL of the service. Must include scheme and authority. May include path. */
+  url: string;
+  /**
+   * Specifies the major API version. A value of 0 represents a service that
+   * has not yet been released.
+   */
+  majorApiVersion: number;
+  /**
+   * Validity period of a service. A service that has only a start date
+   * should be considered the most recent instance of that service, but
+   * the client must not assume there is only one valid instance.
+   * The TimeRange should be considered valid *inclusive* of the
+   * endpoints.
+   */
+  validFor: TimeRange | undefined;
 }
 
 /**
@@ -335,6 +419,18 @@ export const SigningConfig: MessageFns<SigningConfig> = {
       oidcUrl: isSet(object.oidcUrl) ? globalThis.String(object.oidcUrl) : "",
       tlogUrls: globalThis.Array.isArray(object?.tlogUrls) ? object.tlogUrls.map((e: any) => globalThis.String(e)) : [],
       tsaUrls: globalThis.Array.isArray(object?.tsaUrls) ? object.tsaUrls.map((e: any) => globalThis.String(e)) : [],
+      certificateAuthorityUrls: globalThis.Array.isArray(object?.certificateAuthorityUrls)
+        ? object.certificateAuthorityUrls.map((e: any) => Service.fromJSON(e))
+        : [],
+      openidConnectProviderUrls: globalThis.Array.isArray(object?.openidConnectProviderUrls)
+        ? object.openidConnectProviderUrls.map((e: any) => Service.fromJSON(e))
+        : [],
+      rekorLogUrls: globalThis.Array.isArray(object?.rekorLogUrls)
+        ? object.rekorLogUrls.map((e: any) => Service.fromJSON(e))
+        : [],
+      timestampAuthorityUrls: globalThis.Array.isArray(object?.timestampAuthorityUrls)
+        ? object.timestampAuthorityUrls.map((e: any) => Service.fromJSON(e))
+        : [],
     };
   },
 
@@ -354,6 +450,42 @@ export const SigningConfig: MessageFns<SigningConfig> = {
     }
     if (message.tsaUrls?.length) {
       obj.tsaUrls = message.tsaUrls;
+    }
+    if (message.certificateAuthorityUrls?.length) {
+      obj.certificateAuthorityUrls = message.certificateAuthorityUrls.map((e) => Service.toJSON(e));
+    }
+    if (message.openidConnectProviderUrls?.length) {
+      obj.openidConnectProviderUrls = message.openidConnectProviderUrls.map((e) => Service.toJSON(e));
+    }
+    if (message.rekorLogUrls?.length) {
+      obj.rekorLogUrls = message.rekorLogUrls.map((e) => Service.toJSON(e));
+    }
+    if (message.timestampAuthorityUrls?.length) {
+      obj.timestampAuthorityUrls = message.timestampAuthorityUrls.map((e) => Service.toJSON(e));
+    }
+    return obj;
+  },
+};
+
+export const Service: MessageFns<Service> = {
+  fromJSON(object: any): Service {
+    return {
+      url: isSet(object.url) ? globalThis.String(object.url) : "",
+      majorApiVersion: isSet(object.majorApiVersion) ? globalThis.Number(object.majorApiVersion) : 0,
+      validFor: isSet(object.validFor) ? TimeRange.fromJSON(object.validFor) : undefined,
+    };
+  },
+
+  toJSON(message: Service): unknown {
+    const obj: any = {};
+    if (message.url !== "") {
+      obj.url = message.url;
+    }
+    if (message.majorApiVersion !== 0) {
+      obj.majorApiVersion = Math.round(message.majorApiVersion);
+    }
+    if (message.validFor !== undefined) {
+      obj.validFor = TimeRange.toJSON(message.validFor);
     }
     return obj;
   },
