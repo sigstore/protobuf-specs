@@ -19,6 +19,25 @@ from pydantic.dataclasses import rebuild_dataclass
 from ...common import v1 as __common_v1__
 
 
+class ServiceSelector(betterproto.Enum):
+    """
+    ServiceSelector specifies how a client should select a set of
+     Services to connect to. A client SHOULD throw an error if
+     the value is SERVICE_SELECTOR_UNDEFINED.
+    """
+
+    UNDEFINED = 0
+    ALL = 1
+    ANY = 2
+    EXACT = 3
+
+    @classmethod
+    def __get_pydantic_core_schema__(cls, _source_type, _handler):
+        from pydantic_core import core_schema
+
+        return core_schema.int_schema(ge=0)
+
+
 @dataclass(eq=False, repr=False)
 class TransparencyLogInstance(betterproto.Message):
     """
@@ -188,44 +207,142 @@ class SigningConfig(betterproto.Message):
     """
 
     media_type: str = betterproto.string_field(5)
-    """MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json"""
-
-    ca_url: str = betterproto.string_field(1)
     """
-    A URL to a Fulcio-compatible CA, capable of receiving
+    MUST be application/vnd.dev.sigstore.signingconfig.v0.2+json
+     Clients MAY choose to also support
+     application/vnd.dev.sigstore.signingconfig.v0.1+json
+    """
+
+    ca_urls: List["Service"] = betterproto.message_field(6)
+    """
+    URLs to Fulcio-compatible CAs, capable of receiving
      Certificate Signing Requests (CSRs) and responding with
      issued certificates.
     
-     This URL **MUST** be the "base" URL for the CA, which clients
+     These URLs MUST be the "base" URL for the CAs, which clients
      should construct an appropriate CSR endpoint on top of.
-     For example, if `ca_url` is `https://example.com/ca`, then
-     the client **MAY** construct the CSR endpoint as
+     For example, if a CA URL is `https://example.com/ca`, then
+     the client MAY construct the CSR endpoint as
      `https://example.com/ca/api/v2/signingCert`.
+    
+     Clients MUST select only one Service with the highest API version
+     that the client is compatible with, that is within its
+     validity period, and has the newest validity start date.
+     Client SHOULD select the first Service that meets this requirement.
+     All listed Services SHOULD be sorted by the `valid_for` window in
+     descending order, with the newest instance first.
     """
 
-    oidc_url: str = betterproto.string_field(2)
+    oidc_urls: List["Service"] = betterproto.message_field(7)
     """
-    A URL to an OpenID Connect identity provider.
+    URLs to OpenID Connect identity providers.
     
-     This URL **MUST** be the "base" URL for the OIDC IdP, which clients
+     These URLs MUST be the "base" URLs for the OIDC IdPs, which clients
      should perform well-known OpenID Connect discovery against.
+    
+     Clients MUST select only one Service with the highest API version
+     that the client is compatible with, that is within its
+     validity period, and has the newest validity start date.
+     Client SHOULD select the first Service that meets this requirement.
+     All listed Services SHOULD be sorted by the `valid_for` window in
+     descending order, with the newest instance first.
     """
 
-    tlog_urls: List[str] = betterproto.string_field(3)
+    rekor_tlog_urls: List["Service"] = betterproto.message_field(8)
     """
-    One or more URLs to Rekor-compatible transparency log.
+    URLs to Rekor transparency logs.
     
-     Each URL **MUST** be the "base" URL for the transparency log,
+     These URL MUST be the "base" URLs for the transparency logs,
      which clients should construct appropriate API endpoints on top of.
+    
+     Clients MUST select Services with the highest API version
+     that the client is compatible with, that are within its
+     validity period, and have the newest validity start dates.
+     All listed Services SHOULD be sorted by the `valid_for` window in
+     descending order, with the newest instance first.
+    
+     Clients MUST select Services based on the selector value of
+     `rekor_tlog_config`.
     """
 
-    tsa_urls: List[str] = betterproto.string_field(4)
+    rekor_tlog_config: "ServiceConfiguration" = betterproto.message_field(9)
     """
-    One ore more URLs to RFC 3161 Time Stamping Authority (TSA).
+    Specifies how a client should select the set of Rekor transparency
+     logs to write to.
+    """
+
+    tsa_urls: List["Service"] = betterproto.message_field(10)
+    """
+    URLs to RFC 3161 Time Stamping Authorities (TSA).
     
-     Each URL **MUST** be the **full** URL for the TSA, meaning that it
+     These URLs MUST be the *full* URL for the TSA, meaning that it
      should be suitable for submitting Time Stamp Requests (TSRs) to
      via HTTP, per RFC 3161.
+    
+     Clients MUST select Services with the highest API version
+     that the client is compatible with, that are within its
+     validity period, and have the newest validity start dates.
+     All listed Services SHOULD be sorted by the `valid_for` window in
+     descending order, with the newest instance first.
+    
+     Clients MUST select Services based on the selector value of
+     `tsa_config`.
+    """
+
+    tsa_config: "ServiceConfiguration" = betterproto.message_field(11)
+    """
+    Specifies how a client should select the set of TSAs to request
+     signed timestamps from.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class Service(betterproto.Message):
+    """
+    Service represents an instance of a service that is a part of Sigstore infrastructure.
+     Clients MUST use the API version hint to determine the service with the
+     highest API version that the client is compatible with. Clients MUST also
+     only connect to services within the specified validity period and that has the
+     newest validity start date.
+    """
+
+    url: str = betterproto.string_field(1)
+    """
+    URL of the service. MUST include scheme and authority. MAY include path.
+    """
+
+    major_api_version: int = betterproto.uint32_field(2)
+    """
+    Specifies the major API version. A value of 0 represents a service that
+     has not yet been released.
+    """
+
+    valid_for: "__common_v1__.TimeRange" = betterproto.message_field(3)
+    """
+    Validity period of a service. A service that has only a start date
+     SHOULD be considered the most recent instance of that service, but
+     the client MUST NOT assume there is only one valid instance.
+     The TimeRange MUST be considered valid *inclusive* of the
+     endpoints.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class ServiceConfiguration(betterproto.Message):
+    """
+    ServiceConfiguration specifies how a client should select a set of
+     Services to connect to, along with a count when a specific number
+     of Services is requested.
+    """
+
+    selector: "ServiceSelector" = betterproto.enum_field(1)
+    """How a client should select a set of Services to connect to."""
+
+    count: int = betterproto.uint32_field(2)
+    """
+    count specifies the number of Services the client should use.
+     Only used when selector is set to EXACT, and count MUST be greater
+     than 0. count MUST be less than or equal to the number of Services.
     """
 
 
@@ -250,4 +367,7 @@ class ClientTrustConfig(betterproto.Message):
 rebuild_dataclass(TransparencyLogInstance)  # type: ignore
 rebuild_dataclass(CertificateAuthority)  # type: ignore
 rebuild_dataclass(TrustedRoot)  # type: ignore
+rebuild_dataclass(SigningConfig)  # type: ignore
+rebuild_dataclass(Service)  # type: ignore
+rebuild_dataclass(ServiceConfiguration)  # type: ignore
 rebuild_dataclass(ClientTrustConfig)  # type: ignore

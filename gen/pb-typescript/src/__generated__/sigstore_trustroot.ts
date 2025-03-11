@@ -17,6 +17,52 @@ import {
 } from "./sigstore_common";
 
 /**
+ * ServiceSelector specifies how a client should select a set of
+ * Services to connect to. A client SHOULD throw an error if
+ * the value is SERVICE_SELECTOR_UNDEFINED.
+ */
+export enum ServiceSelector {
+  SERVICE_SELECTOR_UNDEFINED = 0,
+  ALL = 1,
+  ANY = 2,
+  EXACT = 3,
+}
+
+export function serviceSelectorFromJSON(object: any): ServiceSelector {
+  switch (object) {
+    case 0:
+    case "SERVICE_SELECTOR_UNDEFINED":
+      return ServiceSelector.SERVICE_SELECTOR_UNDEFINED;
+    case 1:
+    case "ALL":
+      return ServiceSelector.ALL;
+    case 2:
+    case "ANY":
+      return ServiceSelector.ANY;
+    case 3:
+    case "EXACT":
+      return ServiceSelector.EXACT;
+    default:
+      throw new globalThis.Error("Unrecognized enum value " + object + " for enum ServiceSelector");
+  }
+}
+
+export function serviceSelectorToJSON(object: ServiceSelector): string {
+  switch (object) {
+    case ServiceSelector.SERVICE_SELECTOR_UNDEFINED:
+      return "SERVICE_SELECTOR_UNDEFINED";
+    case ServiceSelector.ALL:
+      return "ALL";
+    case ServiceSelector.ANY:
+      return "ANY";
+    case ServiceSelector.EXACT:
+      return "EXACT";
+    default:
+      throw new globalThis.Error("Unrecognized enum value " + object + " for enum ServiceSelector");
+  }
+}
+
+/**
  * TransparencyLogInstance describes the immutable parameters from a
  * transparency log.
  * See https://www.rfc-editor.org/rfc/rfc9162.html#name-log-parameters
@@ -173,42 +219,131 @@ export interface TrustedRoot {
  * signer may need to connect to for the online aspects of signing.
  */
 export interface SigningConfig {
-  /** MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json */
+  /**
+   * MUST be application/vnd.dev.sigstore.signingconfig.v0.2+json
+   * Clients MAY choose to also support
+   * application/vnd.dev.sigstore.signingconfig.v0.1+json
+   */
   mediaType: string;
   /**
-   * A URL to a Fulcio-compatible CA, capable of receiving
+   * URLs to Fulcio-compatible CAs, capable of receiving
    * Certificate Signing Requests (CSRs) and responding with
    * issued certificates.
    *
-   * This URL **MUST** be the "base" URL for the CA, which clients
+   * These URLs MUST be the "base" URL for the CAs, which clients
    * should construct an appropriate CSR endpoint on top of.
-   * For example, if `ca_url` is `https://example.com/ca`, then
-   * the client **MAY** construct the CSR endpoint as
+   * For example, if a CA URL is `https://example.com/ca`, then
+   * the client MAY construct the CSR endpoint as
    * `https://example.com/ca/api/v2/signingCert`.
-   */
-  caUrl: string;
-  /**
-   * A URL to an OpenID Connect identity provider.
    *
-   * This URL **MUST** be the "base" URL for the OIDC IdP, which clients
+   * Clients MUST select only one Service with the highest API version
+   * that the client is compatible with, that is within its
+   * validity period, and has the newest validity start date.
+   * Client SHOULD select the first Service that meets this requirement.
+   * All listed Services SHOULD be sorted by the `valid_for` window in
+   * descending order, with the newest instance first.
+   */
+  caUrls: Service[];
+  /**
+   * URLs to OpenID Connect identity providers.
+   *
+   * These URLs MUST be the "base" URLs for the OIDC IdPs, which clients
    * should perform well-known OpenID Connect discovery against.
-   */
-  oidcUrl: string;
-  /**
-   * One or more URLs to Rekor-compatible transparency log.
    *
-   * Each URL **MUST** be the "base" URL for the transparency log,
+   * Clients MUST select only one Service with the highest API version
+   * that the client is compatible with, that is within its
+   * validity period, and has the newest validity start date.
+   * Client SHOULD select the first Service that meets this requirement.
+   * All listed Services SHOULD be sorted by the `valid_for` window in
+   * descending order, with the newest instance first.
+   */
+  oidcUrls: Service[];
+  /**
+   * URLs to Rekor transparency logs.
+   *
+   * These URL MUST be the "base" URLs for the transparency logs,
    * which clients should construct appropriate API endpoints on top of.
-   */
-  tlogUrls: string[];
-  /**
-   * One ore more URLs to RFC 3161 Time Stamping Authority (TSA).
    *
-   * Each URL **MUST** be the **full** URL for the TSA, meaning that it
+   * Clients MUST select Services with the highest API version
+   * that the client is compatible with, that are within its
+   * validity period, and have the newest validity start dates.
+   * All listed Services SHOULD be sorted by the `valid_for` window in
+   * descending order, with the newest instance first.
+   *
+   * Clients MUST select Services based on the selector value of
+   * `rekor_tlog_config`.
+   */
+  rekorTlogUrls: Service[];
+  /**
+   * Specifies how a client should select the set of Rekor transparency
+   * logs to write to.
+   */
+  rekorTlogConfig:
+    | ServiceConfiguration
+    | undefined;
+  /**
+   * URLs to RFC 3161 Time Stamping Authorities (TSA).
+   *
+   * These URLs MUST be the *full* URL for the TSA, meaning that it
    * should be suitable for submitting Time Stamp Requests (TSRs) to
    * via HTTP, per RFC 3161.
+   *
+   * Clients MUST select Services with the highest API version
+   * that the client is compatible with, that are within its
+   * validity period, and have the newest validity start dates.
+   * All listed Services SHOULD be sorted by the `valid_for` window in
+   * descending order, with the newest instance first.
+   *
+   * Clients MUST select Services based on the selector value of
+   * `tsa_config`.
    */
-  tsaUrls: string[];
+  tsaUrls: Service[];
+  /**
+   * Specifies how a client should select the set of TSAs to request
+   * signed timestamps from.
+   */
+  tsaConfig: ServiceConfiguration | undefined;
+}
+
+/**
+ * Service represents an instance of a service that is a part of Sigstore infrastructure.
+ * Clients MUST use the API version hint to determine the service with the
+ * highest API version that the client is compatible with. Clients MUST also
+ * only connect to services within the specified validity period and that has the
+ * newest validity start date.
+ */
+export interface Service {
+  /** URL of the service. MUST include scheme and authority. MAY include path. */
+  url: string;
+  /**
+   * Specifies the major API version. A value of 0 represents a service that
+   * has not yet been released.
+   */
+  majorApiVersion: number;
+  /**
+   * Validity period of a service. A service that has only a start date
+   * SHOULD be considered the most recent instance of that service, but
+   * the client MUST NOT assume there is only one valid instance.
+   * The TimeRange MUST be considered valid *inclusive* of the
+   * endpoints.
+   */
+  validFor: TimeRange | undefined;
+}
+
+/**
+ * ServiceConfiguration specifies how a client should select a set of
+ * Services to connect to, along with a count when a specific number
+ * of Services is requested.
+ */
+export interface ServiceConfiguration {
+  /** How a client should select a set of Services to connect to. */
+  selector: ServiceSelector;
+  /**
+   * count specifies the number of Services the client should use.
+   * Only used when selector is set to EXACT, and count MUST be greater
+   * than 0. count MUST be less than or equal to the number of Services.
+   */
+  count: number;
 }
 
 /**
@@ -331,10 +466,16 @@ export const SigningConfig: MessageFns<SigningConfig> = {
   fromJSON(object: any): SigningConfig {
     return {
       mediaType: isSet(object.mediaType) ? globalThis.String(object.mediaType) : "",
-      caUrl: isSet(object.caUrl) ? globalThis.String(object.caUrl) : "",
-      oidcUrl: isSet(object.oidcUrl) ? globalThis.String(object.oidcUrl) : "",
-      tlogUrls: globalThis.Array.isArray(object?.tlogUrls) ? object.tlogUrls.map((e: any) => globalThis.String(e)) : [],
-      tsaUrls: globalThis.Array.isArray(object?.tsaUrls) ? object.tsaUrls.map((e: any) => globalThis.String(e)) : [],
+      caUrls: globalThis.Array.isArray(object?.caUrls) ? object.caUrls.map((e: any) => Service.fromJSON(e)) : [],
+      oidcUrls: globalThis.Array.isArray(object?.oidcUrls) ? object.oidcUrls.map((e: any) => Service.fromJSON(e)) : [],
+      rekorTlogUrls: globalThis.Array.isArray(object?.rekorTlogUrls)
+        ? object.rekorTlogUrls.map((e: any) => Service.fromJSON(e))
+        : [],
+      rekorTlogConfig: isSet(object.rekorTlogConfig)
+        ? ServiceConfiguration.fromJSON(object.rekorTlogConfig)
+        : undefined,
+      tsaUrls: globalThis.Array.isArray(object?.tsaUrls) ? object.tsaUrls.map((e: any) => Service.fromJSON(e)) : [],
+      tsaConfig: isSet(object.tsaConfig) ? ServiceConfiguration.fromJSON(object.tsaConfig) : undefined,
     };
   },
 
@@ -343,17 +484,67 @@ export const SigningConfig: MessageFns<SigningConfig> = {
     if (message.mediaType !== "") {
       obj.mediaType = message.mediaType;
     }
-    if (message.caUrl !== "") {
-      obj.caUrl = message.caUrl;
+    if (message.caUrls?.length) {
+      obj.caUrls = message.caUrls.map((e) => Service.toJSON(e));
     }
-    if (message.oidcUrl !== "") {
-      obj.oidcUrl = message.oidcUrl;
+    if (message.oidcUrls?.length) {
+      obj.oidcUrls = message.oidcUrls.map((e) => Service.toJSON(e));
     }
-    if (message.tlogUrls?.length) {
-      obj.tlogUrls = message.tlogUrls;
+    if (message.rekorTlogUrls?.length) {
+      obj.rekorTlogUrls = message.rekorTlogUrls.map((e) => Service.toJSON(e));
+    }
+    if (message.rekorTlogConfig !== undefined) {
+      obj.rekorTlogConfig = ServiceConfiguration.toJSON(message.rekorTlogConfig);
     }
     if (message.tsaUrls?.length) {
-      obj.tsaUrls = message.tsaUrls;
+      obj.tsaUrls = message.tsaUrls.map((e) => Service.toJSON(e));
+    }
+    if (message.tsaConfig !== undefined) {
+      obj.tsaConfig = ServiceConfiguration.toJSON(message.tsaConfig);
+    }
+    return obj;
+  },
+};
+
+export const Service: MessageFns<Service> = {
+  fromJSON(object: any): Service {
+    return {
+      url: isSet(object.url) ? globalThis.String(object.url) : "",
+      majorApiVersion: isSet(object.majorApiVersion) ? globalThis.Number(object.majorApiVersion) : 0,
+      validFor: isSet(object.validFor) ? TimeRange.fromJSON(object.validFor) : undefined,
+    };
+  },
+
+  toJSON(message: Service): unknown {
+    const obj: any = {};
+    if (message.url !== "") {
+      obj.url = message.url;
+    }
+    if (message.majorApiVersion !== 0) {
+      obj.majorApiVersion = Math.round(message.majorApiVersion);
+    }
+    if (message.validFor !== undefined) {
+      obj.validFor = TimeRange.toJSON(message.validFor);
+    }
+    return obj;
+  },
+};
+
+export const ServiceConfiguration: MessageFns<ServiceConfiguration> = {
+  fromJSON(object: any): ServiceConfiguration {
+    return {
+      selector: isSet(object.selector) ? serviceSelectorFromJSON(object.selector) : 0,
+      count: isSet(object.count) ? globalThis.Number(object.count) : 0,
+    };
+  },
+
+  toJSON(message: ServiceConfiguration): unknown {
+    const obj: any = {};
+    if (message.selector !== 0) {
+      obj.selector = serviceSelectorToJSON(message.selector);
+    }
+    if (message.count !== 0) {
+      obj.count = Math.round(message.count);
     }
     return obj;
   },
