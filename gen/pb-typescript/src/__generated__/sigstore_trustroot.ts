@@ -17,14 +17,29 @@ import {
 } from "./sigstore_common";
 
 /**
- * ServiceSelector specifies how a client should select a set of
+ * ServiceSelector specifies how a client SHOULD select a set of
  * Services to connect to. A client SHOULD throw an error if
  * the value is SERVICE_SELECTOR_UNDEFINED.
  */
 export enum ServiceSelector {
   SERVICE_SELECTOR_UNDEFINED = 0,
+  /**
+   * ALL - Clients SHOULD select all Services based on supported API version
+   * and validity window.
+   */
   ALL = 1,
+  /**
+   * ANY - Clients SHOULD select one Service based on supported API version
+   * and validity window. It is up to the client implementation to
+   * decide how to select the Service, e.g. random or round-robin.
+   */
   ANY = 2,
+  /**
+   * EXACT - Clients SHOULD select a specific number of Services based on
+   * supported API version and validity window, using the provided
+   * `count`. It is up to the client implementation to decide how to
+   * select the Service, e.g. random or round-robin.
+   */
   EXACT = 3,
 }
 

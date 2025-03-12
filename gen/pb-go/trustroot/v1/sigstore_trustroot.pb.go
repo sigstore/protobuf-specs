@@ -37,16 +37,25 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ServiceSelector specifies how a client should select a set of
+// ServiceSelector specifies how a client SHOULD select a set of
 // Services to connect to. A client SHOULD throw an error if
 // the value is SERVICE_SELECTOR_UNDEFINED.
 type ServiceSelector int32
 
 const (
 	ServiceSelector_SERVICE_SELECTOR_UNDEFINED ServiceSelector = 0
-	ServiceSelector_ALL                        ServiceSelector = 1
-	ServiceSelector_ANY                        ServiceSelector = 2
-	ServiceSelector_EXACT                      ServiceSelector = 3
+	// Clients SHOULD select all Services based on supported API version
+	// and validity window.
+	ServiceSelector_ALL ServiceSelector = 1
+	// Clients SHOULD select one Service based on supported API version
+	// and validity window. It is up to the client implementation to
+	// decide how to select the Service, e.g. random or round-robin.
+	ServiceSelector_ANY ServiceSelector = 2
+	// Clients SHOULD select a specific number of Services based on
+	// supported API version and validity window, using the provided
+	// `count`. It is up to the client implementation to decide how to
+	// select the Service, e.g. random or round-robin.
+	ServiceSelector_EXACT ServiceSelector = 3
 )
 
 // Enum value maps for ServiceSelector.

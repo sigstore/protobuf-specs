@@ -315,7 +315,7 @@ pub struct ClientTrustConfig {
     #[prost(message, optional, tag = "3")]
     pub signing_config: ::core::option::Option<SigningConfig>,
 }
-/// ServiceSelector specifies how a client should select a set of
+/// ServiceSelector specifies how a client SHOULD select a set of
 /// Services to connect to. A client SHOULD throw an error if
 /// the value is SERVICE_SELECTOR_UNDEFINED.
 #[derive(
@@ -326,8 +326,17 @@ pub struct ClientTrustConfig {
 #[repr(i32)]
 pub enum ServiceSelector {
     Undefined = 0,
+    /// Clients SHOULD select all Services based on supported API version
+    /// and validity window.
     All = 1,
+    /// Clients SHOULD select one Service based on supported API version
+    /// and validity window. It is up to the client implementation to
+    /// decide how to select the Service, e.g. random or round-robin.
     Any = 2,
+    /// Clients SHOULD select a specific number of Services based on
+    /// supported API version and validity window, using the provided
+    /// `count`. It is up to the client implementation to decide how to
+    /// select the Service, e.g. random or round-robin.
     Exact = 3,
 }
 impl ServiceSelector {

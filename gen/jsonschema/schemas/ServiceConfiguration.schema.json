@@ -13,7 +13,7 @@
                     ],
                     "type": "string",
                     "title": "Service Selector",
-                    "description": "ServiceSelector specifies how a client should select a set of Services to connect to. A client SHOULD throw an error if the value is SERVICE_SELECTOR_UNDEFINED."
+                    "description": "ServiceSelector specifies how a client SHOULD select a set of Services to connect to. A client SHOULD throw an error if the value is SERVICE_SELECTOR_UNDEFINED."
                 },
                 "count": {
                     "type": "integer",
