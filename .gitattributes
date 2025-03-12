@@ -1,1 +1,2 @@
 *.pb.go linguist-generated
+/gen/** linguist-generated
