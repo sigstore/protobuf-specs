@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ServiceConfiguration",
+    "definitions": {
+        "ServiceConfiguration": {
+            "properties": {
+                "selector": {
+                    "enum": [
+                        "SERVICE_SELECTOR_UNDEFINED",
+                        "ALL",
+                        "ANY",
+                        "EXACT"
+                    ],
+                    "type": "string",
+                    "title": "Service Selector",
+                    "description": "ServiceSelector specifies how a client SHOULD select a set of Services to connect to. A client SHOULD throw an error if the value is SERVICE_SELECTOR_UNDEFINED."
+                },
+                "count": {
+                    "type": "integer",
+                    "description": "count specifies the number of Services the client should use. Only used when selector is set to EXACT, and count MUST be greater than 0. count MUST be less than or equal to the number of Services."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Service Configuration",
+            "description": "ServiceConfiguration specifies how a client should select a set of Services to connect to, along with a count when a specific number of Services is requested."
+        }
+    }
+}

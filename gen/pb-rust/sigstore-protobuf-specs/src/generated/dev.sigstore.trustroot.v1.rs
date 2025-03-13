@@ -167,39 +167,131 @@ pub struct TrustedRoot {
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SigningConfig {
-    /// MUST be application/vnd.dev.sigstore.signingconfig.v0.1+json
+    /// MUST be application/vnd.dev.sigstore.signingconfig.v0.2+json
+    /// Clients MAY choose to also support
+    /// application/vnd.dev.sigstore.signingconfig.v0.1+json
     #[prost(string, tag = "5")]
     pub media_type: ::prost::alloc::string::String,
-    /// A URL to a Fulcio-compatible CA, capable of receiving
+    /// URLs to Fulcio-compatible CAs, capable of receiving
     /// Certificate Signing Requests (CSRs) and responding with
     /// issued certificates.
     ///
-    /// This URL **MUST** be the "base" URL for the CA, which clients
+    /// These URLs MUST be the "base" URL for the CAs, which clients
     /// should construct an appropriate CSR endpoint on top of.
-    /// For example, if `ca_url` is `<https://example.com/ca`,> then
-    /// the client **MAY** construct the CSR endpoint as
+    /// For example, if a CA URL is `<https://example.com/ca`,> then
+    /// the client MAY construct the CSR endpoint as
     /// `<https://example.com/ca/api/v2/signingCert`.>
-    #[prost(string, tag = "1")]
-    pub ca_url: ::prost::alloc::string::String,
-    /// A URL to an OpenID Connect identity provider.
     ///
-    /// This URL **MUST** be the "base" URL for the OIDC IdP, which clients
+    /// Clients MUST select only one Service with the highest API version
+    /// that the client is compatible with, that is within its
+    /// validity period, and has the newest validity start date.
+    /// Client SHOULD select the first Service that meets this requirement.
+    /// All listed Services SHOULD be sorted by the `valid_for` window in
+    /// descending order, with the newest instance first.
+    #[prost(message, repeated, tag = "6")]
+    pub ca_urls: ::prost::alloc::vec::Vec<Service>,
+    /// URLs to OpenID Connect identity providers.
+    ///
+    /// These URLs MUST be the "base" URLs for the OIDC IdPs, which clients
     /// should perform well-known OpenID Connect discovery against.
-    #[prost(string, tag = "2")]
-    pub oidc_url: ::prost::alloc::string::String,
-    /// One or more URLs to Rekor-compatible transparency log.
     ///
-    /// Each URL **MUST** be the "base" URL for the transparency log,
+    /// Clients MUST select only one Service with the highest API version
+    /// that the client is compatible with, that is within its
+    /// validity period, and has the newest validity start date.
+    /// Client SHOULD select the first Service that meets this requirement.
+    /// All listed Services SHOULD be sorted by the `valid_for` window in
+    /// descending order, with the newest instance first.
+    #[prost(message, repeated, tag = "7")]
+    pub oidc_urls: ::prost::alloc::vec::Vec<Service>,
+    /// URLs to Rekor transparency logs.
+    ///
+    /// These URL MUST be the "base" URLs for the transparency logs,
     /// which clients should construct appropriate API endpoints on top of.
-    #[prost(string, repeated, tag = "3")]
-    pub tlog_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// One ore more URLs to RFC 3161 Time Stamping Authority (TSA).
     ///
-    /// Each URL **MUST** be the **full** URL for the TSA, meaning that it
+    /// Clients MUST select Services with the highest API version
+    /// that the client is compatible with, that are within its
+    /// validity period, and have the newest validity start dates.
+    /// All listed Services SHOULD be sorted by the `valid_for` window in
+    /// descending order, with the newest instance first.
+    ///
+    /// Clients MUST select Services based on the selector value of
+    /// `rekor_tlog_config`.
+    #[prost(message, repeated, tag = "8")]
+    pub rekor_tlog_urls: ::prost::alloc::vec::Vec<Service>,
+    /// Specifies how a client should select the set of Rekor transparency
+    /// logs to write to.
+    #[prost(message, optional, tag = "9")]
+    pub rekor_tlog_config: ::core::option::Option<ServiceConfiguration>,
+    /// URLs to RFC 3161 Time Stamping Authorities (TSA).
+    ///
+    /// These URLs MUST be the *full* URL for the TSA, meaning that it
     /// should be suitable for submitting Time Stamp Requests (TSRs) to
     /// via HTTP, per RFC 3161.
-    #[prost(string, repeated, tag = "4")]
-    pub tsa_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    ///
+    /// Clients MUST select Services with the highest API version
+    /// that the client is compatible with, that are within its
+    /// validity period, and have the newest validity start dates.
+    /// All listed Services SHOULD be sorted by the `valid_for` window in
+    /// descending order, with the newest instance first.
+    ///
+    /// Clients MUST select Services based on the selector value of
+    /// `tsa_config`.
+    #[prost(message, repeated, tag = "10")]
+    pub tsa_urls: ::prost::alloc::vec::Vec<Service>,
+    /// Specifies how a client should select the set of TSAs to request
+    /// signed timestamps from.
+    #[prost(message, optional, tag = "11")]
+    pub tsa_config: ::core::option::Option<ServiceConfiguration>,
+}
+/// Service represents an instance of a service that is a part of Sigstore infrastructure.
+/// Clients MUST use the API version hint to determine the service with the
+/// highest API version that the client is compatible with. Clients MUST also
+/// only connect to services within the specified validity period and that has the
+/// newest validity start date.
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.trustroot.v1.Service")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Service {
+    /// URL of the service. MUST include scheme and authority. MAY include path.
+    #[prost(string, tag = "1")]
+    pub url: ::prost::alloc::string::String,
+    /// Specifies the major API version. A value of 0 represents a service that
+    /// has not yet been released.
+    #[prost(uint32, tag = "2")]
+    pub major_api_version: u32,
+    /// Validity period of a service. A service that has only a start date
+    /// SHOULD be considered the most recent instance of that service, but
+    /// the client MUST NOT assume there is only one valid instance.
+    /// The TimeRange MUST be considered valid *inclusive* of the
+    /// endpoints.
+    #[prost(message, optional, tag = "3")]
+    pub valid_for: ::core::option::Option<super::super::common::v1::TimeRange>,
+}
+/// ServiceConfiguration specifies how a client should select a set of
+/// Services to connect to, along with a count when a specific number
+/// of Services is requested.
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.trustroot.v1.ServiceConfiguration")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ServiceConfiguration {
+    /// How a client should select a set of Services to connect to.
+    #[prost(enumeration = "ServiceSelector", tag = "1")]
+    pub selector: i32,
+    /// count specifies the number of Services the client should use.
+    /// Only used when selector is set to EXACT, and count MUST be greater
+    /// than 0. count MUST be less than or equal to the number of Services.
+    #[prost(uint32, tag = "2")]
+    pub count: u32,
 }
 /// ClientTrustConfig describes the complete state needed by a client
 /// to perform both signing and verification operations against a particular
@@ -222,4 +314,52 @@ pub struct ClientTrustConfig {
     /// Configuration for signing clients, which MUST be present.
     #[prost(message, optional, tag = "3")]
     pub signing_config: ::core::option::Option<SigningConfig>,
+}
+/// ServiceSelector specifies how a client SHOULD select a set of
+/// Services to connect to. A client SHOULD throw an error if
+/// the value is SERVICE_SELECTOR_UNDEFINED.
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ServiceSelector {
+    Undefined = 0,
+    /// Clients SHOULD select all Services based on supported API version
+    /// and validity window.
+    All = 1,
+    /// Clients SHOULD select one Service based on supported API version
+    /// and validity window. It is up to the client implementation to
+    /// decide how to select the Service, e.g. random or round-robin.
+    Any = 2,
+    /// Clients SHOULD select a specific number of Services based on
+    /// supported API version and validity window, using the provided
+    /// `count`. It is up to the client implementation to decide how to
+    /// select the Service, e.g. random or round-robin.
+    Exact = 3,
+}
+impl ServiceSelector {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Undefined => "SERVICE_SELECTOR_UNDEFINED",
+            Self::All => "ALL",
+            Self::Any => "ANY",
+            Self::Exact => "EXACT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SERVICE_SELECTOR_UNDEFINED" => Some(Self::Undefined),
+            "ALL" => Some(Self::All),
+            "ANY" => Some(Self::Any),
+            "EXACT" => Some(Self::Exact),
+            _ => None,
+        }
+    }
 }
