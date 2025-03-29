@@ -18,12 +18,17 @@ on:
     tags:
       - 'release/ruby/v*'
 
+permissions: {}
+
 name: release Ruby Gem
 
 jobs:
   publish:
     name: Publish to RubyGems
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
     defaults:
       run:
         working-directory: gen/pb-ruby
