@@ -3,6 +3,8 @@ on:
     tags:
       - 'release/python/v*'
 
+permissions: {}
+
 name: release Python package
 
 jobs:
@@ -10,6 +12,7 @@ jobs:
     name: upload release to PyPI
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       id-token: write # required for trusted publishing to PyPI
 
     steps:
