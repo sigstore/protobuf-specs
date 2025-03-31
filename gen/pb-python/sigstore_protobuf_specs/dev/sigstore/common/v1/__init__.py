@@ -94,6 +94,13 @@ class PublicKeyDetails(betterproto.Enum):
     """Ed 25519"""
 
     PKIX_ED25519_PH = 8
+    PKIX_ECDSA_P384_SHA_256 = 19
+    """
+    These algorithms are deprecated and should not be used, but they
+     were/are being used by most Sigstore clients implementations.
+    """
+
+    PKIX_ECDSA_P521_SHA_256 = 20
     LMS_SHA256 = 14
     """
     LMS and LM-OTS

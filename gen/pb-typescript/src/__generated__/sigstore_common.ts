@@ -127,6 +127,15 @@ export enum PublicKeyDetails {
   PKIX_ED25519 = 7,
   PKIX_ED25519_PH = 8,
   /**
+   * PKIX_ECDSA_P384_SHA_256 - These algorithms are deprecated and should not be used, but they
+   * were/are being used by most Sigstore clients implementations.
+   *
+   * @deprecated
+   */
+  PKIX_ECDSA_P384_SHA_256 = 19,
+  /** @deprecated */
+  PKIX_ECDSA_P521_SHA_256 = 20,
+  /**
    * LMS_SHA256 - LMS and LM-OTS
    *
    * These keys and signatures may be used by private Sigstore
@@ -198,6 +207,12 @@ export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
     case 8:
     case "PKIX_ED25519_PH":
       return PublicKeyDetails.PKIX_ED25519_PH;
+    case 19:
+    case "PKIX_ECDSA_P384_SHA_256":
+      return PublicKeyDetails.PKIX_ECDSA_P384_SHA_256;
+    case 20:
+    case "PKIX_ECDSA_P521_SHA_256":
+      return PublicKeyDetails.PKIX_ECDSA_P521_SHA_256;
     case 14:
     case "LMS_SHA256":
       return PublicKeyDetails.LMS_SHA256;
@@ -245,6 +260,10 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
       return "PKIX_ED25519";
     case PublicKeyDetails.PKIX_ED25519_PH:
       return "PKIX_ED25519_PH";
+    case PublicKeyDetails.PKIX_ECDSA_P384_SHA_256:
+      return "PKIX_ECDSA_P384_SHA_256";
+    case PublicKeyDetails.PKIX_ECDSA_P521_SHA_256:
+      return "PKIX_ECDSA_P521_SHA_256";
     case PublicKeyDetails.LMS_SHA256:
       return "LMS_SHA256";
     case PublicKeyDetails.LMOTS_SHA256:
