@@ -345,6 +345,10 @@ pub enum PublicKeyDetails {
     /// See RFC8032
     PkixEd25519 = 7,
     PkixEd25519Ph = 8,
+    /// These algorithms are deprecated and should not be used, but they
+    /// were/are being used by most Sigstore clients implementations.
+    PkixEcdsaP384Sha256 = 19,
+    PkixEcdsaP521Sha256 = 20,
     /// LMS and LM-OTS
     ///
     /// These keys and signatures may be used by private Sigstore
@@ -385,6 +389,8 @@ impl PublicKeyDetails {
             Self::PkixEcdsaP521Sha512 => "PKIX_ECDSA_P521_SHA_512",
             Self::PkixEd25519 => "PKIX_ED25519",
             Self::PkixEd25519Ph => "PKIX_ED25519_PH",
+            Self::PkixEcdsaP384Sha256 => "PKIX_ECDSA_P384_SHA_256",
+            Self::PkixEcdsaP521Sha256 => "PKIX_ECDSA_P521_SHA_256",
             Self::LmsSha256 => "LMS_SHA256",
             Self::LmotsSha256 => "LMOTS_SHA256",
         }
@@ -409,6 +415,8 @@ impl PublicKeyDetails {
             "PKIX_ECDSA_P521_SHA_512" => Some(Self::PkixEcdsaP521Sha512),
             "PKIX_ED25519" => Some(Self::PkixEd25519),
             "PKIX_ED25519_PH" => Some(Self::PkixEd25519Ph),
+            "PKIX_ECDSA_P384_SHA_256" => Some(Self::PkixEcdsaP384Sha256),
+            "PKIX_ECDSA_P521_SHA_256" => Some(Self::PkixEcdsaP521Sha256),
             "LMS_SHA256" => Some(Self::LmsSha256),
             "LMOTS_SHA256" => Some(Self::LmotsSha256),
             _ => None,
