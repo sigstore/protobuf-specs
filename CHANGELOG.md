@@ -12,49 +12,58 @@ All versions prior to 0.2.0 are untracked.
 
 ### Changed
 
+## 0.4.1
+
+### Changed
+
+* Updated SigningConfig to specify API versions and validity periods
+  ([#539](https://github.com/sigstore/protobuf-specs/pull/539))
+* Added deprecated, but still in use, algorithms for ECDSA P384 and P512
+  using SHA256 ([#572](https://github.com/sigstore/protobuf-specs/pull/572))
+
 ## 0.4.0
 
 * Announced deprecation of JSONSchema outputs from this project
-  ([#493](https://github.com/sigstore/protobuf-specs/pull/493)
+  ([#493](https://github.com/sigstore/protobuf-specs/pull/493))
 
 ### Fixed
 
 * Fix toolchain to write generated code as the user running the build instead of root
-  ([#473](https://github.com/sigstore/protobuf-specs/pull/473)
+  ([#473](https://github.com/sigstore/protobuf-specs/pull/473))
 
 ### Changed
 
 * Recreated toolchain for code generation instead of depending on third-party container image
-  ([#469](https://github.com/sigstore/protobuf-specs/pull/469)
-  ([#475](https://github.com/sigstore/protobuf-specs/pull/475)
+  ([#469](https://github.com/sigstore/protobuf-specs/pull/469))
+  ([#475](https://github.com/sigstore/protobuf-specs/pull/475))
 * Updated code generation tools for Go library to latest stable releases
-  ([#476](https://github.com/sigstore/protobuf-specs/pull/476)
+  ([#476](https://github.com/sigstore/protobuf-specs/pull/476))
 * Updated code generation tools for JSONSchema files to latest stable releases
-  ([#478](https://github.com/sigstore/protobuf-specs/pull/478)
+  ([#478](https://github.com/sigstore/protobuf-specs/pull/478))
 * Updated code generation tools for Python library to latest stable releases
-  ([#479](https://github.com/sigstore/protobuf-specs/pull/479)
+  ([#479](https://github.com/sigstore/protobuf-specs/pull/479))
 * Updated code generation tools for Ruby library to latest stable releases
-  ([#481](https://github.com/sigstore/protobuf-specs/pull/481)
+  ([#481](https://github.com/sigstore/protobuf-specs/pull/481))
 * Updated code generation tools for Rust library to latest stable releases
-  ([#486](https://github.com/sigstore/protobuf-specs/pull/486)
+  ([#486](https://github.com/sigstore/protobuf-specs/pull/486))
 * Updated code generation tools for Typescript library to latest stable releases
-  ([#488](https://github.com/sigstore/protobuf-specs/pull/488)
+  ([#488](https://github.com/sigstore/protobuf-specs/pull/488))
 
 ## 0.3.3
 
 * Allowed specifying artifact digest for verification
-  ([#406](https://github.com/sigstore/protobuf-specs/pull/406)
+  ([#406](https://github.com/sigstore/protobuf-specs/pull/406))
 * Added version to `SigningConfig` message
-  ([#383](https://github.com/sigstore/protobuf-specs/pull/383)
+  ([#383](https://github.com/sigstore/protobuf-specs/pull/383))
 
 ### Changed
 
 * Docs: Clarify that integration time is only trustworthy with a Signed Entry
-  Timestamp ([#442](https://github.com/sigstore/protobuf-specs/pull/442)
-* Docs: Clarify inclusion promise requirement ([#380](https://github.com/sigstore/protobuf-specs/pull/380)
+  Timestamp ([#442](https://github.com/sigstore/protobuf-specs/pull/442))
+* Docs: Clarify inclusion promise requirement ([#380](https://github.com/sigstore/protobuf-specs/pull/380))
 * Docs: Clarify that artifact digest verification should not be used with
   in-toto attestations
-  ([#461](https://github.com/sigstore/protobuf-specs/pull/461)
+  ([#461](https://github.com/sigstore/protobuf-specs/pull/461))
 
 ## 0.3.2
 
