@@ -53,7 +53,8 @@ enum HashAlgorithm {
 // opinionated options instead of allowing every possible permutation.
 //
 // Any changes to this enum MUST be reflected in the algorithm registry.
-// See: docs/algorithm-registry.md
+//
+// See: <https://github.com/sigstore/architecture-docs/blob/main/algorithm-registry.md>
 //
 // To avoid the possibility of contradicting formats such as PKCS1 with
 // ED25519 the valid permutations are listed as a linear set instead of a
