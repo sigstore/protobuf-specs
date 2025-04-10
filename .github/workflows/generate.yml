@@ -20,6 +20,8 @@ permissions:
 
 on:
   push:
+    branches:
+      - 'main'
     paths:
       - '**.proto'
       - 'gen/**'
