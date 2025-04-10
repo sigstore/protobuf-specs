@@ -53,7 +53,7 @@ jobs:
       - run: |
           make rust
       - run: |
-          RUST_ACTION="publish -p sigstore_protobuf_specs --dry-run" make rust
+          RUST_ACTION="build -p sigstore_protobuf_specs" make rust
 
   test:
     runs-on: ubuntu-latest
