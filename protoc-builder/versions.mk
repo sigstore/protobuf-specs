@@ -9,10 +9,10 @@
 #GO_GOOGLEAPIS_COMMIT=fc2697ec5327db9073b4e0aa140248f19b15d7ef
 
 # release tag from https://github.com/protocolbuffers/protobuf
-DEFAULT_PROTOC_VERSION=v29.4
+DEFAULT_PROTOC_VERSION=v30.2
 
 # sha256 of release zip file: sha256sum protoc-${DEFAULT_PROTOC_VERSION#v}-linux-x86_64.zip | awk '{print "sha256:" $1 }'
-DEFAULT_PROTOC_CHECKSUM=sha256:3074ee900792fa7bf06ab56bd14af83048016cac08abf2a2ae34aaa571a9c110
+DEFAULT_PROTOC_CHECKSUM=sha256:327e9397c6fb3ea2a542513a3221334c6f76f7aa524a7d2561142b67b312a01f
 
 # git commit from https://github.com/googleapis/googleapis
 DEFAULT_GOOGLEAPIS_COMMIT=923c26a94123cc6d869347cf349efb4f8ccf6f9c
