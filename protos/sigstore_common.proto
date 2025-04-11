@@ -92,9 +92,10 @@ enum PublicKeyDetails {
         PKIX_ECDSA_P521_SHA_256 = 20 [deprecated = true];
 
         // LMS and LM-OTS
-        //
-        // These keys and signatures may be used by private Sigstore
-        // deployments, but are not currently supported by the public
+        // 
+        // These algorithms are deprecated and should not be used.
+        // Keys and signatures MAY be used by private Sigstore
+        // deployments, but will not be supported by the public
         // good instance.
         //
         // USER WARNING: LMS and LM-OTS are both stateful signature schemes.
@@ -104,8 +105,8 @@ enum PublicKeyDetails {
         // MUST NOT be used for more than one signature per LM-OTS key.
         // If you cannot maintain these invariants, you MUST NOT use these
         // schemes.
-        LMS_SHA256 = 14;
-        LMOTS_SHA256 = 15;
+        LMS_SHA256 = 14 [deprecated = true];
+        LMOTS_SHA256 = 15 [deprecated = true];
 
         // Reserved for future additions of public key/signature algorithm types.
         reserved 21 to 50;
