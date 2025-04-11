@@ -105,9 +105,10 @@ class PublicKeyDetails(betterproto.Enum):
     LMS_SHA256 = 14
     """
     LMS and LM-OTS
-    
-     These keys and signatures may be used by private Sigstore
-     deployments, but are not currently supported by the public
+     
+     These algorithms are deprecated and should not be used.
+     Keys and signatures MAY be used by private Sigstore
+     deployments, but will not be supported by the public
      good instance.
     
      USER WARNING: LMS and LM-OTS are both stateful signature schemes.
