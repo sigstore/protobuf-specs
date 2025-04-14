@@ -139,8 +139,9 @@ export enum PublicKeyDetails {
   /**
    * LMS_SHA256 - LMS and LM-OTS
    *
-   * These keys and signatures may be used by private Sigstore
-   * deployments, but are not currently supported by the public
+   * These algorithms are deprecated and should not be used.
+   * Keys and signatures MAY be used by private Sigstore
+   * deployments, but will not be supported by the public
    * good instance.
    *
    * USER WARNING: LMS and LM-OTS are both stateful signature schemes.
@@ -150,8 +151,11 @@ export enum PublicKeyDetails {
    * MUST NOT be used for more than one signature per LM-OTS key.
    * If you cannot maintain these invariants, you MUST NOT use these
    * schemes.
+   *
+   * @deprecated
    */
   LMS_SHA256 = 14,
+  /** @deprecated */
   LMOTS_SHA256 = 15,
 }
 
