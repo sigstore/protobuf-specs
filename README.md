@@ -6,7 +6,7 @@ This repository holds protobuf specifications for Sigstore messages.
 
 If you change protobuf definitions, you will need to regenerate the code by running the protocol buffer compiler on the changed `.proto` files.
 
-You will need [Docker](https://docs.docker.com/get-docker/) installed to generate the protobuf stubs. Then run,
+You will need [Docker](https://docs.docker.com/get-docker/) installed and configured to [run as non-root](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user) to generate the protobuf stubs. Then run,
 
 ```
 $ make all
