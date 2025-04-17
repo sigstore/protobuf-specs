@@ -20,6 +20,9 @@ pub mod dev {
             pub mod v1 {
                 include!("dev.sigstore.rekor.v1.rs");
             }
+            pub mod v2 {
+                include!("dev.sigstore.rekor.v2.rs");
+            }
         }
         pub mod trustroot {
             pub mod v1 {

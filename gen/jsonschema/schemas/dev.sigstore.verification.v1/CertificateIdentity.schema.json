@@ -1,0 +1,98 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/CertificateIdentity",
+    "definitions": {
+        "CertificateIdentity": {
+            "properties": {
+                "issuer": {
+                    "type": "string",
+                    "description": "The X.509v3 issuer extension (OID 1.3.6.1.4.1.57264.1.1)"
+                },
+                "san": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.SubjectAlternativeName",
+                    "additionalProperties": false
+                },
+                "oids": {
+                    "items": {
+                        "$ref": "#/definitions/dev.sigstore.common.v1.ObjectIdentifierValuePair"
+                    },
+                    "additionalProperties": false,
+                    "type": "array",
+                    "description": "An unordered list of OIDs that must be verified. All OID/values provided in this list MUST exactly match against the values in the certificate for verification to be successful."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Certificate Identity",
+            "description": "The identity of a X.509 Certificate signer."
+        },
+        "dev.sigstore.common.v1.ObjectIdentifier": {
+            "properties": {
+                "id": {
+                    "items": {
+                        "type": "integer"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Object Identifier",
+            "description": "An ASN.1 OBJECT IDENTIFIER"
+        },
+        "dev.sigstore.common.v1.ObjectIdentifierValuePair": {
+            "properties": {
+                "oid": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.ObjectIdentifier",
+                    "additionalProperties": false
+                },
+                "value": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Object Identifier Value Pair",
+            "description": "An OID and the corresponding (byte) value."
+        },
+        "dev.sigstore.common.v1.SubjectAlternativeName": {
+            "properties": {
+                "type": {
+                    "enum": [
+                        "SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED",
+                        "EMAIL",
+                        "URI",
+                        "OTHER_NAME"
+                    ],
+                    "type": "string",
+                    "title": "Subject Alternative Name Type"
+                },
+                "regexp": {
+                    "type": "string",
+                    "description": "A regular expression describing the expected value for the SAN."
+                },
+                "value": {
+                    "type": "string",
+                    "description": "The exact value to match against."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [
+                        "regexp"
+                    ]
+                },
+                {
+                    "required": [
+                        "value"
+                    ]
+                }
+            ],
+            "title": "Subject Alternative Name"
+        }
+    }
+}

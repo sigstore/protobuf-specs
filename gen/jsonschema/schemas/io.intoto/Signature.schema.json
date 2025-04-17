@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/Signature",
+    "definitions": {
+        "Signature": {
+            "properties": {
+                "sig": {
+                    "type": "string",
+                    "description": "Signature itself. (In JSON, this is encoded as base64.) REQUIRED.",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "keyid": {
+                    "type": "string",
+                    "description": "*Unauthenticated* hint identifying which public key was used. OPTIONAL."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Signature"
+        }
+    }
+}

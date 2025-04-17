@@ -13,17 +13,17 @@
 // limitations under the License.
 
 syntax = "proto3";
-package dev.sigstore.rekor.v1;
+package dev.sigstore.rekor.v2;
 
 import "google/api/field_behavior.proto";
 
 import "sigstore_common.proto";
 
-option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/rekor/v1";
-option java_package = "dev.sigstore.proto.rekor.v1";
+option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/rekor/v2";
+option java_package = "dev.sigstore.proto.rekor.v2";
 option java_multiple_files = true;
 option java_outer_classname = "RekorProto";
-option ruby_package = "Sigstore::Rekor::V1";
+option ruby_package = "Sigstore::Rekor::V2";
 
 // KindVersion contains the entry's kind and api version.
 message KindVersion {
@@ -69,20 +69,6 @@ message InclusionProof {
         Checkpoint checkpoint = 5 [(google.api.field_behavior) = REQUIRED];
 }
 
-// The inclusion promise is calculated by Rekor. It's calculated as a
-// signature over a canonical JSON serialization of the persisted entry, the
-// log ID, log index and the integration timestamp.
-// See https://github.com/sigstore/rekor/blob/a6e58f72b6b18cc06cefe61808efd562b9726330/pkg/api/entries.go#L54
-// The format of the signature depends on the transparency log's public key.
-// If the signature algorithm requires a hash function and/or a signature
-// scheme (e.g. RSA) those has to be retrieved out-of-band from the log's
-// operators, together with the public key.
-// This is used to verify the integration timestamp's value and that the log
-// has promised to include the entry.
-message InclusionPromise {
-        bytes signed_entry_timestamp = 1 [(google.api.field_behavior) = REQUIRED];
-}
-
 // TransparencyLogEntry captures all the details required from Rekor to
 // reconstruct an entry, given that the payload is provided via other means.
 // This type can easily be created from the existing response from Rekor.
@@ -92,7 +78,7 @@ message InclusionPromise {
 // the response from Rekor) is similar to a Signed Certificate Timestamp
 // as described here https://www.rfc-editor.org/rfc/rfc6962.html#section-3.2.
 message TransparencyLogEntry {
-        // The global index of the entry, used when querying the log by index.
+        // The index of the log entry
         uint64 log_index = 1 [(google.api.field_behavior) = REQUIRED];
         // The unique identifier of the log.
         dev.sigstore.common.v1.LogId log_id = 2 [(google.api.field_behavior) = REQUIRED];
@@ -100,22 +86,10 @@ message TransparencyLogEntry {
         // entry. These values are required to construct the entry during
         // verification.
         KindVersion kind_version = 3 [(google.api.field_behavior) = REQUIRED];
-        // The UNIX timestamp from the log when the entry was persisted.
-        // The integration time MUST NOT be trusted if inclusion_promise
-        // is omitted. Only V1 of the Rekor transparency log provides this
-        int64 integrated_time = 4;
-        // The inclusion promise/signed entry timestamp from the log.
-        // Required for v0.1 bundles, and MUST be verified.
-        // Optional for >= v0.2 bundles if another suitable source of
-        // time is present (such as another source of signed time,
-        // or the current system time for long-lived certificates).
-        // MUST be verified if no other suitable source of time is present,
-        // and SHOULD be verified otherwise.
-        InclusionPromise inclusion_promise = 5;
         // The inclusion proof can be used for offline or online verification
         // that the entry was appended to the log, and that the log has not been
         // altered.
-        InclusionProof inclusion_proof = 6 [(google.api.field_behavior) = REQUIRED];
+        InclusionProof inclusion_proof = 4 [(google.api.field_behavior) = REQUIRED];
         // Optional. The canonicalized transparency log entry, used to
         // reconstruct the Signed Entry Timestamp (SET) during verification.
         // The contents of this field are the same as the `body` field in
@@ -134,5 +108,5 @@ message TransparencyLogEntry {
         // `Bundle.content`.
         // If not set, clients are responsible for constructing an equivalent
         // payload from other sources to verify the signature.
-        bytes canonicalized_body = 7;
+        bytes canonicalized_body = 5;
 }

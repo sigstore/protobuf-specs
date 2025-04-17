@@ -1,0 +1,43 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/SubjectAlternativeName",
+    "definitions": {
+        "SubjectAlternativeName": {
+            "properties": {
+                "type": {
+                    "enum": [
+                        "SUBJECT_ALTERNATIVE_NAME_TYPE_UNSPECIFIED",
+                        "EMAIL",
+                        "URI",
+                        "OTHER_NAME"
+                    ],
+                    "type": "string",
+                    "title": "Subject Alternative Name Type"
+                },
+                "regexp": {
+                    "type": "string",
+                    "description": "A regular expression describing the expected value for the SAN."
+                },
+                "value": {
+                    "type": "string",
+                    "description": "The exact value to match against."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [
+                        "regexp"
+                    ]
+                },
+                {
+                    "required": [
+                        "value"
+                    ]
+                }
+            ],
+            "title": "Subject Alternative Name"
+        }
+    }
+}

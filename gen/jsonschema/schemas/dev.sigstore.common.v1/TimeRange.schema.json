@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TimeRange",
+    "definitions": {
+        "TimeRange": {
+            "properties": {
+                "start": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "end": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [
+                        "end"
+                    ]
+                }
+            ],
+            "title": "Time Range",
+            "description": "The time range is closed and includes both the start and end times, (i.e., [start, end]). End is optional to be able to capture a period that has started but has no known end."
+        }
+    }
+}
