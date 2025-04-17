@@ -22,7 +22,10 @@ from pydantic.dataclasses import rebuild_dataclass
 
 from .....io import intoto as ____io_intoto__
 from ...common import v1 as __common_v1__
-from ...rekor import v1 as __rekor_v1__
+from ...rekor import (
+    v1 as __rekor_v1__,
+    v2 as __rekor_v2__,
+)
 
 
 @dataclass(eq=False, repr=False)
@@ -81,6 +84,9 @@ class VerificationMaterial(betterproto.Message):
      ecosystem which never produced them.
     """
 
+    tlog_v2_entries: List["__rekor_v2__.TransparencyLogEntry"] = (
+        betterproto.message_field(6)
+    )
     timestamp_verification_data: "TimestampVerificationData" = (
         betterproto.message_field(4)
     )

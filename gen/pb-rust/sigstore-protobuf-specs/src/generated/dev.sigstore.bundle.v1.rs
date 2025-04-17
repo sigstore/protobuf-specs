@@ -50,6 +50,10 @@ pub struct VerificationMaterial {
     pub tlog_entries: ::prost::alloc::vec::Vec<
         super::super::rekor::v1::TransparencyLogEntry,
     >,
+    #[prost(message, repeated, tag = "6")]
+    pub tlog_v2_entries: ::prost::alloc::vec::Vec<
+        super::super::rekor::v2::TransparencyLogEntry,
+    >,
     /// Timestamp may also come from
     /// tlog_entries.inclusion_promise.signed_entry_timestamp.
     #[prost(message, optional, tag = "4")]

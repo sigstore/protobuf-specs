@@ -14,6 +14,7 @@ import {
   X509CertificateChain,
 } from "./sigstore_common";
 import { TransparencyLogEntry } from "./sigstore_rekor";
+import { TransparencyLogEntry as TransparencyLogEntry1 } from "./sigstore_rekor_v2";
 
 /**
  * Various timestamped counter signatures over the artifacts signature.
@@ -93,6 +94,7 @@ export interface VerificationMaterial {
    * ecosystem which never produced them.
    */
   tlogEntries: TransparencyLogEntry[];
+  tlogV2Entries: TransparencyLogEntry1[];
   /**
    * Timestamp may also come from
    * tlog_entries.inclusion_promise.signed_entry_timestamp.
@@ -176,6 +178,9 @@ export const VerificationMaterial: MessageFns<VerificationMaterial> = {
       tlogEntries: globalThis.Array.isArray(object?.tlogEntries)
         ? object.tlogEntries.map((e: any) => TransparencyLogEntry.fromJSON(e))
         : [],
+      tlogV2Entries: globalThis.Array.isArray(object?.tlogV2Entries)
+        ? object.tlogV2Entries.map((e: any) => TransparencyLogEntry1.fromJSON(e))
+        : [],
       timestampVerificationData: isSet(object.timestampVerificationData)
         ? TimestampVerificationData.fromJSON(object.timestampVerificationData)
         : undefined,
@@ -193,6 +198,9 @@ export const VerificationMaterial: MessageFns<VerificationMaterial> = {
     }
     if (message.tlogEntries?.length) {
       obj.tlogEntries = message.tlogEntries.map((e) => TransparencyLogEntry.toJSON(e));
+    }
+    if (message.tlogV2Entries?.length) {
+      obj.tlogV2Entries = message.tlogV2Entries.map((e) => TransparencyLogEntry1.toJSON(e));
     }
     if (message.timestampVerificationData !== undefined) {
       obj.timestampVerificationData = TimestampVerificationData.toJSON(message.timestampVerificationData);

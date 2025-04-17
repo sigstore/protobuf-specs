@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/KindVersion",
+    "definitions": {
+        "KindVersion": {
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "description": "Kind is the type of entry being stored in the log. See here for a list: https://github.com/sigstore/rekor/tree/main/pkg/types"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "The specific api version of the type."
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Kind Version",
+            "description": "KindVersion contains the entry's kind and api version."
+        }
+    }
+}
