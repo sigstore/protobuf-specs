@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ObjectIdentifierValuePair",
+    "definitions": {
+        "ObjectIdentifierValuePair": {
+            "properties": {
+                "oid": {
+                    "$ref": "#/definitions/dev.sigstore.common.v1.ObjectIdentifier",
+                    "additionalProperties": false
+                },
+                "value": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Object Identifier Value Pair",
+            "description": "An OID and the corresponding (byte) value."
+        },
+        "dev.sigstore.common.v1.ObjectIdentifier": {
+            "properties": {
+                "id": {
+                    "items": {
+                        "type": "integer"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Object Identifier",
+            "description": "An ASN.1 OBJECT IDENTIFIER"
+        }
+    }
+}

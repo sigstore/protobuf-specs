@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/RFC3161SignedTimestamp",
+    "definitions": {
+        "RFC3161SignedTimestamp": {
+            "properties": {
+                "signedTimestamp": {
+                    "type": "string",
+                    "description": "Signed timestamp is the DER encoded TimeStampResponse. See https://www.rfc-editor.org/rfc/rfc3161.html#section-2.4.2",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "RFC 3161 Signed Timestamp",
+            "description": "This message holds a RFC 3161 timestamp."
+        }
+    }
+}

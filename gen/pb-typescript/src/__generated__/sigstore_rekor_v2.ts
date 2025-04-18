@@ -2,7 +2,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.7.0
 //   protoc               v6.30.2
-// source: sigstore_rekor.proto
+// source: sigstore_rekor_v2.proto
 
 /* eslint-disable */
 import { LogId } from "./sigstore_common";
@@ -64,22 +64,6 @@ export interface InclusionProof {
 }
 
 /**
- * The inclusion promise is calculated by Rekor. It's calculated as a
- * signature over a canonical JSON serialization of the persisted entry, the
- * log ID, log index and the integration timestamp.
- * See https://github.com/sigstore/rekor/blob/a6e58f72b6b18cc06cefe61808efd562b9726330/pkg/api/entries.go#L54
- * The format of the signature depends on the transparency log's public key.
- * If the signature algorithm requires a hash function and/or a signature
- * scheme (e.g. RSA) those has to be retrieved out-of-band from the log's
- * operators, together with the public key.
- * This is used to verify the integration timestamp's value and that the log
- * has promised to include the entry.
- */
-export interface InclusionPromise {
-  signedEntryTimestamp: Buffer;
-}
-
-/**
  * TransparencyLogEntry captures all the details required from Rekor to
  * reconstruct an entry, given that the payload is provided via other means.
  * This type can easily be created from the existing response from Rekor.
@@ -90,7 +74,7 @@ export interface InclusionPromise {
  * as described here https://www.rfc-editor.org/rfc/rfc6962.html#section-3.2.
  */
 export interface TransparencyLogEntry {
-  /** The global index of the entry, used when querying the log by index. */
+  /** The index of the log entry */
   logIndex: string;
   /** The unique identifier of the log. */
   logId:
@@ -103,24 +87,6 @@ export interface TransparencyLogEntry {
    */
   kindVersion:
     | KindVersion
-    | undefined;
-  /**
-   * The UNIX timestamp from the log when the entry was persisted.
-   * The integration time MUST NOT be trusted if inclusion_promise
-   * is omitted. Only V1 of the Rekor transparency log provides this
-   */
-  integratedTime: string;
-  /**
-   * The inclusion promise/signed entry timestamp from the log.
-   * Required for v0.1 bundles, and MUST be verified.
-   * Optional for >= v0.2 bundles if another suitable source of
-   * time is present (such as another source of signed time,
-   * or the current system time for long-lived certificates).
-   * MUST be verified if no other suitable source of time is present,
-   * and SHOULD be verified otherwise.
-   */
-  inclusionPromise:
-    | InclusionPromise
     | undefined;
   /**
    * The inclusion proof can be used for offline or online verification
@@ -221,32 +187,12 @@ export const InclusionProof: MessageFns<InclusionProof> = {
   },
 };
 
-export const InclusionPromise: MessageFns<InclusionPromise> = {
-  fromJSON(object: any): InclusionPromise {
-    return {
-      signedEntryTimestamp: isSet(object.signedEntryTimestamp)
-        ? Buffer.from(bytesFromBase64(object.signedEntryTimestamp))
-        : Buffer.alloc(0),
-    };
-  },
-
-  toJSON(message: InclusionPromise): unknown {
-    const obj: any = {};
-    if (message.signedEntryTimestamp.length !== 0) {
-      obj.signedEntryTimestamp = base64FromBytes(message.signedEntryTimestamp);
-    }
-    return obj;
-  },
-};
-
 export const TransparencyLogEntry: MessageFns<TransparencyLogEntry> = {
   fromJSON(object: any): TransparencyLogEntry {
     return {
       logIndex: isSet(object.logIndex) ? globalThis.String(object.logIndex) : "0",
       logId: isSet(object.logId) ? LogId.fromJSON(object.logId) : undefined,
       kindVersion: isSet(object.kindVersion) ? KindVersion.fromJSON(object.kindVersion) : undefined,
-      integratedTime: isSet(object.integratedTime) ? globalThis.String(object.integratedTime) : "0",
-      inclusionPromise: isSet(object.inclusionPromise) ? InclusionPromise.fromJSON(object.inclusionPromise) : undefined,
       inclusionProof: isSet(object.inclusionProof) ? InclusionProof.fromJSON(object.inclusionProof) : undefined,
       canonicalizedBody: isSet(object.canonicalizedBody)
         ? Buffer.from(bytesFromBase64(object.canonicalizedBody))
@@ -264,12 +210,6 @@ export const TransparencyLogEntry: MessageFns<TransparencyLogEntry> = {
     }
     if (message.kindVersion !== undefined) {
       obj.kindVersion = KindVersion.toJSON(message.kindVersion);
-    }
-    if (message.integratedTime !== "0") {
-      obj.integratedTime = message.integratedTime;
-    }
-    if (message.inclusionPromise !== undefined) {
-      obj.inclusionPromise = InclusionPromise.toJSON(message.inclusionPromise);
     }
     if (message.inclusionProof !== undefined) {
       obj.inclusionProof = InclusionProof.toJSON(message.inclusionProof);

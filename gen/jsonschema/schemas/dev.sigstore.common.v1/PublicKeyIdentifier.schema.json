@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/PublicKeyIdentifier",
+    "definitions": {
+        "PublicKeyIdentifier": {
+            "properties": {
+                "hint": {
+                    "type": "string",
+                    "description": "Optional unauthenticated hint on which key to use. The format of the hint must be agreed upon out of band by the signer and the verifiers, and so is not subject to this specification. Example use-case is to specify the public key to use, from a trusted key-ring. Implementors are RECOMMENDED to derive the value from the public key as described in RFC 6962. See: \u003chttps://www.rfc-editor.org/rfc/rfc6962#section-3.2\u003e"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Public Key Identifier",
+            "description": "PublicKeyIdentifier can be used to identify an (out of band) delivered key, to verify a signature."
+        }
+    }
+}

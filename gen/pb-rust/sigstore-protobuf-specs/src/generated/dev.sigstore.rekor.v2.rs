@@ -5,7 +5,7 @@
     sigstore_protobuf_specs_derive::Serialize_proto
 )]
 #[derive(::prost_reflect::ReflectMessage)]
-#[prost_reflect(message_name = "dev.sigstore.rekor.v1.KindVersion")]
+#[prost_reflect(message_name = "dev.sigstore.rekor.v2.KindVersion")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KindVersion {
@@ -32,7 +32,7 @@ pub struct KindVersion {
     sigstore_protobuf_specs_derive::Serialize_proto
 )]
 #[derive(::prost_reflect::ReflectMessage)]
-#[prost_reflect(message_name = "dev.sigstore.rekor.v1.Checkpoint")]
+#[prost_reflect(message_name = "dev.sigstore.rekor.v2.Checkpoint")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Checkpoint {
@@ -46,7 +46,7 @@ pub struct Checkpoint {
     sigstore_protobuf_specs_derive::Serialize_proto
 )]
 #[derive(::prost_reflect::ReflectMessage)]
-#[prost_reflect(message_name = "dev.sigstore.rekor.v1.InclusionProof")]
+#[prost_reflect(message_name = "dev.sigstore.rekor.v2.InclusionProof")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InclusionProof {
@@ -72,28 +72,6 @@ pub struct InclusionProof {
     #[prost(message, optional, tag = "5")]
     pub checkpoint: ::core::option::Option<Checkpoint>,
 }
-/// The inclusion promise is calculated by Rekor. It's calculated as a
-/// signature over a canonical JSON serialization of the persisted entry, the
-/// log ID, log index and the integration timestamp.
-/// See <https://github.com/sigstore/rekor/blob/a6e58f72b6b18cc06cefe61808efd562b9726330/pkg/api/entries.go#L54>
-/// The format of the signature depends on the transparency log's public key.
-/// If the signature algorithm requires a hash function and/or a signature
-/// scheme (e.g. RSA) those has to be retrieved out-of-band from the log's
-/// operators, together with the public key.
-/// This is used to verify the integration timestamp's value and that the log
-/// has promised to include the entry.
-#[derive(
-    sigstore_protobuf_specs_derive::Deserialize_proto,
-    sigstore_protobuf_specs_derive::Serialize_proto
-)]
-#[derive(::prost_reflect::ReflectMessage)]
-#[prost_reflect(message_name = "dev.sigstore.rekor.v1.InclusionPromise")]
-#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InclusionPromise {
-    #[prost(bytes = "vec", tag = "1")]
-    pub signed_entry_timestamp: ::prost::alloc::vec::Vec<u8>,
-}
 /// TransparencyLogEntry captures all the details required from Rekor to
 /// reconstruct an entry, given that the payload is provided via other means.
 /// This type can easily be created from the existing response from Rekor.
@@ -107,11 +85,11 @@ pub struct InclusionPromise {
     sigstore_protobuf_specs_derive::Serialize_proto
 )]
 #[derive(::prost_reflect::ReflectMessage)]
-#[prost_reflect(message_name = "dev.sigstore.rekor.v1.TransparencyLogEntry")]
+#[prost_reflect(message_name = "dev.sigstore.rekor.v2.TransparencyLogEntry")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransparencyLogEntry {
-    /// The global index of the entry, used when querying the log by index.
+    /// The index of the log entry
     #[prost(uint64, tag = "1")]
     pub log_index: u64,
     /// The unique identifier of the log.
@@ -122,24 +100,10 @@ pub struct TransparencyLogEntry {
     /// verification.
     #[prost(message, optional, tag = "3")]
     pub kind_version: ::core::option::Option<KindVersion>,
-    /// The UNIX timestamp from the log when the entry was persisted.
-    /// The integration time MUST NOT be trusted if inclusion_promise
-    /// is omitted. Only V1 of the Rekor transparency log provides this
-    #[prost(int64, tag = "4")]
-    pub integrated_time: i64,
-    /// The inclusion promise/signed entry timestamp from the log.
-    /// Required for v0.1 bundles, and MUST be verified.
-    /// Optional for >= v0.2 bundles if another suitable source of
-    /// time is present (such as another source of signed time,
-    /// or the current system time for long-lived certificates).
-    /// MUST be verified if no other suitable source of time is present,
-    /// and SHOULD be verified otherwise.
-    #[prost(message, optional, tag = "5")]
-    pub inclusion_promise: ::core::option::Option<InclusionPromise>,
     /// The inclusion proof can be used for offline or online verification
     /// that the entry was appended to the log, and that the log has not been
     /// altered.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag = "4")]
     pub inclusion_proof: ::core::option::Option<InclusionProof>,
     /// Optional. The canonicalized transparency log entry, used to
     /// reconstruct the Signed Entry Timestamp (SET) during verification.
@@ -159,6 +123,6 @@ pub struct TransparencyLogEntry {
     /// `Bundle.content`.
     /// If not set, clients are responsible for constructing an equivalent
     /// payload from other sources to verify the signature.
-    #[prost(bytes = "vec", tag = "7")]
+    #[prost(bytes = "vec", tag = "5")]
     pub canonicalized_body: ::prost::alloc::vec::Vec<u8>,
 }

@@ -75,7 +75,7 @@ jsonschema: base-image-jsonschema
 	mkdir -p gen/jsonschema/schemas
 	${DOCKER_RUN} -v ${PWD}:/defs ${PROTOC_JSONSCHEMA_IMAGE} \
 	  -I/opt/include -I/googleapis -I/defs/protos \
-	  --jsonschema_out=/defs/gen/jsonschema/schemas --jsonschema_opt=disallow_additional_properties --jsonschema_opt=enforce_oneof --jsonschema_opt=enums_as_strings_only --jsonschema_opt=file_extension=schema.json --jsonschema_opt=json_fieldnames ${PROTOS}
+	  --jsonschema_out=/defs/gen/jsonschema/schemas --jsonschema_opt=disallow_additional_properties --jsonschema_opt=enforce_oneof --jsonschema_opt=enums_as_strings_only --jsonschema_opt=file_extension=schema.json --jsonschema_opt=json_fieldnames --jsonschema_opt=prefix_schema_files_with_package ${PROTOS}
 
 rust: base-image-rust
 	@echo "Generating rust proto Docker image"
