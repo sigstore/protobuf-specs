@@ -652,10 +652,13 @@ func (x *Service) GetValidFor() *v1.TimeRange {
 type ServiceConfiguration struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// How a client should select a set of Services to connect to.
+	// Clients SHOULD NOT select services from multiple API versions.
 	Selector ServiceSelector `protobuf:"varint,1,opt,name=selector,proto3,enum=dev.sigstore.trustroot.v1.ServiceSelector" json:"selector,omitempty"`
 	// count specifies the number of Services the client should use.
 	// Only used when selector is set to EXACT, and count MUST be greater
 	// than 0. count MUST be less than or equal to the number of Services.
+	// Clients MUST return an error is there are not enough services
+	// that meet selection criteria.
 	Count         uint32 `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
