@@ -353,13 +353,18 @@ class ServiceConfiguration(betterproto.Message):
     """
 
     selector: "ServiceSelector" = betterproto.enum_field(1)
-    """How a client should select a set of Services to connect to."""
+    """
+    How a client should select a set of Services to connect to.
+     Clients SHOULD NOT select services from multiple API versions.
+    """
 
     count: int = betterproto.uint32_field(2)
     """
     count specifies the number of Services the client should use.
      Only used when selector is set to EXACT, and count MUST be greater
      than 0. count MUST be less than or equal to the number of Services.
+     Clients MUST return an error is there are not enough services
+     that meet selection criteria.
     """
 
 
