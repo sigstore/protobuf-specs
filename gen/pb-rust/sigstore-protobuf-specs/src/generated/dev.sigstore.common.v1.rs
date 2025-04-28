@@ -366,6 +366,23 @@ pub enum PublicKeyDetails {
     /// schemes.
     LmsSha256 = 14,
     LmotsSha256 = 15,
+    /// ML-DSA
+    ///
+    /// These ML_DSA_65 and ML-DSA_87 algorithms are the pure variants that
+    /// take data to sign rather than the prehash variants (HashML-DSA), which
+    /// take digests.  While considered quantum-resistant, their usage
+    /// involves tradeoffs in that signatures and keys are much larger, and
+    /// this makes deployments more costly.
+    ///
+    /// USER WARNING: ML_DSA_65 and ML_DSA_87 are experimental algorithms.
+    /// In the future they MAY be used by private Sigstore deployments, but
+    /// they are not yet fully functional.  This warning will be removed when
+    /// these algorithms are widely supported by Sigstore clients and servers,
+    /// but care should still be taken for production environments.
+    ///
+    /// See NIST FIPS 204
+    MlDsa65 = 21,
+    MlDsa87 = 22,
 }
 impl PublicKeyDetails {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -395,6 +412,8 @@ impl PublicKeyDetails {
             Self::PkixEcdsaP521Sha256 => "PKIX_ECDSA_P521_SHA_256",
             Self::LmsSha256 => "LMS_SHA256",
             Self::LmotsSha256 => "LMOTS_SHA256",
+            Self::MlDsa65 => "ML_DSA_65",
+            Self::MlDsa87 => "ML_DSA_87",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -421,6 +440,8 @@ impl PublicKeyDetails {
             "PKIX_ECDSA_P521_SHA_256" => Some(Self::PkixEcdsaP521Sha256),
             "LMS_SHA256" => Some(Self::LmsSha256),
             "LMOTS_SHA256" => Some(Self::LmotsSha256),
+            "ML_DSA_65" => Some(Self::MlDsa65),
+            "ML_DSA_87" => Some(Self::MlDsa87),
             _ => None,
         }
     }
