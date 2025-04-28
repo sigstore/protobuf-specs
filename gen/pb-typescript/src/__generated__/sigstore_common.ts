@@ -157,6 +157,23 @@ export enum PublicKeyDetails {
   LMS_SHA256 = 14,
   /** @deprecated */
   LMOTS_SHA256 = 15,
+  /**
+   * ML_DSA_65 - ML-DSA
+   *
+   * These ML_DSA_65 and ML-DSA_87 algorithms are the pure variants that
+   * take data to sign rather than the prehash variants (HashML-DSA), which
+   * take digests.  While considered quantum-resistant, their usage
+   * involves tradeoffs in that signatures and keys are much larger, and
+   * this makes deployments more costly.
+   *
+   * USER WARNING: ML_DSA_65 and ML_DSA_87 are experimental algorithms.
+   * In the future they MAY be used by private Sigstore deployments, but
+   * they are not yet fully functional.  This warning will be removed when
+   * these algorithms are widely supported by Sigstore clients and servers,
+   * but care should still be taken for production environments.
+   */
+  ML_DSA_65 = 21,
+  ML_DSA_87 = 22,
 }
 
 export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
@@ -224,6 +241,12 @@ export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
     case 15:
     case "LMOTS_SHA256":
       return PublicKeyDetails.LMOTS_SHA256;
+    case 21:
+    case "ML_DSA_65":
+      return PublicKeyDetails.ML_DSA_65;
+    case 22:
+    case "ML_DSA_87":
+      return PublicKeyDetails.ML_DSA_87;
     default:
       throw new globalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
   }
@@ -273,6 +296,10 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
       return "LMS_SHA256";
     case PublicKeyDetails.LMOTS_SHA256:
       return "LMOTS_SHA256";
+    case PublicKeyDetails.ML_DSA_65:
+      return "ML_DSA_65";
+    case PublicKeyDetails.ML_DSA_87:
+      return "ML_DSA_87";
     default:
       throw new globalThis.Error("Unrecognized enum value " + object + " for enum PublicKeyDetails");
   }
