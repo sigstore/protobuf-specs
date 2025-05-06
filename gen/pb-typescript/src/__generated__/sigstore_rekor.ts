@@ -106,12 +106,16 @@ export interface TransparencyLogEntry {
     | undefined;
   /**
    * The UNIX timestamp from the log when the entry was persisted.
+   * A timestamp is only provided by Rekor v1 logs and will not be
+   * present for Rekor v2 log entries.
    * The integration time MUST NOT be trusted if inclusion_promise
    * is omitted.
    */
   integratedTime: string;
   /**
    * The inclusion promise/signed entry timestamp from the log.
+   * The inclusion_promise may be provided by Rekor v1 logs, but
+   * log upload responses from Rekor v2 logs will not contain one.
    * Required for v0.1 bundles, and MUST be verified.
    * Optional for >= v0.2 bundles if another suitable source of
    * time is present (such as another source of signed time,
