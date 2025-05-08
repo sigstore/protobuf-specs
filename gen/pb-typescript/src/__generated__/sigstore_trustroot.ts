@@ -86,7 +86,11 @@ export function serviceSelectorToJSON(object: ServiceSelector): string {
  * and verify an inclusion proof/promise.
  */
 export interface TransparencyLogInstance {
-  /** The base URL at which can be used to URLs for the client. */
+  /**
+   * The base URL at which can be used to URLs for the client.
+   * SHOULD match the origin on the log checkpoint:
+   * https://github.com/C2SP/C2SP/blob/main/tlog-checkpoint.md#note-text.
+   */
   baseUrl: string;
   /** The hash algorithm used for the Merkle Tree. */
   hashAlgorithm: HashAlgorithm;
@@ -103,26 +107,41 @@ export interface TransparencyLogInstance {
    * calculated over the DER encoding of the key represented as
    * SubjectPublicKeyInfo.
    * See https://www.rfc-editor.org/rfc/rfc6962#section-3.2
+   * MUST set checkpoint_key_id if multiple logs use the same
+   * signing key.
+   * Deprecated: Use checkpoint_key_id instead, since log_id is not
+   * guaranteed to be unique across multiple deployments. Clients
+   * must use the key name and key ID from a checkpoint to determine
+   * the correct TransparencyLogInstance to verify a proof.
+   *
+   * @deprecated
    */
   logId:
     | LogId
     | undefined;
   /**
-   * The checkpoint key identifier for the log used in a checkpoint.
-   * Optional, not provided for logs that do not generate checkpoints.
-   * For logs that do generate checkpoints, if not set, assume
-   * log_id equals checkpoint_key_id.
-   * Follows the specification described here
-   * for ECDSA and Ed25519 signatures:
+   * The unique identifier for the log, used in the checkpoint.
+   * Its calculation is described in
    * https://github.com/C2SP/C2SP/blob/main/signed-note.md#signatures
-   * For RSA signatures, the key ID will match the ECDSA format, the
-   * hashed DER-encoded SPKI public key. Publicly witnessed logs MUST NOT
-   * use RSA-signed checkpoints, since witnesses do not support
-   * RSA signatures.
+   * SHOULD be set for all logs. When not set, clients MUST use log_id.
+   *
+   * For Ed25519 signatures, the key ID is computed per the C2SP spec:
+   * key ID = SHA-256(key name || 0x0A || 0x01 || 32-byte Ed25519 public key)[:4]
+   * For ECDSA signatures, the key ID is computed per the C2SP spec:
+   * key ID = SHA-256(PKIX ASN.1 DER-encoded public key, in SubjectPublicKeyInfo format)[:4]
+   * For RSA signatures, the signature type will be 0xff with an appended identifier for the format,
+   * "PKIX-RSA-PKCS#1v1.5":
+   * key ID = SHA-256(key name || 0x0A || 0xff || PKIX-RSA-PKCS#1v1.5 || PKIX ASN.1 DER-encoded public key)[:4]
+   *
    * This is provided for convenience. Clients can also calculate the
    * checkpoint key ID given the log's public key.
-   * SHOULD be set for logs generating Ed25519 signatures.
    * SHOULD be 4 bytes long, as a truncated hash.
+   *
+   * To find a matching TransparencyLogInstance in the TrustedRoot,
+   * clients will parse the checkpoint, and for each signature line,
+   * use the key name (i.e. log origin, base_url from TrustedRoot)
+   * and checkpoint key ID (i.e. checkpoint_key_id from TrustedRoot)
+   * which can then be compared against the TrustedRoot log instances.
    */
   checkpointKeyId: LogId | undefined;
 }
