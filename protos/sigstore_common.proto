@@ -108,8 +108,24 @@ enum PublicKeyDetails {
         LMS_SHA256 = 14 [deprecated = true];
         LMOTS_SHA256 = 15 [deprecated = true];
 
+        // ML-DSA
+        //
+        // These ML_DSA_65 and ML-DSA_87 algorithms are the pure variants that
+        // take data to sign rather than the prehash variants (HashML-DSA), which
+        // take digests.  While considered quantum-resistant, their usage
+        // involves tradeoffs in that signatures and keys are much larger, and
+        // this makes deployments more costly.
+        //
+        // USER WARNING: ML_DSA_65 and ML_DSA_87 are experimental algorithms.  
+        // In the future they MAY be used by private Sigstore deployments, but
+        // they are not yet fully functional.  This warning will be removed when 
+        // these algorithms are widely supported by Sigstore clients and servers, 
+        // but care should still be taken for production environments.
+        ML_DSA_65 = 21; // See NIST FIPS 204
+        ML_DSA_87 = 22;
+
         // Reserved for future additions of public key/signature algorithm types.
-        reserved 21 to 50;
+        reserved 23 to 50;
 }
 
 // HashOutput captures a digest of a 'message' (generic octet sequence)
