@@ -64,6 +64,14 @@ pub struct TransparencyLogInstance {
     /// which can then be compared against the TrustedRoot log instances.
     #[prost(message, optional, tag = "5")]
     pub checkpoint_key_id: ::core::option::Option<super::super::common::v1::LogId>,
+    /// The name of the operator of this log deployment. Operator MUST be
+    /// formatted as a scheme-less URI, e.g. sigstore.dev
+    /// This MUST be used when there are multiple transparency log instances
+    /// to determine if log proof verification meets a specified threshold,
+    /// e.g. two proofs from log deployments operated by the same operator
+    /// should count as only one valid proof.
+    #[prost(string, tag = "6")]
+    pub operator: ::prost::alloc::string::String,
 }
 /// CertificateAuthority enlists the information required to identify which
 /// CA to use and perform signature verification.
@@ -104,6 +112,15 @@ pub struct CertificateAuthority {
     /// endpoints.
     #[prost(message, optional, tag = "4")]
     pub valid_for: ::core::option::Option<super::super::common::v1::TimeRange>,
+    /// The name of the operator of this certificate or timestamp authority.
+    /// Operator MUST be formatted as a scheme-less URI, e.g. sigstore.dev
+    /// This MUST be used when there are multiple timestamp authorities to
+    /// determine if the signed timestamp verification meets a specified
+    /// threshold, e.g. two signed timestamps from timestamp authorities
+    /// operated by the same operator should count as only one valid
+    /// timestamp.
+    #[prost(string, tag = "5")]
+    pub operator: ::prost::alloc::string::String,
 }
 /// TrustedRoot describes the client's complete set of trusted entities.
 /// How the TrustedRoot is populated is not specified, but can be a
@@ -224,9 +241,10 @@ pub struct SigningConfig {
     /// These URL MUST be the "base" URLs for the transparency logs,
     /// which clients should construct appropriate API endpoints on top of.
     ///
-    /// Clients MUST select Services with the highest API version
-    /// that the client is compatible with, that are within its
-    /// validity period, and have the newest validity start dates.
+    /// Clients MUST group Services by `operator` and select at most one
+    /// Service from each operator. Clients MUST select Services with the
+    /// highest API version that the client is compatible with, that are
+    /// within its validity period, and have the newest validity start dates.
     /// All listed Services SHOULD be sorted by the `valid_for` window in
     /// descending order, with the newest instance first.
     ///
@@ -244,9 +262,10 @@ pub struct SigningConfig {
     /// should be suitable for submitting Time Stamp Requests (TSRs) to
     /// via HTTP, per RFC 3161.
     ///
-    /// Clients MUST select Services with the highest API version
-    /// that the client is compatible with, that are within its
-    /// validity period, and have the newest validity start dates.
+    /// Clients MUST group Services by `operator` and select at most one
+    /// Service from each operator. Clients MUST select Services with the
+    /// highest API version that the client is compatible with, that are
+    /// within its validity period, and have the newest validity start dates.
     /// All listed Services SHOULD be sorted by the `valid_for` window in
     /// descending order, with the newest instance first.
     ///
@@ -260,10 +279,19 @@ pub struct SigningConfig {
     pub tsa_config: ::core::option::Option<ServiceConfiguration>,
 }
 /// Service represents an instance of a service that is a part of Sigstore infrastructure.
-/// Clients MUST use the API version hint to determine the service with the
-/// highest API version that the client is compatible with. Clients MUST also
-/// only connect to services within the specified validity period and that has the
-/// newest validity start date.
+/// When selecting one or multiple services from a list of services, clients MUST:
+/// * Use the API version hint to determine the service with the highest API version
+///    that the client is compatible with.
+/// * Only select services within the specified validity period and that have the
+///    newest validity start date.
+/// When selecting multiple services, clients MUST:
+/// * Use the ServiceConfiguration to determine how many services MUST be selected.
+///    Clients MUST return an error if there are not enough services that meet the
+///    selection criteria.
+/// * Group services by `operator` and select at most one service from an operator.
+///    During verification, clients MUST treat valid verification metadata from the
+///    operator as valid only once towards a threshold.
+/// * Select services from only the highest supported API version.
 #[derive(
     sigstore_protobuf_specs_derive::Deserialize_proto,
     sigstore_protobuf_specs_derive::Serialize_proto
@@ -287,6 +315,12 @@ pub struct Service {
     /// endpoints.
     #[prost(message, optional, tag = "3")]
     pub valid_for: ::core::option::Option<super::super::common::v1::TimeRange>,
+    /// Specifies the name of the service operator. When selecting multiple
+    /// services, clients MUST use the operator to select services from
+    /// distinct operators. Operator MUST be formatted as a scheme-less
+    /// URI, e.g. sigstore.dev
+    #[prost(string, tag = "4")]
+    pub operator: ::prost::alloc::string::String,
 }
 /// ServiceConfiguration specifies how a client should select a set of
 /// Services to connect to, along with a count when a specific number

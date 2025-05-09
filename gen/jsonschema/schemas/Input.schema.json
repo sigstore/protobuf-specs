@@ -553,6 +553,10 @@
                     "$ref": "#/definitions/dev.sigstore.common.v1.TimeRange",
                     "additionalProperties": false,
                     "description": "The time the *entire* chain was valid. This is at max the longest interval when *all* certificates in the chain were valid, but it MAY be shorter. Clients MUST check timestamps against *both* the `valid_for` time range *and* the entire certificate chain. The TimeRange should be considered valid *inclusive* of the endpoints."
+                },
+                "operator": {
+                    "type": "string",
+                    "description": "The name of the operator of this certificate or timestamp authority. Operator MUST be formatted as a scheme-less URI, e.g. sigstore.dev This MUST be used when there are multiple timestamp authorities to determine if the signed timestamp verification meets a specified threshold, e.g. two signed timestamps from timestamp authorities operated by the same operator should count as only one valid timestamp."
                 }
             },
             "additionalProperties": false,
@@ -593,6 +597,10 @@
                     "$ref": "#/definitions/dev.sigstore.common.v1.LogId",
                     "additionalProperties": false,
                     "description": "The unique identifier for the log, used in the checkpoint. Its calculation is described in https://github.com/C2SP/C2SP/blob/main/signed-note.md#signatures SHOULD be set for all logs. When not set, clients MUST use log_id. For Ed25519 signatures, the key ID is computed per the C2SP spec: key ID = SHA-256(key name || 0x0A || 0x01 || 32-byte Ed25519 public key)[:4] For ECDSA signatures, the key ID is computed per the C2SP spec: key ID = SHA-256(PKIX ASN.1 DER-encoded public key, in SubjectPublicKeyInfo format)[:4] For RSA signatures, the signature type will be 0xff with an appended identifier for the format, \"PKIX-RSA-PKCS#1v1.5\": key ID = SHA-256(key name || 0x0A || 0xff || PKIX-RSA-PKCS#1v1.5 || PKIX ASN.1 DER-encoded public key)[:4] This is provided for convenience. Clients can also calculate the checkpoint key ID given the log's public key. SHOULD be 4 bytes long, as a truncated hash. To find a matching TransparencyLogInstance in the TrustedRoot, clients will parse the checkpoint, and for each signature line, use the key name (i.e. log origin, base_url from TrustedRoot) and checkpoint key ID (i.e. checkpoint_key_id from TrustedRoot) which can then be compared against the TrustedRoot log instances."
+                },
+                "operator": {
+                    "type": "string",
+                    "description": "The name of the operator of this log deployment. Operator MUST be formatted as a scheme-less URI, e.g. sigstore.dev This MUST be used when there are multiple transparency log instances to determine if log proof verification meets a specified threshold, e.g. two proofs from log deployments operated by the same operator should count as only one valid proof."
                 }
             },
             "additionalProperties": false,

@@ -143,7 +143,18 @@ export interface TransparencyLogInstance {
    * and checkpoint key ID (i.e. checkpoint_key_id from TrustedRoot)
    * which can then be compared against the TrustedRoot log instances.
    */
-  checkpointKeyId: LogId | undefined;
+  checkpointKeyId:
+    | LogId
+    | undefined;
+  /**
+   * The name of the operator of this log deployment. Operator MUST be
+   * formatted as a scheme-less URI, e.g. sigstore.dev
+   * This MUST be used when there are multiple transparency log instances
+   * to determine if log proof verification meets a specified threshold,
+   * e.g. two proofs from log deployments operated by the same operator
+   * should count as only one valid proof.
+   */
+  operator: string;
 }
 
 /**
@@ -184,7 +195,19 @@ export interface CertificateAuthority {
    * The TimeRange should be considered valid *inclusive* of the
    * endpoints.
    */
-  validFor: TimeRange | undefined;
+  validFor:
+    | TimeRange
+    | undefined;
+  /**
+   * The name of the operator of this certificate or timestamp authority.
+   * Operator MUST be formatted as a scheme-less URI, e.g. sigstore.dev
+   * This MUST be used when there are multiple timestamp authorities to
+   * determine if the signed timestamp verification meets a specified
+   * threshold, e.g. two signed timestamps from timestamp authorities
+   * operated by the same operator should count as only one valid
+   * timestamp.
+   */
+  operator: string;
 }
 
 /**
@@ -298,9 +321,10 @@ export interface SigningConfig {
    * These URL MUST be the "base" URLs for the transparency logs,
    * which clients should construct appropriate API endpoints on top of.
    *
-   * Clients MUST select Services with the highest API version
-   * that the client is compatible with, that are within its
-   * validity period, and have the newest validity start dates.
+   * Clients MUST group Services by `operator` and select at most one
+   * Service from each operator. Clients MUST select Services with the
+   * highest API version that the client is compatible with, that are
+   * within its validity period, and have the newest validity start dates.
    * All listed Services SHOULD be sorted by the `valid_for` window in
    * descending order, with the newest instance first.
    *
@@ -322,9 +346,10 @@ export interface SigningConfig {
    * should be suitable for submitting Time Stamp Requests (TSRs) to
    * via HTTP, per RFC 3161.
    *
-   * Clients MUST select Services with the highest API version
-   * that the client is compatible with, that are within its
-   * validity period, and have the newest validity start dates.
+   * Clients MUST group Services by `operator` and select at most one
+   * Service from each operator. Clients MUST select Services with the
+   * highest API version that the client is compatible with, that are
+   * within its validity period, and have the newest validity start dates.
    * All listed Services SHOULD be sorted by the `valid_for` window in
    * descending order, with the newest instance first.
    *
@@ -341,10 +366,19 @@ export interface SigningConfig {
 
 /**
  * Service represents an instance of a service that is a part of Sigstore infrastructure.
- * Clients MUST use the API version hint to determine the service with the
- * highest API version that the client is compatible with. Clients MUST also
- * only connect to services within the specified validity period and that has the
- * newest validity start date.
+ * When selecting one or multiple services from a list of services, clients MUST:
+ * * Use the API version hint to determine the service with the highest API version
+ *   that the client is compatible with.
+ * * Only select services within the specified validity period and that have the
+ *   newest validity start date.
+ * When selecting multiple services, clients MUST:
+ * * Use the ServiceConfiguration to determine how many services MUST be selected.
+ *   Clients MUST return an error if there are not enough services that meet the
+ *   selection criteria.
+ * * Group services by `operator` and select at most one service from an operator.
+ *   During verification, clients MUST treat valid verification metadata from the
+ *   operator as valid only once towards a threshold.
+ * * Select services from only the highest supported API version.
  */
 export interface Service {
   /** URL of the service. MUST include scheme and authority. MAY include path. */
@@ -361,7 +395,16 @@ export interface Service {
    * The TimeRange MUST be considered valid *inclusive* of the
    * endpoints.
    */
-  validFor: TimeRange | undefined;
+  validFor:
+    | TimeRange
+    | undefined;
+  /**
+   * Specifies the name of the service operator. When selecting multiple
+   * services, clients MUST use the operator to select services from
+   * distinct operators. Operator MUST be formatted as a scheme-less
+   * URI, e.g. sigstore.dev
+   */
+  operator: string;
 }
 
 /**
@@ -409,6 +452,7 @@ export const TransparencyLogInstance: MessageFns<TransparencyLogInstance> = {
       publicKey: isSet(object.publicKey) ? PublicKey.fromJSON(object.publicKey) : undefined,
       logId: isSet(object.logId) ? LogId.fromJSON(object.logId) : undefined,
       checkpointKeyId: isSet(object.checkpointKeyId) ? LogId.fromJSON(object.checkpointKeyId) : undefined,
+      operator: isSet(object.operator) ? globalThis.String(object.operator) : "",
     };
   },
 
@@ -429,6 +473,9 @@ export const TransparencyLogInstance: MessageFns<TransparencyLogInstance> = {
     if (message.checkpointKeyId !== undefined) {
       obj.checkpointKeyId = LogId.toJSON(message.checkpointKeyId);
     }
+    if (message.operator !== "") {
+      obj.operator = message.operator;
+    }
     return obj;
   },
 };
@@ -440,6 +487,7 @@ export const CertificateAuthority: MessageFns<CertificateAuthority> = {
       uri: isSet(object.uri) ? globalThis.String(object.uri) : "",
       certChain: isSet(object.certChain) ? X509CertificateChain.fromJSON(object.certChain) : undefined,
       validFor: isSet(object.validFor) ? TimeRange.fromJSON(object.validFor) : undefined,
+      operator: isSet(object.operator) ? globalThis.String(object.operator) : "",
     };
   },
 
@@ -456,6 +504,9 @@ export const CertificateAuthority: MessageFns<CertificateAuthority> = {
     }
     if (message.validFor !== undefined) {
       obj.validFor = TimeRange.toJSON(message.validFor);
+    }
+    if (message.operator !== "") {
+      obj.operator = message.operator;
     }
     return obj;
   },
@@ -551,6 +602,7 @@ export const Service: MessageFns<Service> = {
       url: isSet(object.url) ? globalThis.String(object.url) : "",
       majorApiVersion: isSet(object.majorApiVersion) ? globalThis.Number(object.majorApiVersion) : 0,
       validFor: isSet(object.validFor) ? TimeRange.fromJSON(object.validFor) : undefined,
+      operator: isSet(object.operator) ? globalThis.String(object.operator) : "",
     };
   },
 
@@ -564,6 +616,9 @@ export const Service: MessageFns<Service> = {
     }
     if (message.validFor !== undefined) {
       obj.validFor = TimeRange.toJSON(message.validFor);
+    }
+    if (message.operator !== "") {
+      obj.operator = message.operator;
     }
     return obj;
   },
