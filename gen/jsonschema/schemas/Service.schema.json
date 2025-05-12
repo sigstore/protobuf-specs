@@ -16,12 +16,16 @@
                     "$ref": "#/definitions/dev.sigstore.common.v1.TimeRange",
                     "additionalProperties": false,
                     "description": "Validity period of a service. A service that has only a start date SHOULD be considered the most recent instance of that service, but the client MUST NOT assume there is only one valid instance. The TimeRange MUST be considered valid *inclusive* of the endpoints."
+                },
+                "operator": {
+                    "type": "string",
+                    "description": "Specifies the name of the service operator. When selecting multiple services, clients MUST use the operator to select services from distinct operators. Operator MUST be formatted as a scheme-less URI, e.g. sigstore.dev"
                 }
             },
             "additionalProperties": false,
             "type": "object",
             "title": "Service",
-            "description": "Service represents an instance of a service that is a part of Sigstore infrastructure. Clients MUST use the API version hint to determine the service with the highest API version that the client is compatible with. Clients MUST also only connect to services within the specified validity period and that has the newest validity start date."
+            "description": "Service represents an instance of a service that is a part of Sigstore infrastructure. When selecting one or multiple services from a list of services, clients MUST: * Use the API version hint to determine the service with the highest API version   that the client is compatible with. * Only select services within the specified validity period and that have the   newest validity start date. When selecting multiple services, clients MUST: * Use the ServiceConfiguration to determine how many services MUST be selected.   Clients MUST return an error if there are not enough services that meet the   selection criteria. * Group services by `operator` and select at most one service from an operator.   During verification, clients MUST treat valid verification metadata from the   operator as valid only once towards a threshold. * Select services from only the highest supported API version."
         },
         "dev.sigstore.common.v1.TimeRange": {
             "properties": {
