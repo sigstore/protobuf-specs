@@ -12,6 +12,21 @@ All versions prior to 0.2.0 are untracked.
 
 ### Changed
 
+## 0.4.2
+
+### Changed
+
+* Deprecated LMS/LMS-OTS as supported signing algorithms
+  ([#597](https://github.com/sigstore/protobuf-specs/pull/597))
+* Added stronger language around how clients should handle service selection
+  ([#607](https://github.com/sigstore/protobuf-specs/pull/607))
+* Revised checkpoint key ID comment, deprecated log ID
+  ([#629](https://github.com/sigstore/protobuf-specs/pull/629))
+* Added operator for SigningConfig services, log and TSA roots
+  ([#634](https://github.com/sigstore/protobuf-specs/pull/634))
+* Added ML-DSA to algorithm registry
+  ([#616](https://github.com/sigstore/protobuf-specs/pull/616))
+
 ## 0.4.1
 
 ### Changed
