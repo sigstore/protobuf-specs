@@ -47,7 +47,7 @@ go: base-image-go
 	  --go_opt=module=github.com/sigstore/protobuf-specs/gen/pb-go --go_out=/defs/gen/pb-go ${PROTOS}
 
 # an image on ghcr for generating defintions for sigstore services
-services-image:
+services-image: go
 	@echo "Generating go proto base image"
 	cd protoc-builder && ${DOCKER_BUILD} -t ${PROTOC_GO_IMAGE} -f Dockerfile.go .
 	@echo "Generating services Docker image"
