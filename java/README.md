@@ -13,16 +13,12 @@ A jar file will be created at `./build/libs/protobuf-specs-SNAPSHOT.jar`
 ## Releasing
 
 ### Generate Release artifacts
-1. On creation of a tag in the style `release/java/v1.2.3`, new artifacts will be built and
-uploaded to a github release `release/java/v1.2.3`
-1. Once a release is created, check it and remove the draft label on the github release page.
-1. On a machine with your pgp key, `gpg`, `bash` and `cosign`, go to `protobuf-specs/java/scripts`
-1. Run `./sign_and_bundle_release.sh v1.2.3` to generate a release bundle for `release/java/v1.2.3`
+1. On creation of a tag in the style `release/java/v1.2.3`, new artifacts will be built signed
+   and published to maven central (in staging, but no released).
 
-### Publish on Maven Central
+### Complete Publish Flow Maven Central
 1. Log into https://s01.oss.sonatype.org with credentials that have permissions to upload to `dev.sigstore`
-1. Take the release bundle, `release_java_v1.2.3/protobuf-specs-1.2.3-bundle.jar` and upload via the `Staging Upload -> (Upload Mode) Artifact Bundle`
-1. Once the bundle is validated and checked, release it via `Staging Repositories`, if any issues occur, drop it and fix the issues before restarting the release process.
+1. Find the release in `Staging Repositories`, "close" it and once it passes validation "release" it.
 
 ## How do I get permissions to upload to Maven Central
 
