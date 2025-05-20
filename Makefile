@@ -19,6 +19,7 @@ PROTOC_JSONSCHEMA_IMAGE = protoc-jsonschema
 PROTOC_PYTHON_IMAGE = protoc-python
 PROTOC_RUBY_IMAGE = protoc-ruby
 PROTOC_RUST_IMAGE = protoc-rust
+PROTOC_SERVICES_IMAGE = protoc-services
 PROTOC_TYPESCRIPT_IMAGE = protoc-typescript
 
 RUST_ACTION ?= run -p sigstore-protobuf-specs-codegen
@@ -44,6 +45,14 @@ go: base-image-go
 	${DOCKER_RUN} -v ${PWD}:/defs ${PROTOC_GO_IMAGE} \
 	  -I/opt/include -I/googleapis -I/defs/protos \
 	  --go_opt=module=github.com/sigstore/protobuf-specs/gen/pb-go --go_out=/defs/gen/pb-go ${PROTOS}
+
+# an image on ghcr for generating defintions for sigstore services
+services-image: go
+	@echo "Generating go proto base image"
+	cd protoc-builder && ${DOCKER_BUILD} -t ${PROTOC_GO_IMAGE} -f Dockerfile.go .
+	@echo "Generating services Docker image"
+	# build from root directory so we can inject ./protos/ into the image
+	${DOCKER_BUILD} -t ${PROTOC_SERVICES_IMAGE} --build-arg GO_BASE=${PROTOC_GO_IMAGE} -f protoc-builder/Dockerfile.services .
 
 python: base-image-python
 	@echo "Generating python proto Docker image"
