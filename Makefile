@@ -19,7 +19,9 @@ PROTOC_JSONSCHEMA_IMAGE = protoc-jsonschema
 PROTOC_PYTHON_IMAGE = protoc-python
 PROTOC_RUBY_IMAGE = protoc-ruby
 PROTOC_RUST_IMAGE = protoc-rust
-PROTOC_SERVICES_IMAGE = protoc-services
+# the container release action depends on the name being "protoc-services"
+# so change it there too if you change it here.
+PROTOC_SERVICES_IMAGE = protoc-services 
 PROTOC_TYPESCRIPT_IMAGE = protoc-typescript
 
 RUST_ACTION ?= run -p sigstore-protobuf-specs-codegen
