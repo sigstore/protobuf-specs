@@ -35,6 +35,13 @@ After updating the specification, update the
 to include the new signing algorithm identifier. If the algorithm also uses a new hashing algorithm, update
 [`HashAlgorithm`](https://github.com/sigstore/protobuf-specs/blob/c30eb14cece57d88c08579197ecfdb57a5f1aba5/protos/sigstore_common.proto#L37).
 
+## Service Builder
+
+This project publishes a container to [`ghcr.io/sigstore/protobuf-specs-service-builder`](https://github.com/sigstore/protobuf-specs/pkgs/container/protobuf-specs-service-builder)
+which contains all the necessary protoc tools, .proto files and .proto dependencies to generate service 
+defintions for sigstore services (like rekor and fulcio). This container is not meant to be used by anyone
+else and no requests or support will be provided.
+
 ## Deprecation Notice
 
 - Effective January 17th, 2025: the jsonschema generated files in gen/jsonschema/schemas/ are formally deprecated. They will be removed in 6 months from this repository and not built repeatedly going forward. If you are using them, please open an issue on this repository and let us know.

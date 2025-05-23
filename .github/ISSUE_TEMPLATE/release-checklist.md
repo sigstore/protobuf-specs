@@ -25,6 +25,7 @@ Full release instructions are at: [RELEASE.md](/sigstore/protobuf-specs/blob/mai
 - [ ] `release/ruby/v<version>`
 - [ ] `release/rust/v<version>`
 - [ ] `release/typescript/v<version>`
+- [ ] `release/service-builder/v<version>`
 
 ## Publish Release
 - [ ] Java to Maven Central
@@ -35,3 +36,4 @@ Full release instructions are at: [RELEASE.md](/sigstore/protobuf-specs/blob/mai
 - [ ] [Ruby](https://rubygems.org/gems/sigstore_protobuf_specs)
 - [ ] [Rust](https://crates.io/crates/sigstore_protobuf_specs)
 - [ ] [Typescript](https://www.npmjs.com/package/@sigstore/protobuf-specs)
+- [ ] [Service Builder Container](https://github.com/sigstore/protobuf-specs/pkgs/container/protobuf-specs-service-builder)
