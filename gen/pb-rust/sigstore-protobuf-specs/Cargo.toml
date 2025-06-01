@@ -20,7 +20,7 @@ serde_json = "1.0"
 sigstore-protobuf-specs-derive = { version = "0.0.1", path = "../sigstore-protobuf-specs-derive" }
 
 [build-dependencies]
-anyhow = "1.0.97"
+anyhow = "1.0.98"
 glob = "0.3"
 prost-build = "0.13.5"
 prost-reflect-build = "0.15.1"
