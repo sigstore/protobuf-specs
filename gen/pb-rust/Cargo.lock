@@ -290,9 +290,9 @@ dependencies = [
 
 [[package]]
 name = "prost-reflect"
-version = "0.15.2"
+version = "0.15.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ebb644dd3ad12d7cf62a18234d385ea5511ac6abb208704c18098e7e3a5e1b69"
+checksum = "37587d5a8a1b3dc9863403d084fc2254b91ab75a702207098837950767e2260b"
 dependencies = [
  "prost",
  "prost-reflect-derive 0.15.1",
@@ -301,12 +301,12 @@ dependencies = [
 
 [[package]]
 name = "prost-reflect-build"
-version = "0.15.1"
+version = "0.15.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ab2f1a2229c170ebef43cffa6ff2cfc94c275bda7d52fd8463d2bf41d05a6d77"
+checksum = "ad8db7191445b1dbee19df4f6b6294e5123aef52620b344a630bb845d302622a"
 dependencies = [
  "prost-build",
- "prost-reflect 0.15.2",
+ "prost-reflect 0.15.3",
 ]
 
 [[package]]
