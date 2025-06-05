@@ -20,21 +20,8 @@ permissions:
 
 on:
   push:
-    paths:
-      - '**.proto'
-      - 'gen/pb-python/**'
-      - 'protoc-builder/Dockerfile.python'
-      - 'protoc-builder/versions.mk'
-      - 'protoc-builder/hack/dev-requirements.txt'
-      - '.github/workflows/python-build.yml'
-  pull_request:
-    paths:
-      - '**.proto'
-      - 'gen/pb-python/**'
-      - 'protoc-builder/Dockerfile.python'
-      - 'protoc-builder/versions.mk'
-      - 'protoc-builder/hack/dev-requirements.txt'
-      - '.github/workflows/python-build.yml'
+    branches: [main]
+  pull_request: {}
 
 jobs:
   build:

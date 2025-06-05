@@ -21,13 +21,8 @@ permissions:
 on:
   workflow_call: # allow this workflow to be called by other workflows
   push:
-    paths:
-      - '**.proto'
-      - 'java/**'
-  pull_request:
-    paths:
-      - '**.proto'
-      - 'java/**'
+    branches: [main]
+  pull_request: {}
 
 jobs:
   build:
