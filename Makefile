@@ -141,7 +141,8 @@ clean:
 		gen/pb-typescript/src/__generated__/* \
 		gen/pb-python/sigstore_protobuf_specs/dev \
 		gen/pb-python/sigstore_protobuf_specs/io \
-		gen/pb-rust/target \
+		gen/pb-rust/target
+	find gen/pb-ruby/ -type f -name '*_pb.rb' -delete
 	docker rmi -f ${PROTOC_IMAGE}:go  ${PROTOC_GO_IMAGE} \
 		      ${PROTOC_IMAGE}:python ${PROTOC_PYTHON_IMAGE} \
 		      ${PROTOC_IMAGE}:ruby ${PROTOC_RUBY_IMAGE} \
