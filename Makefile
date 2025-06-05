@@ -76,7 +76,6 @@ ruby: base-image-ruby
 	${DOCKER_RUN} -v ${PWD}:/defs ${PROTOC_RUBY_IMAGE} ${PROTO_INCLUDES}\
 	  --ruby_out=/defs/gen/pb-ruby/lib ${PROTOS}
 
-# TODO: serivce-proto code gen for rust
 rust: base-image-rust
 	@echo "Generating rust proto Docker image"
 	cd protoc-builder && ${DOCKER_BUILD} -t ${PROTOC_RUST_IMAGE} -f Dockerfile.rust .
