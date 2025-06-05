@@ -20,17 +20,8 @@ permissions:
 
 on:
   push:
-    paths:
-      - '**.proto'
-      - 'gen/pb-ruby/**'
-      - 'protoc-builder/Dockerfile.ruby'
-      - 'protoc-builder/versions.mk'
-  pull_request:
-    paths:
-      - '**.proto'
-      - 'gen/pb-ruby/**'
-      - 'protoc-builder/Dockerfile.ruby'
-      - 'protoc-builder/versions.mk'
+    branches: [main]
+  pull_request: {}
 
 jobs:
   build:

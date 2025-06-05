@@ -20,19 +20,8 @@ permissions:
 
 on:
   push:
-    paths:
-      - '**.proto'
-      - 'gen/pb-typescript/**'
-      - 'protoc-builder/Dockerfile.typescript'
-      - 'protoc-builder/hack/package*.json'
-      - 'protoc-builder/versions.mk'
-  pull_request:
-    paths:
-      - '**.proto'
-      - 'gen/pb-typescript/**'
-      - 'protoc-builder/Dockerfile.typescript'
-      - 'protoc-builder/hack/package*.json'
-      - 'protoc-builder/versions.mk'
+    branches: [main]
+  pull_request: {}
 
 jobs:
   build:

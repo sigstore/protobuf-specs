@@ -20,17 +20,8 @@ permissions:
 
 on:
   push:
-    branches:
-      - 'main'
-    paths:
-      - '**.proto'
-      - 'gen/**'
-      - 'protoc-builder/**'
-  pull_request:
-    paths:
-      - '**.proto'
-      - 'gen/**'
-      - 'protoc-builder/**'
+    branches: [main]
+  pull_request: {}
 
 jobs:
   check_generated_protos:
