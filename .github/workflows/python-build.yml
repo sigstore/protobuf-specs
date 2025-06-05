@@ -26,6 +26,7 @@ on:
       - 'protoc-builder/Dockerfile.python'
       - 'protoc-builder/versions.mk'
       - 'protoc-builder/hack/dev-requirements.txt'
+      - '.github/workflows/python-build.yml'
   pull_request:
     paths:
       - '**.proto'
@@ -33,12 +34,13 @@ on:
       - 'protoc-builder/Dockerfile.python'
       - 'protoc-builder/versions.mk'
       - 'protoc-builder/hack/dev-requirements.txt'
+      - '.github/workflows/python-build.yml'
 
 jobs:
   build:
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
       fail-fast: false
 
     runs-on: ubuntu-latest
