@@ -146,6 +146,22 @@ class Spec(betterproto.Message):
         return cls._validate_field_groups(values)
 
 
+@dataclass(eq=False, repr=False)
+class CreateEntryRequest(betterproto.Message):
+    """Create a new HashedRekord or DSSE"""
+
+    hashed_rekord_request_v002: Optional["HashedRekordRequestV002"] = (
+        betterproto.message_field(1, optional=True, group="spec")
+    )
+    dsse_request_v002: Optional["DsseRequestV002"] = betterproto.message_field(
+        2, optional=True, group="spec"
+    )
+
+    @model_validator(mode="after")
+    def check_oneof(cls, values):
+        return cls._validate_field_groups(values)
+
+
 rebuild_dataclass(Verifier)  # type: ignore
 rebuild_dataclass(Signature)  # type: ignore
 rebuild_dataclass(DsseRequestV002)  # type: ignore
@@ -154,3 +170,4 @@ rebuild_dataclass(HashedRekordRequestV002)  # type: ignore
 rebuild_dataclass(HashedRekordLogEntryV002)  # type: ignore
 rebuild_dataclass(Entry)  # type: ignore
 rebuild_dataclass(Spec)  # type: ignore
+rebuild_dataclass(CreateEntryRequest)  # type: ignore

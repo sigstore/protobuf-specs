@@ -5,8 +5,8 @@
 // source: rekor/v2/entry.proto
 
 /* eslint-disable */
-import { DSSELogEntryV002 } from "./dsse";
-import { HashedRekordLogEntryV002 } from "./hashedrekord";
+import { DSSELogEntryV002, DSSERequestV002 } from "./dsse";
+import { HashedRekordLogEntryV002, HashedRekordRequestV002 } from "./hashedrekord";
 
 /**
  * Entry is the message that is canonicalized and uploaded to the log.
@@ -27,6 +27,14 @@ export interface Spec {
   spec?: { $case: "hashedRekordV002"; hashedRekordV002: HashedRekordLogEntryV002 } | {
     $case: "dsseV002";
     dsseV002: DSSELogEntryV002;
+  } | undefined;
+}
+
+/** Create a new HashedRekord or DSSE */
+export interface CreateEntryRequest {
+  spec?: { $case: "hashedRekordRequestV002"; hashedRekordRequestV002: HashedRekordRequestV002 } | {
+    $case: "dsseRequestV002";
+    dsseRequestV002: DSSERequestV002;
   } | undefined;
 }
 
@@ -71,6 +79,31 @@ export const Spec: MessageFns<Spec> = {
       obj.hashedRekordV002 = HashedRekordLogEntryV002.toJSON(message.spec.hashedRekordV002);
     } else if (message.spec?.$case === "dsseV002") {
       obj.dsseV002 = DSSELogEntryV002.toJSON(message.spec.dsseV002);
+    }
+    return obj;
+  },
+};
+
+export const CreateEntryRequest: MessageFns<CreateEntryRequest> = {
+  fromJSON(object: any): CreateEntryRequest {
+    return {
+      spec: isSet(object.hashedRekordRequestV002)
+        ? {
+          $case: "hashedRekordRequestV002",
+          hashedRekordRequestV002: HashedRekordRequestV002.fromJSON(object.hashedRekordRequestV002),
+        }
+        : isSet(object.dsseRequestV002)
+        ? { $case: "dsseRequestV002", dsseRequestV002: DSSERequestV002.fromJSON(object.dsseRequestV002) }
+        : undefined,
+    };
+  },
+
+  toJSON(message: CreateEntryRequest): unknown {
+    const obj: any = {};
+    if (message.spec?.$case === "hashedRekordRequestV002") {
+      obj.hashedRekordRequestV002 = HashedRekordRequestV002.toJSON(message.spec.hashedRekordRequestV002);
+    } else if (message.spec?.$case === "dsseRequestV002") {
+      obj.dsseRequestV002 = DSSERequestV002.toJSON(message.spec.dsseRequestV002);
     }
     return obj;
   },
