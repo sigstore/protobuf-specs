@@ -177,3 +177,30 @@ pub mod spec {
         DsseV002(super::DsseLogEntryV002),
     }
 }
+/// Create a new HashedRekord or DSSE
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.rekor.v2.CreateEntryRequest")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateEntryRequest {
+    #[prost(oneof = "create_entry_request::Spec", tags = "1, 2")]
+    pub spec: ::core::option::Option<create_entry_request::Spec>,
+}
+/// Nested message and enum types in `CreateEntryRequest`.
+pub mod create_entry_request {
+    #[derive(
+        sigstore_protobuf_specs_derive::Deserialize_proto,
+        sigstore_protobuf_specs_derive::Serialize_proto
+    )]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Spec {
+        #[prost(message, tag = "1")]
+        HashedRekordRequestV002(super::HashedRekordRequestV002),
+        #[prost(message, tag = "2")]
+        DsseRequestV002(super::DsseRequestV002),
+    }
+}
