@@ -15,7 +15,8 @@ repositories {
 sourceSets {
     main {
         resources {
-            srcDirs("../protos")
+            srcDirs("../protos", "../service-protos")
+            include("**/*.proto")
         }
     }
 }
