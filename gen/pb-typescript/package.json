@@ -4,6 +4,10 @@
   "description": "code-signing for npm packages",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./rekor/v2": "./dist/rekor/v2/index.js"
+  },
   "scripts": {
     "build": "tsc"
   },
