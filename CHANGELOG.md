@@ -12,6 +12,10 @@ All versions prior to 0.2.0 are untracked.
 
 ### Changed
 
+## 0.4.3
+
+* Added Rekor v2 generated clients ([#661](https://github.com/sigstore/protobuf-specs/pull/661))
+
 ## 0.4.2
 
 ### Changed

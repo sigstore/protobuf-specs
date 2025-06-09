@@ -1,6 +1,6 @@
 [package]
 name = "sigstore_protobuf_specs"
-version = "0.4.2"
+version = "0.4.3"
 authors = ["Sigstore Authors <sigstore-dev@googlegroups.com>"]
 edition = "2021"
 homepage = "https://github.com/sigstore/protobuf-specs"
