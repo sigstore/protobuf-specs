@@ -67,30 +67,6 @@ class Signature(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class DsseRequestV002(betterproto.Message):
-    """A request to add a DSSE v0.0.2 entry to the log"""
-
-    envelope: "____io_intoto__.Envelope" = betterproto.message_field(1)
-    """A DSSE envelope"""
-
-    verifiers: List["Verifier"] = betterproto.message_field(2)
-    """
-    All necessary verification material to verify all signatures embedded in the envelope
-    """
-
-
-@dataclass(eq=False, repr=False)
-class DsseLogEntryV002(betterproto.Message):
-    payload_hash: "__common_v1__.HashOutput" = betterproto.message_field(1)
-    """The hash of the DSSE payload"""
-
-    signatures: List["Signature"] = betterproto.message_field(2)
-    """
-    Signatures and their associated verification material used to verify the payload
-    """
-
-
-@dataclass(eq=False, repr=False)
 class HashedRekordRequestV002(betterproto.Message):
     """A request to add a hashedrekord v0.0.2 to the log"""
 
@@ -111,6 +87,30 @@ class HashedRekordLogEntryV002(betterproto.Message):
     signature: "Signature" = betterproto.message_field(2)
     """
     A single signature over the hashed data with the verifier needed to validate it
+    """
+
+
+@dataclass(eq=False, repr=False)
+class DsseRequestV002(betterproto.Message):
+    """A request to add a DSSE v0.0.2 entry to the log"""
+
+    envelope: "____io_intoto__.Envelope" = betterproto.message_field(1)
+    """A DSSE envelope"""
+
+    verifiers: List["Verifier"] = betterproto.message_field(2)
+    """
+    All necessary verification material to verify all signatures embedded in the envelope
+    """
+
+
+@dataclass(eq=False, repr=False)
+class DsseLogEntryV002(betterproto.Message):
+    payload_hash: "__common_v1__.HashOutput" = betterproto.message_field(1)
+    """The hash of the DSSE payload"""
+
+    signatures: List["Signature"] = betterproto.message_field(2)
+    """
+    Signatures and their associated verification material used to verify the payload
     """
 
 
@@ -164,10 +164,10 @@ class CreateEntryRequest(betterproto.Message):
 
 rebuild_dataclass(Verifier)  # type: ignore
 rebuild_dataclass(Signature)  # type: ignore
-rebuild_dataclass(DsseRequestV002)  # type: ignore
-rebuild_dataclass(DsseLogEntryV002)  # type: ignore
 rebuild_dataclass(HashedRekordRequestV002)  # type: ignore
 rebuild_dataclass(HashedRekordLogEntryV002)  # type: ignore
+rebuild_dataclass(DsseRequestV002)  # type: ignore
+rebuild_dataclass(DsseLogEntryV002)  # type: ignore
 rebuild_dataclass(Entry)  # type: ignore
 rebuild_dataclass(Spec)  # type: ignore
 rebuild_dataclass(CreateEntryRequest)  # type: ignore

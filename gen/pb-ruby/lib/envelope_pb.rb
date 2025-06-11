@@ -7,7 +7,7 @@ require 'google/protobuf'
 
 descriptor_data = "\n\x0e\x65nvelope.proto\x12\tio.intoto\"Z\n\x08\x45nvelope\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\x12\x13\n\x0bpayloadType\x18\x02 \x01(\t\x12(\n\nsignatures\x18\x03 \x03(\x0b\x32\x14.io.intoto.Signature\"\'\n\tSignature\x12\x0b\n\x03sig\x18\x01 \x01(\x0c\x12\r\n\x05keyid\x18\x02 \x01(\tBDZ1github.com/sigstore/protobuf-specs/gen/pb-go/dsse\xea\x02\x0eSigstore::DSSEb\x06proto3"
 
-pool = Google::Protobuf::DescriptorPool.generated_pool
+pool = ::Google::Protobuf::DescriptorPool.generated_pool
 pool.add_serialized_file(descriptor_data)
 
 module Sigstore
