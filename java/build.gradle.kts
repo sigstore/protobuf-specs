@@ -2,7 +2,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("dev.sigstore.sign") version "1.3.0"
-    id("com.diffplug.spotless") version "7.0.3"
+    id("com.diffplug.spotless") version "7.0.4"
     `signing`
 }
 
@@ -15,7 +15,8 @@ repositories {
 sourceSets {
     main {
         resources {
-            srcDirs("../protos")
+            srcDirs("../protos", "../service-protos")
+            include("**/*.proto")
         }
     }
 }
