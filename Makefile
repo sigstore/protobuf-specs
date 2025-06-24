@@ -31,8 +31,12 @@ GID ?= $(shell id -g)
 DOCKER_BUILD = docker build --platform ${PLATFORM} --build-arg UID=${UID}
 DOCKER_RUN = docker run --platform ${PLATFORM} --user ${UID}:${GID}
 
+# base protos for clients that do not want to include service-protos
+BASE_PROTOS = $(shell find protos/ -iname "*.proto" | sed 's|^|/defs/|')
+BASE_PROTO_INCLUDES=-I/opt/include -I/googleapis -I/defs/protos
+
 PROTOS = $(shell find protos/ service-protos/ -iname "*.proto" | sed 's|^|/defs/|')
-PROTO_INCLUDES=-I/opt/include -I/googleapis -I/defs/protos -I/defs/service-protos
+PROTO_INCLUDES=${BASE_PROTO_INCLUDES} -I/defs/service-protos
 
 include protoc-builder/versions.mk
 
@@ -40,12 +44,13 @@ include protoc-builder/versions.mk
 all: go python typescript ruby rust
 
 # generate Go protobuf code
+# ignore service-protos, go clients should grab those from the service directly
 go: base-image-go
 	@echo "Generating go proto Docker image"
 	cd protoc-builder && ${DOCKER_BUILD} -t ${PROTOC_GO_IMAGE} -f Dockerfile.go .
 	@echo "Generating go protobuf files"
-	${DOCKER_RUN} -v ${PWD}:/defs ${PROTOC_GO_IMAGE} ${PROTO_INCLUDES}\
-	  --go_opt=module=github.com/sigstore/protobuf-specs/gen/pb-go --go_out=/defs/gen/pb-go ${PROTOS}
+	${DOCKER_RUN} -v ${PWD}:/defs ${PROTOC_GO_IMAGE} ${BASE_PROTO_INCLUDES}\
+	  --go_opt=module=github.com/sigstore/protobuf-specs/gen/pb-go --go_out=/defs/gen/pb-go ${BASE_PROTOS}
 
 # an image on ghcr for generating defintions for sigstore services
 services-image: base-image-go
