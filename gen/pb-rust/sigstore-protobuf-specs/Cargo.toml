@@ -12,9 +12,9 @@ keywords = ["sigstore"]
 categories = ["encoding", "parser-implementations"]
 
 [dependencies]
-prost-types = "0.13.5"
-prost = "0.13.5"
-prost-reflect = { version = "0.15.2", features = ["serde", "derive"] }
+prost-types = "0.14.1"
+prost = "0.14.1"
+prost-reflect = { version = "0.16.0", features = ["serde", "derive"] }
 serde = {version = "1.0", features = ["derive"]}
 serde_json = "1.0"
 sigstore-protobuf-specs-derive = { version = "0.0.1", path = "../sigstore-protobuf-specs-derive" }
@@ -23,5 +23,5 @@ sigstore-protobuf-specs-derive = { version = "0.0.1", path = "../sigstore-protob
 anyhow = "1.0.98"
 glob = "0.3"
 prost-build = "0.14.1"
-prost-reflect-build = "0.15.1"
+prost-reflect-build = "0.16.0"
 which = "8.0.0"
