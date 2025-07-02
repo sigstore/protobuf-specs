@@ -8,7 +8,7 @@
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.HashOutput")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HashOutput {
     #[prost(enumeration = "HashAlgorithm", tag = "1")]
     pub algorithm: i32,
@@ -25,7 +25,7 @@ pub struct HashOutput {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.MessageSignature")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MessageSignature {
     /// Message digest can be used to identify the artifact.
     /// Clients MUST NOT attempt to use this digest to verify the associated
@@ -51,7 +51,7 @@ pub struct MessageSignature {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.LogId")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LogId {
     /// The unique identity of the log, represented by its public key.
     #[prost(bytes = "vec", tag = "1")]
@@ -65,7 +65,7 @@ pub struct LogId {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.RFC3161SignedTimestamp")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Rfc3161SignedTimestamp {
     /// Signed timestamp is the DER encoded TimeStampResponse.
     /// See <https://www.rfc-editor.org/rfc/rfc3161.html#section-2.4.2>
@@ -79,7 +79,7 @@ pub struct Rfc3161SignedTimestamp {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.PublicKey")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublicKey {
     /// DER-encoded public key, encoding method is specified by the
     /// key_details attribute.
@@ -101,7 +101,7 @@ pub struct PublicKey {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.PublicKeyIdentifier")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublicKeyIdentifier {
     /// Optional unauthenticated hint on which key to use.
     /// The format of the hint must be agreed upon out of band by the
@@ -123,7 +123,7 @@ pub struct PublicKeyIdentifier {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.ObjectIdentifier")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObjectIdentifier {
     #[prost(int32, repeated, packed = "false", tag = "1")]
     pub id: ::prost::alloc::vec::Vec<i32>,
@@ -136,7 +136,7 @@ pub struct ObjectIdentifier {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.ObjectIdentifierValuePair")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObjectIdentifierValuePair {
     #[prost(message, optional, tag = "1")]
     pub oid: ::core::option::Option<ObjectIdentifier>,
@@ -150,7 +150,7 @@ pub struct ObjectIdentifierValuePair {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.DistinguishedName")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DistinguishedName {
     #[prost(string, tag = "1")]
     pub organization: ::prost::alloc::string::String,
@@ -164,7 +164,7 @@ pub struct DistinguishedName {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.X509Certificate")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct X509Certificate {
     /// DER-encoded X.509 certificate.
     #[prost(bytes = "vec", tag = "1")]
@@ -177,7 +177,7 @@ pub struct X509Certificate {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.SubjectAlternativeName")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubjectAlternativeName {
     #[prost(enumeration = "SubjectAlternativeNameType", tag = "1")]
     pub r#type: i32,
@@ -190,7 +190,7 @@ pub mod subject_alternative_name {
         sigstore_protobuf_specs_derive::Deserialize_proto,
         sigstore_protobuf_specs_derive::Serialize_proto
     )]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Identity {
         /// A regular expression describing the expected value for
         /// the SAN.
@@ -234,7 +234,7 @@ pub struct X509CertificateChain {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.common.v1.TimeRange")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeRange {
     #[prost(message, optional, tag = "1")]
     pub start: ::core::option::Option<::prost_types::Timestamp>,

@@ -7,7 +7,7 @@
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v2.PublicKey")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublicKey {
     /// DER-encoded public key
     #[prost(bytes = "vec", tag = "1")]
@@ -21,7 +21,7 @@ pub struct PublicKey {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v2.Verifier")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Verifier {
     /// Key encoding and signature algorithm to use for this key
     #[prost(enumeration = "super::super::common::v1::PublicKeyDetails", tag = "3")]
@@ -35,7 +35,7 @@ pub mod verifier {
         sigstore_protobuf_specs_derive::Deserialize_proto,
         sigstore_protobuf_specs_derive::Serialize_proto
     )]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Verifier {
         /// DER-encoded public key. Encoding method is specified by the key_details attribute
         #[prost(message, tag = "1")]
@@ -53,7 +53,7 @@ pub mod verifier {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v2.Signature")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Signature {
     #[prost(bytes = "vec", tag = "1")]
     pub content: ::prost::alloc::vec::Vec<u8>,
@@ -103,7 +103,7 @@ pub struct DsseLogEntryV002 {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v2.HashedRekordRequestV002")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HashedRekordRequestV002 {
     /// The hashed data
     #[prost(bytes = "vec", tag = "1")]
@@ -119,7 +119,7 @@ pub struct HashedRekordRequestV002 {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v2.HashedRekordLogEntryV002")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HashedRekordLogEntryV002 {
     /// The hashed data
     #[prost(message, optional, tag = "1")]

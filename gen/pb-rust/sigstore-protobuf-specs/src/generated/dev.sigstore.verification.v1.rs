@@ -115,7 +115,7 @@ pub mod artifact_verification_options {
         message_name = "dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogOptions"
     )]
     #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TlogOptions {
         /// Number of transparency logs the entry must appear on.
         #[prost(int32, tag = "1")]
@@ -136,7 +136,7 @@ pub mod artifact_verification_options {
         message_name = "dev.sigstore.verification.v1.ArtifactVerificationOptions.CtlogOptions"
     )]
     #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CtlogOptions {
         /// The number of ct transparency logs the certificate must
         /// appear on.
@@ -155,7 +155,7 @@ pub mod artifact_verification_options {
         message_name = "dev.sigstore.verification.v1.ArtifactVerificationOptions.TimestampAuthorityOptions"
     )]
     #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TimestampAuthorityOptions {
         /// The number of signed timestamps that are expected.
         #[prost(int32, tag = "1")]
@@ -173,7 +173,7 @@ pub mod artifact_verification_options {
         message_name = "dev.sigstore.verification.v1.ArtifactVerificationOptions.TlogIntegratedTimestampOptions"
     )]
     #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TlogIntegratedTimestampOptions {
         /// The number of integrated timestamps that are expected.
         #[prost(int32, tag = "1")]
@@ -191,7 +191,7 @@ pub mod artifact_verification_options {
         message_name = "dev.sigstore.verification.v1.ArtifactVerificationOptions.ObserverTimestampOptions"
     )]
     #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ObserverTimestampOptions {
         /// The number of external observers of the timestamp.
         /// This is a union of RFC3161 signed timestamps, and
@@ -235,7 +235,7 @@ pub mod artifact_verification_options {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.verification.v1.Artifact")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Artifact {
     #[prost(oneof = "artifact::Data", tags = "1, 2, 3")]
     pub data: ::core::option::Option<artifact::Data>,
@@ -246,7 +246,7 @@ pub mod artifact {
         sigstore_protobuf_specs_derive::Deserialize_proto,
         sigstore_protobuf_specs_derive::Serialize_proto
     )]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Data {
         /// Location of the artifact
         #[prost(string, tag = "1")]

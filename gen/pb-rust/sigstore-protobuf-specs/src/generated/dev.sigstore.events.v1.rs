@@ -39,7 +39,7 @@ pub mod cloud_event {
         message_name = "dev.sigstore.events.v1.CloudEvent.CloudEventAttributeValue"
     )]
     #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CloudEventAttributeValue {
         #[prost(
             oneof = "cloud_event_attribute_value::Attr",
@@ -53,7 +53,7 @@ pub mod cloud_event {
             sigstore_protobuf_specs_derive::Deserialize_proto,
             sigstore_protobuf_specs_derive::Serialize_proto
         )]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Attr {
             #[prost(bool, tag = "1")]
             CeBoolean(bool),
@@ -76,7 +76,7 @@ pub mod cloud_event {
         sigstore_protobuf_specs_derive::Deserialize_proto,
         sigstore_protobuf_specs_derive::Serialize_proto
     )]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Data {
         #[prost(bytes, tag = "6")]
         BinaryData(::prost::alloc::vec::Vec<u8>),
