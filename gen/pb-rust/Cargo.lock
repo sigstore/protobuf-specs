@@ -237,7 +237,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7231bd9b3d3d33c86b58adbac74b5ec0ad9f496b19d22801d773636feaa95f3d"
 dependencies = [
  "bytes",
- "prost-derive 0.14.1",
+ "prost-derive",
 ]
 
 [[package]]
@@ -253,44 +253,11 @@ dependencies = [
  "once_cell",
  "petgraph",
  "prettyplease",
- "prost 0.13.5",
- "prost-types 0.13.5",
+ "prost",
+ "prost-types",
  "regex",
  "syn",
  "tempfile",
-]
-
-[[package]]
-name = "prost-build"
-version = "0.14.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ac6c3320f9abac597dcbc668774ef006702672474aad53c6d596b62e487b40b1"
-dependencies = [
- "heck",
- "itertools",
- "log",
- "multimap",
- "once_cell",
- "petgraph",
- "prettyplease",
- "prost 0.14.1",
- "prost-types 0.14.1",
- "regex",
- "syn",
- "tempfile",
-]
-
-[[package]]
-name = "prost-derive"
-version = "0.14.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9120690fafc389a67ba3803df527d0ec9cbbc9cc45e4cc20b332996dfb672425"
-dependencies = [
- "anyhow",
- "itertools",
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -313,9 +280,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6e6b545c556471033fc1099868fca468bff8cf034f7bb9153b445f24d00aa28d"
 dependencies = [
  "base64",
- "prost 0.13.5",
+ "prost",
  "prost-reflect-derive",
- "prost-types 0.13.5",
+ "prost-types",
  "serde",
  "serde-value",
 ]
@@ -326,7 +293,7 @@ version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8214ae2c30bbac390db0134d08300e770ef89b6d4e5abf855e8d300eded87e28"
 dependencies = [
- "prost-build 0.13.5",
+ "prost-build",
  "prost-reflect",
 ]
 
@@ -347,16 +314,7 @@ version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b9b4db3d6da204ed77bb26ba83b6122a73aeb2e87e25fbf7ad2e84c4ccbf8f72"
 dependencies = [
- "prost 0.13.5",
-]
-
-[[package]]
-name = "prost-types"
-version = "0.14.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b9b4db3d6da204ed77bb26ba83b6122a73aeb2e87e25fbf7ad2e84c4ccbf8f72"
-dependencies = [
- "prost 0.14.1",
+ "prost",
 ]
 
 [[package]]
@@ -477,7 +435,7 @@ version = "0.0.1"
 dependencies = [
  "anyhow",
  "glob",
- "prost-build 0.14.1",
+ "prost-build",
  "prost-reflect-build",
  "which",
 ]
@@ -496,11 +454,11 @@ version = "0.4.3"
 dependencies = [
  "anyhow",
  "glob",
- "prost 0.13.5",
- "prost-build 0.14.1",
+ "prost",
+ "prost-build",
  "prost-reflect",
  "prost-reflect-build",
- "prost-types 0.13.5",
+ "prost-types",
  "serde",
  "serde_json",
  "sigstore-protobuf-specs-derive",
