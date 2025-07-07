@@ -12,7 +12,7 @@
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.trustroot.v1.TransparencyLogInstance")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransparencyLogInstance {
     /// The base URL at which can be used to URLs for the client.
     /// SHOULD match the origin on the log checkpoint:
@@ -299,7 +299,7 @@ pub struct SigningConfig {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.trustroot.v1.Service")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Service {
     /// URL of the service. MUST include scheme and authority. MAY include path.
     #[prost(string, tag = "1")]
@@ -332,7 +332,7 @@ pub struct Service {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.trustroot.v1.ServiceConfiguration")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceConfiguration {
     /// How a client should select a set of Services to connect to.
     /// Clients SHOULD NOT select services from multiple API versions.

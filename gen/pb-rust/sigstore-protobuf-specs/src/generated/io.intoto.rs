@@ -22,7 +22,7 @@ pub struct Envelope {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "io.intoto.Signature")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Signature {
     /// Signature itself. (In JSON, this is encoded as base64.)
     /// REQUIRED.

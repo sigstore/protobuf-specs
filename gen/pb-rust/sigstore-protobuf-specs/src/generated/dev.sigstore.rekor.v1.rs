@@ -7,7 +7,7 @@
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v1.KindVersion")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KindVersion {
     /// Kind is the type of entry being stored in the log.
     /// See here for a list: <https://github.com/sigstore/rekor/tree/main/pkg/types>
@@ -34,7 +34,7 @@ pub struct KindVersion {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v1.Checkpoint")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Checkpoint {
     #[prost(string, tag = "1")]
     pub envelope: ::prost::alloc::string::String,
@@ -48,7 +48,7 @@ pub struct Checkpoint {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v1.InclusionProof")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InclusionProof {
     /// The index of the entry in the tree it was written to.
     #[prost(int64, tag = "1")]
@@ -89,7 +89,7 @@ pub struct InclusionProof {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v1.InclusionPromise")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InclusionPromise {
     #[prost(bytes = "vec", tag = "1")]
     pub signed_entry_timestamp: ::prost::alloc::vec::Vec<u8>,
@@ -109,7 +109,7 @@ pub struct InclusionPromise {
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.rekor.v1.TransparencyLogEntry")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransparencyLogEntry {
     /// The global index of the entry, used when querying the log by index.
     #[prost(int64, tag = "1")]
