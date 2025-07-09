@@ -450,7 +450,7 @@ dependencies = [
 
 [[package]]
 name = "sigstore_protobuf_specs"
-version = "0.4.3"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "glob",
