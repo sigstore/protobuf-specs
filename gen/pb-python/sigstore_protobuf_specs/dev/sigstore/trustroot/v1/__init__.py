@@ -2,7 +2,7 @@
 # sources: sigstore_trustroot.proto
 # plugin: python-betterproto
 # This file has been @generated
-import warnings
+
 from typing import TYPE_CHECKING
 
 
@@ -84,22 +84,26 @@ class TransparencyLogInstance(betterproto.Message):
 
     log_id: "__common_v1__.LogId" = betterproto.message_field(4)
     """
-    The unique identifier for this transparency log.
+    The identifier for this transparency log.
      Represented as the SHA-256 hash of the log's public key,
      calculated over the DER encoding of the key represented as
      SubjectPublicKeyInfo.
      See https://www.rfc-editor.org/rfc/rfc6962#section-3.2
-     MUST set checkpoint_key_id if multiple logs use the same
-     signing key.
-     Deprecated: Use checkpoint_key_id instead, since log_id is not
+     For Rekor v2 instances, log_id and checkpoint_key_id will be set
+     to the same value.
+     It is recommended to use checkpoint_key_id instead, since log_id is not
      guaranteed to be unique across multiple deployments. Clients
-     must use the key name and key ID from a checkpoint to determine
-     the correct TransparencyLogInstance to verify a proof.
+     must use the key name and key ID, as defined by the signed-note spec
+     linked below, from a checkpoint to determine the correct
+     TransparencyLogInstance to verify a proof.
+     log_id will eventually be deprecated in favor of checkpoint_id.
     """
 
     checkpoint_key_id: "__common_v1__.LogId" = betterproto.message_field(5)
     """
     The unique identifier for the log, used in the checkpoint.
+     Only supported for TrustedRoot media types matching or greater than
+     application/vnd.dev.sigstore.trustedroot.v0.2+json
      Its calculation is described in
      https://github.com/C2SP/C2SP/blob/main/signed-note.md#signatures
      SHOULD be set for all logs. When not set, clients MUST use log_id.
@@ -127,18 +131,13 @@ class TransparencyLogInstance(betterproto.Message):
     """
     The name of the operator of this log deployment. Operator MUST be
      formatted as a scheme-less URI, e.g. sigstore.dev
+     Only supported for TrustedRoot media types matching or greater than
+     application/vnd.dev.sigstore.trustedroot.v0.2+json
      This MUST be used when there are multiple transparency log instances
      to determine if log proof verification meets a specified threshold,
      e.g. two proofs from log deployments operated by the same operator
      should count as only one valid proof.
     """
-
-    def __post_init__(self) -> None:
-        super().__post_init__()
-        if self.is_set("log_id"):
-            warnings.warn(
-                "TransparencyLogInstance.log_id is deprecated", DeprecationWarning
-            )
 
 
 @dataclass(eq=False, repr=False)
@@ -231,10 +230,12 @@ class TrustedRoot(betterproto.Message):
 
     media_type: str = betterproto.string_field(1)
     """
-    MUST be application/vnd.dev.sigstore.trustedroot.v0.1+json
+    MUST be application/vnd.dev.sigstore.trustedroot.v0.2+json
      when encoded as JSON.
-     Clients MUST be able to process and parse content with the media
-     type defined in the old format:
+     Clients MAY choose to also support
+     application/vnd.dev.sigstore.trustedroot.v0.1+json
+     Clients MAY process and parse content with the media type defined
+     in the old format:
      application/vnd.dev.sigstore.trustedroot+json;version=0.1
     """
 

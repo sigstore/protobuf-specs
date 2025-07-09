@@ -26,21 +26,24 @@ pub struct TransparencyLogInstance {
     /// This attribute contains the signature algorithm used by the log.
     #[prost(message, optional, tag = "3")]
     pub public_key: ::core::option::Option<super::super::common::v1::PublicKey>,
-    /// The unique identifier for this transparency log.
+    /// The identifier for this transparency log.
     /// Represented as the SHA-256 hash of the log's public key,
     /// calculated over the DER encoding of the key represented as
     /// SubjectPublicKeyInfo.
     /// See <https://www.rfc-editor.org/rfc/rfc6962#section-3.2>
-    /// MUST set checkpoint_key_id if multiple logs use the same
-    /// signing key.
-    /// Deprecated: Use checkpoint_key_id instead, since log_id is not
+    /// For Rekor v2 instances, log_id and checkpoint_key_id will be set
+    /// to the same value.
+    /// It is recommended to use checkpoint_key_id instead, since log_id is not
     /// guaranteed to be unique across multiple deployments. Clients
-    /// must use the key name and key ID from a checkpoint to determine
-    /// the correct TransparencyLogInstance to verify a proof.
-    #[deprecated]
+    /// must use the key name and key ID, as defined by the signed-note spec
+    /// linked below, from a checkpoint to determine the correct
+    /// TransparencyLogInstance to verify a proof.
+    /// log_id will eventually be deprecated in favor of checkpoint_id.
     #[prost(message, optional, tag = "4")]
     pub log_id: ::core::option::Option<super::super::common::v1::LogId>,
     /// The unique identifier for the log, used in the checkpoint.
+    /// Only supported for TrustedRoot media types matching or greater than
+    /// application/vnd.dev.sigstore.trustedroot.v0.2+json
     /// Its calculation is described in
     /// <https://github.com/C2SP/C2SP/blob/main/signed-note.md#signatures>
     /// SHOULD be set for all logs. When not set, clients MUST use log_id.
@@ -66,6 +69,8 @@ pub struct TransparencyLogInstance {
     pub checkpoint_key_id: ::core::option::Option<super::super::common::v1::LogId>,
     /// The name of the operator of this log deployment. Operator MUST be
     /// formatted as a scheme-less URI, e.g. sigstore.dev
+    /// Only supported for TrustedRoot media types matching or greater than
+    /// application/vnd.dev.sigstore.trustedroot.v0.2+json
     /// This MUST be used when there are multiple transparency log instances
     /// to determine if log proof verification meets a specified threshold,
     /// e.g. two proofs from log deployments operated by the same operator
@@ -161,10 +166,12 @@ pub struct CertificateAuthority {
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrustedRoot {
-    /// MUST be application/vnd.dev.sigstore.trustedroot.v0.1+json
+    /// MUST be application/vnd.dev.sigstore.trustedroot.v0.2+json
     /// when encoded as JSON.
-    /// Clients MUST be able to process and parse content with the media
-    /// type defined in the old format:
+    /// Clients MAY choose to also support
+    /// application/vnd.dev.sigstore.trustedroot.v0.1+json
+    /// Clients MAY process and parse content with the media type defined
+    /// in the old format:
     /// application/vnd.dev.sigstore.trustedroot+json;version=0.1
     #[prost(string, tag = "1")]
     pub media_type: ::prost::alloc::string::String,
