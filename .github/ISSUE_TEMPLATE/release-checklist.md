@@ -15,6 +15,7 @@ Full release instructions are at: [RELEASE.md](/sigstore/protobuf-specs/blob/mai
 - [ ] Update [CHANGELOG](/sigstore/protobuf-specs/blob/main/CHANGELOG.md)
 - [ ] Update [pyproject.toml](/sigstore/protobuf-specs/blob/main/gen/pb-python/pyproject.toml) so the `version` matches the targeted release
 - [ ] Update [package.json](/sigstore/protobuf-specs/blob/main/gen/pb-typescript/package.json) so the `version` matches the targeted release
+- [ ] Run `npm install` from the `gen/pb-typescript` directory to update [package-lock.json](/sigstore/protobuf-specs/blob/main/gen/pb-typescript/package-lock.json)
 - [ ] Update [version.rb](/sigstore/protobuf-specs/blob/main/gen/pb-ruby/lib/sigstore_protobuf_specs/version.rb) so the `version` matches the targeted release
 - [ ] Update [Cargo.toml](/sigstore/protobuf-specs/blob/main/gen/pb-rust/sigstore-protobuf-specs/Cargo.toml) so the `version` matches the targeted release
 
