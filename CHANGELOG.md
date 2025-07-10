@@ -12,6 +12,19 @@ All versions prior to 0.2.0 are untracked.
 
 ### Changed
 
+## v0.5.0
+
+### Added
+
+* Introduce v0.2 TrustedRoot, un-deprecate log ID. Checkpoint key ID and
+  Operator for TrustedRoot are only set for v0.2 TrustedRoot.
+  ([#690](https://github.com/sigstore/protobuf-specs/pull/690))
+
+### Changed
+
+* Remove service-proto codegen for Go
+  ([#676](https://github.com/sigstore/protobuf-specs/pull/676))
+
 ## 0.4.3
 
 * Added Rekor v2 generated clients ([#661](https://github.com/sigstore/protobuf-specs/pull/661))
