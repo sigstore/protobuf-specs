@@ -21,11 +21,11 @@ DEFAULT_GOOGLEAPIS_COMMIT=f37bfb8159ea687e6c2a6b587f5cf1dada04b9f8
 ### DO NOT EDIT BELOW THIS LINE, AS THESE VALUES ARE USED IN THE CORE MAKEFILE ###
 ##################################################################################
 
-LANGUAGES := GO JSONSCHEMA PYTHON RUBY RUST TYPESCRIPT
+LANGUAGES := GO PYTHON RUBY RUST TYPESCRIPT
 COMPONENTS := PROTOC_VERSION PROTOC_CHECKSUM GOOGLEAPIS_COMMIT
 
 # This is creating each possible variable permutation, e.g.
-# GO_PROTOC_VERSION, JSONSCHEMA_PROTOC_VERSION, etc
+# GO_PROTOC_VERSION, etc
 $(foreach lang,$(LANGUAGES),\
     $(foreach component,$(COMPONENTS),\
         $(eval $(lang)_$(component) ?= $$(DEFAULT_$(component)))))
