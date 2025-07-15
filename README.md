@@ -44,4 +44,4 @@ else and no requests or support will be provided.
 
 ## Deprecation Notice
 
-- Effective July 17th, 2025: the jsonschema generated files in gen/jsonschema/schemas/ were removed from this repository and not built repeatedly going forward.
+- Effective July 17th, 2025: the jsonschema generated files in gen/jsonschema/schemas/ were removed from this repository.
