@@ -32,10 +32,10 @@ DOCKER_BUILD = docker build --platform ${PLATFORM} --build-arg UID=${UID}
 DOCKER_RUN = docker run --platform ${PLATFORM} --user ${UID}:${GID}
 
 # base protos for clients that do not want to include service-protos
-BASE_PROTOS = $(shell find protos/ -iname "*.proto" | sed 's|^|/defs/|')
+BASE_PROTOS = $(shell find protos/ -iname "*.proto" | sed 's|^|/defs/|' | sort)
 BASE_PROTO_INCLUDES=-I/opt/include -I/googleapis -I/defs/protos
 
-PROTOS = $(shell find protos/ service-protos/ -iname "*.proto" | sed 's|^|/defs/|')
+PROTOS = $(shell find protos/ service-protos/ -iname "*.proto" | sed 's|^|/defs/|' | sort)
 PROTO_INCLUDES=${BASE_PROTO_INCLUDES} -I/defs/service-protos
 
 include protoc-builder/versions.mk

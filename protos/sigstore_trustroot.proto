@@ -283,24 +283,24 @@ message SigningConfig {
 // * Select services from only the highest supported API version. 
 message Service {
         // URL of the service. MUST include scheme and authority. MAY include path.
-        string url = 1;
+        string url = 1 [(google.api.field_behavior) = REQUIRED];
 
         // Specifies the major API version. A value of 0 represents a service that
         // has not yet been released.
-        uint32 major_api_version = 2;
+        uint32 major_api_version = 2 [(google.api.field_behavior) = REQUIRED];
 
         // Validity period of a service. A service that has only a start date
         // SHOULD be considered the most recent instance of that service, but
         // the client MUST NOT assume there is only one valid instance.
         // The TimeRange MUST be considered valid *inclusive* of the
         // endpoints.
-        dev.sigstore.common.v1.TimeRange valid_for = 3;
+        dev.sigstore.common.v1.TimeRange valid_for = 3 [(google.api.field_behavior) = REQUIRED];
 
         // Specifies the name of the service operator. When selecting multiple
         // services, clients MUST use the operator to select services from
         // distinct operators. Operator MUST be formatted as a scheme-less
         // URI, e.g. sigstore.dev
-        string operator = 4;
+        string operator = 4 [(google.api.field_behavior) = REQUIRED];
 }
 
 // ServiceSelector specifies how a client SHOULD select a set of
@@ -328,7 +328,7 @@ enum ServiceSelector {
 message ServiceConfiguration {
         // How a client should select a set of Services to connect to.
         // Clients SHOULD NOT select services from multiple API versions.
-        ServiceSelector selector = 1;
+        ServiceSelector selector = 1 [(google.api.field_behavior) = REQUIRED];
 
         // count specifies the number of Services the client should use.
         // Only used when selector is set to EXACT, and count MUST be greater
