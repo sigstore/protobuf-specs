@@ -40,19 +40,11 @@ jobs:
     - name: Setup node
       uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
       with:
-        node-version: 18
+        node-version: 20
         registry-url: 'https://registry.npmjs.org'
-    - name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@140bb5113ffb6b65a7e9b937a81fa96cf5064462 # v2.1.11
-      with:
-        workload_identity_provider: projects/306323169285/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider
-        service_account: protobuf-specs-releaser@sigstore-secrets.iam.gserviceaccount.com
-
-    - uses: google-github-actions/get-secretmanager-secrets@50ec04d56ddf2740b0bde82926cc742f90e06d2b # v2.2.4
-      id: secrets
-      with:
-        secrets: |-
-          npm_publish_token:sigstore-secrets/protobuf-specs-npm-publish-token
+    - name: Install npm w/ OIDC support
+      run: |
+        npm install -g npm@^11.5.0
     - name: Build package
       run: |
         npm ci
@@ -60,6 +52,4 @@ jobs:
     - name: Publish package
       run: |
         npm publish --provenance --access public
-      env:
-        NODE_AUTH_TOKEN: ${{ steps.secrets.outputs.npm_publish_token }}
 
