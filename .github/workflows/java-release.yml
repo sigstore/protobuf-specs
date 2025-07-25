@@ -37,10 +37,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
-          java-version: 11 
+          java-version: 17
           distribution: 'temurin'
 
       - name: Authenticate to Google Cloud
@@ -65,7 +65,7 @@ jobs:
           VERSION: ${{ needs.strip-tag.outputs.version }}
           ORG_GRADLE_PROJECT_signingKey: ${{ steps.secrets.outputs.signing_key }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ steps.secrets.outputs.signing_password }}
-          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ steps.secrets.outputs.sonatype_username }}
-          ORG_GRADLE_PROJECT_sonatypePassword: ${{ steps.secrets.outputs.sonatype_password }}
+          CENTRAL_PORTAL_USERNAME: ${{ steps.secrets.outputs.sonatype_username }}
+          CENTRAL_PORTAL_PASSWORD: ${{ steps.secrets.outputs.sonatype_password }}
         run: |
-          ./gradlew clean :publishProtoPublicationToSonatypeRepository -Pversion=${VERSION} -Prelease
+          ./gradlew clean :publishAggregationToCentralPortal -Pversion=${VERSION} -Prelease

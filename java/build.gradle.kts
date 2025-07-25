@@ -2,7 +2,9 @@ plugins {
     `java-library`
     `maven-publish`
     id("dev.sigstore.sign") version "1.3.0"
-    id("com.diffplug.spotless") version "7.0.4"
+    id("com.diffplug.spotless") version "7.2.1"
+    id("com.gradleup.nmcp") version "1.0.1"
+    id("com.gradleup.nmcp.aggregation") version "1.0.1"
     `signing`
 }
 
@@ -41,7 +43,7 @@ spotless {
         target("*.md", ".gitignore", "**/*.yaml")
 
         trimTrailingWhitespace()
-        indentWithSpaces()
+        leadingTabsToSpaces()
         endWithNewline()
     }
     // we have no non-generated java code
@@ -95,14 +97,6 @@ publishing {
             }
         }
     }
-
-    repositories {
-        maven {
-            name = "sonatype"
-            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials(PasswordCredentials::class)
-        }
-    }
 }
 
 signing {
@@ -128,4 +122,17 @@ tasks.withType<dev.sigstore.sign.tasks.SigstoreSignFilesTask>().configureEach {
     onlyIf("Sigstore Signing is not skipped") {
         !project.hasProperty("skipSigstoreSigning")
     }
+}
+
+nmcpAggregation {
+    centralPortal {
+        username = providers.environmentVariable("CENTRAL_PORTAL_USERNAME")
+        password = providers.environmentVariable("CENTRAL_PORTAL_PASSWORD")
+        publishingType = "USER_MANAGED"
+        publicationName = "sigstore protobuf-specs $version"
+    }
+}
+
+dependencies {
+    nmcpAggregation(project)
 }
