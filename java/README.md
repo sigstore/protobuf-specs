@@ -17,13 +17,13 @@ A jar file will be created at `./build/libs/protobuf-specs-SNAPSHOT.jar`
    and published to maven central (in staging, but no released).
 
 ### Complete Publish Flow Maven Central
-1. Log into https://s01.oss.sonatype.org with credentials that have permissions to upload to `dev.sigstore`
-1. Find the release in `Staging Repositories`, "close" it and once it passes validation "release" it.
+1. Log into https://central.sonatype.com with credentials that have permissions to upload to `dev.sigstore`
+1. Goto "Publish" and release the component once it passes validation.
 
 ## How do I get permissions to upload to Maven Central
-
-- Create an account: https://central.sonatype.org/publish/publish-guide/
-- Request permissions to publish to dev.sigstore on JIRA ([example](https://issues.sonatype.org/browse/OSSRH-83556)) and get [Bob](https://github.com/bobcallaway) (or [Appu](https://github.com/loosebazooka) to signoff on it.
+- Create an account on https://central.sonatype.com
+- Request permissions to publish to dev.sigstore, for now this may involve contacting
+  [Bob](https://github.com/bobcallaway) (or [Appu](https://github.com/loosebazooka)).
 
 ## Why is the gradle wrapper jar checked in?
 
