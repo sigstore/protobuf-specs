@@ -55,8 +55,8 @@ jobs:
           secrets: |-
             signing_key:sigstore-secrets/sigstore-java-pgp-priv-key
             signing_password:sigstore-secrets/sigstore-java-pgp-priv-key-password
-            sonatype_username:sigstore-secrets/sigstore-java-sonatype-username
-            sonatype_password:sigstore-secrets/sigstore-java-sonatype-password
+            sonatype_username:sigstore-secrets/sigstore-sonatype-central-portal-username
+            sonatype_password:sigstore-secrets/sigstore-sonatype-central-portal-password
 
       - name: Build, Sign and Push to Maven Central
         # TODO: someone still needs to close and release this, but that can be automated next
