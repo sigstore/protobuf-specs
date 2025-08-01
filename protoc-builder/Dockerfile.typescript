@@ -1,4 +1,4 @@
-FROM node:24@sha256:4b383ce285ed2556aa05a01c76305405a3fecd410af56e2d47a039c59bdc2f04 AS typescript-builder
+FROM node:24@sha256:c7a63f857d6dc9b3780ceb1874544cc22f3e399333c82de2a46de0049e841729 AS typescript-builder
 RUN mkdir /app
 COPY hack/package*.json /app
 WORKDIR /app
