@@ -141,13 +141,10 @@ message CertificateAuthority {
 // previously used instance -- otherwise signatures made in the past cannot
 // be verified.
 //
-// All the listed instances SHOULD be sorted by the 'valid_for' in ascending
-// order, that is, the oldest instance first. Only the last instance is
-// allowed to have their 'end' timestamp unset. All previous instances MUST
-// have a closed interval of validity. The last instance MAY have a closed
-// interval. Clients MUST accept instances that overlaps in time, if not
-// clients may experience problems during rotations of verification
-// materials.
+// All the listed instances SHOULD be sorted by the 'valid_for.start'
+// in ascending order, that is, the oldest instance first. Clients
+// MUST accept instances that overlaps in time, if not clients may
+// experience problems during rotations of verification materials.
 //
 // To be able to manage planned rotations of either transparency logs or
 // certificate authorities, clienst MUST accept lists of instances where
@@ -280,7 +277,7 @@ message SigningConfig {
 // * Group services by `operator` and select at most one service from an operator.
 //   During verification, clients MUST treat valid verification metadata from the
 //   operator as valid only once towards a threshold.
-// * Select services from only the highest supported API version. 
+// * Select services from only the highest supported API version.
 message Service {
         // URL of the service. MUST include scheme and authority. MAY include path.
         string url = 1 [(google.api.field_behavior) = REQUIRED];
@@ -313,12 +310,12 @@ enum ServiceSelector {
         ALL = 1;
         // Clients SHOULD select one Service based on supported API version
         // and validity window. It is up to the client implementation to
-        // decide how to select the Service, e.g. random or round-robin. 
+        // decide how to select the Service, e.g. random or round-robin.
         ANY = 2;
         // Clients SHOULD select a specific number of Services based on
         // supported API version and validity window, using the provided
         // `count`. It is up to the client implementation to decide how to
-        // select the Service, e.g. random or round-robin. 
+        // select the Service, e.g. random or round-robin.
         EXACT = 3;
 }
 

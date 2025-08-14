@@ -212,13 +212,10 @@ class TrustedRoot(betterproto.Message):
      previously used instance -- otherwise signatures made in the past cannot
      be verified.
 
-     All the listed instances SHOULD be sorted by the 'valid_for' in ascending
-     order, that is, the oldest instance first. Only the last instance is
-     allowed to have their 'end' timestamp unset. All previous instances MUST
-     have a closed interval of validity. The last instance MAY have a closed
-     interval. Clients MUST accept instances that overlaps in time, if not
-     clients may experience problems during rotations of verification
-     materials.
+     All the listed instances SHOULD be sorted by the 'valid_for.start'
+     in ascending order, that is, the oldest instance first. Clients
+     MUST accept instances that overlaps in time, if not clients may
+     experience problems during rotations of verification materials.
 
      To be able to manage planned rotations of either transparency logs or
      certificate authorities, clienst MUST accept lists of instances where
