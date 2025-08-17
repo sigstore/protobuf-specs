@@ -5,7 +5,7 @@ ADD hack/go/go.* tools/
 # the specific versions of these tools are in hack/go.mod so that Dependabot can bump them for updates
 RUN cd tools && GOBIN=/go/tools go install tool
 
-FROM gcr.io/distroless/static-debian12:nonroot@sha256:e8a4044e0b4ae4257efa45fc026c0bc30ad320d43bd4c1a7d5271bd241e386d0
+FROM gcr.io/distroless/static-debian13:nonroot@sha256:fedcacdbe5eb1b1ec2ab5f2e7bf2eed246eb371505c43b3c2682ff0c3870e7c3
 
 COPY --from=go-builder /go/tools/protoc-* /usr/local/bin/
 COPY --from=protoc-base:go /protobuf/bin/protoc /usr/local/bin/
