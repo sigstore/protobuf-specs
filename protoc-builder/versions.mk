@@ -15,7 +15,7 @@ DEFAULT_PROTOC_VERSION=v30.2
 DEFAULT_PROTOC_CHECKSUM=sha256:327e9397c6fb3ea2a542513a3221334c6f76f7aa524a7d2561142b67b312a01f
 
 # git commit from https://github.com/googleapis/googleapis
-DEFAULT_GOOGLEAPIS_COMMIT=bc9d6986980dd271b82b11af93a7033508ec5b8c
+DEFAULT_GOOGLEAPIS_COMMIT=376467058c288ad34dd7aafa892a95883e4acd0c
 
 ##################################################################################
 ### DO NOT EDIT BELOW THIS LINE, AS THESE VALUES ARE USED IN THE CORE MAKEFILE ###
