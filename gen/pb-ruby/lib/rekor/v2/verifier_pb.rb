@@ -10,7 +10,7 @@ require 'google/api/field_behavior_pb'
 
 descriptor_data = "\n\x17rekor/v2/verifier.proto\x12\x15\x64\x65v.sigstore.rekor.v2\x1a\x15sigstore_common.proto\x1a\x1fgoogle/api/field_behavior.proto\"#\n\tPublicKey\x12\x16\n\traw_bytes\x18\x01 \x01(\x0c\x42\x03\xe0\x41\x02\"\xe1\x01\n\x08Verifier\x12;\n\npublic_key\x18\x01 \x01(\x0b\x32 .dev.sigstore.rekor.v2.PublicKeyB\x03\xe0\x41\x02H\x00\x12H\n\x10x509_certificate\x18\x02 \x01(\x0b\x32\'.dev.sigstore.common.v1.X509CertificateB\x03\xe0\x41\x02H\x00\x12\x42\n\x0bkey_details\x18\x03 \x01(\x0e\x32(.dev.sigstore.common.v1.PublicKeyDetailsB\x03\xe0\x41\x02\x42\n\n\x08verifier\"Y\n\tSignature\x12\x14\n\x07\x63ontent\x18\x01 \x01(\x0c\x42\x03\xe0\x41\x02\x12\x36\n\x08verifier\x18\x02 \x01(\x0b\x32\x1f.dev.sigstore.rekor.v2.VerifierB\x03\xe0\x41\x02\x42}\n\x1b\x64\x65v.sigstore.proto.rekor.v2B\x0fRekorV2VerifierP\x01Z5github.com/sigstore/protobuf-specs/gen/pb-go/rekor/v2\xea\x02\x13Sigstore::Rekor::V2b\x06proto3"
 
-pool = Google::Protobuf::DescriptorPool.generated_pool
+pool = ::Google::Protobuf::DescriptorPool.generated_pool
 pool.add_serialized_file(descriptor_data)
 
 module Sigstore
