@@ -5,7 +5,7 @@
 FROM debian:bullseye-slim@sha256:b5f9bc44bdfbd9d551dfdd432607cbc6bb5d9d6dea726a1191797d7749166973 AS protoc-builder
 
 # Create output directories
-RUN mkdir /protobuf /googleapis
+RUN mkdir /protobuf /googleapis /grpc-gateway
 # Install needed utilities
 RUN apt-get update && apt-get install -y unzip git
 
@@ -15,7 +15,7 @@ ARG UID
 RUN adduser --uid ${UID} --disabled-password myuser
 
 # Set permissions on the output directories so the user can write to them
-RUN chown myuser /protobuf /googleapis
+RUN chown myuser /protobuf /googleapis /grpc-gateway
 
 # Switch to user to execute the remaining commands
 USER myuser
@@ -33,7 +33,12 @@ RUN chmod 755 /protobuf/bin/protoc
 ARG GOOGLEAPIS_COMMIT
 RUN git clone --filter=tree:0 https://github.com/googleapis/googleapis.git /googleapis && \
     cd /googleapis && git checkout ${GOOGLEAPIS_COMMIT}
+# fetch sparse checkout of grpc-gateway to add openapiv2/options
+ARG GRPC_GATEWAY_COMMIT
+RUN git clone --filter=tree:0 --no-checkout --sparse https://github.com/grpc-ecosystem/grpc-gateway.git /grpc-gateway && \
+    cd /grpc-gateway && git sparse-checkout add protoc-gen-openapiv2/options && git checkout ${GRPC_GATEWAY_COMMIT}
 
 FROM scratch
 COPY --from=protoc-builder /protobuf /protobuf
 COPY --from=protoc-builder /googleapis /googleapis
+COPY --from=protoc-builder /grpc-gateway /grpc-gateway
