@@ -4,7 +4,7 @@ version = "0.0.1"
 edition = "2021"
 
 [dependencies]
-anyhow = "1.0.98"
+anyhow = "1.0.100"
 glob = "0.3"
 prost-build = "0.14.1"
 prost-reflect-build = "0.16.0"
