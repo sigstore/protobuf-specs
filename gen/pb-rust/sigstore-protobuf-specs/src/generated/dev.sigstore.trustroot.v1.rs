@@ -12,7 +12,7 @@
 #[derive(::prost_reflect::ReflectMessage)]
 #[prost_reflect(message_name = "dev.sigstore.trustroot.v1.TransparencyLogInstance")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransparencyLogInstance {
     /// The base URL at which can be used to URLs for the client.
     /// SHOULD match the origin on the log checkpoint:
@@ -76,6 +76,91 @@ pub struct TransparencyLogInstance {
     /// e.g. two proofs from log deployments operated by the same operator
     /// should count as only one valid proof.
     #[prost(string, tag = "6")]
+    pub operator: ::prost::alloc::string::String,
+    /// The list of witnesses the log will be witnessed by along with the
+    /// quorum policy.
+    /// Only supported for TrustedRoot media types matching or greater than
+    /// application/vnd.dev.sigstore.trustedroot.v0.2+json
+    #[prost(message, optional, tag = "7")]
+    pub witness_config: ::core::option::Option<WitnessConfiguration>,
+    /// When set, signifies to a client that the log is frozen and no longer
+    /// is accepting entries. When verifying an inclusion proof, the client
+    /// SHOULD use this checkpoint and verify that the log index in the bundle
+    /// is not greater than or equal to the checkpoint tree size.
+    /// Only supported for TrustedRoot media types matching or greater than
+    /// application/vnd.dev.sigstore.trustedroot.v0.2+json
+    #[prost(message, optional, tag = "8")]
+    pub frozen_log_checkpoint: ::core::option::Option<
+        super::super::rekor::v1::Checkpoint,
+    >,
+    /// Additional public keys used to verify log checkpoint signatures for when
+    /// a log uses multiple signing algorithms to generate checkpoint signatures.
+    /// Only supported for TrustedRoot media types matching or greater than
+    /// application/vnd.dev.sigstore.trustedroot.v0.2+json
+    #[prost(message, repeated, tag = "9")]
+    pub additional_public_keys: ::prost::alloc::vec::Vec<
+        super::super::common::v1::PublicKey,
+    >,
+}
+/// WitnessConfiguration contains the list of witnesses that will verify the
+/// consistency of the log. Witnesses are grouped together, with each group
+/// specifying its own quorum rule, and the list of groups needing to meet a
+/// quorum rule. Having these groupings allows for more complex witnessing
+/// policies, e.g. requiring 2-of-3 from 1) a set of ArmoredWitness instances
+/// requiring M-of-N, 2) any from a set of regionalized witnesses run by a
+/// single operator, and 3) a single witness instance.
+/// Inspired by <https://git.glasklar.is/sigsum/core/sigsum-go/-/blob/main/doc/policy.md>
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.trustroot.v1.WitnessConfiguration")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WitnessConfiguration {
+    /// The list of witness groups the log will be witnessed by.
+    #[prost(message, repeated, tag = "1")]
+    pub witness_groups: ::prost::alloc::vec::Vec<WitnessGroup>,
+    /// Specifies how many witness groups are required for proving consistency.
+    #[prost(message, optional, tag = "2")]
+    pub service_config: ::core::option::Option<ServiceConfiguration>,
+}
+/// WitnessGroup contains a list of witnesses grouped due to some commonality,
+/// e.g. the same operator or trust domain.
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.trustroot.v1.WitnessGroup")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WitnessGroup {
+    /// List of witnesses in this witness group.
+    #[prost(message, repeated, tag = "1")]
+    pub witnesses: ::prost::alloc::vec::Vec<Witness>,
+    /// Specifies how many witnesses in this group are required for proving consistency.
+    #[prost(message, optional, tag = "2")]
+    pub service_config: ::core::option::Option<ServiceConfiguration>,
+}
+/// Witness specifies an entity that verifies the consistency of a transparency log,
+/// that the log remains append-only.
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.trustroot.v1.Witness")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Witness {
+    /// The witness's public key.
+    #[prost(message, optional, tag = "1")]
+    pub public_key: ::core::option::Option<super::super::common::v1::PublicKey>,
+    /// The name of the operator of this witness. Operator MUST be
+    /// formatted as a scheme-less URI, e.g. witnessing.dev
+    #[prost(string, tag = "2")]
     pub operator: ::prost::alloc::string::String,
 }
 /// CertificateAuthority enlists the information required to identify which
