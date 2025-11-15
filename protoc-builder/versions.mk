@@ -15,14 +15,16 @@ DEFAULT_PROTOC_VERSION=v33.1
 DEFAULT_PROTOC_CHECKSUM=sha256:f3340e28a83d1c637d8bafdeed92b9f7db6a384c26bca880a6e5217b40a4328b
 
 # git commit from https://github.com/googleapis/googleapis
-DEFAULT_GOOGLEAPIS_COMMIT=bc9d6986980dd271b82b11af93a7033508ec5b8c
+DEFAULT_GOOGLEAPIS_COMMIT=97763d6efb2d35474e0363c254ee6994837a08fa
+# git commit from https://github.com/grpc-ecosystem/grpc-gateway
+DEFAULT_GRPC_GATEWAY_COMMIT=fcb3c1b41455ec7d3181b10c3574b1279c69efd3
 
 ##################################################################################
 ### DO NOT EDIT BELOW THIS LINE, AS THESE VALUES ARE USED IN THE CORE MAKEFILE ###
 ##################################################################################
 
 LANGUAGES := GO PYTHON RUBY RUST TYPESCRIPT
-COMPONENTS := PROTOC_VERSION PROTOC_CHECKSUM GOOGLEAPIS_COMMIT
+COMPONENTS := PROTOC_VERSION PROTOC_CHECKSUM GOOGLEAPIS_COMMIT GRPC_GATEWAY_COMMIT
 
 # This is creating each possible variable permutation, e.g.
 # GO_PROTOC_VERSION, etc

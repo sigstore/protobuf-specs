@@ -3,6 +3,7 @@ ARG GO_BASE # no default
 FROM ${GO_BASE}
 
 COPY /protos /protobuf-specs
+COPY --from=protoc-base:go /grpc-gateway /grpc-gateway
 
 # just add the plugins for grpc-gateway and openapiv2 into the entrypoint
 ENTRYPOINT ["/usr/local/bin/protoc", \

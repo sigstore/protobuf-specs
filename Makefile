@@ -94,7 +94,8 @@ base-image-go:
 	cd protoc-builder && ${DOCKER_BUILD} ${DOCKER_CACHE} -t ${PROTOC_IMAGE}:go -f Dockerfile.protoc \
 	  --build-arg PROTOC_VERSION=${GO_PROTOC_VERSION} \
 	  --build-arg PROTOC_CHECKSUM=${GO_PROTOC_CHECKSUM} \
-	  --build-arg GOOGLEAPIS_COMMIT=${GO_GOOGLEAPIS_COMMIT} .
+	  --build-arg GOOGLEAPIS_COMMIT=${GO_GOOGLEAPIS_COMMIT} \
+	  --build-arg GRPC_GATEWAY_COMMIT=${GO_GRPC_GATEWAY_COMMIT} .
 
 .PHONY: base-image-python
 base-image-python:
@@ -102,7 +103,8 @@ base-image-python:
 	cd protoc-builder && ${DOCKER_BUILD} ${DOCKER_CACHE} -t ${PROTOC_IMAGE}:python -f Dockerfile.protoc \
 	  --build-arg PROTOC_VERSION=${PYTHON_PROTOC_VERSION} \
 	  --build-arg PROTOC_CHECKSUM=${PYTHON_PROTOC_CHECKSUM} \
-	  --build-arg GOOGLEAPIS_COMMIT=${PYTHON_GOOGLEAPIS_COMMIT} .
+	  --build-arg GOOGLEAPIS_COMMIT=${PYTHON_GOOGLEAPIS_COMMIT} \
+	  --build-arg GRPC_GATEWAY_COMMIT=${PYTHON_GRPC_GATEWAY_COMMIT} .
 
 .PHONY: base-image-ruby
 base-image-ruby:
@@ -110,7 +112,8 @@ base-image-ruby:
 	cd protoc-builder && ${DOCKER_BUILD} ${DOCKER_CACHE} -t ${PROTOC_IMAGE}:ruby -f Dockerfile.protoc \
 	  --build-arg PROTOC_VERSION=${RUBY_PROTOC_VERSION} \
 	  --build-arg PROTOC_CHECKSUM=${RUBY_PROTOC_CHECKSUM} \
-	  --build-arg GOOGLEAPIS_COMMIT=${RUBY_GOOGLEAPIS_COMMIT} .
+	  --build-arg GOOGLEAPIS_COMMIT=${RUBY_GOOGLEAPIS_COMMIT} \
+	  --build-arg GRPC_GATEWAY_COMMIT=${RUBY_GRPC_GATEWAY_COMMIT} .
 
 .PHONY: base-image-rust
 base-image-rust:
@@ -118,7 +121,8 @@ base-image-rust:
 	cd protoc-builder && ${DOCKER_BUILD} ${DOCKER_CACHE} -t ${PROTOC_IMAGE}:rust -f Dockerfile.protoc \
 	  --build-arg PROTOC_VERSION=${RUST_PROTOC_VERSION} \
 	  --build-arg PROTOC_CHECKSUM=${RUST_PROTOC_CHECKSUM} \
-	  --build-arg GOOGLEAPIS_COMMIT=${RUST_GOOGLEAPIS_COMMIT} .
+	  --build-arg GOOGLEAPIS_COMMIT=${RUST_GOOGLEAPIS_COMMIT} \
+	  --build-arg GRPC_GATEWAY_COMMIT=${RUST_GRPC_GATEWAY_COMMIT} .
 
 .PHONY: base-image-typescript
 base-image-typescript:
@@ -126,7 +130,8 @@ base-image-typescript:
 	cd protoc-builder && ${DOCKER_BUILD} ${DOCKER_CACHE} -t ${PROTOC_IMAGE}:typescript -f Dockerfile.protoc \
 	  --build-arg PROTOC_VERSION=${TYPESCRIPT_PROTOC_VERSION} \
 	  --build-arg PROTOC_CHECKSUM=${TYPESCRIPT_PROTOC_CHECKSUM} \
-	  --build-arg GOOGLEAPIS_COMMIT=${TYPESCRIPT_GOOGLEAPIS_COMMIT} .
+	  --build-arg GOOGLEAPIS_COMMIT=${TYPESCRIPT_GOOGLEAPIS_COMMIT} \
+	  --build-arg GRPC_GATEWAY_COMMIT=${TYPESCRIPT_GRPC_GATEWAY_COMMIT} .
 
 # to recover from a situation where a stale layer exist, just  purging the
 # docker image via `make clean` is not enough. Re-building without layer

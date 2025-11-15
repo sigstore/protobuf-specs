@@ -43,7 +43,7 @@ jobs:
         echo "IMAGE_REF=${{ env.IMAGE_NO_TAG }}:$tag" >> $GITHUB_ENV
     
     - name: Log into ghcr.io
-      uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+      uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.repository_owner }}
@@ -65,7 +65,7 @@ jobs:
         echo "IMAGE_DIGEST=$image_digest" >> "$GITHUB_ENV"
 
     - name: Generate artifact attestation
-      uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
+      uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
       with:
         subject-name: ${{ env.IMAGE_NO_TAG }}
         subject-digest: ${{ env.IMAGE_DIGEST }}
