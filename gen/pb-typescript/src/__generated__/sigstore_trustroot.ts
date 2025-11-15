@@ -15,6 +15,7 @@ import {
   TimeRange,
   X509CertificateChain,
 } from "./sigstore_common";
+import { Checkpoint } from "./sigstore_rekor";
 
 /**
  * ServiceSelector specifies how a client SHOULD select a set of
@@ -157,6 +158,77 @@ export interface TransparencyLogInstance {
    * to determine if log proof verification meets a specified threshold,
    * e.g. two proofs from log deployments operated by the same operator
    * should count as only one valid proof.
+   */
+  operator: string;
+  /**
+   * The list of witnesses the log will be witnessed by along with the
+   * quorum policy.
+   * Only supported for TrustedRoot media types matching or greater than
+   * application/vnd.dev.sigstore.trustedroot.v0.2+json
+   */
+  witnessConfig:
+    | WitnessConfiguration
+    | undefined;
+  /**
+   * When set, signifies to a client that the log is frozen and no longer
+   * is accepting entries. When verifying an inclusion proof, the client
+   * SHOULD use this checkpoint and verify that the log index in the bundle
+   * is not greater than or equal to the checkpoint tree size.
+   * Only supported for TrustedRoot media types matching or greater than
+   * application/vnd.dev.sigstore.trustedroot.v0.2+json
+   */
+  frozenLogCheckpoint:
+    | Checkpoint
+    | undefined;
+  /**
+   * Additional public keys used to verify log checkpoint signatures for when
+   * a log uses multiple signing algorithms to generate checkpoint signatures.
+   * Only supported for TrustedRoot media types matching or greater than
+   * application/vnd.dev.sigstore.trustedroot.v0.2+json
+   */
+  additionalPublicKeys: PublicKey[];
+}
+
+/**
+ * WitnessConfiguration contains the list of witnesses that will verify the
+ * consistency of the log. Witnesses are grouped together, with each group
+ * specifying its own quorum rule, and the list of groups needing to meet a
+ * quorum rule. Having these groupings allows for more complex witnessing
+ * policies, e.g. requiring 2-of-3 from 1) a set of ArmoredWitness instances
+ * requiring M-of-N, 2) any from a set of regionalized witnesses run by a
+ * single operator, and 3) a single witness instance.
+ * Inspired by https://git.glasklar.is/sigsum/core/sigsum-go/-/blob/main/doc/policy.md
+ */
+export interface WitnessConfiguration {
+  /** The list of witness groups the log will be witnessed by. */
+  witnessGroups: WitnessGroup[];
+  /** Specifies how many witness groups are required for proving consistency. */
+  serviceConfig: ServiceConfiguration | undefined;
+}
+
+/**
+ * WitnessGroup contains a list of witnesses grouped due to some commonality,
+ * e.g. the same operator or trust domain.
+ */
+export interface WitnessGroup {
+  /** List of witnesses in this witness group. */
+  witnesses: Witness[];
+  /** Specifies how many witnesses in this group are required for proving consistency. */
+  serviceConfig: ServiceConfiguration | undefined;
+}
+
+/**
+ * Witness specifies an entity that verifies the consistency of a transparency log,
+ * that the log remains append-only.
+ */
+export interface Witness {
+  /** The witness's public key. */
+  publicKey:
+    | PublicKey
+    | undefined;
+  /**
+   * The name of the operator of this witness. Operator MUST be
+   * formatted as a scheme-less URI, e.g. witnessing.dev
    */
   operator: string;
 }
@@ -456,6 +528,13 @@ export const TransparencyLogInstance: MessageFns<TransparencyLogInstance> = {
       logId: isSet(object.logId) ? LogId.fromJSON(object.logId) : undefined,
       checkpointKeyId: isSet(object.checkpointKeyId) ? LogId.fromJSON(object.checkpointKeyId) : undefined,
       operator: isSet(object.operator) ? globalThis.String(object.operator) : "",
+      witnessConfig: isSet(object.witnessConfig) ? WitnessConfiguration.fromJSON(object.witnessConfig) : undefined,
+      frozenLogCheckpoint: isSet(object.frozenLogCheckpoint)
+        ? Checkpoint.fromJSON(object.frozenLogCheckpoint)
+        : undefined,
+      additionalPublicKeys: globalThis.Array.isArray(object?.additionalPublicKeys)
+        ? object.additionalPublicKeys.map((e: any) => PublicKey.fromJSON(e))
+        : [],
     };
   },
 
@@ -475,6 +554,79 @@ export const TransparencyLogInstance: MessageFns<TransparencyLogInstance> = {
     }
     if (message.checkpointKeyId !== undefined) {
       obj.checkpointKeyId = LogId.toJSON(message.checkpointKeyId);
+    }
+    if (message.operator !== "") {
+      obj.operator = message.operator;
+    }
+    if (message.witnessConfig !== undefined) {
+      obj.witnessConfig = WitnessConfiguration.toJSON(message.witnessConfig);
+    }
+    if (message.frozenLogCheckpoint !== undefined) {
+      obj.frozenLogCheckpoint = Checkpoint.toJSON(message.frozenLogCheckpoint);
+    }
+    if (message.additionalPublicKeys?.length) {
+      obj.additionalPublicKeys = message.additionalPublicKeys.map((e) => PublicKey.toJSON(e));
+    }
+    return obj;
+  },
+};
+
+export const WitnessConfiguration: MessageFns<WitnessConfiguration> = {
+  fromJSON(object: any): WitnessConfiguration {
+    return {
+      witnessGroups: globalThis.Array.isArray(object?.witnessGroups)
+        ? object.witnessGroups.map((e: any) => WitnessGroup.fromJSON(e))
+        : [],
+      serviceConfig: isSet(object.serviceConfig) ? ServiceConfiguration.fromJSON(object.serviceConfig) : undefined,
+    };
+  },
+
+  toJSON(message: WitnessConfiguration): unknown {
+    const obj: any = {};
+    if (message.witnessGroups?.length) {
+      obj.witnessGroups = message.witnessGroups.map((e) => WitnessGroup.toJSON(e));
+    }
+    if (message.serviceConfig !== undefined) {
+      obj.serviceConfig = ServiceConfiguration.toJSON(message.serviceConfig);
+    }
+    return obj;
+  },
+};
+
+export const WitnessGroup: MessageFns<WitnessGroup> = {
+  fromJSON(object: any): WitnessGroup {
+    return {
+      witnesses: globalThis.Array.isArray(object?.witnesses)
+        ? object.witnesses.map((e: any) => Witness.fromJSON(e))
+        : [],
+      serviceConfig: isSet(object.serviceConfig) ? ServiceConfiguration.fromJSON(object.serviceConfig) : undefined,
+    };
+  },
+
+  toJSON(message: WitnessGroup): unknown {
+    const obj: any = {};
+    if (message.witnesses?.length) {
+      obj.witnesses = message.witnesses.map((e) => Witness.toJSON(e));
+    }
+    if (message.serviceConfig !== undefined) {
+      obj.serviceConfig = ServiceConfiguration.toJSON(message.serviceConfig);
+    }
+    return obj;
+  },
+};
+
+export const Witness: MessageFns<Witness> = {
+  fromJSON(object: any): Witness {
+    return {
+      publicKey: isSet(object.publicKey) ? PublicKey.fromJSON(object.publicKey) : undefined,
+      operator: isSet(object.operator) ? globalThis.String(object.operator) : "",
+    };
+  },
+
+  toJSON(message: Witness): unknown {
+    const obj: any = {};
+    if (message.publicKey !== undefined) {
+      obj.publicKey = PublicKey.toJSON(message.publicKey);
     }
     if (message.operator !== "") {
       obj.operator = message.operator;

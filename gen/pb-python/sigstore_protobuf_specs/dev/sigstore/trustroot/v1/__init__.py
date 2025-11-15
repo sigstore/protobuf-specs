@@ -17,6 +17,7 @@ import betterproto
 from pydantic.dataclasses import rebuild_dataclass
 
 from ...common import v1 as __common_v1__
+from ...rekor import v1 as __rekor_v1__
 
 
 class ServiceSelector(betterproto.Enum):
@@ -137,6 +138,89 @@ class TransparencyLogInstance(betterproto.Message):
      to determine if log proof verification meets a specified threshold,
      e.g. two proofs from log deployments operated by the same operator
      should count as only one valid proof.
+    """
+
+    witness_config: "WitnessConfiguration" = betterproto.message_field(7)
+    """
+    The list of witnesses the log will be witnessed by along with the
+     quorum policy.
+     Only supported for TrustedRoot media types matching or greater than
+     application/vnd.dev.sigstore.trustedroot.v0.2+json
+    """
+
+    frozen_log_checkpoint: "__rekor_v1__.Checkpoint" = betterproto.message_field(8)
+    """
+    When set, signifies to a client that the log is frozen and no longer
+     is accepting entries. When verifying an inclusion proof, the client
+     SHOULD use this checkpoint and verify that the log index in the bundle
+     is not greater than or equal to the checkpoint tree size.
+     Only supported for TrustedRoot media types matching or greater than
+     application/vnd.dev.sigstore.trustedroot.v0.2+json
+    """
+
+    additional_public_keys: List["__common_v1__.PublicKey"] = betterproto.message_field(
+        9
+    )
+    """
+    Additional public keys used to verify log checkpoint signatures for when
+     a log uses multiple signing algorithms to generate checkpoint signatures.
+     Only supported for TrustedRoot media types matching or greater than
+     application/vnd.dev.sigstore.trustedroot.v0.2+json
+    """
+
+
+@dataclass(eq=False, repr=False)
+class WitnessConfiguration(betterproto.Message):
+    """
+    WitnessConfiguration contains the list of witnesses that will verify the
+     consistency of the log. Witnesses are grouped together, with each group
+     specifying its own quorum rule, and the list of groups needing to meet a
+     quorum rule. Having these groupings allows for more complex witnessing
+     policies, e.g. requiring 2-of-3 from 1) a set of ArmoredWitness instances
+     requiring M-of-N, 2) any from a set of regionalized witnesses run by a
+     single operator, and 3) a single witness instance.
+     Inspired by https://git.glasklar.is/sigsum/core/sigsum-go/-/blob/main/doc/policy.md
+    """
+
+    witness_groups: List["WitnessGroup"] = betterproto.message_field(1)
+    """The list of witness groups the log will be witnessed by."""
+
+    service_config: "ServiceConfiguration" = betterproto.message_field(2)
+    """
+    Specifies how many witness groups are required for proving consistency.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class WitnessGroup(betterproto.Message):
+    """
+    WitnessGroup contains a list of witnesses grouped due to some commonality,
+     e.g. the same operator or trust domain.
+    """
+
+    witnesses: List["Witness"] = betterproto.message_field(1)
+    """List of witnesses in this witness group."""
+
+    service_config: "ServiceConfiguration" = betterproto.message_field(2)
+    """
+    Specifies how many witnesses in this group are required for proving consistency.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class Witness(betterproto.Message):
+    """
+    Witness specifies an entity that verifies the consistency of a transparency log,
+     that the log remains append-only.
+    """
+
+    public_key: "__common_v1__.PublicKey" = betterproto.message_field(1)
+    """The witness's public key."""
+
+    operator: str = betterproto.string_field(2)
+    """
+    The name of the operator of this witness. Operator MUST be
+     formatted as a scheme-less URI, e.g. witnessing.dev
     """
 
 
@@ -449,6 +533,9 @@ class ClientTrustConfig(betterproto.Message):
 
 
 rebuild_dataclass(TransparencyLogInstance)  # type: ignore
+rebuild_dataclass(WitnessConfiguration)  # type: ignore
+rebuild_dataclass(WitnessGroup)  # type: ignore
+rebuild_dataclass(Witness)  # type: ignore
 rebuild_dataclass(CertificateAuthority)  # type: ignore
 rebuild_dataclass(TrustedRoot)  # type: ignore
 rebuild_dataclass(SigningConfig)  # type: ignore

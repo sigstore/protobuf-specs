@@ -17,6 +17,7 @@ package dev.sigstore.trustroot.v1;
 
 import "google/api/field_behavior.proto";
 import "sigstore_common.proto";
+import "sigstore_rekor.proto";
 
 option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/trustroot/v1";
 option java_package = "dev.sigstore.proto.trustroot.v1";
@@ -88,6 +89,57 @@ message TransparencyLogInstance {
         // e.g. two proofs from log deployments operated by the same operator
         // should count as only one valid proof.
         string operator = 6;
+        // The list of witnesses the log will be witnessed by along with the
+        // quorum policy.
+        // Only supported for TrustedRoot media types matching or greater than
+        // application/vnd.dev.sigstore.trustedroot.v0.2+json
+        WitnessConfiguration witness_config = 7;
+        // When set, signifies to a client that the log is frozen and no longer
+        // is accepting entries. When verifying an inclusion proof, the client
+        // SHOULD use this checkpoint and verify that the log index in the bundle
+        // is not greater than or equal to the checkpoint tree size.
+        // Only supported for TrustedRoot media types matching or greater than
+        // application/vnd.dev.sigstore.trustedroot.v0.2+json
+        dev.sigstore.rekor.v1.Checkpoint frozen_log_checkpoint = 8;
+        // Additional public keys used to verify log checkpoint signatures for when
+        // a log uses multiple signing algorithms to generate checkpoint signatures.
+        // Only supported for TrustedRoot media types matching or greater than
+        // application/vnd.dev.sigstore.trustedroot.v0.2+json
+        repeated dev.sigstore.common.v1.PublicKey additional_public_keys = 9;
+}
+
+// WitnessConfiguration contains the list of witnesses that will verify the
+// consistency of the log. Witnesses are grouped together, with each group
+// specifying its own quorum rule, and the list of groups needing to meet a
+// quorum rule. Having these groupings allows for more complex witnessing
+// policies, e.g. requiring 2-of-3 from 1) a set of ArmoredWitness instances
+// requiring M-of-N, 2) any from a set of regionalized witnesses run by a
+// single operator, and 3) a single witness instance.
+// Inspired by https://git.glasklar.is/sigsum/core/sigsum-go/-/blob/main/doc/policy.md
+message WitnessConfiguration {
+        // The list of witness groups the log will be witnessed by.
+       repeated WitnessGroup witness_groups = 1 [(google.api.field_behavior) = REQUIRED]; 
+        // Specifies how many witness groups are required for proving consistency.
+        ServiceConfiguration service_config = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// WitnessGroup contains a list of witnesses grouped due to some commonality,
+// e.g. the same operator or trust domain.
+message WitnessGroup {
+        // List of witnesses in this witness group.
+        repeated Witness witnesses = 1 [(google.api.field_behavior) = REQUIRED];
+        // Specifies how many witnesses in this group are required for proving consistency.
+        ServiceConfiguration service_config = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Witness specifies an entity that verifies the consistency of a transparency log,
+// that the log remains append-only.
+message Witness {
+        // The witness's public key.
+        dev.sigstore.common.v1.PublicKey public_key = 1 [(google.api.field_behavior) = REQUIRED];
+        // The name of the operator of this witness. Operator MUST be
+        // formatted as a scheme-less URI, e.g. witnessing.dev
+        string operator = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // CertificateAuthority enlists the information required to identify which
