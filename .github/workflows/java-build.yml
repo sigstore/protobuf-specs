@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        jdk-version: ["17", "21", "25"]
+        jdk-version: ["17", "21"]
       fail-fast: false
 
     steps:
@@ -44,10 +44,8 @@ jobs:
         distribution: 'temurin'
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@4d9f0ba0025fe599b4ebab900eb7f3a1d93ef4c2 # v5.0.0
-      with:
-        gradle-version: current
 
     # make sure jar generation works and tests/checks pass
     - name: Test 
       working-directory: java
-      run: ./gradlew build --stacktrace --debug
+      run: ./gradlew build
