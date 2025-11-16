@@ -14,6 +14,7 @@ jobs:
     uses: ./.github/workflows/java-build.yml
 
   strip-tag:
+    name: Compute version from tag
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
@@ -26,6 +27,7 @@ jobs:
           echo "version=${TAG#"release/java/v"}" >> $GITHUB_OUTPUT
 
   build:
+    name: Build, Sign, and Release Java artifacts
     runs-on: ubuntu-latest
     needs: [ci, strip-tag]
     permissions:

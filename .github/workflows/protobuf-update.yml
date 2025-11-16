@@ -8,10 +8,11 @@ permissions: {}
 
 jobs:
   my_job:
+    name: Update protobuf dependency
     runs-on: ubuntu-latest
     if: github.event.label.name == 'protobuf'
     permissions:
-      contents: write
+      contents: write # required to push commit to PR branch
 
     steps:
       - name: Checkout code

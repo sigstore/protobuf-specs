@@ -25,13 +25,13 @@ on:
 
 jobs:
   build:
+    name: Build Typescript generated code
     strategy:
       matrix:
         node-version:
-          - 18.17.0
-          - 18.x
-          - 20.5.0
           - 20.x
+          - 22.x
+          - 24.x
       fail-fast: false
     runs-on: ubuntu-latest
 
