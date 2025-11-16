@@ -49,6 +49,5 @@ jobs:
 
     # make sure jar generation works and tests/checks pass
     - name: Test 
-      run: |
-        cd java
-        ./gradlew build --scan
+      working-directory: java
+      run: ./gradlew build --stacktrace --debug
