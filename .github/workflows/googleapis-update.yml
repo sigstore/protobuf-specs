@@ -9,7 +9,7 @@ permissions: {}
 
 jobs:
   update_protobuf_version:
-    name: Update protobuf includes to latest
+    name: Update protobuf includes to latest commit
     runs-on: ubuntu-latest
     permissions:
       contents: write      # required for pushing commits to a branch
@@ -47,7 +47,7 @@ jobs:
 
   update_grpc_gateway_version:
     runs-on: ubuntu-latest
-    name: Update gRPC Gateway OpenAPI v2 includes to latest
+    name: Update gRPC Gateway OpenAPI v2 includes to latest commit
     permissions:
       contents: write      # required for pushing commits to a branch
       pull-requests: write # required for creating a new PR
