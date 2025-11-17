@@ -9,10 +9,11 @@ permissions: {}
 
 jobs:
   update_protobuf_version:
+    name: Update protobuf includes to latest commit
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write      # required for pushing commits to a branch
+      pull-requests: write # required for creating a new PR
 
     steps:
       - name: Checkout code
@@ -43,6 +44,20 @@ jobs:
             --body "This pull request updates the DEFAULT_GOOGLEAPIS_COMMIT variable in protoc-builder/versions.mk with the latest commit hash from the googleapis/googleapis repository." \
             --base main \
             --head googleapis-${RUN_ID}
+
+  update_grpc_gateway_version:
+    runs-on: ubuntu-latest
+    name: Update gRPC Gateway OpenAPI v2 includes to latest commit
+    permissions:
+      contents: write      # required for pushing commits to a branch
+      pull-requests: write # required for creating a new PR
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: true  # zizmor: ignore[artipacked]
 
       - name: Extract latest commit hash from grpc-ecosystem/grpc-gateway and create PR
         env:

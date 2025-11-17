@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
+      id-token: write # needed to authenticate to Google Cloud
 
     defaults:
       run:
@@ -41,7 +41,7 @@ jobs:
 
     - uses: ruby/setup-ruby@d5126b9b3579e429dd52e51e68624dda2e05be25 # v1.267.0
       with:
-        ruby-version: '3.2'
+        ruby-version: '3.3'
 
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
