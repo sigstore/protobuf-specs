@@ -18,39 +18,84 @@ updates:
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    cooldown:
+      default-days: 14
+    groups:
+      go-deps:
+        patterns:
+          - "*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    groups:
+      actions-deps:
+        patterns:
+          - "*"
   - package-ecosystem: "gradle"
     directory: "/java"
     schedule:
-      interval: "daily"
+      interval: "monthly"
+    cooldown:
+      default-days: 14
     groups:
       protobuf:
         patterns:
+          - "*protobuf*"
+      java-deps:
+        patterns:
+          - "*"
+        exclude-patterns:
           - "*protobuf*"
   - package-ecosystem: "docker"
     directory: "/protoc-builder"
     schedule:
       interval: "monthly"
+    groups:
+      docker-refs:
+        patterns:
+          - "*"
   - package-ecosystem: "gomod"
     directory: "/protoc-builder/hack/go"
     schedule:
       interval: "monthly"
+    cooldown:
+      default-days: 14
+    groups:
+      go-deps:
+        patterns:
+          - "*"
   - package-ecosystem: "pip"
     directory: "/protoc-builder/hack"
     schedule:
       interval: "monthly"
+    cooldown:
+      default-days: 14
+    groups:
+      python-deps:
+        patterns:
+          - "*"
   - package-ecosystem: "cargo"
     directory: "/gen/pb-rust"
     schedule:
       interval: "monthly"
+    cooldown:
+      default-days: 14
+    groups:
+      rust-deps:
+        patterns:
+          - "*"
   - package-ecosystem: "npm"
     directory: "/protoc-builder/hack"
     schedule:
       interval: "monthly"
+    cooldown:
+      default-days: 14
+    groups:
+      js-deps:
+        patterns:
+          - "*"
   # this monitors Homebrew builds of protobuf compiler to monitor protobuf releases;
   # but still downloads the release asset from GitHub (since it is statically linked)
   # the "protobuf" label triggers a workflow to update versions.mk
