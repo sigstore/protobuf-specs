@@ -7,9 +7,9 @@ WORKDIR /app
 RUN npm ci --install-strategy=shallow
 
 # /usr/bin/env is called from ts-proto but not in distroless by default; we use busybox for this
-FROM gcr.io/distroless/base-debian13:debug-nonroot@sha256:231e54a28d2c6f30fb75a03a29760127fb3ebae9227c06a29e1220e9ad8230a0 AS env-source
+FROM gcr.io/distroless/base-debian13:debug-nonroot@sha256:8e839de96c6b6924577114e7a310020ca6dd715381f578a4cc916f110ac4dbbf AS env-source
 
-FROM gcr.io/distroless/nodejs24-debian13:nonroot@sha256:dfe050de2bde987ac6d065b441dfc06af5ddd448a17be5bb9f0916d855be9458
+FROM gcr.io/distroless/nodejs24-debian13:nonroot@sha256:6a911c864ceb0c908d4043f2f4a0d49cb4a13ed2728561fee30c0696587466c4
 
 # node is installed in a non-default location in distroless
 ENV PATH=$PATH:/nodejs/bin
