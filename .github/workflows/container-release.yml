@@ -70,7 +70,7 @@ jobs:
         echo "IMAGE_DIGEST=$image_digest" >> "$GITHUB_ENV"
 
     - name: Generate artifact attestation
-      uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
+      uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
       with:
         subject-name: ${{ env.IMAGE_NO_TAG }}
         subject-digest: ${{ env.IMAGE_DIGEST }}
