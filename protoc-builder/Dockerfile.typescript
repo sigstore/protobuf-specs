@@ -1,4 +1,4 @@
-FROM node:25@sha256:e6b32434aba48dcb8730d56de2df3d137de213f1f527a922a6bf7b2853a24e86 AS typescript-builder
+FROM node:25@sha256:c4bfed36421c310d1fbb6dc51faf98065768fbc1c2c1ddd554813ecaa81bb2db AS typescript-builder
 RUN mkdir /app
 COPY hack/package*.json /app
 WORKDIR /app
@@ -7,9 +7,9 @@ WORKDIR /app
 RUN npm ci --install-strategy=shallow
 
 # /usr/bin/env is called from ts-proto but not in distroless by default; we use busybox for this
-FROM gcr.io/distroless/base-debian13:debug-nonroot@sha256:f57e77a0206bee9398f31f6639c9842d155eee61762ea6710bdc5e533c421550 AS env-source
+FROM gcr.io/distroless/base-debian13:debug-nonroot@sha256:ccc94164327428a074ae13a746155e83eab45d2fcfdbb656343353456209d27e AS env-source
 
-FROM gcr.io/distroless/nodejs24-debian13:nonroot@sha256:17d53e78d5aae23dcb43b628ec0769edcc07543c8a9faa35abf2fd8aedf7a5a4
+FROM gcr.io/distroless/nodejs24-debian13:nonroot@sha256:38792f83f35f2df89d403f49491782981dd13a853bbcb09ff978d79328263463
 
 # node is installed in a non-default location in distroless
 ENV PATH=$PATH:/nodejs/bin

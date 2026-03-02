@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/static-debian13:nonroot@sha256:f9f84bd968430d7d35e8e6d55c40efb0b980829ec42920a49e60e65eac0d83fc
+FROM gcr.io/distroless/static-debian13:nonroot@sha256:f512d819b8f109f2375e8b51d8cfd8aafe81034bc3e319740128b7d7f70d5036
 
 COPY --from=protoc-base:ruby /protobuf/bin/protoc /usr/local/bin/
 COPY --from=protoc-base:ruby /protobuf/include/google /opt/include/google
