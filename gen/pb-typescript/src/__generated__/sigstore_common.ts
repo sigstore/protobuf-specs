@@ -21,7 +21,17 @@ export enum HashAlgorithm {
   SHA2_256 = 1,
   SHA2_384 = 2,
   SHA2_512 = 3,
+  /**
+   * SHA3_256 - Used for LMS
+   *
+   * @deprecated
+   */
   SHA3_256 = 4,
+  /**
+   * SHA3_384 - Used for LMS
+   *
+   * @deprecated
+   */
   SHA3_384 = 5,
 }
 
@@ -140,9 +150,7 @@ export enum PublicKeyDetails {
    * LMS_SHA256 - LMS and LM-OTS
    *
    * These algorithms are deprecated and should not be used.
-   * Keys and signatures MAY be used by private Sigstore
-   * deployments, but will not be supported by the public
-   * good instance.
+   * There are no plans to support SLH-DSA at this time.
    *
    * USER WARNING: LMS and LM-OTS are both stateful signature schemes.
    * Using them correctly requires discretion and careful consideration
@@ -158,20 +166,23 @@ export enum PublicKeyDetails {
   /** @deprecated */
   LMOTS_SHA256 = 15,
   /**
-   * ML_DSA_65 - ML-DSA
+   * ML_DSA_44 - ML-DSA
    *
-   * These ML_DSA_65 and ML-DSA_87 algorithms are the pure variants that
-   * take data to sign rather than the prehash variants (HashML-DSA), which
-   * take digests.  While considered quantum-resistant, their usage
+   * These ML_DSA_44, ML_DSA_65 and ML-DSA_87 algorithms are the pure variants
+   * that take data to sign rather than the prehash variants (HashML-DSA), which
+   * take digests. While considered quantum-resistant, their usage
    * involves tradeoffs in that signatures and keys are much larger, and
    * this makes deployments more costly.
    *
-   * USER WARNING: ML_DSA_65 and ML_DSA_87 are experimental algorithms.
+   * USER WARNING: ML_DSA_44, ML_DSA_65 and ML_DSA_87 are experimental algorithms.
    * In the future they MAY be used by private Sigstore deployments, but
-   * they are not yet fully functional.  This warning will be removed when
+   * they are not yet fully functional. This warning will be removed when
    * these algorithms are widely supported by Sigstore clients and servers,
    * but care should still be taken for production environments.
+   *
+   * See NIST FIPS 204, RFC 9881 for algorithm identifiers
    */
+  ML_DSA_44 = 23,
   ML_DSA_65 = 21,
   ML_DSA_87 = 22,
 }
@@ -241,6 +252,9 @@ export function publicKeyDetailsFromJSON(object: any): PublicKeyDetails {
     case 15:
     case "LMOTS_SHA256":
       return PublicKeyDetails.LMOTS_SHA256;
+    case 23:
+    case "ML_DSA_44":
+      return PublicKeyDetails.ML_DSA_44;
     case 21:
     case "ML_DSA_65":
       return PublicKeyDetails.ML_DSA_65;
@@ -296,6 +310,8 @@ export function publicKeyDetailsToJSON(object: PublicKeyDetails): string {
       return "LMS_SHA256";
     case PublicKeyDetails.LMOTS_SHA256:
       return "LMOTS_SHA256";
+    case PublicKeyDetails.ML_DSA_44:
+      return "ML_DSA_44";
     case PublicKeyDetails.ML_DSA_65:
       return "ML_DSA_65";
     case PublicKeyDetails.ML_DSA_87:

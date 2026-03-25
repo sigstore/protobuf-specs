@@ -37,7 +37,10 @@ class HashAlgorithm(betterproto.Enum):
     SHA2_384 = 2
     SHA2_512 = 3
     SHA3_256 = 4
+    """Used for LMS"""
+
     SHA3_384 = 5
+    """Used for LMS"""
 
     @classmethod
     def __get_pydantic_core_schema__(cls, _source_type, _handler):
@@ -106,9 +109,7 @@ class PublicKeyDetails(betterproto.Enum):
     LMS and LM-OTS
      
      These algorithms are deprecated and should not be used.
-     Keys and signatures MAY be used by private Sigstore
-     deployments, but will not be supported by the public
-     good instance.
+     There are no plans to support SLH-DSA at this time.
     
      USER WARNING: LMS and LM-OTS are both stateful signature schemes.
      Using them correctly requires discretion and careful consideration
@@ -120,23 +121,26 @@ class PublicKeyDetails(betterproto.Enum):
     """
 
     LMOTS_SHA256 = 15
-    ML_DSA_65 = 21
+    ML_DSA_44 = 23
     """
     ML-DSA
     
-     These ML_DSA_65 and ML-DSA_87 algorithms are the pure variants that
-     take data to sign rather than the prehash variants (HashML-DSA), which
-     take digests.  While considered quantum-resistant, their usage
+     These ML_DSA_44, ML_DSA_65 and ML-DSA_87 algorithms are the pure variants
+     that take data to sign rather than the prehash variants (HashML-DSA), which
+     take digests. While considered quantum-resistant, their usage
      involves tradeoffs in that signatures and keys are much larger, and
      this makes deployments more costly.
     
-     USER WARNING: ML_DSA_65 and ML_DSA_87 are experimental algorithms.  
+     USER WARNING: ML_DSA_44, ML_DSA_65 and ML_DSA_87 are experimental algorithms.  
      In the future they MAY be used by private Sigstore deployments, but
-     they are not yet fully functional.  This warning will be removed when 
+     they are not yet fully functional. This warning will be removed when 
      these algorithms are widely supported by Sigstore clients and servers, 
      but care should still be taken for production environments.
+    
+     See NIST FIPS 204, RFC 9881 for algorithm identifiers
     """
 
+    ML_DSA_65 = 21
     ML_DSA_87 = 22
 
     @classmethod
