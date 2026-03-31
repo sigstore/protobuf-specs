@@ -12,6 +12,10 @@ All versions prior to 0.2.0 are untracked.
 
 ### Changed
 
+## v0.5.1
+
+* Add ML-DSA-44 algorithm identifier ([#860](https://github.com/sigstore/protobuf-specs/pull/860))
+
 ## v0.5.0
 
 ### Added

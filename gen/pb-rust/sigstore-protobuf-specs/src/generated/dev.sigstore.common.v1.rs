@@ -260,8 +260,10 @@ pub enum HashAlgorithm {
     Sha2384 = 2,
     Sha2512 = 3,
     /// Used for LMS
+    #[deprecated]
     Sha3256 = 4,
     /// Used for LMS
+    #[deprecated]
     Sha3384 = 5,
 }
 impl HashAlgorithm {
@@ -275,7 +277,9 @@ impl HashAlgorithm {
             Self::Sha2256 => "SHA2_256",
             Self::Sha2384 => "SHA2_384",
             Self::Sha2512 => "SHA2_512",
+            #[allow(deprecated)]
             Self::Sha3256 => "SHA3_256",
+            #[allow(deprecated)]
             Self::Sha3384 => "SHA3_384",
         }
     }
@@ -286,8 +290,8 @@ impl HashAlgorithm {
             "SHA2_256" => Some(Self::Sha2256),
             "SHA2_384" => Some(Self::Sha2384),
             "SHA2_512" => Some(Self::Sha2512),
-            "SHA3_256" => Some(Self::Sha3256),
-            "SHA3_384" => Some(Self::Sha3384),
+            "SHA3_256" => Some(#[allow(deprecated)] Self::Sha3256),
+            "SHA3_384" => Some(#[allow(deprecated)] Self::Sha3384),
             _ => None,
         }
     }
@@ -320,10 +324,14 @@ pub enum PublicKeyDetails {
     /// RSA
     ///
     /// See RFC8017
+    #[deprecated]
     Pkcs1RsaPkcs1v5 = 1,
     /// See RFC8017
+    #[deprecated]
     Pkcs1RsaPss = 2,
+    #[deprecated]
     PkixRsaPkcs1v5 = 3,
+    #[deprecated]
     PkixRsaPss = 4,
     /// RSA public key in PKIX format, PKCS#1v1.5 signature
     PkixRsaPkcs1v152048Sha256 = 9,
@@ -338,6 +346,7 @@ pub enum PublicKeyDetails {
     /// ECDSA
     ///
     /// See RFC6979
+    #[deprecated]
     PkixEcdsaP256HmacSha256 = 6,
     /// See NIST FIPS 186-4
     PkixEcdsaP256Sha256 = 5,
@@ -350,7 +359,9 @@ pub enum PublicKeyDetails {
     PkixEd25519Ph = 8,
     /// These algorithms are deprecated and should not be used, but they
     /// were/are being used by most Sigstore clients implementations.
+    #[deprecated]
     PkixEcdsaP384Sha256 = 19,
+    #[deprecated]
     PkixEcdsaP521Sha256 = 20,
     /// LMS and LM-OTS
     ///
@@ -364,7 +375,9 @@ pub enum PublicKeyDetails {
     /// MUST NOT be used for more than one signature per LM-OTS key.
     /// If you cannot maintain these invariants, you MUST NOT use these
     /// schemes.
+    #[deprecated]
     LmsSha256 = 14,
+    #[deprecated]
     LmotsSha256 = 15,
     /// ML-DSA
     ///
@@ -393,9 +406,13 @@ impl PublicKeyDetails {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             Self::Unspecified => "PUBLIC_KEY_DETAILS_UNSPECIFIED",
+            #[allow(deprecated)]
             Self::Pkcs1RsaPkcs1v5 => "PKCS1_RSA_PKCS1V5",
+            #[allow(deprecated)]
             Self::Pkcs1RsaPss => "PKCS1_RSA_PSS",
+            #[allow(deprecated)]
             Self::PkixRsaPkcs1v5 => "PKIX_RSA_PKCS1V5",
+            #[allow(deprecated)]
             Self::PkixRsaPss => "PKIX_RSA_PSS",
             Self::PkixRsaPkcs1v152048Sha256 => "PKIX_RSA_PKCS1V15_2048_SHA256",
             Self::PkixRsaPkcs1v153072Sha256 => "PKIX_RSA_PKCS1V15_3072_SHA256",
@@ -403,15 +420,20 @@ impl PublicKeyDetails {
             Self::PkixRsaPss2048Sha256 => "PKIX_RSA_PSS_2048_SHA256",
             Self::PkixRsaPss3072Sha256 => "PKIX_RSA_PSS_3072_SHA256",
             Self::PkixRsaPss4096Sha256 => "PKIX_RSA_PSS_4096_SHA256",
+            #[allow(deprecated)]
             Self::PkixEcdsaP256HmacSha256 => "PKIX_ECDSA_P256_HMAC_SHA_256",
             Self::PkixEcdsaP256Sha256 => "PKIX_ECDSA_P256_SHA_256",
             Self::PkixEcdsaP384Sha384 => "PKIX_ECDSA_P384_SHA_384",
             Self::PkixEcdsaP521Sha512 => "PKIX_ECDSA_P521_SHA_512",
             Self::PkixEd25519 => "PKIX_ED25519",
             Self::PkixEd25519Ph => "PKIX_ED25519_PH",
+            #[allow(deprecated)]
             Self::PkixEcdsaP384Sha256 => "PKIX_ECDSA_P384_SHA_256",
+            #[allow(deprecated)]
             Self::PkixEcdsaP521Sha256 => "PKIX_ECDSA_P521_SHA_256",
+            #[allow(deprecated)]
             Self::LmsSha256 => "LMS_SHA256",
+            #[allow(deprecated)]
             Self::LmotsSha256 => "LMOTS_SHA256",
             Self::MlDsa44 => "ML_DSA_44",
             Self::MlDsa65 => "ML_DSA_65",
@@ -422,26 +444,32 @@ impl PublicKeyDetails {
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "PUBLIC_KEY_DETAILS_UNSPECIFIED" => Some(Self::Unspecified),
-            "PKCS1_RSA_PKCS1V5" => Some(Self::Pkcs1RsaPkcs1v5),
-            "PKCS1_RSA_PSS" => Some(Self::Pkcs1RsaPss),
-            "PKIX_RSA_PKCS1V5" => Some(Self::PkixRsaPkcs1v5),
-            "PKIX_RSA_PSS" => Some(Self::PkixRsaPss),
+            "PKCS1_RSA_PKCS1V5" => Some(#[allow(deprecated)] Self::Pkcs1RsaPkcs1v5),
+            "PKCS1_RSA_PSS" => Some(#[allow(deprecated)] Self::Pkcs1RsaPss),
+            "PKIX_RSA_PKCS1V5" => Some(#[allow(deprecated)] Self::PkixRsaPkcs1v5),
+            "PKIX_RSA_PSS" => Some(#[allow(deprecated)] Self::PkixRsaPss),
             "PKIX_RSA_PKCS1V15_2048_SHA256" => Some(Self::PkixRsaPkcs1v152048Sha256),
             "PKIX_RSA_PKCS1V15_3072_SHA256" => Some(Self::PkixRsaPkcs1v153072Sha256),
             "PKIX_RSA_PKCS1V15_4096_SHA256" => Some(Self::PkixRsaPkcs1v154096Sha256),
             "PKIX_RSA_PSS_2048_SHA256" => Some(Self::PkixRsaPss2048Sha256),
             "PKIX_RSA_PSS_3072_SHA256" => Some(Self::PkixRsaPss3072Sha256),
             "PKIX_RSA_PSS_4096_SHA256" => Some(Self::PkixRsaPss4096Sha256),
-            "PKIX_ECDSA_P256_HMAC_SHA_256" => Some(Self::PkixEcdsaP256HmacSha256),
+            "PKIX_ECDSA_P256_HMAC_SHA_256" => {
+                Some(#[allow(deprecated)] Self::PkixEcdsaP256HmacSha256)
+            }
             "PKIX_ECDSA_P256_SHA_256" => Some(Self::PkixEcdsaP256Sha256),
             "PKIX_ECDSA_P384_SHA_384" => Some(Self::PkixEcdsaP384Sha384),
             "PKIX_ECDSA_P521_SHA_512" => Some(Self::PkixEcdsaP521Sha512),
             "PKIX_ED25519" => Some(Self::PkixEd25519),
             "PKIX_ED25519_PH" => Some(Self::PkixEd25519Ph),
-            "PKIX_ECDSA_P384_SHA_256" => Some(Self::PkixEcdsaP384Sha256),
-            "PKIX_ECDSA_P521_SHA_256" => Some(Self::PkixEcdsaP521Sha256),
-            "LMS_SHA256" => Some(Self::LmsSha256),
-            "LMOTS_SHA256" => Some(Self::LmotsSha256),
+            "PKIX_ECDSA_P384_SHA_256" => {
+                Some(#[allow(deprecated)] Self::PkixEcdsaP384Sha256)
+            }
+            "PKIX_ECDSA_P521_SHA_256" => {
+                Some(#[allow(deprecated)] Self::PkixEcdsaP521Sha256)
+            }
+            "LMS_SHA256" => Some(#[allow(deprecated)] Self::LmsSha256),
+            "LMOTS_SHA256" => Some(#[allow(deprecated)] Self::LmotsSha256),
             "ML_DSA_44" => Some(Self::MlDsa44),
             "ML_DSA_65" => Some(Self::MlDsa65),
             "ML_DSA_87" => Some(Self::MlDsa87),
