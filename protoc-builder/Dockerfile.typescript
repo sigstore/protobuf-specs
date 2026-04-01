@@ -20,4 +20,4 @@ COPY --from=protoc-base:typescript /protobuf/bin/protoc /usr/local/bin/
 COPY --from=protoc-base:typescript /protobuf/include/google /opt/include/google
 COPY --from=protoc-base:typescript /googleapis /googleapis
 
-ENTRYPOINT ["/usr/local/bin/protoc", "--plugin=/usr/local/lib/node_modules/ts-proto/protoc-gen-ts_proto" ]
+ENTRYPOINT ["/usr/local/bin/protoc", "--plugin=/usr/local/lib/node_modules/ts-proto/protoc-gen-ts_proto", "--ts_proto_opt=protoJsonFormat=false"]
