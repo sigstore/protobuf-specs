@@ -4,10 +4,10 @@
 # /googleapis will contain the various googleapis proto imports one might need
 FROM debian:trixie-slim@sha256:26f98ccd92fd0a44d6928ce8ff8f4921b4d2f535bfa07555ee5d18f61429cf0c AS protoc-builder
 
-# Create output directories
-RUN mkdir /protobuf /googleapis /grpc-gateway
-# Install needed utilities
-RUN apt-get update && apt-get install -y unzip git
+# Create output directories and install needed utilities
+RUN mkdir /protobuf /googleapis /grpc-gateway && \
+    apt-get update && apt-get install -y --no-install-recommends unzip git adduser ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set up user and group to match host we're building the container on
 ARG UID
@@ -26,17 +26,23 @@ ARG PROTOC_VERSION
 ARG PROTOC_CHECKSUM
 
 ADD --chown=myuser --checksum=${PROTOC_CHECKSUM} https://github.com/protocolbuffers/protobuf/releases/download/${PROTOC_VERSION}/protoc-${PROTOC_VERSION#v}-linux-x86_64.zip /tmp/protoc.zip
-RUN unzip -d /protobuf /tmp/protoc.zip
-RUN chmod 755 /protobuf/bin/protoc
+RUN unzip -d /protobuf /tmp/protoc.zip && \
+    chmod 755 /protobuf/bin/protoc && \
+    rm /tmp/protoc.zip
 
-# fetch specific commit of googleapis
+# fetch specific commit of googleapis (shallow fetch to avoid downloading full history)
 ARG GOOGLEAPIS_COMMIT
-RUN git clone --filter=tree:0 https://github.com/googleapis/googleapis.git /googleapis && \
-    cd /googleapis && git checkout ${GOOGLEAPIS_COMMIT}
+RUN git init /googleapis && cd /googleapis && \
+    git remote add origin https://github.com/googleapis/googleapis.git && \
+    git fetch --depth=1 origin ${GOOGLEAPIS_COMMIT} && \
+    git checkout FETCH_HEAD && rm -rf .git
 # fetch sparse checkout of grpc-gateway to add openapiv2/options
 ARG GRPC_GATEWAY_COMMIT
-RUN git clone --filter=tree:0 --no-checkout --sparse https://github.com/grpc-ecosystem/grpc-gateway.git /grpc-gateway && \
-    cd /grpc-gateway && git sparse-checkout add protoc-gen-openapiv2/options && git checkout ${GRPC_GATEWAY_COMMIT}
+RUN git init /grpc-gateway && cd /grpc-gateway && \
+    git remote add origin https://github.com/grpc-ecosystem/grpc-gateway.git && \
+    git sparse-checkout set protoc-gen-openapiv2/options && \
+    git fetch --depth=1 origin ${GRPC_GATEWAY_COMMIT} && \
+    git checkout FETCH_HEAD && rm -rf .git
 
 FROM scratch
 COPY --from=protoc-builder /protobuf /protobuf

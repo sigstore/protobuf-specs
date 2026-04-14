@@ -40,8 +40,19 @@ PROTO_INCLUDES=${BASE_PROTO_INCLUDES} -I/defs/service-protos
 
 include protoc-builder/versions.mk
 
+# pre-build the base protoc image with default versions to prime Docker's layer cache;
+# each language's base-image target will then cache-hit instantly when using the defaults
+.PHONY: base-image-all
+base-image-all:
+	@echo "Priming base docker image cache"
+	cd protoc-builder && ${DOCKER_BUILD} ${DOCKER_CACHE} -t ${PROTOC_IMAGE}:shared -f Dockerfile.protoc \
+	  --build-arg PROTOC_VERSION=${DEFAULT_PROTOC_VERSION} \
+	  --build-arg PROTOC_CHECKSUM=${DEFAULT_PROTOC_CHECKSUM} \
+	  --build-arg GOOGLEAPIS_COMMIT=${DEFAULT_GOOGLEAPIS_COMMIT} \
+	  --build-arg GRPC_GATEWAY_COMMIT=${DEFAULT_GRPC_GATEWAY_COMMIT} .
+
 # generate all language protobuf code
-all: go python typescript ruby rust
+all: base-image-all go python typescript ruby rust
 
 # generate Go protobuf code
 # ignore service-protos, go clients should grab those from the service directly
@@ -153,7 +164,8 @@ clean:
 		gen/pb-python/sigstore_protobuf_specs/io \
 		gen/pb-rust/target
 	find gen/pb-ruby/ -type f -name '*_pb.rb' -delete
-	docker rmi -f ${PROTOC_IMAGE}:go  ${PROTOC_GO_IMAGE} \
+	docker rmi -f ${PROTOC_IMAGE}:shared \
+		      ${PROTOC_IMAGE}:go  ${PROTOC_GO_IMAGE} \
 		      ${PROTOC_IMAGE}:python ${PROTOC_PYTHON_IMAGE} \
 		      ${PROTOC_IMAGE}:ruby ${PROTOC_RUBY_IMAGE} \
 		      ${PROTOC_IMAGE}:rust ${PROTOC_RUST_IMAGE} \
