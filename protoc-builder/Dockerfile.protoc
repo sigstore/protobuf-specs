@@ -2,7 +2,7 @@
 # This container grabs the protoc compiler and the googleapi includes
 # /protobuf will contain the extracted protoc
 # /googleapis will contain the various googleapis proto imports one might need
-FROM debian:trixie-slim@sha256:26f98ccd92fd0a44d6928ce8ff8f4921b4d2f535bfa07555ee5d18f61429cf0c AS protoc-builder
+FROM debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS protoc-builder
 
 # Create output directories and install needed utilities
 RUN mkdir /protobuf /googleapis /grpc-gateway && \
