@@ -5,6 +5,9 @@ pub mod dev {
             pub mod v1 {
                 include!("dev.sigstore.bundle.v1.rs");
             }
+            pub mod v2 {
+                include!("dev.sigstore.bundle.v2.rs");
+            }
         }
         pub mod common {
             pub mod v1 {
