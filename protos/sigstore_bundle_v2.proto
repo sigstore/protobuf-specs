@@ -62,6 +62,11 @@ message TlogProof {
         optional dev.sigstore.common.v1.PublicKeyIdentifier public_key = 2;
 }
 
+message PublicKey {
+        dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
+        TimestampVerificationData timestamps = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
 message Cert {
         oneof cert_data {
                 dev.sigstore.common.v1.X509Certificate certificate = 1 [(google.api.field_behavior) = REQUIRED];
@@ -73,10 +78,10 @@ message Cert {
 message VerificationMaterial {
         oneof content {
                 // Signed with a raw key pair
-                dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
+                PublicKey public_key = 1 [(google.api.field_behavior) = REQUIRED];
                 // Signed with cert + rfc3161 timestamp
                 Cert cert = 2 [(google.api.field_behavior) = REQUIRED];
-                // Pushed to Rekor V3
+                // Pushed to Rekor V3.
                 TlogProof tlog_proof = 3 [(google.api.field_behavior) = REQUIRED];
         }
 }
