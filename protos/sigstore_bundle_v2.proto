@@ -24,10 +24,10 @@ message TimestampVerificationData {
 // to an HSM.
 message Signature {
         // The signature is computed over a domain separated message:
-        // 0x00 || 0x00 || SHA256(SHA256(data)) if message is not
+        // sigstore.dev/v1 || 0x00 || SHA256(SHA256(data)) if message is not
         // submitted to a log
-        // 0x01 || 0x00 || SHA256(SHA256(data)) if message is submitted
-        // to a log
+        // c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
+        // if message is submitted to a log
         bytes signature = 1;
 }
 
@@ -58,13 +58,13 @@ message TlogProof {
         // whats submitted to the log.
         bytes proof = 1 [(google.api.field_behavior) = REQUIRED];
         // If the artifact was signed prior to log submission.
-        // Signature is over 0x01 || 0x00 || SHA256(SHA256(data))
+        // Signature is over
+        // c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
         optional dev.sigstore.common.v1.PublicKeyIdentifier public_key = 2;
 }
 
 message PublicKey {
         dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
-        TimestampVerificationData timestamps = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message Cert {
