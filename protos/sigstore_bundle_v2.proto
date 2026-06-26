@@ -65,6 +65,7 @@ message TlogProof {
 
 message PublicKey {
         dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
+        TimestampVerificationData timestamps = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message Cert {
