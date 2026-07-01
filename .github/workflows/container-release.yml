@@ -38,7 +38,7 @@ jobs:
       IMAGE_NO_TAG: ghcr.io/${{ github.repository }}-service-builder
 
     steps:
-    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       with:
         persist-credentials: false
 
@@ -70,7 +70,7 @@ jobs:
         echo "IMAGE_DIGEST=$image_digest" >> "$GITHUB_ENV"
 
     - name: Generate artifact attestation
-      uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
+      uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
       with:
         subject-name: ${{ env.IMAGE_NO_TAG }}
         subject-digest: ${{ env.IMAGE_DIGEST }}
