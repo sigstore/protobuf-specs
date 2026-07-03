@@ -37,24 +37,26 @@ message Embedded {
         // The PAE used before signing is:
         // "DSSEv1" + SP + LEN(type) + SP + type + SP + LEN(body) + SP + body
         // When signing, data is the PAE.
+        // MUST be unset when submitting with an ID token to a log.
         optional Signature = 3;
 }
 
 message MessageSignature {
         dev.sigstore.common.v1.HashOutput message_digest = 1 [(google.api.field_behavior) = REQUIRED];
-        // When signing data is the artifact
+        // When signing, data is the artifact.
+        // MUST be unset when submitting with an ID token to a log.
         optional Signature signature = 2;
 }
 
 message TlogProof {
-        // The C2SP proof.
+        // The log proof, formatted per c2sp.org/tlog-proof.
         // If OIDC based submit is used, the `extra` field contains the
         // relevant claims needed for recreation of the leaf during
         // verification. They are stored as an unordered list of elements
         // matching key:value separated by `\n` (0x0a). Both key and value
         // are strings.
         // If a signature is part of the leaf, verifiers MUST verify the
-        // the artifacts signature, and compare that the signature matches
+        // the artifact's signature, and compare that the signature matches
         // whats submitted to the log.
         bytes proof = 1 [(google.api.field_behavior) = REQUIRED];
         // If the artifact was signed prior to log submission.
@@ -65,7 +67,9 @@ message TlogProof {
 
 message PublicKey {
         dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
-        TimestampVerificationData timestamps = 2 [(google.api.field_behavior) = REQUIRED];
+        // Optional timestamp to enable key rotation when a signature is not
+        // logged (witnesses provides a counter-signature with timestamp).
+        optional TimestampVerificationData timestamps = 2;
 }
 
 message Cert {
@@ -82,7 +86,8 @@ message VerificationMaterial {
                 PublicKey public_key = 1 [(google.api.field_behavior) = REQUIRED];
                 // Signed with cert + rfc3161 timestamp
                 Cert cert = 2 [(google.api.field_behavior) = REQUIRED];
-                // Pushed to Rekor V3.
+                // Logged to Rekor V3, authenticating with an ID token or
+                // a public key/signature.
                 TlogProof tlog_proof = 3 [(google.api.field_behavior) = REQUIRED];
         }
 }
