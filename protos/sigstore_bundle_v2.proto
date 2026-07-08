@@ -32,13 +32,13 @@ message Signature {
 }
 
 message Embedded {
-        string payload_type = 2;
+        string payload_type = 1;
         bytes payload = 2;
         // The PAE used before signing is:
         // "DSSEv1" + SP + LEN(type) + SP + type + SP + LEN(body) + SP + body
         // When signing, data is the PAE.
         // MUST be unset when submitting with an ID token to a log.
-        optional Signature = 3;
+        optional Signature signature = 3;
 }
 
 message MessageSignature {
