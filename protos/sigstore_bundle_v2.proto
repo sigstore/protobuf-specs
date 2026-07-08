@@ -1,0 +1,105 @@
+syntax = "proto3";
+package dev.sigstore.bundle.v2;
+
+import "google/api/field_behavior.proto";
+
+// https://raw.githubusercontent.com/secure-systems-lab/dsse/9c813476bd36de70a5738c72e784f123ecea16af/envelope.proto
+import "envelope.proto";
+import "sigstore_common.proto";
+import "sigstore_rekor.proto";
+
+option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/bundle/v2";
+option java_package = "dev.sigstore.proto.bundle.v2";
+option java_multiple_files = true;
+option java_outer_classname = "BundleProtoV2";
+option ruby_package = "Sigstore::Bundle::V2";
+
+message TimestampVerificationData {
+        repeated dev.sigstore.common.v1.RFC3161SignedTimestamp rfc3161_timestamps = 1;
+}
+
+// Note that the DSSE Pre Auth Encoding (PAE) is used, but the signature
+// scheme is Sigstore specific. The raw message is never signed, it's
+// always hashed as there is a risk otherwise to transmit large payloads
+// to an HSM.
+message Signature {
+        // The signature is computed over a domain separated message:
+        // sigstore.dev/v1 || 0x00 || SHA256(SHA256(data)) if message is not
+        // submitted to a log
+        // c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
+        // if message is submitted to a log
+        bytes signature = 1;
+}
+
+message Embedded {
+        string payload_type = 1;
+        bytes payload = 2;
+        // The PAE used before signing is:
+        // "DSSEv1" + SP + LEN(type) + SP + type + SP + LEN(body) + SP + body
+        // When signing, data is the PAE.
+        // MUST be unset when submitting with an ID token to a log.
+        optional Signature signature = 3;
+}
+
+message MessageSignature {
+        dev.sigstore.common.v1.HashOutput message_digest = 1 [(google.api.field_behavior) = REQUIRED];
+        // When signing, data is the artifact.
+        // MUST be unset when submitting with an ID token to a log.
+        optional Signature signature = 2;
+}
+
+message TlogProof {
+        // The log proof, formatted per c2sp.org/tlog-proof.
+        // If OIDC based submit is used, the `extra` field contains the
+        // relevant claims needed for recreation of the leaf during
+        // verification. They are stored as an unordered list of elements
+        // matching key:value separated by `\n` (0x0a). Both key and value
+        // are strings.
+        // If a signature is part of the leaf, verifiers MUST verify the
+        // the artifact's signature, and compare that the signature matches
+        // whats submitted to the log.
+        bytes proof = 1 [(google.api.field_behavior) = REQUIRED];
+        // If the artifact was signed prior to log submission.
+        // Signature is over
+        // c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
+        optional dev.sigstore.common.v1.PublicKeyIdentifier public_key = 2;
+}
+
+message PublicKey {
+        dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1 [(google.api.field_behavior) = REQUIRED];
+        // Optional timestamp to enable key rotation when a signature is not
+        // logged (witnesses provides a counter-signature with timestamp).
+        optional TimestampVerificationData timestamps = 2;
+}
+
+message Cert {
+        oneof cert_data {
+                dev.sigstore.common.v1.X509Certificate certificate = 1 [(google.api.field_behavior) = REQUIRED];
+                dev.sigstore.common.v1.X509CertificateChain certificate_chain = 2 [(google.api.field_behavior) = REQUIRED];
+        }
+        TimestampVerificationData timestamps = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+message VerificationMaterial {
+        oneof content {
+                // Signed with a raw key pair
+                PublicKey public_key = 1 [(google.api.field_behavior) = REQUIRED];
+                // Signed with cert + rfc3161 timestamp
+                Cert cert = 2 [(google.api.field_behavior) = REQUIRED];
+                // Logged to Rekor V3, authenticating with an ID token or
+                // a public key/signature.
+                TlogProof tlog_proof = 3 [(google.api.field_behavior) = REQUIRED];
+        }
+}
+
+message Bundle {
+        // MUST be application/vnd.dev.sigstore.bundle.v2.0+json when
+        // when encoded as JSON.
+        string media_type = 1;
+
+        VerificationMaterial verification_material = 2 [(google.api.field_behavior) = REQUIRED];
+        oneof content {
+                MessageSignature message_signature = 3 [(google.api.field_behavior) = REQUIRED];
+                Embedded embedded_data = 4 [(google.api.field_behavior) = REQUIRED];
+        }
+}
