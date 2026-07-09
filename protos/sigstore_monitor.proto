@@ -1,0 +1,49 @@
+// Copyright 2026 The Sigstore Authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+package dev.sigstore.monitor.v1;
+
+import "google/api/field_behavior.proto";
+
+option go_package = "github.com/sigstore/protobuf-specs/gen/pb-go/monitor/v1";
+option java_package = "dev.sigstore.proto.monitor.v1";
+option java_multiple_files = true;
+option java_outer_classname = "MonitorProto";
+option ruby_package = "Sigstore::Monitor::V1";
+
+// TransparencyLogMonitorConfig describes the configuration for monitoring a single transparency log.
+message TransparencyLogMonitorConfig {
+        // The base URL used for reading entries from the log. MUST use major_api_version
+        // to determine how to construct the full read path for log entries.
+        string read_url = 1 [(google.api.field_behavior) = REQUIRED];
+
+        // The log origin, used to identify the log, verify checkpoints when the read URL
+        // differs from the origin, and to join with the trusted root for verification.
+        // Origin defined in https://github.com/C2SP/C2SP/blob/main/tlog-checkpoint.md#note-text.
+        string log_origin = 2 [(google.api.field_behavior) = REQUIRED];
+
+        // The major API version. A value of 0 represents a service that
+        // has not yet been released.
+        uint32 major_api_version = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// MonitorConfig contains the configurations for monitoring transparency logs.
+message MonitorConfig {
+        // Grouping for Rekor signature transparency logs.
+        repeated TransparencyLogMonitorConfig rekor_logs = 1;
+
+        // Grouping for Certificate Transparency (CT) logs.
+        repeated TransparencyLogMonitorConfig ct_logs = 2;
+}

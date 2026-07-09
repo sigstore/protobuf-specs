@@ -16,6 +16,11 @@ pub mod dev {
                 include!("dev.sigstore.events.v1.rs");
             }
         }
+        pub mod monitor {
+            pub mod v1 {
+                include!("dev.sigstore.monitor.v1.rs");
+            }
+        }
         pub mod rekor {
             pub mod v1 {
                 include!("dev.sigstore.rekor.v1.rs");
