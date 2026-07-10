@@ -80,16 +80,16 @@ export function serviceSelectorToJSON(object: ServiceSelector): string {
 /**
  * TransparencyLogInstance describes the immutable parameters from a
  * transparency log.
- * See https://www.rfc-editor.org/rfc/rfc9162.html#name-log-parameters
- * for more details.
  * The included parameters are the minimal set required to identify a log,
  * and verify an inclusion proof/promise.
  */
 export interface TransparencyLogInstance {
   /**
-   * The base URL at which can be used to URLs for the client.
+   * The base URL that a client may use to identify a log.
    * SHOULD match the origin on the log checkpoint:
    * https://github.com/C2SP/C2SP/blob/main/tlog-checkpoint.md#note-text.
+   * MAY be a scheme-less URL.
+   * SHOULD NOT be used as the read path for log entries.
    */
   baseUrl: string;
   /** The hash algorithm used for the Merkle Tree. */
