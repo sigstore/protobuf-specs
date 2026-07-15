@@ -1,8 +1,8 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("dev.sigstore.sign") version "2.0.0"
-    id("com.diffplug.spotless") version "8.5.1"
+    id("dev.sigstore.sign") version "2.2.0"
+    id("com.diffplug.spotless") version "8.7.0"
     id("com.gradleup.nmcp") version "1.5.0"
     id("com.gradleup.nmcp.aggregation") version "1.5.0"
     `signing`
