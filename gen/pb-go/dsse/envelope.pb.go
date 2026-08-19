@@ -180,7 +180,8 @@ const file_envelope_proto_rawDesc = "" +
 	"signatures\"3\n" +
 	"\tSignature\x12\x10\n" +
 	"\x03sig\x18\x01 \x01(\fR\x03sig\x12\x14\n" +
-	"\x05keyid\x18\x02 \x01(\tR\x05keyidBDZ1github.com/sigstore/protobuf-specs/gen/pb-go/dsse\xea\x02\x0eSigstore::DSSEb\x06proto3"
+	"\x05keyid\x18\x02 \x01(\tR\x05keyidB]\n" +
+	"\x17dev.sigstore.proto.dsseZ1github.com/sigstore/protobuf-specs/gen/pb-go/dsse\xea\x02\x0eSigstore::DSSEb\x06proto3"
 
 var (
 	file_envelope_proto_rawDescOnce sync.Once
