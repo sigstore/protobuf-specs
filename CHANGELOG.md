@@ -12,6 +12,11 @@ All versions prior to 0.2.0 are untracked.
 
 ### Changed
 
+## v0.5.2
+
+* Add monitor configuration protobuf definition ([#907](https://github.com/sigstore/protobuf-specs/pull/907))
+* Add custom java_package to envelope.proto ([#923](https://github.com/sigstore/protobuf-specs/pull/923))
+
 ## v0.5.1
 
 * Add ML-DSA-44 algorithm identifier ([#860](https://github.com/sigstore/protobuf-specs/pull/860))
