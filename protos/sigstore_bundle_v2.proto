@@ -73,10 +73,12 @@ message PublicKey {
 }
 
 message Cert {
-        oneof cert_data {
-                dev.sigstore.common.v1.X509Certificate certificate = 1 [(google.api.field_behavior) = REQUIRED];
-                dev.sigstore.common.v1.X509CertificateChain certificate_chain = 2 [(google.api.field_behavior) = REQUIRED];
-        }
+        // The end-entity certificate used for signing
+        dev.sigstore.common.v1.X509Certificate certificate = 1 [(google.api.field_behavior) = REQUIRED];
+        // On optional list of untrusted intermediates used for chain
+        // buliding. When signing with Sigstore PGI this list must be empty
+        // as the intermediates are provided via the TUF root.
+        optional dev.sigstore.common.v1.X509CertificateChain intermediates = 2;
         TimestampVerificationData timestamps = 3 [(google.api.field_behavior) = REQUIRED];
 }
 

@@ -360,11 +360,12 @@ func (x *PublicKey) GetTimestamps() *TimestampVerificationData {
 
 type Cert struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to CertData:
-	//
-	//	*Cert_Certificate
-	//	*Cert_CertificateChain
-	CertData      isCert_CertData            `protobuf_oneof:"cert_data"`
+	// The end-entity certificate used for signing
+	Certificate *v1.X509Certificate `protobuf:"bytes,1,opt,name=certificate,proto3" json:"certificate,omitempty"`
+	// On optional list of untrusted intermediates used for chain
+	// buliding. When signing with Sigstore PGI this list must be empty
+	// as the intermediates are provided via the TUF root.
+	Intermediates *v1.X509CertificateChain   `protobuf:"bytes,2,opt,name=intermediates,proto3,oneof" json:"intermediates,omitempty"`
 	Timestamps    *TimestampVerificationData `protobuf:"bytes,3,opt,name=timestamps,proto3" json:"timestamps,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -400,27 +401,16 @@ func (*Cert) Descriptor() ([]byte, []int) {
 	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *Cert) GetCertData() isCert_CertData {
-	if x != nil {
-		return x.CertData
-	}
-	return nil
-}
-
 func (x *Cert) GetCertificate() *v1.X509Certificate {
 	if x != nil {
-		if x, ok := x.CertData.(*Cert_Certificate); ok {
-			return x.Certificate
-		}
+		return x.Certificate
 	}
 	return nil
 }
 
-func (x *Cert) GetCertificateChain() *v1.X509CertificateChain {
+func (x *Cert) GetIntermediates() *v1.X509CertificateChain {
 	if x != nil {
-		if x, ok := x.CertData.(*Cert_CertificateChain); ok {
-			return x.CertificateChain
-		}
+		return x.Intermediates
 	}
 	return nil
 }
@@ -431,22 +421,6 @@ func (x *Cert) GetTimestamps() *TimestampVerificationData {
 	}
 	return nil
 }
-
-type isCert_CertData interface {
-	isCert_CertData()
-}
-
-type Cert_Certificate struct {
-	Certificate *v1.X509Certificate `protobuf:"bytes,1,opt,name=certificate,proto3,oneof"`
-}
-
-type Cert_CertificateChain struct {
-	CertificateChain *v1.X509CertificateChain `protobuf:"bytes,2,opt,name=certificate_chain,json=certificateChain,proto3,oneof"`
-}
-
-func (*Cert_Certificate) isCert_CertData() {}
-
-func (*Cert_CertificateChain) isCert_CertData() {}
 
 type VerificationMaterial struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -681,14 +655,14 @@ const file_sigstore_bundle_v2_proto_rawDesc = "" +
 	"\n" +
 	"timestamps\x18\x02 \x01(\v21.dev.sigstore.bundle.v2.TimestampVerificationDataH\x00R\n" +
 	"timestamps\x88\x01\x01B\r\n" +
-	"\v_timestamps\"\x9f\x02\n" +
-	"\x04Cert\x12P\n" +
-	"\vcertificate\x18\x01 \x01(\v2'.dev.sigstore.common.v1.X509CertificateB\x03\xe0A\x02H\x00R\vcertificate\x12`\n" +
-	"\x11certificate_chain\x18\x02 \x01(\v2,.dev.sigstore.common.v1.X509CertificateChainB\x03\xe0A\x02H\x00R\x10certificateChain\x12V\n" +
+	"\v_timestamps\"\x99\x02\n" +
+	"\x04Cert\x12N\n" +
+	"\vcertificate\x18\x01 \x01(\v2'.dev.sigstore.common.v1.X509CertificateB\x03\xe0A\x02R\vcertificate\x12W\n" +
+	"\rintermediates\x18\x02 \x01(\v2,.dev.sigstore.common.v1.X509CertificateChainH\x00R\rintermediates\x88\x01\x01\x12V\n" +
 	"\n" +
 	"timestamps\x18\x03 \x01(\v21.dev.sigstore.bundle.v2.TimestampVerificationDataB\x03\xe0A\x02R\n" +
-	"timestampsB\v\n" +
-	"\tcert_data\"\xec\x01\n" +
+	"timestampsB\x10\n" +
+	"\x0e_intermediates\"\xec\x01\n" +
 	"\x14VerificationMaterial\x12G\n" +
 	"\n" +
 	"public_key\x18\x01 \x01(\v2!.dev.sigstore.bundle.v2.PublicKeyB\x03\xe0A\x02H\x00R\tpublicKey\x127\n" +
@@ -743,7 +717,7 @@ var file_sigstore_bundle_v2_proto_depIdxs = []int32{
 	11, // 5: dev.sigstore.bundle.v2.PublicKey.public_key:type_name -> dev.sigstore.common.v1.PublicKeyIdentifier
 	0,  // 6: dev.sigstore.bundle.v2.PublicKey.timestamps:type_name -> dev.sigstore.bundle.v2.TimestampVerificationData
 	12, // 7: dev.sigstore.bundle.v2.Cert.certificate:type_name -> dev.sigstore.common.v1.X509Certificate
-	13, // 8: dev.sigstore.bundle.v2.Cert.certificate_chain:type_name -> dev.sigstore.common.v1.X509CertificateChain
+	13, // 8: dev.sigstore.bundle.v2.Cert.intermediates:type_name -> dev.sigstore.common.v1.X509CertificateChain
 	0,  // 9: dev.sigstore.bundle.v2.Cert.timestamps:type_name -> dev.sigstore.bundle.v2.TimestampVerificationData
 	5,  // 10: dev.sigstore.bundle.v2.VerificationMaterial.public_key:type_name -> dev.sigstore.bundle.v2.PublicKey
 	6,  // 11: dev.sigstore.bundle.v2.VerificationMaterial.cert:type_name -> dev.sigstore.bundle.v2.Cert
@@ -767,10 +741,7 @@ func file_sigstore_bundle_v2_proto_init() {
 	file_sigstore_bundle_v2_proto_msgTypes[3].OneofWrappers = []any{}
 	file_sigstore_bundle_v2_proto_msgTypes[4].OneofWrappers = []any{}
 	file_sigstore_bundle_v2_proto_msgTypes[5].OneofWrappers = []any{}
-	file_sigstore_bundle_v2_proto_msgTypes[6].OneofWrappers = []any{
-		(*Cert_Certificate)(nil),
-		(*Cert_CertificateChain)(nil),
-	}
+	file_sigstore_bundle_v2_proto_msgTypes[6].OneofWrappers = []any{}
 	file_sigstore_bundle_v2_proto_msgTypes[7].OneofWrappers = []any{
 		(*VerificationMaterial_PublicKey)(nil),
 		(*VerificationMaterial_Cert)(nil),

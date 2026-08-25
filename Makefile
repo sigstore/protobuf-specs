@@ -20,16 +20,17 @@ PROTOC_RUBY_IMAGE = protoc-ruby
 PROTOC_RUST_IMAGE = protoc-rust
 # the container release action depends on the name being "protoc-services"
 # so change it there too if you change it here.
-PROTOC_SERVICES_IMAGE = protoc-services 
+PROTOC_SERVICES_IMAGE = protoc-services
 PROTOC_TYPESCRIPT_IMAGE = protoc-typescript
 
 RUST_ACTION ?= run -p sigstore-protobuf-specs-codegen
 
+PLATFORM = linux/arm
 PLATFORM ?= linux/amd64
 UID ?= $(shell id -u)
 GID ?= $(shell id -g)
-DOCKER_BUILD = docker build --platform ${PLATFORM} --build-arg UID=${UID}
-DOCKER_RUN = docker run --platform ${PLATFORM} --user ${UID}:${GID}
+DOCKER_BUILD = docker buildx build  --build-arg UID=${UID}
+DOCKER_RUN = docker run  --user ${UID}:${GID}
 
 # base protos for clients that do not want to include service-protos
 BASE_PROTOS = $(shell find protos/ -iname "*.proto" | sed 's|^|/defs/|' | sort)
