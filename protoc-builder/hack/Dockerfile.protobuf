@@ -1,3 +1,3 @@
 # This Dockerfile exists to allow Dependabot to watch Homebrew builds of protobuf for triggering updates
 # We don't actually use the content of this image in the repo, as this is a dynamically linked version of protoc
-FROM ghcr.io/homebrew/core/protobuf:35.1@sha256:ea686d61ef1993a1ee613446fa1ef10ab94906031bfa97cc0050db01010a64c3
+FROM ghcr.io/homebrew/core/protobuf:36.0@sha256:538dc10fa8e3733ed710fb6ed2832dfa71c081c13f39b9601603a4becf249bf4
