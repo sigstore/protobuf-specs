@@ -106,25 +106,25 @@ type VerificationMaterial struct {
 	//
 	// This allows key material to be conveyed in one of three forms:
 	//
-	//  1. An unspecified public key identifier, for retrieving a key
-	//     from an out-of-band mechanism (such as a keyring);
+	// 1. An unspecified public key identifier, for retrieving a key
+	//    from an out-of-band mechanism (such as a keyring);
 	//
-	//  2. A sequence of one or more X.509 certificates, of which the first member
-	//     MUST be a leaf certificate conveying the signing key. Subsequent members
-	//     SHOULD be in issuing order, meaning that `n + 1` should be an issuer for `n`.
+	// 2. A sequence of one or more X.509 certificates, of which the first member
+	//    MUST be a leaf certificate conveying the signing key. Subsequent members
+	//    SHOULD be in issuing order, meaning that `n + 1` should be an issuer for `n`.
 	//
-	//     Signers MUST NOT include root CA certificates in bundles, and SHOULD NOT
-	//     include intermediate CA certificates that appear in an independent root of trust
-	//     (such as the Public Good Instance's trusted root).
+	//    Signers MUST NOT include root CA certificates in bundles, and SHOULD NOT
+	//    include intermediate CA certificates that appear in an independent root of trust
+	//    (such as the Public Good Instance's trusted root).
 	//
-	//     Verifiers MUST validate the chain carefully to ensure that it chains up
-	//     to a CA certificate that they independently trust. Verifiers SHOULD
-	//     handle old or non-complying bundles that have superfluous intermediate and/or
-	//     root CA certificates by either ignoring them or explicitly considering them
-	//     untrusted for the purposes of chain building.
+	//    Verifiers MUST validate the chain carefully to ensure that it chains up
+	//    to a CA certificate that they independently trust. Verifiers SHOULD
+	//    handle old or non-complying bundles that have superfluous intermediate and/or
+	//    root CA certificates by either ignoring them or explicitly considering them
+	//    untrusted for the purposes of chain building.
 	//
-	//  3. A single X.509 certificate, which MUST be a leaf certificate conveying
-	//     the signing key.
+	// 3. A single X.509 certificate, which MUST be a leaf certificate conveying
+	//    the signing key.
 	//
 	// When used with the Public Good Instance (PGI) of Sigstore for "keyless" signing
 	// via Fulcio, form (1) MUST NOT be used, regardless of bundle version. Form (1)
@@ -372,10 +372,9 @@ type Bundle_DsseEnvelope struct {
 	// DSSE envelopes in a bundle MUST have exactly one signature.
 	// This is a limitation from the DSSE spec, as it can contain
 	// multiple signatures. There are two primary reasons:
-	//  1. It simplifies the verification logic and policy
-	//  2. The bundle (currently) can only contain a single
-	//     instance of the required verification materials
-	//
+	// 1. It simplifies the verification logic and policy
+	// 2. The bundle (currently) can only contain a single
+	//    instance of the required verification materials
 	// During verification a client MUST reject an envelope if
 	// the number of signatures is not equal to one.
 	DsseEnvelope *dsse.Envelope `protobuf:"bytes,4,opt,name=dsse_envelope,json=dsseEnvelope,proto3,oneof"`
