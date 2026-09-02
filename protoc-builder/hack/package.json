@@ -5,7 +5,7 @@
     "dependencies": {
         "@bufbuild/protobuf": "2.14.1",
         "grpc-tools": "1.13.1",
-        "protoc-gen-grpc-web": "1.5.0",
+        "grpc-web": "2.1.1",
         "ts-proto": "2.12.1"
     }
 }
