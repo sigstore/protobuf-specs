@@ -25,9 +25,9 @@
   },
   "homepage": "https://github.com/sigstore/protobuf-specs#readme",
   "devDependencies": {
-    "@tsconfig/node18": "^18.2.4",
-    "@types/node": "^18.14.0",
-    "typescript": "^5.7.2"
+    "@tsconfig/node18": "^18.2.7",
+    "@types/node": "^18.19.130",
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": "^18.17.0 || >=20.5.0"
