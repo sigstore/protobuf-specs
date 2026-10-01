@@ -1,4 +1,4 @@
-FROM python:3.14.7-alpine@sha256:3f818d6811ff5f3f2b5e5d836df3d25c2dd2e588d3b4981338a8ba17e422f74f
+FROM python:3.14.7-alpine@sha256:9e9fde4d32eedce0b661d9ab91e826b62dddf28e928c230ec55f1866cac66b01
 
 # the specific versions of python protobuf tools are in hack/dev-requirements.txt so that Dependabot can bump them for updates
 ADD hack/dev-requirements.txt .
