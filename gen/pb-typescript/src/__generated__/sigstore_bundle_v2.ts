@@ -12,28 +12,29 @@ export interface TimestampVerificationData {
 }
 
 /**
- * Note that the DSSE Pre Auth Encoding (PAE) is used, but the signature
- * scheme is Sigstore specific. The raw message is never signed, it's
- * always hashed as there is a risk otherwise to transmit large payloads
- * to an HSM.
+ * Note that the DSSE Pre-Authentication Encoding (PAE) is used, but the
+ * signature scheme is Sigstore-specific. The raw message is never signed;
+ * it is always hashed, as there is otherwise a risk of transmitting large
+ * payloads to an HSM.
  */
 export interface Signature {
   /**
-   * The signature is computed over a domain separated message:
-   * sigstore.dev/v1 || 0x00 || SHA256(SHA256(data)) if message is not
-   * submitted to a log
+   * The signature is computed over a domain-separated message:
+   * sigstore.dev/v1 || 0x00 || SHA256(SHA256(data)) if data is not
+   * submitted to a log,
    * c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
-   * if message is submitted to a log
+   * if data is submitted to a log.
    */
   signature: Buffer;
 }
 
+/** Embedded implements the DSSE envelope as defined in https://github.com/secure-systems-lab/dsse */
 export interface Embedded {
   payloadType: string;
   payload: Buffer;
   /**
    * The PAE used before signing is:
-   * "DSSEv1" + SP + LEN(type) + SP + type + SP + LEN(body) + SP + body
+   * "DSSEv1" + SP + LEN(payload_type) + SP + payload_type + SP + LEN(payload) + SP + payload
    * When signing, data is the PAE.
    * MUST be unset when submitting with an ID token to a log.
    */
@@ -51,28 +52,36 @@ export interface MessageSignature {
 export interface TlogProof {
   /**
    * The log proof, formatted per c2sp.org/tlog-proof.
-   * If OIDC based submit is used, the `extra` field contains the
+   * If OIDC-based submission is used, the `extra` field contains the
    * relevant claims needed for recreation of the leaf during
    * verification. They are stored as an unordered list of elements
-   * matching key:value separated by `\n` (0x0a). Both key and value
-   * are strings.
+   * matching "key:Base64(value)" separated by `\n` (0x0a).
+   * The key is the name of the context category as specified in the leaf specification.
+   * When the credential is an identity token, all value strings will be the parsed identity
+   * and provenance values from the token, with the values Base64-encoded.
+   * When the credential is a public key, the optional value will be the provided
+   * context as a Base64-encoded string.
    * If a signature is part of the leaf, verifiers MUST verify the
-   * the artifact's signature, and compare that the signature matches
-   * whats submitted to the log.
-   * If the artifact was signed prior to log submission.
-   * Signature is over
+   * artifact's signature and confirm that the signature matches
+   * what was submitted to the log.
+   * If the artifact was signed prior to log submission, the
+   * signature is over
    * c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
    */
   proof: Buffer;
 }
 
 export interface PublicKey {
+  /**
+   * Unauthenticated hint to select the public key from a set of trusted public keys.
+   * MUST be SHA256(DER-encoded SubjectPublicKeyInfo)
+   */
   publicKey?:
     | PublicKeyIdentifier
     | undefined;
   /**
    * Optional timestamp to enable key rotation when a signature is not
-   * logged (witnesses provides a counter-signature with timestamp).
+   * logged (witnesses provide a counter-signature with timestamp).
    */
   timestamps?: TimestampVerificationData | undefined;
 }
@@ -83,8 +92,8 @@ export interface Cert {
     | X509Certificate
     | undefined;
   /**
-   * On optional list of untrusted intermediates used for chain
-   * buliding. When signing with Sigstore PGI this list must be empty
+   * Optional list of untrusted intermediates used for chain
+   * building. When signing with Sigstore PGI, this list MUST be empty
    * as the intermediates are provided via the TUF root.
    */
   intermediates?: X509CertificateChain | undefined;
@@ -94,14 +103,14 @@ export interface Cert {
 export interface VerificationMaterial {
   content:
     | //
-    /** Signed with a raw key pair */
+    /** Signed with a managed key pair */
     { $case: "publicKey"; publicKey: PublicKey }
     | //
-    /** Signed with cert + rfc3161 timestamp */
+    /** Signed with an ephemeral key, with certificate and RFC 3161 timestamp */
     { $case: "cert"; cert: Cert }
     | //
     /**
-     * Logged to Rekor V3, authenticating with an ID token or
+     * Signed by logging to Rekor, authenticating with an ID token or
      * a public key/signature.
      */
     { $case: "tlogProof"; tlogProof: TlogProof }
@@ -111,7 +120,7 @@ export interface VerificationMaterial {
 export interface Bundle {
   /**
    * MUST be application/vnd.dev.sigstore.bundle.v2.0+json when
-   * when encoded as JSON.
+   * encoded as JSON.
    */
   mediaType: string;
   verificationMaterial: VerificationMaterial | undefined;
