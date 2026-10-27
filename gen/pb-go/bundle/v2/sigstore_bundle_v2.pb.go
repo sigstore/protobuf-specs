@@ -67,17 +67,17 @@ func (x *TimestampVerificationData) GetRfc3161Timestamps() []*v1.RFC3161SignedTi
 	return nil
 }
 
-// Note that the DSSE Pre Auth Encoding (PAE) is used, but the signature
-// scheme is Sigstore specific. The raw message is never signed, it's
-// always hashed as there is a risk otherwise to transmit large payloads
-// to an HSM.
+// Note that the DSSE Pre-Authentication Encoding (PAE) is used, but the
+// signature scheme is Sigstore-specific. The raw message is never signed;
+// it is always hashed, as there is otherwise a risk of transmitting large
+// payloads to an HSM.
 type Signature struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The signature is computed over a domain separated message:
-	// sigstore.dev/v1 || 0x00 || SHA256(SHA256(data)) if message is not
-	// submitted to a log
+	// The signature is computed over a domain-separated message:
+	// sigstore.dev/v1 || 0x00 || SHA256(SHA256(data)) if data is not
+	// submitted to a log,
 	// c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
-	// if message is submitted to a log
+	// if data is submitted to a log.
 	Signature     []byte `protobuf:"bytes,1,opt,name=signature,proto3" json:"signature,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -120,12 +120,13 @@ func (x *Signature) GetSignature() []byte {
 	return nil
 }
 
+// Embedded implements the DSSE envelope as defined in https://github.com/secure-systems-lab/dsse
 type Embedded struct {
 	state       protoimpl.MessageState `protogen:"open.v1"`
 	PayloadType string                 `protobuf:"bytes,1,opt,name=payload_type,json=payloadType,proto3" json:"payload_type,omitempty"`
 	Payload     []byte                 `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
 	// The PAE used before signing is:
-	// "DSSEv1" + SP + LEN(type) + SP + type + SP + LEN(body) + SP + body
+	// "DSSEv1" + SP + LEN(payload_type) + SP + payload_type + SP + LEN(payload) + SP + payload
 	// When signing, data is the PAE.
 	// MUST be unset when submitting with an ID token to a log.
 	Signature     *Signature `protobuf:"bytes,3,opt,name=signature,proto3,oneof" json:"signature,omitempty"`
@@ -233,16 +234,20 @@ func (x *MessageSignature) GetSignature() *Signature {
 type TlogProof struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The log proof, formatted per c2sp.org/tlog-proof.
-	// If OIDC based submit is used, the `extra` field contains the
+	// If OIDC-based submission is used, the `extra` field contains the
 	// relevant claims needed for recreation of the leaf during
 	// verification. They are stored as an unordered list of elements
-	// matching key:value separated by `\n` (0x0a). Both key and value
-	// are strings.
+	// matching "key:Base64(value)" separated by `\n` (0x0a).
+	// The key is the name of the context category as specified in the leaf specification.
+	// When the credential is an identity token, all value strings will be the parsed identity
+	// and provenance values from the token, with the values Base64-encoded.
+	// When the credential is a public key, the optional value will be the provided
+	// context as a Base64-encoded string.
 	// If a signature is part of the leaf, verifiers MUST verify the
-	// the artifact's signature, and compare that the signature matches
-	// whats submitted to the log.
-	// If the artifact was signed prior to log submission.
-	// Signature is over
+	// artifact's signature and confirm that the signature matches
+	// what was submitted to the log.
+	// If the artifact was signed prior to log submission, the
+	// signature is over
 	// c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
 	Proof         []byte `protobuf:"bytes,1,opt,name=proof,proto3" json:"proof,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -287,10 +292,12 @@ func (x *TlogProof) GetProof() []byte {
 }
 
 type PublicKey struct {
-	state     protoimpl.MessageState  `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Unauthenticated hint to select the public key from a set of trusted public keys.
+	// MUST be SHA256(DER-encoded SubjectPublicKeyInfo)
 	PublicKey *v1.PublicKeyIdentifier `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3,oneof" json:"public_key,omitempty"`
 	// Optional timestamp to enable key rotation when a signature is not
-	// logged (witnesses provides a counter-signature with timestamp).
+	// logged (witnesses provide a counter-signature with timestamp).
 	Timestamps    *TimestampVerificationData `protobuf:"bytes,2,opt,name=timestamps,proto3,oneof" json:"timestamps,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -344,8 +351,8 @@ type Cert struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The end-entity certificate used for signing
 	Certificate *v1.X509Certificate `protobuf:"bytes,1,opt,name=certificate,proto3" json:"certificate,omitempty"`
-	// On optional list of untrusted intermediates used for chain
-	// buliding. When signing with Sigstore PGI this list must be empty
+	// Optional list of untrusted intermediates used for chain
+	// building. When signing with Sigstore PGI, this list MUST be empty
 	// as the intermediates are provided via the TUF root.
 	Intermediates *v1.X509CertificateChain   `protobuf:"bytes,2,opt,name=intermediates,proto3,oneof" json:"intermediates,omitempty"`
 	Timestamps    *TimestampVerificationData `protobuf:"bytes,3,opt,name=timestamps,proto3" json:"timestamps,omitempty"`
@@ -485,17 +492,17 @@ type isVerificationMaterial_Content interface {
 }
 
 type VerificationMaterial_PublicKey struct {
-	// Signed with a raw key pair
+	// Signed with a managed key pair
 	PublicKey *PublicKey `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3,oneof"`
 }
 
 type VerificationMaterial_Cert struct {
-	// Signed with cert + rfc3161 timestamp
+	// Signed with an ephemeral key, with certificate and RFC 3161 timestamp
 	Cert *Cert `protobuf:"bytes,2,opt,name=cert,proto3,oneof"`
 }
 
 type VerificationMaterial_TlogProof struct {
-	// Logged to Rekor V3, authenticating with an ID token or
+	// Signed by logging to Rekor, authenticating with an ID token or
 	// a public key/signature.
 	TlogProof *TlogProof `protobuf:"bytes,3,opt,name=tlog_proof,json=tlogProof,proto3,oneof"`
 }
@@ -509,7 +516,7 @@ func (*VerificationMaterial_TlogProof) isVerificationMaterial_Content() {}
 type Bundle struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// MUST be application/vnd.dev.sigstore.bundle.v2.0+json when
-	// when encoded as JSON.
+	// encoded as JSON.
 	MediaType            string                `protobuf:"bytes,1,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
 	VerificationMaterial *VerificationMaterial `protobuf:"bytes,2,opt,name=verification_material,json=verificationMaterial,proto3" json:"verification_material,omitempty"`
 	// Types that are valid to be assigned to Content:
