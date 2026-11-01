@@ -624,9 +624,9 @@ const file_sigstore_bundle_v2_proto_rawDesc = "" +
 	"\x10MessageSignature\x12D\n" +
 	"\tsignature\x18\x01 \x01(\v2!.dev.sigstore.bundle.v2.SignatureH\x00R\tsignature\x88\x01\x01B\f\n" +
 	"\n" +
-	"_signature\"&\n" +
-	"\tTlogProof\x12\x19\n" +
-	"\x05proof\x18\x01 \x01(\fB\x03\xe0A\x02R\x05proof\"\xd2\x01\n" +
+	"_signature\"'\n" +
+	"\tTlogProof\x12\x1a\n" +
+	"\x05proof\x18\x01 \x01(\fB\x04\xe2A\x01\x02R\x05proof\"\xd2\x01\n" +
 	"\tPublicKey\x12O\n" +
 	"\n" +
 	"public_key\x18\x01 \x01(\v2+.dev.sigstore.common.v1.PublicKeyIdentifierH\x00R\tpublicKey\x88\x01\x01\x12V\n" +
@@ -634,27 +634,27 @@ const file_sigstore_bundle_v2_proto_rawDesc = "" +
 	"timestamps\x18\x02 \x01(\v21.dev.sigstore.bundle.v2.TimestampVerificationDataH\x01R\n" +
 	"timestamps\x88\x01\x01B\r\n" +
 	"\v_public_keyB\r\n" +
-	"\v_timestamps\"\x99\x02\n" +
-	"\x04Cert\x12N\n" +
-	"\vcertificate\x18\x01 \x01(\v2'.dev.sigstore.common.v1.X509CertificateB\x03\xe0A\x02R\vcertificate\x12W\n" +
-	"\rintermediates\x18\x02 \x01(\v2,.dev.sigstore.common.v1.X509CertificateChainH\x00R\rintermediates\x88\x01\x01\x12V\n" +
+	"\v_timestamps\"\x9b\x02\n" +
+	"\x04Cert\x12O\n" +
+	"\vcertificate\x18\x01 \x01(\v2'.dev.sigstore.common.v1.X509CertificateB\x04\xe2A\x01\x02R\vcertificate\x12W\n" +
+	"\rintermediates\x18\x02 \x01(\v2,.dev.sigstore.common.v1.X509CertificateChainH\x00R\rintermediates\x88\x01\x01\x12W\n" +
 	"\n" +
-	"timestamps\x18\x03 \x01(\v21.dev.sigstore.bundle.v2.TimestampVerificationDataB\x03\xe0A\x02R\n" +
+	"timestamps\x18\x03 \x01(\v21.dev.sigstore.bundle.v2.TimestampVerificationDataB\x04\xe2A\x01\x02R\n" +
 	"timestampsB\x10\n" +
-	"\x0e_intermediates\"\xec\x01\n" +
-	"\x14VerificationMaterial\x12G\n" +
+	"\x0e_intermediates\"\xef\x01\n" +
+	"\x14VerificationMaterial\x12H\n" +
 	"\n" +
-	"public_key\x18\x01 \x01(\v2!.dev.sigstore.bundle.v2.PublicKeyB\x03\xe0A\x02H\x00R\tpublicKey\x127\n" +
-	"\x04cert\x18\x02 \x01(\v2\x1c.dev.sigstore.bundle.v2.CertB\x03\xe0A\x02H\x00R\x04cert\x12G\n" +
+	"public_key\x18\x01 \x01(\v2!.dev.sigstore.bundle.v2.PublicKeyB\x04\xe2A\x01\x02H\x00R\tpublicKey\x128\n" +
+	"\x04cert\x18\x02 \x01(\v2\x1c.dev.sigstore.bundle.v2.CertB\x04\xe2A\x01\x02H\x00R\x04cert\x12H\n" +
 	"\n" +
-	"tlog_proof\x18\x03 \x01(\v2!.dev.sigstore.bundle.v2.TlogProofB\x03\xe0A\x02H\x00R\ttlogProofB\t\n" +
-	"\acontent\"\xc6\x02\n" +
+	"tlog_proof\x18\x03 \x01(\v2!.dev.sigstore.bundle.v2.TlogProofB\x04\xe2A\x01\x02H\x00R\ttlogProofB\t\n" +
+	"\acontent\"\xc9\x02\n" +
 	"\x06Bundle\x12\x1d\n" +
 	"\n" +
-	"media_type\x18\x01 \x01(\tR\tmediaType\x12f\n" +
-	"\x15verification_material\x18\x02 \x01(\v2,.dev.sigstore.bundle.v2.VerificationMaterialB\x03\xe0A\x02R\x14verificationMaterial\x12\\\n" +
-	"\x11message_signature\x18\x03 \x01(\v2(.dev.sigstore.bundle.v2.MessageSignatureB\x03\xe0A\x02H\x00R\x10messageSignature\x12L\n" +
-	"\rembedded_data\x18\x04 \x01(\v2 .dev.sigstore.bundle.v2.EmbeddedB\x03\xe0A\x02H\x00R\fembeddedDataB\t\n" +
+	"media_type\x18\x01 \x01(\tR\tmediaType\x12g\n" +
+	"\x15verification_material\x18\x02 \x01(\v2,.dev.sigstore.bundle.v2.VerificationMaterialB\x04\xe2A\x01\x02R\x14verificationMaterial\x12]\n" +
+	"\x11message_signature\x18\x03 \x01(\v2(.dev.sigstore.bundle.v2.MessageSignatureB\x04\xe2A\x01\x02H\x00R\x10messageSignature\x12M\n" +
+	"\rembedded_data\x18\x04 \x01(\v2 .dev.sigstore.bundle.v2.EmbeddedB\x04\xe2A\x01\x02H\x00R\fembeddedDataB\t\n" +
 	"\acontentB~\n" +
 	"\x1cdev.sigstore.proto.bundle.v2B\rBundleProtoV2P\x01Z6github.com/sigstore/protobuf-specs/gen/pb-go/bundle/v2\xea\x02\x14Sigstore::Bundle::V2b\x06proto3"
 

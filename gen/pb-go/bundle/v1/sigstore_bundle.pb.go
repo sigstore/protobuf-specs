@@ -390,21 +390,21 @@ const file_sigstore_bundle_proto_rawDesc = "" +
 	"\n" +
 	"\x15sigstore_bundle.proto\x12\x16dev.sigstore.bundle.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x0eenvelope.proto\x1a\x15sigstore_common.proto\x1a\x14sigstore_rekor.proto\"z\n" +
 	"\x19TimestampVerificationData\x12]\n" +
-	"\x12rfc3161_timestamps\x18\x01 \x03(\v2..dev.sigstore.common.v1.RFC3161SignedTimestampR\x11rfc3161Timestamps\"\xf4\x03\n" +
-	"\x14VerificationMaterial\x12Q\n" +
+	"\x12rfc3161_timestamps\x18\x01 \x03(\v2..dev.sigstore.common.v1.RFC3161SignedTimestampR\x11rfc3161Timestamps\"\xf7\x03\n" +
+	"\x14VerificationMaterial\x12R\n" +
 	"\n" +
-	"public_key\x18\x01 \x01(\v2+.dev.sigstore.common.v1.PublicKeyIdentifierB\x03\xe0A\x02H\x00R\tpublicKey\x12i\n" +
-	"\x16x509_certificate_chain\x18\x02 \x01(\v2,.dev.sigstore.common.v1.X509CertificateChainB\x03\xe0A\x02H\x00R\x14x509CertificateChain\x12P\n" +
-	"\vcertificate\x18\x05 \x01(\v2'.dev.sigstore.common.v1.X509CertificateB\x03\xe0A\x02H\x00R\vcertificate\x12N\n" +
+	"public_key\x18\x01 \x01(\v2+.dev.sigstore.common.v1.PublicKeyIdentifierB\x04\xe2A\x01\x02H\x00R\tpublicKey\x12j\n" +
+	"\x16x509_certificate_chain\x18\x02 \x01(\v2,.dev.sigstore.common.v1.X509CertificateChainB\x04\xe2A\x01\x02H\x00R\x14x509CertificateChain\x12Q\n" +
+	"\vcertificate\x18\x05 \x01(\v2'.dev.sigstore.common.v1.X509CertificateB\x04\xe2A\x01\x02H\x00R\vcertificate\x12N\n" +
 	"\ftlog_entries\x18\x03 \x03(\v2+.dev.sigstore.rekor.v1.TransparencyLogEntryR\vtlogEntries\x12q\n" +
 	"\x1btimestamp_verification_data\x18\x04 \x01(\v21.dev.sigstore.bundle.v1.TimestampVerificationDataR\x19timestampVerificationDataB\t\n" +
-	"\acontent\"\xbf\x02\n" +
+	"\acontent\"\xc2\x02\n" +
 	"\x06Bundle\x12\x1d\n" +
 	"\n" +
-	"media_type\x18\x01 \x01(\tR\tmediaType\x12f\n" +
-	"\x15verification_material\x18\x02 \x01(\v2,.dev.sigstore.bundle.v1.VerificationMaterialB\x03\xe0A\x02R\x14verificationMaterial\x12\\\n" +
-	"\x11message_signature\x18\x03 \x01(\v2(.dev.sigstore.common.v1.MessageSignatureB\x03\xe0A\x02H\x00R\x10messageSignature\x12?\n" +
-	"\rdsse_envelope\x18\x04 \x01(\v2\x13.io.intoto.EnvelopeB\x03\xe0A\x02H\x00R\fdsseEnvelopeB\t\n" +
+	"media_type\x18\x01 \x01(\tR\tmediaType\x12g\n" +
+	"\x15verification_material\x18\x02 \x01(\v2,.dev.sigstore.bundle.v1.VerificationMaterialB\x04\xe2A\x01\x02R\x14verificationMaterial\x12]\n" +
+	"\x11message_signature\x18\x03 \x01(\v2(.dev.sigstore.common.v1.MessageSignatureB\x04\xe2A\x01\x02H\x00R\x10messageSignature\x12@\n" +
+	"\rdsse_envelope\x18\x04 \x01(\v2\x13.io.intoto.EnvelopeB\x04\xe2A\x01\x02H\x00R\fdsseEnvelopeB\t\n" +
 	"\acontentJ\x04\b\x05\x103B|\n" +
 	"\x1cdev.sigstore.proto.bundle.v1B\vBundleProtoP\x01Z6github.com/sigstore/protobuf-specs/gen/pb-go/bundle/v1\xea\x02\x14Sigstore::Bundle::V1b\x06proto3"
 
