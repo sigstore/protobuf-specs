@@ -163,12 +163,12 @@ var File_sigstore_monitor_proto protoreflect.FileDescriptor
 
 const file_sigstore_monitor_proto_rawDesc = "" +
 	"\n" +
-	"\x16sigstore_monitor.proto\x12\x17dev.sigstore.monitor.v1\x1a\x1fgoogle/api/field_behavior.proto\"\x93\x01\n" +
-	"\x1cTransparencyLogMonitorConfig\x12\x1e\n" +
-	"\bread_url\x18\x01 \x01(\tB\x03\xe0A\x02R\areadUrl\x12\"\n" +
+	"\x16sigstore_monitor.proto\x12\x17dev.sigstore.monitor.v1\x1a\x1fgoogle/api/field_behavior.proto\"\x96\x01\n" +
+	"\x1cTransparencyLogMonitorConfig\x12\x1f\n" +
+	"\bread_url\x18\x01 \x01(\tB\x04\xe2A\x01\x02R\areadUrl\x12#\n" +
 	"\n" +
-	"log_origin\x18\x02 \x01(\tB\x03\xe0A\x02R\tlogOrigin\x12/\n" +
-	"\x11major_api_version\x18\x03 \x01(\rB\x03\xe0A\x02R\x0fmajorApiVersion\"\xb5\x01\n" +
+	"log_origin\x18\x02 \x01(\tB\x04\xe2A\x01\x02R\tlogOrigin\x120\n" +
+	"\x11major_api_version\x18\x03 \x01(\rB\x04\xe2A\x01\x02R\x0fmajorApiVersion\"\xb5\x01\n" +
 	"\rMonitorConfig\x12T\n" +
 	"\n" +
 	"rekor_logs\x18\x01 \x03(\v25.dev.sigstore.monitor.v1.TransparencyLogMonitorConfigR\trekorLogs\x12N\n" +
