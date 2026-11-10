@@ -5,7 +5,7 @@
 // source: sigstore_bundle_v2.proto
 
 /* eslint-disable */
-import { PublicKeyIdentifier, RFC3161SignedTimestamp, X509Certificate, X509CertificateChain } from "./sigstore_common";
+import { RFC3161SignedTimestamp, X509Certificate, X509CertificateChain } from "./sigstore_common";
 
 export interface TimestampVerificationData {
   rfc3161Timestamps: RFC3161SignedTimestamp[];
@@ -65,13 +65,6 @@ export interface TransparencyLogProof {
 }
 
 export interface PublicKey {
-  /**
-   * Unauthenticated hint to select the public key from a set of trusted public keys.
-   * MUST be SHA256(DER-encoded SubjectPublicKeyInfo)
-   */
-  publicKey?:
-    | PublicKeyIdentifier
-    | undefined;
   /**
    * Optional timestamps to enable key rotation when a signature is not
    * logged (witnesses provide a counter-signature with timestamp).
@@ -209,7 +202,6 @@ export const TransparencyLogProof: MessageFns<TransparencyLogProof> = {
 export const PublicKey: MessageFns<PublicKey> = {
   fromJSON(object: any): PublicKey {
     return {
-      publicKey: isSet(object.publicKey) ? PublicKeyIdentifier.fromJSON(object.publicKey) : undefined,
       timestamps: isSet(object.timestamps) ? TimestampVerificationData.fromJSON(object.timestamps) : undefined,
       signature: isSet(object.signature) ? Signature.fromJSON(object.signature) : undefined,
     };
@@ -217,9 +209,6 @@ export const PublicKey: MessageFns<PublicKey> = {
 
   toJSON(message: PublicKey): unknown {
     const obj: any = {};
-    if (message.publicKey !== undefined) {
-      obj.publicKey = PublicKeyIdentifier.toJSON(message.publicKey);
-    }
     if (message.timestamps !== undefined) {
       obj.timestamps = TimestampVerificationData.toJSON(message.timestamps);
     }

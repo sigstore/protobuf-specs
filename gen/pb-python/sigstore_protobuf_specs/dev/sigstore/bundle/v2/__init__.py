@@ -90,23 +90,15 @@ class TransparencyLogProof(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class PublicKey(betterproto.Message):
-    public_key: Optional["__common_v1__.PublicKeyIdentifier"] = (
-        betterproto.message_field(1, optional=True)
-    )
-    """
-    Unauthenticated hint to select the public key from a set of trusted public keys.
-     MUST be SHA256(DER-encoded SubjectPublicKeyInfo)
-    """
-
     timestamps: Optional["TimestampVerificationData"] = betterproto.message_field(
-        2, optional=True
+        1, optional=True
     )
     """
     Optional timestamps to enable key rotation when a signature is not
      logged (witnesses provide a counter-signature with timestamp).
     """
 
-    signature: "Signature" = betterproto.message_field(3)
+    signature: "Signature" = betterproto.message_field(2)
     """
     The signature over the domain-separated message for the artifact (or DSSE PAE).
     """

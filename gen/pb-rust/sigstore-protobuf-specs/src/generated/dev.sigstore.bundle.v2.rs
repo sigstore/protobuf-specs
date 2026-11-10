@@ -91,18 +91,12 @@ pub struct TransparencyLogProof {
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicKey {
-    /// Unauthenticated hint to select the public key from a set of trusted public keys.
-    /// MUST be SHA256(DER-encoded SubjectPublicKeyInfo)
-    #[prost(message, optional, tag = "1")]
-    pub public_key: ::core::option::Option<
-        super::super::common::v1::PublicKeyIdentifier,
-    >,
     /// Optional timestamps to enable key rotation when a signature is not
     /// logged (witnesses provide a counter-signature with timestamp).
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag = "1")]
     pub timestamps: ::core::option::Option<TimestampVerificationData>,
     /// The signature over the domain-separated message for the artifact (or DSSE PAE).
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag = "2")]
     pub signature: ::core::option::Option<Signature>,
 }
 #[derive(

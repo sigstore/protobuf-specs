@@ -246,14 +246,11 @@ func (x *TransparencyLogProof) GetSignature() *Signature {
 
 type PublicKey struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Unauthenticated hint to select the public key from a set of trusted public keys.
-	// MUST be SHA256(DER-encoded SubjectPublicKeyInfo)
-	PublicKey *v1.PublicKeyIdentifier `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3,oneof" json:"public_key,omitempty"`
 	// Optional timestamps to enable key rotation when a signature is not
 	// logged (witnesses provide a counter-signature with timestamp).
-	Timestamps *TimestampVerificationData `protobuf:"bytes,2,opt,name=timestamps,proto3,oneof" json:"timestamps,omitempty"`
+	Timestamps *TimestampVerificationData `protobuf:"bytes,1,opt,name=timestamps,proto3,oneof" json:"timestamps,omitempty"`
 	// The signature over the domain-separated message for the artifact (or DSSE PAE).
-	Signature     *Signature `protobuf:"bytes,3,opt,name=signature,proto3" json:"signature,omitempty"`
+	Signature     *Signature `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -286,13 +283,6 @@ func (x *PublicKey) ProtoReflect() protoreflect.Message {
 // Deprecated: Use PublicKey.ProtoReflect.Descriptor instead.
 func (*PublicKey) Descriptor() ([]byte, []int) {
 	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *PublicKey) GetPublicKey() *v1.PublicKeyIdentifier {
-	if x != nil {
-		return x.PublicKey
-	}
-	return nil
 }
 
 func (x *PublicKey) GetTimestamps() *TimestampVerificationData {
@@ -564,15 +554,12 @@ const file_sigstore_bundle_v2_proto_rawDesc = "" +
 	"\x05proof\x18\x01 \x01(\fB\x04\xe2A\x01\x02R\x05proof\x12D\n" +
 	"\tsignature\x18\x02 \x01(\v2!.dev.sigstore.bundle.v2.SignatureH\x00R\tsignature\x88\x01\x01B\f\n" +
 	"\n" +
-	"_signature\"\x99\x02\n" +
-	"\tPublicKey\x12O\n" +
+	"_signature\"\xb9\x01\n" +
+	"\tPublicKey\x12V\n" +
 	"\n" +
-	"public_key\x18\x01 \x01(\v2+.dev.sigstore.common.v1.PublicKeyIdentifierH\x00R\tpublicKey\x88\x01\x01\x12V\n" +
-	"\n" +
-	"timestamps\x18\x02 \x01(\v21.dev.sigstore.bundle.v2.TimestampVerificationDataH\x01R\n" +
+	"timestamps\x18\x01 \x01(\v21.dev.sigstore.bundle.v2.TimestampVerificationDataH\x00R\n" +
 	"timestamps\x88\x01\x01\x12E\n" +
-	"\tsignature\x18\x03 \x01(\v2!.dev.sigstore.bundle.v2.SignatureB\x04\xe2A\x01\x02R\tsignatureB\r\n" +
-	"\v_public_keyB\r\n" +
+	"\tsignature\x18\x02 \x01(\v2!.dev.sigstore.bundle.v2.SignatureB\x04\xe2A\x01\x02R\tsignatureB\r\n" +
 	"\v_timestamps\"\xe9\x02\n" +
 	"\vCertificate\x12O\n" +
 	"\vcertificate\x18\x01 \x01(\v2'.dev.sigstore.common.v1.X509CertificateB\x04\xe2A\x01\x02R\vcertificate\x12W\n" +
@@ -620,30 +607,28 @@ var file_sigstore_bundle_v2_proto_goTypes = []any{
 	(*VerificationMaterial)(nil),      // 6: dev.sigstore.bundle.v2.VerificationMaterial
 	(*Bundle)(nil),                    // 7: dev.sigstore.bundle.v2.Bundle
 	(*v1.RFC3161SignedTimestamp)(nil), // 8: dev.sigstore.common.v1.RFC3161SignedTimestamp
-	(*v1.PublicKeyIdentifier)(nil),    // 9: dev.sigstore.common.v1.PublicKeyIdentifier
-	(*v1.X509Certificate)(nil),        // 10: dev.sigstore.common.v1.X509Certificate
-	(*v1.X509CertificateChain)(nil),   // 11: dev.sigstore.common.v1.X509CertificateChain
+	(*v1.X509Certificate)(nil),        // 9: dev.sigstore.common.v1.X509Certificate
+	(*v1.X509CertificateChain)(nil),   // 10: dev.sigstore.common.v1.X509CertificateChain
 }
 var file_sigstore_bundle_v2_proto_depIdxs = []int32{
 	8,  // 0: dev.sigstore.bundle.v2.TimestampVerificationData.rfc3161_timestamps:type_name -> dev.sigstore.common.v1.RFC3161SignedTimestamp
 	1,  // 1: dev.sigstore.bundle.v2.TransparencyLogProof.signature:type_name -> dev.sigstore.bundle.v2.Signature
-	9,  // 2: dev.sigstore.bundle.v2.PublicKey.public_key:type_name -> dev.sigstore.common.v1.PublicKeyIdentifier
-	0,  // 3: dev.sigstore.bundle.v2.PublicKey.timestamps:type_name -> dev.sigstore.bundle.v2.TimestampVerificationData
-	1,  // 4: dev.sigstore.bundle.v2.PublicKey.signature:type_name -> dev.sigstore.bundle.v2.Signature
-	10, // 5: dev.sigstore.bundle.v2.Certificate.certificate:type_name -> dev.sigstore.common.v1.X509Certificate
-	11, // 6: dev.sigstore.bundle.v2.Certificate.intermediates:type_name -> dev.sigstore.common.v1.X509CertificateChain
-	0,  // 7: dev.sigstore.bundle.v2.Certificate.timestamps:type_name -> dev.sigstore.bundle.v2.TimestampVerificationData
-	1,  // 8: dev.sigstore.bundle.v2.Certificate.signature:type_name -> dev.sigstore.bundle.v2.Signature
-	4,  // 9: dev.sigstore.bundle.v2.VerificationMaterial.public_key:type_name -> dev.sigstore.bundle.v2.PublicKey
-	5,  // 10: dev.sigstore.bundle.v2.VerificationMaterial.certificate:type_name -> dev.sigstore.bundle.v2.Certificate
-	3,  // 11: dev.sigstore.bundle.v2.VerificationMaterial.transparency_log_proof:type_name -> dev.sigstore.bundle.v2.TransparencyLogProof
-	6,  // 12: dev.sigstore.bundle.v2.Bundle.verification_material:type_name -> dev.sigstore.bundle.v2.VerificationMaterial
-	2,  // 13: dev.sigstore.bundle.v2.Bundle.payload:type_name -> dev.sigstore.bundle.v2.Payload
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	0,  // 2: dev.sigstore.bundle.v2.PublicKey.timestamps:type_name -> dev.sigstore.bundle.v2.TimestampVerificationData
+	1,  // 3: dev.sigstore.bundle.v2.PublicKey.signature:type_name -> dev.sigstore.bundle.v2.Signature
+	9,  // 4: dev.sigstore.bundle.v2.Certificate.certificate:type_name -> dev.sigstore.common.v1.X509Certificate
+	10, // 5: dev.sigstore.bundle.v2.Certificate.intermediates:type_name -> dev.sigstore.common.v1.X509CertificateChain
+	0,  // 6: dev.sigstore.bundle.v2.Certificate.timestamps:type_name -> dev.sigstore.bundle.v2.TimestampVerificationData
+	1,  // 7: dev.sigstore.bundle.v2.Certificate.signature:type_name -> dev.sigstore.bundle.v2.Signature
+	4,  // 8: dev.sigstore.bundle.v2.VerificationMaterial.public_key:type_name -> dev.sigstore.bundle.v2.PublicKey
+	5,  // 9: dev.sigstore.bundle.v2.VerificationMaterial.certificate:type_name -> dev.sigstore.bundle.v2.Certificate
+	3,  // 10: dev.sigstore.bundle.v2.VerificationMaterial.transparency_log_proof:type_name -> dev.sigstore.bundle.v2.TransparencyLogProof
+	6,  // 11: dev.sigstore.bundle.v2.Bundle.verification_material:type_name -> dev.sigstore.bundle.v2.VerificationMaterial
+	2,  // 12: dev.sigstore.bundle.v2.Bundle.payload:type_name -> dev.sigstore.bundle.v2.Payload
+	13, // [13:13] is the sub-list for method output_type
+	13, // [13:13] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_sigstore_bundle_v2_proto_init() }
