@@ -32,10 +32,10 @@ class TimestampVerificationData(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class Signature(betterproto.Message):
     """
-    Note that the DSSE Pre-Authentication Encoding (PAE) is used, but the
-     signature scheme is Sigstore-specific. The raw message is never signed;
-     it is always hashed, as there is otherwise a risk of transmitting large
-     payloads to an HSM.
+    The raw message is never signed; it is always hashed, as there is otherwise
+     a risk of transmitting large payloads to an HSM.
+     When signing a DSSE payload, the DSSE Pre-Authentication Encoding (PAE) is
+     used as the data, with this Sigstore-specific signature scheme.
     """
 
     signature: bytes = betterproto.bytes_field(1)
@@ -49,33 +49,19 @@ class Signature(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class Embedded(betterproto.Message):
+class Payload(betterproto.Message):
     """
-    Embedded implements the DSSE envelope as defined in https://github.com/secure-systems-lab/dsse
+    Payload represents a DSSE payload as defined in https://github.com/secure-systems-lab/dsse.
+     When present in a Bundle, the signed data is the DSSE Pre-Authentication Encoding (PAE):
+     "DSSEv1" + SP + LEN(payload_type) + SP + payload_type + SP + LEN(payload) + SP + payload
     """
 
     payload_type: str = betterproto.string_field(1)
     payload: bytes = betterproto.bytes_field(2)
-    signature: Optional["Signature"] = betterproto.message_field(3, optional=True)
-    """
-    The PAE used before signing is:
-     "DSSEv1" + SP + LEN(payload_type) + SP + payload_type + SP + LEN(payload) + SP + payload
-     When signing, data is the PAE.
-     MUST be unset when submitting with an ID token to a log.
-    """
 
 
 @dataclass(eq=False, repr=False)
-class MessageSignature(betterproto.Message):
-    signature: Optional["Signature"] = betterproto.message_field(1, optional=True)
-    """
-    When signing, data is the artifact.
-     MUST be unset when submitting with an ID token to a log.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class TlogProof(betterproto.Message):
+class TransparencyLogProof(betterproto.Message):
     proof: bytes = betterproto.bytes_field(1)
     """
     The log proof, formatted per c2sp.org/tlog-proof.
@@ -96,6 +82,8 @@ class TlogProof(betterproto.Message):
      c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
     """
 
+    signature: Optional["Signature"] = betterproto.message_field(2, optional=True)
+
 
 @dataclass(eq=False, repr=False)
 class PublicKey(betterproto.Message):
@@ -115,9 +103,11 @@ class PublicKey(betterproto.Message):
      logged (witnesses provide a counter-signature with timestamp).
     """
 
+    signature: "Signature" = betterproto.message_field(3)
+
 
 @dataclass(eq=False, repr=False)
-class Cert(betterproto.Message):
+class Certificate(betterproto.Message):
     certificate: "__common_v1__.X509Certificate" = betterproto.message_field(1)
     """The end-entity certificate used for signing"""
 
@@ -131,6 +121,7 @@ class Cert(betterproto.Message):
     """
 
     timestamps: "TimestampVerificationData" = betterproto.message_field(3)
+    signature: "Signature" = betterproto.message_field(4)
 
 
 @dataclass(eq=False, repr=False)
@@ -140,13 +131,13 @@ class VerificationMaterial(betterproto.Message):
     )
     """Signed with a managed key pair"""
 
-    cert: Optional["Cert"] = betterproto.message_field(
+    certificate: Optional["Certificate"] = betterproto.message_field(
         2, optional=True, group="content"
     )
     """Signed with a key included in a certificate and RFC 3161 timestamp"""
 
-    tlog_proof: Optional["TlogProof"] = betterproto.message_field(
-        3, optional=True, group="content"
+    transparency_log_proof: Optional["TransparencyLogProof"] = (
+        betterproto.message_field(3, optional=True, group="content")
     )
     """
     Signed by logging to Rekor, authenticating with an ID token or
@@ -167,22 +158,12 @@ class Bundle(betterproto.Message):
     """
 
     verification_material: "VerificationMaterial" = betterproto.message_field(2)
-    message_signature: Optional["MessageSignature"] = betterproto.message_field(
-        3, optional=True, group="content"
-    )
-    embedded_data: Optional["Embedded"] = betterproto.message_field(
-        4, optional=True, group="content"
-    )
-
-    @model_validator(mode="after")
-    def check_oneof(cls, values):
-        return cls._validate_field_groups(values)
+    payload: Optional["Payload"] = betterproto.message_field(3, optional=True)
 
 
 rebuild_dataclass(TimestampVerificationData)  # type: ignore
-rebuild_dataclass(Embedded)  # type: ignore
-rebuild_dataclass(MessageSignature)  # type: ignore
+rebuild_dataclass(TransparencyLogProof)  # type: ignore
 rebuild_dataclass(PublicKey)  # type: ignore
-rebuild_dataclass(Cert)  # type: ignore
+rebuild_dataclass(Certificate)  # type: ignore
 rebuild_dataclass(VerificationMaterial)  # type: ignore
 rebuild_dataclass(Bundle)  # type: ignore
