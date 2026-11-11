@@ -47,13 +47,14 @@ message TransparencyLogProof {
         // and provenance values from the token.
         // When the credential is a public key, the `extra` field will be the provided
         // context as a hex-encoded string.
+        bytes proof = 1 [(google.api.field_behavior) = REQUIRED];
+        // Only set when the credential is a public key/signature.
         // If a signature is part of the leaf, verifiers MUST verify the
         // artifact's signature and confirm that the signature matches
         // what was submitted to the log.
         // If the artifact was signed prior to log submission, the
         // signature is over
         // c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
-        bytes proof = 1 [(google.api.field_behavior) = REQUIRED];
         optional Signature signature = 2;
 }
 
@@ -61,9 +62,10 @@ message PublicKey {
         // Unauthenticated hint to select the public key from a set of trusted public keys.
         // MUST be SHA256(DER-encoded SubjectPublicKeyInfo)
         optional dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1;
-        // Optional timestamp to enable key rotation when a signature is not
+        // Optional timestamps to enable key rotation when a signature is not
         // logged (witnesses provide a counter-signature with timestamp).
         optional TimestampVerificationData timestamps = 2;
+        // The signature over the domain-separated message for the artifact (or DSSE PAE).
         Signature signature = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
@@ -74,7 +76,10 @@ message Certificate {
         // building. When signing with Sigstore PGI, this list MUST be empty
         // as the intermediates are provided via the TUF root.
         optional dev.sigstore.common.v1.X509CertificateChain intermediates = 2;
+        // Timestamps proving the signature was created during the certificate's
+        // validity period.
         TimestampVerificationData timestamps = 3 [(google.api.field_behavior) = REQUIRED];
+        // The signature over the domain-separated message for the artifact (or DSSE PAE).
         Signature signature = 4 [(google.api.field_behavior) = REQUIRED];
 }
 

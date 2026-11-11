@@ -70,14 +70,15 @@ pub struct TransparencyLogProof {
     /// and provenance values from the token.
     /// When the credential is a public key, the `extra` field will be the provided
     /// context as a hex-encoded string.
+    #[prost(bytes = "vec", tag = "1")]
+    pub proof: ::prost::alloc::vec::Vec<u8>,
+    /// Only set when the credential is a public key/signature.
     /// If a signature is part of the leaf, verifiers MUST verify the
     /// artifact's signature and confirm that the signature matches
     /// what was submitted to the log.
     /// If the artifact was signed prior to log submission, the
     /// signature is over
     /// c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
-    #[prost(bytes = "vec", tag = "1")]
-    pub proof: ::prost::alloc::vec::Vec<u8>,
     #[prost(message, optional, tag = "2")]
     pub signature: ::core::option::Option<Signature>,
 }
@@ -96,10 +97,11 @@ pub struct PublicKey {
     pub public_key: ::core::option::Option<
         super::super::common::v1::PublicKeyIdentifier,
     >,
-    /// Optional timestamp to enable key rotation when a signature is not
+    /// Optional timestamps to enable key rotation when a signature is not
     /// logged (witnesses provide a counter-signature with timestamp).
     #[prost(message, optional, tag = "2")]
     pub timestamps: ::core::option::Option<TimestampVerificationData>,
+    /// The signature over the domain-separated message for the artifact (or DSSE PAE).
     #[prost(message, optional, tag = "3")]
     pub signature: ::core::option::Option<Signature>,
 }
@@ -122,8 +124,11 @@ pub struct Certificate {
     pub intermediates: ::core::option::Option<
         super::super::common::v1::X509CertificateChain,
     >,
+    /// Timestamps proving the signature was created during the certificate's
+    /// validity period.
     #[prost(message, optional, tag = "3")]
     pub timestamps: ::core::option::Option<TimestampVerificationData>,
+    /// The signature over the domain-separated message for the artifact (or DSSE PAE).
     #[prost(message, optional, tag = "4")]
     pub signature: ::core::option::Option<Signature>,
 }

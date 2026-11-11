@@ -74,6 +74,11 @@ class TransparencyLogProof(betterproto.Message):
      and provenance values from the token.
      When the credential is a public key, the `extra` field will be the provided
      context as a hex-encoded string.
+    """
+
+    signature: Optional["Signature"] = betterproto.message_field(2, optional=True)
+    """
+    Only set when the credential is a public key/signature.
      If a signature is part of the leaf, verifiers MUST verify the
      artifact's signature and confirm that the signature matches
      what was submitted to the log.
@@ -81,8 +86,6 @@ class TransparencyLogProof(betterproto.Message):
      signature is over
      c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
     """
-
-    signature: Optional["Signature"] = betterproto.message_field(2, optional=True)
 
 
 @dataclass(eq=False, repr=False)
@@ -99,11 +102,14 @@ class PublicKey(betterproto.Message):
         2, optional=True
     )
     """
-    Optional timestamp to enable key rotation when a signature is not
+    Optional timestamps to enable key rotation when a signature is not
      logged (witnesses provide a counter-signature with timestamp).
     """
 
     signature: "Signature" = betterproto.message_field(3)
+    """
+    The signature over the domain-separated message for the artifact (or DSSE PAE).
+    """
 
 
 @dataclass(eq=False, repr=False)
@@ -121,7 +127,15 @@ class Certificate(betterproto.Message):
     """
 
     timestamps: "TimestampVerificationData" = betterproto.message_field(3)
+    """
+    Timestamps proving the signature was created during the certificate's
+     validity period.
+    """
+
     signature: "Signature" = betterproto.message_field(4)
+    """
+    The signature over the domain-separated message for the artifact (or DSSE PAE).
+    """
 
 
 @dataclass(eq=False, repr=False)

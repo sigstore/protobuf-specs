@@ -187,13 +187,14 @@ type TransparencyLogProof struct {
 	// and provenance values from the token.
 	// When the credential is a public key, the `extra` field will be the provided
 	// context as a hex-encoded string.
+	Proof []byte `protobuf:"bytes,1,opt,name=proof,proto3" json:"proof,omitempty"`
+	// Only set when the credential is a public key/signature.
 	// If a signature is part of the leaf, verifiers MUST verify the
 	// artifact's signature and confirm that the signature matches
 	// what was submitted to the log.
 	// If the artifact was signed prior to log submission, the
 	// signature is over
 	// c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
-	Proof         []byte     `protobuf:"bytes,1,opt,name=proof,proto3" json:"proof,omitempty"`
 	Signature     *Signature `protobuf:"bytes,2,opt,name=signature,proto3,oneof" json:"signature,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -248,10 +249,11 @@ type PublicKey struct {
 	// Unauthenticated hint to select the public key from a set of trusted public keys.
 	// MUST be SHA256(DER-encoded SubjectPublicKeyInfo)
 	PublicKey *v1.PublicKeyIdentifier `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3,oneof" json:"public_key,omitempty"`
-	// Optional timestamp to enable key rotation when a signature is not
+	// Optional timestamps to enable key rotation when a signature is not
 	// logged (witnesses provide a counter-signature with timestamp).
-	Timestamps    *TimestampVerificationData `protobuf:"bytes,2,opt,name=timestamps,proto3,oneof" json:"timestamps,omitempty"`
-	Signature     *Signature                 `protobuf:"bytes,3,opt,name=signature,proto3" json:"signature,omitempty"`
+	Timestamps *TimestampVerificationData `protobuf:"bytes,2,opt,name=timestamps,proto3,oneof" json:"timestamps,omitempty"`
+	// The signature over the domain-separated message for the artifact (or DSSE PAE).
+	Signature     *Signature `protobuf:"bytes,3,opt,name=signature,proto3" json:"signature,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -314,9 +316,12 @@ type Certificate struct {
 	// Optional list of untrusted intermediates used for chain
 	// building. When signing with Sigstore PGI, this list MUST be empty
 	// as the intermediates are provided via the TUF root.
-	Intermediates *v1.X509CertificateChain   `protobuf:"bytes,2,opt,name=intermediates,proto3,oneof" json:"intermediates,omitempty"`
-	Timestamps    *TimestampVerificationData `protobuf:"bytes,3,opt,name=timestamps,proto3" json:"timestamps,omitempty"`
-	Signature     *Signature                 `protobuf:"bytes,4,opt,name=signature,proto3" json:"signature,omitempty"`
+	Intermediates *v1.X509CertificateChain `protobuf:"bytes,2,opt,name=intermediates,proto3,oneof" json:"intermediates,omitempty"`
+	// Timestamps proving the signature was created during the certificate's
+	// validity period.
+	Timestamps *TimestampVerificationData `protobuf:"bytes,3,opt,name=timestamps,proto3" json:"timestamps,omitempty"`
+	// The signature over the domain-separated message for the artifact (or DSSE PAE).
+	Signature     *Signature `protobuf:"bytes,4,opt,name=signature,proto3" json:"signature,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

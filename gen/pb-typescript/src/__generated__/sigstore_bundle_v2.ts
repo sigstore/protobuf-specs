@@ -50,6 +50,10 @@ export interface TransparencyLogProof {
    * and provenance values from the token.
    * When the credential is a public key, the `extra` field will be the provided
    * context as a hex-encoded string.
+   */
+  proof: Buffer;
+  /**
+   * Only set when the credential is a public key/signature.
    * If a signature is part of the leaf, verifiers MUST verify the
    * artifact's signature and confirm that the signature matches
    * what was submitted to the log.
@@ -57,7 +61,6 @@ export interface TransparencyLogProof {
    * signature is over
    * c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
    */
-  proof: Buffer;
   signature?: Signature | undefined;
 }
 
@@ -70,10 +73,13 @@ export interface PublicKey {
     | PublicKeyIdentifier
     | undefined;
   /**
-   * Optional timestamp to enable key rotation when a signature is not
+   * Optional timestamps to enable key rotation when a signature is not
    * logged (witnesses provide a counter-signature with timestamp).
    */
-  timestamps?: TimestampVerificationData | undefined;
+  timestamps?:
+    | TimestampVerificationData
+    | undefined;
+  /** The signature over the domain-separated message for the artifact (or DSSE PAE). */
   signature: Signature | undefined;
 }
 
@@ -87,8 +93,17 @@ export interface Certificate {
    * building. When signing with Sigstore PGI, this list MUST be empty
    * as the intermediates are provided via the TUF root.
    */
-  intermediates?: X509CertificateChain | undefined;
-  timestamps: TimestampVerificationData | undefined;
+  intermediates?:
+    | X509CertificateChain
+    | undefined;
+  /**
+   * Timestamps proving the signature was created during the certificate's
+   * validity period.
+   */
+  timestamps:
+    | TimestampVerificationData
+    | undefined;
+  /** The signature over the domain-separated message for the artifact (or DSSE PAE). */
   signature: Signature | undefined;
 }
 
