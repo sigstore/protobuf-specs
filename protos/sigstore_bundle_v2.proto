@@ -59,14 +59,11 @@ message TransparencyLogProof {
 }
 
 message PublicKey {
-        // Unauthenticated hint to select the public key from a set of trusted public keys.
-        // MUST be SHA256(DER-encoded SubjectPublicKeyInfo)
-        optional dev.sigstore.common.v1.PublicKeyIdentifier public_key = 1;
         // Optional timestamps to enable key rotation when a signature is not
         // logged (witnesses provide a counter-signature with timestamp).
-        optional TimestampVerificationData timestamps = 2;
+        optional TimestampVerificationData timestamps = 1;
         // The signature over the domain-separated message for the artifact (or DSSE PAE).
-        Signature signature = 3 [(google.api.field_behavior) = REQUIRED];
+        Signature signature = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message Certificate {
