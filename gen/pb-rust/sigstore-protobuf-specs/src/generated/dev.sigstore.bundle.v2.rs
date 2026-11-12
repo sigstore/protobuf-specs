@@ -13,10 +13,10 @@ pub struct TimestampVerificationData {
         super::super::common::v1::Rfc3161SignedTimestamp,
     >,
 }
-/// Note that the DSSE Pre-Authentication Encoding (PAE) is used, but the
-/// signature scheme is Sigstore-specific. The raw message is never signed;
-/// it is always hashed, as there is otherwise a risk of transmitting large
-/// payloads to an HSM.
+/// The raw message is never signed; it is always hashed, as there is otherwise
+/// a risk of transmitting large payloads to an HSM.
+/// When signing a DSSE payload, the DSSE Pre-Authentication Encoding (PAE) is
+/// used as the data, with this Sigstore-specific signature scheme.
 #[derive(
     sigstore_protobuf_specs_derive::Deserialize_proto,
     sigstore_protobuf_specs_derive::Serialize_proto
@@ -34,50 +34,32 @@ pub struct Signature {
     #[prost(bytes = "vec", tag = "1")]
     pub signature: ::prost::alloc::vec::Vec<u8>,
 }
-/// Embedded implements the DSSE envelope as defined in <https://github.com/secure-systems-lab/dsse>
+/// Payload represents a DSSE payload as defined in <https://github.com/secure-systems-lab/dsse.>
+/// When present in a Bundle, the signed data is the DSSE Pre-Authentication Encoding (PAE):
+/// "DSSEv1" + SP + LEN(payload_type) + SP + payload_type + SP + LEN(payload) + SP + payload
 #[derive(
     sigstore_protobuf_specs_derive::Deserialize_proto,
     sigstore_protobuf_specs_derive::Serialize_proto
 )]
 #[derive(::prost_reflect::ReflectMessage)]
-#[prost_reflect(message_name = "dev.sigstore.bundle.v2.Embedded")]
+#[prost_reflect(message_name = "dev.sigstore.bundle.v2.Payload")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct Embedded {
+pub struct Payload {
     #[prost(string, tag = "1")]
     pub payload_type: ::prost::alloc::string::String,
     #[prost(bytes = "vec", tag = "2")]
     pub payload: ::prost::alloc::vec::Vec<u8>,
-    /// The PAE used before signing is:
-    /// "DSSEv1" + SP + LEN(payload_type) + SP + payload_type + SP + LEN(payload) + SP + payload
-    /// When signing, data is the PAE.
-    /// MUST be unset when submitting with an ID token to a log.
-    #[prost(message, optional, tag = "3")]
-    pub signature: ::core::option::Option<Signature>,
 }
 #[derive(
     sigstore_protobuf_specs_derive::Deserialize_proto,
     sigstore_protobuf_specs_derive::Serialize_proto
 )]
 #[derive(::prost_reflect::ReflectMessage)]
-#[prost_reflect(message_name = "dev.sigstore.bundle.v2.MessageSignature")]
+#[prost_reflect(message_name = "dev.sigstore.bundle.v2.TransparencyLogProof")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct MessageSignature {
-    /// When signing, data is the artifact.
-    /// MUST be unset when submitting with an ID token to a log.
-    #[prost(message, optional, tag = "1")]
-    pub signature: ::core::option::Option<Signature>,
-}
-#[derive(
-    sigstore_protobuf_specs_derive::Deserialize_proto,
-    sigstore_protobuf_specs_derive::Serialize_proto
-)]
-#[derive(::prost_reflect::ReflectMessage)]
-#[prost_reflect(message_name = "dev.sigstore.bundle.v2.TlogProof")]
-#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct TlogProof {
+pub struct TransparencyLogProof {
     /// The log proof, formatted per c2sp.org/tlog-proof.
     /// If OIDC-based submission is used, the `extra` field contains the
     /// relevant claims needed for recreation of the leaf during
@@ -88,14 +70,17 @@ pub struct TlogProof {
     /// and provenance values from the token.
     /// When the credential is a public key, the `extra` field will be the provided
     /// context as a hex-encoded string.
+    #[prost(bytes = "vec", tag = "1")]
+    pub proof: ::prost::alloc::vec::Vec<u8>,
+    /// Only set when the credential is a public key/signature.
     /// If a signature is part of the leaf, verifiers MUST verify the
     /// artifact's signature and confirm that the signature matches
     /// what was submitted to the log.
     /// If the artifact was signed prior to log submission, the
     /// signature is over
     /// c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
-    #[prost(bytes = "vec", tag = "1")]
-    pub proof: ::prost::alloc::vec::Vec<u8>,
+    #[prost(message, optional, tag = "2")]
+    pub signature: ::core::option::Option<Signature>,
 }
 #[derive(
     sigstore_protobuf_specs_derive::Deserialize_proto,
@@ -112,20 +97,23 @@ pub struct PublicKey {
     pub public_key: ::core::option::Option<
         super::super::common::v1::PublicKeyIdentifier,
     >,
-    /// Optional timestamp to enable key rotation when a signature is not
+    /// Optional timestamps to enable key rotation when a signature is not
     /// logged (witnesses provide a counter-signature with timestamp).
     #[prost(message, optional, tag = "2")]
     pub timestamps: ::core::option::Option<TimestampVerificationData>,
+    /// The signature over the domain-separated message for the artifact (or DSSE PAE).
+    #[prost(message, optional, tag = "3")]
+    pub signature: ::core::option::Option<Signature>,
 }
 #[derive(
     sigstore_protobuf_specs_derive::Deserialize_proto,
     sigstore_protobuf_specs_derive::Serialize_proto
 )]
 #[derive(::prost_reflect::ReflectMessage)]
-#[prost_reflect(message_name = "dev.sigstore.bundle.v2.Cert")]
+#[prost_reflect(message_name = "dev.sigstore.bundle.v2.Certificate")]
 #[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Cert {
+pub struct Certificate {
     /// The end-entity certificate used for signing
     #[prost(message, optional, tag = "1")]
     pub certificate: ::core::option::Option<super::super::common::v1::X509Certificate>,
@@ -136,8 +124,13 @@ pub struct Cert {
     pub intermediates: ::core::option::Option<
         super::super::common::v1::X509CertificateChain,
     >,
+    /// Timestamps proving the signature was created during the certificate's
+    /// validity period.
     #[prost(message, optional, tag = "3")]
     pub timestamps: ::core::option::Option<TimestampVerificationData>,
+    /// The signature over the domain-separated message for the artifact (or DSSE PAE).
+    #[prost(message, optional, tag = "4")]
+    pub signature: ::core::option::Option<Signature>,
 }
 #[derive(
     sigstore_protobuf_specs_derive::Deserialize_proto,
@@ -164,11 +157,11 @@ pub mod verification_material {
         PublicKey(super::PublicKey),
         /// Signed with a key included in a certificate and RFC 3161 timestamp
         #[prost(message, tag = "2")]
-        Cert(super::Cert),
+        Certificate(super::Certificate),
         /// Signed by logging to Rekor, authenticating with an ID token or
         /// a public key/signature.
         #[prost(message, tag = "3")]
-        TlogProof(super::TlogProof),
+        TransparencyLogProof(super::TransparencyLogProof),
     }
 }
 #[derive(
@@ -186,20 +179,6 @@ pub struct Bundle {
     pub media_type: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "2")]
     pub verification_material: ::core::option::Option<VerificationMaterial>,
-    #[prost(oneof = "bundle::Content", tags = "3, 4")]
-    pub content: ::core::option::Option<bundle::Content>,
-}
-/// Nested message and enum types in `Bundle`.
-pub mod bundle {
-    #[derive(
-        sigstore_protobuf_specs_derive::Deserialize_proto,
-        sigstore_protobuf_specs_derive::Serialize_proto
-    )]
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
-    pub enum Content {
-        #[prost(message, tag = "3")]
-        MessageSignature(super::MessageSignature),
-        #[prost(message, tag = "4")]
-        EmbeddedData(super::Embedded),
-    }
+    #[prost(message, optional, tag = "3")]
+    pub payload: ::core::option::Option<Payload>,
 }

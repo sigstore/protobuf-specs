@@ -12,10 +12,10 @@ export interface TimestampVerificationData {
 }
 
 /**
- * Note that the DSSE Pre-Authentication Encoding (PAE) is used, but the
- * signature scheme is Sigstore-specific. The raw message is never signed;
- * it is always hashed, as there is otherwise a risk of transmitting large
- * payloads to an HSM.
+ * The raw message is never signed; it is always hashed, as there is otherwise
+ * a risk of transmitting large payloads to an HSM.
+ * When signing a DSSE payload, the DSSE Pre-Authentication Encoding (PAE) is
+ * used as the data, with this Sigstore-specific signature scheme.
  */
 export interface Signature {
   /**
@@ -28,28 +28,17 @@ export interface Signature {
   signature: Buffer;
 }
 
-/** Embedded implements the DSSE envelope as defined in https://github.com/secure-systems-lab/dsse */
-export interface Embedded {
+/**
+ * Payload represents a DSSE payload as defined in https://github.com/secure-systems-lab/dsse.
+ * When present in a Bundle, the signed data is the DSSE Pre-Authentication Encoding (PAE):
+ * "DSSEv1" + SP + LEN(payload_type) + SP + payload_type + SP + LEN(payload) + SP + payload
+ */
+export interface Payload {
   payloadType: string;
   payload: Buffer;
-  /**
-   * The PAE used before signing is:
-   * "DSSEv1" + SP + LEN(payload_type) + SP + payload_type + SP + LEN(payload) + SP + payload
-   * When signing, data is the PAE.
-   * MUST be unset when submitting with an ID token to a log.
-   */
-  signature?: Signature | undefined;
 }
 
-export interface MessageSignature {
-  /**
-   * When signing, data is the artifact.
-   * MUST be unset when submitting with an ID token to a log.
-   */
-  signature?: Signature | undefined;
-}
-
-export interface TlogProof {
+export interface TransparencyLogProof {
   /**
    * The log proof, formatted per c2sp.org/tlog-proof.
    * If OIDC-based submission is used, the `extra` field contains the
@@ -61,6 +50,10 @@ export interface TlogProof {
    * and provenance values from the token.
    * When the credential is a public key, the `extra` field will be the provided
    * context as a hex-encoded string.
+   */
+  proof: Buffer;
+  /**
+   * Only set when the credential is a public key/signature.
    * If a signature is part of the leaf, verifiers MUST verify the
    * artifact's signature and confirm that the signature matches
    * what was submitted to the log.
@@ -68,7 +61,7 @@ export interface TlogProof {
    * signature is over
    * c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
    */
-  proof: Buffer;
+  signature?: Signature | undefined;
 }
 
 export interface PublicKey {
@@ -80,13 +73,17 @@ export interface PublicKey {
     | PublicKeyIdentifier
     | undefined;
   /**
-   * Optional timestamp to enable key rotation when a signature is not
+   * Optional timestamps to enable key rotation when a signature is not
    * logged (witnesses provide a counter-signature with timestamp).
    */
-  timestamps?: TimestampVerificationData | undefined;
+  timestamps?:
+    | TimestampVerificationData
+    | undefined;
+  /** The signature over the domain-separated message for the artifact (or DSSE PAE). */
+  signature: Signature | undefined;
 }
 
-export interface Cert {
+export interface Certificate {
   /** The end-entity certificate used for signing */
   certificate:
     | X509Certificate
@@ -96,8 +93,18 @@ export interface Cert {
    * building. When signing with Sigstore PGI, this list MUST be empty
    * as the intermediates are provided via the TUF root.
    */
-  intermediates?: X509CertificateChain | undefined;
-  timestamps: TimestampVerificationData | undefined;
+  intermediates?:
+    | X509CertificateChain
+    | undefined;
+  /**
+   * Timestamps proving the signature was created during the certificate's
+   * validity period.
+   */
+  timestamps:
+    | TimestampVerificationData
+    | undefined;
+  /** The signature over the domain-separated message for the artifact (or DSSE PAE). */
+  signature: Signature | undefined;
 }
 
 export interface VerificationMaterial {
@@ -107,13 +114,13 @@ export interface VerificationMaterial {
     { $case: "publicKey"; publicKey: PublicKey }
     | //
     /** Signed with a key included in a certificate and RFC 3161 timestamp */
-    { $case: "cert"; cert: Cert }
+    { $case: "certificate"; certificate: Certificate }
     | //
     /**
      * Signed by logging to Rekor, authenticating with an ID token or
      * a public key/signature.
      */
-    { $case: "tlogProof"; tlogProof: TlogProof }
+    { $case: "transparencyLogProof"; transparencyLogProof: TransparencyLogProof }
     | undefined;
 }
 
@@ -124,10 +131,7 @@ export interface Bundle {
    */
   mediaType: string;
   verificationMaterial: VerificationMaterial | undefined;
-  content: { $case: "messageSignature"; messageSignature: MessageSignature } | {
-    $case: "embeddedData";
-    embeddedData: Embedded;
-  } | undefined;
+  payload?: Payload | undefined;
 }
 
 export const TimestampVerificationData: MessageFns<TimestampVerificationData> = {
@@ -162,16 +166,15 @@ export const Signature: MessageFns<Signature> = {
   },
 };
 
-export const Embedded: MessageFns<Embedded> = {
-  fromJSON(object: any): Embedded {
+export const Payload: MessageFns<Payload> = {
+  fromJSON(object: any): Payload {
     return {
       payloadType: isSet(object.payloadType) ? globalThis.String(object.payloadType) : "",
       payload: isSet(object.payload) ? Buffer.from(bytesFromBase64(object.payload)) : Buffer.alloc(0),
-      signature: isSet(object.signature) ? Signature.fromJSON(object.signature) : undefined,
     };
   },
 
-  toJSON(message: Embedded): unknown {
+  toJSON(message: Payload): unknown {
     const obj: any = {};
     if (message.payloadType !== "") {
       obj.payloadType = message.payloadType;
@@ -179,36 +182,25 @@ export const Embedded: MessageFns<Embedded> = {
     if (message.payload.length !== 0) {
       obj.payload = base64FromBytes(message.payload);
     }
-    if (message.signature !== undefined) {
-      obj.signature = Signature.toJSON(message.signature);
-    }
     return obj;
   },
 };
 
-export const MessageSignature: MessageFns<MessageSignature> = {
-  fromJSON(object: any): MessageSignature {
-    return { signature: isSet(object.signature) ? Signature.fromJSON(object.signature) : undefined };
+export const TransparencyLogProof: MessageFns<TransparencyLogProof> = {
+  fromJSON(object: any): TransparencyLogProof {
+    return {
+      proof: isSet(object.proof) ? Buffer.from(bytesFromBase64(object.proof)) : Buffer.alloc(0),
+      signature: isSet(object.signature) ? Signature.fromJSON(object.signature) : undefined,
+    };
   },
 
-  toJSON(message: MessageSignature): unknown {
-    const obj: any = {};
-    if (message.signature !== undefined) {
-      obj.signature = Signature.toJSON(message.signature);
-    }
-    return obj;
-  },
-};
-
-export const TlogProof: MessageFns<TlogProof> = {
-  fromJSON(object: any): TlogProof {
-    return { proof: isSet(object.proof) ? Buffer.from(bytesFromBase64(object.proof)) : Buffer.alloc(0) };
-  },
-
-  toJSON(message: TlogProof): unknown {
+  toJSON(message: TransparencyLogProof): unknown {
     const obj: any = {};
     if (message.proof.length !== 0) {
       obj.proof = base64FromBytes(message.proof);
+    }
+    if (message.signature !== undefined) {
+      obj.signature = Signature.toJSON(message.signature);
     }
     return obj;
   },
@@ -219,6 +211,7 @@ export const PublicKey: MessageFns<PublicKey> = {
     return {
       publicKey: isSet(object.publicKey) ? PublicKeyIdentifier.fromJSON(object.publicKey) : undefined,
       timestamps: isSet(object.timestamps) ? TimestampVerificationData.fromJSON(object.timestamps) : undefined,
+      signature: isSet(object.signature) ? Signature.fromJSON(object.signature) : undefined,
     };
   },
 
@@ -230,20 +223,24 @@ export const PublicKey: MessageFns<PublicKey> = {
     if (message.timestamps !== undefined) {
       obj.timestamps = TimestampVerificationData.toJSON(message.timestamps);
     }
+    if (message.signature !== undefined) {
+      obj.signature = Signature.toJSON(message.signature);
+    }
     return obj;
   },
 };
 
-export const Cert: MessageFns<Cert> = {
-  fromJSON(object: any): Cert {
+export const Certificate: MessageFns<Certificate> = {
+  fromJSON(object: any): Certificate {
     return {
       certificate: isSet(object.certificate) ? X509Certificate.fromJSON(object.certificate) : undefined,
       intermediates: isSet(object.intermediates) ? X509CertificateChain.fromJSON(object.intermediates) : undefined,
       timestamps: isSet(object.timestamps) ? TimestampVerificationData.fromJSON(object.timestamps) : undefined,
+      signature: isSet(object.signature) ? Signature.fromJSON(object.signature) : undefined,
     };
   },
 
-  toJSON(message: Cert): unknown {
+  toJSON(message: Certificate): unknown {
     const obj: any = {};
     if (message.certificate !== undefined) {
       obj.certificate = X509Certificate.toJSON(message.certificate);
@@ -254,6 +251,9 @@ export const Cert: MessageFns<Cert> = {
     if (message.timestamps !== undefined) {
       obj.timestamps = TimestampVerificationData.toJSON(message.timestamps);
     }
+    if (message.signature !== undefined) {
+      obj.signature = Signature.toJSON(message.signature);
+    }
     return obj;
   },
 };
@@ -263,10 +263,13 @@ export const VerificationMaterial: MessageFns<VerificationMaterial> = {
     return {
       content: isSet(object.publicKey)
         ? { $case: "publicKey", publicKey: PublicKey.fromJSON(object.publicKey) }
-        : isSet(object.cert)
-        ? { $case: "cert", cert: Cert.fromJSON(object.cert) }
-        : isSet(object.tlogProof)
-        ? { $case: "tlogProof", tlogProof: TlogProof.fromJSON(object.tlogProof) }
+        : isSet(object.certificate)
+        ? { $case: "certificate", certificate: Certificate.fromJSON(object.certificate) }
+        : isSet(object.transparencyLogProof)
+        ? {
+          $case: "transparencyLogProof",
+          transparencyLogProof: TransparencyLogProof.fromJSON(object.transparencyLogProof),
+        }
         : undefined,
     };
   },
@@ -275,10 +278,10 @@ export const VerificationMaterial: MessageFns<VerificationMaterial> = {
     const obj: any = {};
     if (message.content?.$case === "publicKey") {
       obj.publicKey = PublicKey.toJSON(message.content.publicKey);
-    } else if (message.content?.$case === "cert") {
-      obj.cert = Cert.toJSON(message.content.cert);
-    } else if (message.content?.$case === "tlogProof") {
-      obj.tlogProof = TlogProof.toJSON(message.content.tlogProof);
+    } else if (message.content?.$case === "certificate") {
+      obj.certificate = Certificate.toJSON(message.content.certificate);
+    } else if (message.content?.$case === "transparencyLogProof") {
+      obj.transparencyLogProof = TransparencyLogProof.toJSON(message.content.transparencyLogProof);
     }
     return obj;
   },
@@ -291,11 +294,7 @@ export const Bundle: MessageFns<Bundle> = {
       verificationMaterial: isSet(object.verificationMaterial)
         ? VerificationMaterial.fromJSON(object.verificationMaterial)
         : undefined,
-      content: isSet(object.messageSignature)
-        ? { $case: "messageSignature", messageSignature: MessageSignature.fromJSON(object.messageSignature) }
-        : isSet(object.embeddedData)
-        ? { $case: "embeddedData", embeddedData: Embedded.fromJSON(object.embeddedData) }
-        : undefined,
+      payload: isSet(object.payload) ? Payload.fromJSON(object.payload) : undefined,
     };
   },
 
@@ -307,10 +306,8 @@ export const Bundle: MessageFns<Bundle> = {
     if (message.verificationMaterial !== undefined) {
       obj.verificationMaterial = VerificationMaterial.toJSON(message.verificationMaterial);
     }
-    if (message.content?.$case === "messageSignature") {
-      obj.messageSignature = MessageSignature.toJSON(message.content.messageSignature);
-    } else if (message.content?.$case === "embeddedData") {
-      obj.embeddedData = Embedded.toJSON(message.content.embeddedData);
+    if (message.payload !== undefined) {
+      obj.payload = Payload.toJSON(message.payload);
     }
     return obj;
   },

@@ -67,10 +67,10 @@ func (x *TimestampVerificationData) GetRfc3161Timestamps() []*v1.RFC3161SignedTi
 	return nil
 }
 
-// Note that the DSSE Pre-Authentication Encoding (PAE) is used, but the
-// signature scheme is Sigstore-specific. The raw message is never signed;
-// it is always hashed, as there is otherwise a risk of transmitting large
-// payloads to an HSM.
+// The raw message is never signed; it is always hashed, as there is otherwise
+// a risk of transmitting large payloads to an HSM.
+// When signing a DSSE payload, the DSSE Pre-Authentication Encoding (PAE) is
+// used as the data, with this Sigstore-specific signature scheme.
 type Signature struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The signature is computed over a domain-separated message:
@@ -120,34 +120,31 @@ func (x *Signature) GetSignature() []byte {
 	return nil
 }
 
-// Embedded implements the DSSE envelope as defined in https://github.com/secure-systems-lab/dsse
-type Embedded struct {
-	state       protoimpl.MessageState `protogen:"open.v1"`
-	PayloadType string                 `protobuf:"bytes,1,opt,name=payload_type,json=payloadType,proto3" json:"payload_type,omitempty"`
-	Payload     []byte                 `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
-	// The PAE used before signing is:
-	// "DSSEv1" + SP + LEN(payload_type) + SP + payload_type + SP + LEN(payload) + SP + payload
-	// When signing, data is the PAE.
-	// MUST be unset when submitting with an ID token to a log.
-	Signature     *Signature `protobuf:"bytes,3,opt,name=signature,proto3,oneof" json:"signature,omitempty"`
+// Payload represents a DSSE payload as defined in https://github.com/secure-systems-lab/dsse.
+// When present in a Bundle, the signed data is the DSSE Pre-Authentication Encoding (PAE):
+// "DSSEv1" + SP + LEN(payload_type) + SP + payload_type + SP + LEN(payload) + SP + payload
+type Payload struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PayloadType   string                 `protobuf:"bytes,1,opt,name=payload_type,json=payloadType,proto3" json:"payload_type,omitempty"`
+	Payload       []byte                 `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Embedded) Reset() {
-	*x = Embedded{}
+func (x *Payload) Reset() {
+	*x = Payload{}
 	mi := &file_sigstore_bundle_v2_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Embedded) String() string {
+func (x *Payload) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Embedded) ProtoMessage() {}
+func (*Payload) ProtoMessage() {}
 
-func (x *Embedded) ProtoReflect() protoreflect.Message {
+func (x *Payload) ProtoReflect() protoreflect.Message {
 	mi := &file_sigstore_bundle_v2_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -159,79 +156,26 @@ func (x *Embedded) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Embedded.ProtoReflect.Descriptor instead.
-func (*Embedded) Descriptor() ([]byte, []int) {
+// Deprecated: Use Payload.ProtoReflect.Descriptor instead.
+func (*Payload) Descriptor() ([]byte, []int) {
 	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *Embedded) GetPayloadType() string {
+func (x *Payload) GetPayloadType() string {
 	if x != nil {
 		return x.PayloadType
 	}
 	return ""
 }
 
-func (x *Embedded) GetPayload() []byte {
+func (x *Payload) GetPayload() []byte {
 	if x != nil {
 		return x.Payload
 	}
 	return nil
 }
 
-func (x *Embedded) GetSignature() *Signature {
-	if x != nil {
-		return x.Signature
-	}
-	return nil
-}
-
-type MessageSignature struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// When signing, data is the artifact.
-	// MUST be unset when submitting with an ID token to a log.
-	Signature     *Signature `protobuf:"bytes,1,opt,name=signature,proto3,oneof" json:"signature,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *MessageSignature) Reset() {
-	*x = MessageSignature{}
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *MessageSignature) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MessageSignature) ProtoMessage() {}
-
-func (x *MessageSignature) ProtoReflect() protoreflect.Message {
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MessageSignature.ProtoReflect.Descriptor instead.
-func (*MessageSignature) Descriptor() ([]byte, []int) {
-	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *MessageSignature) GetSignature() *Signature {
-	if x != nil {
-		return x.Signature
-	}
-	return nil
-}
-
-type TlogProof struct {
+type TransparencyLogProof struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The log proof, formatted per c2sp.org/tlog-proof.
 	// If OIDC-based submission is used, the `extra` field contains the
@@ -243,32 +187,34 @@ type TlogProof struct {
 	// and provenance values from the token.
 	// When the credential is a public key, the `extra` field will be the provided
 	// context as a hex-encoded string.
+	Proof []byte `protobuf:"bytes,1,opt,name=proof,proto3" json:"proof,omitempty"`
+	// Only set when the credential is a public key/signature.
 	// If a signature is part of the leaf, verifiers MUST verify the
 	// artifact's signature and confirm that the signature matches
 	// what was submitted to the log.
 	// If the artifact was signed prior to log submission, the
 	// signature is over
 	// c2sp.org/identity-transparency/v1 || 0x00 || SHA256(SHA256(data))
-	Proof         []byte `protobuf:"bytes,1,opt,name=proof,proto3" json:"proof,omitempty"`
+	Signature     *Signature `protobuf:"bytes,2,opt,name=signature,proto3,oneof" json:"signature,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *TlogProof) Reset() {
-	*x = TlogProof{}
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[4]
+func (x *TransparencyLogProof) Reset() {
+	*x = TransparencyLogProof{}
+	mi := &file_sigstore_bundle_v2_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *TlogProof) String() string {
+func (x *TransparencyLogProof) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TlogProof) ProtoMessage() {}
+func (*TransparencyLogProof) ProtoMessage() {}
 
-func (x *TlogProof) ProtoReflect() protoreflect.Message {
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[4]
+func (x *TransparencyLogProof) ProtoReflect() protoreflect.Message {
+	mi := &file_sigstore_bundle_v2_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -279,14 +225,21 @@ func (x *TlogProof) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use TlogProof.ProtoReflect.Descriptor instead.
-func (*TlogProof) Descriptor() ([]byte, []int) {
-	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{4}
+// Deprecated: Use TransparencyLogProof.ProtoReflect.Descriptor instead.
+func (*TransparencyLogProof) Descriptor() ([]byte, []int) {
+	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *TlogProof) GetProof() []byte {
+func (x *TransparencyLogProof) GetProof() []byte {
 	if x != nil {
 		return x.Proof
+	}
+	return nil
+}
+
+func (x *TransparencyLogProof) GetSignature() *Signature {
+	if x != nil {
+		return x.Signature
 	}
 	return nil
 }
@@ -296,16 +249,18 @@ type PublicKey struct {
 	// Unauthenticated hint to select the public key from a set of trusted public keys.
 	// MUST be SHA256(DER-encoded SubjectPublicKeyInfo)
 	PublicKey *v1.PublicKeyIdentifier `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3,oneof" json:"public_key,omitempty"`
-	// Optional timestamp to enable key rotation when a signature is not
+	// Optional timestamps to enable key rotation when a signature is not
 	// logged (witnesses provide a counter-signature with timestamp).
-	Timestamps    *TimestampVerificationData `protobuf:"bytes,2,opt,name=timestamps,proto3,oneof" json:"timestamps,omitempty"`
+	Timestamps *TimestampVerificationData `protobuf:"bytes,2,opt,name=timestamps,proto3,oneof" json:"timestamps,omitempty"`
+	// The signature over the domain-separated message for the artifact (or DSSE PAE).
+	Signature     *Signature `protobuf:"bytes,3,opt,name=signature,proto3" json:"signature,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PublicKey) Reset() {
 	*x = PublicKey{}
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[5]
+	mi := &file_sigstore_bundle_v2_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -317,7 +272,7 @@ func (x *PublicKey) String() string {
 func (*PublicKey) ProtoMessage() {}
 
 func (x *PublicKey) ProtoReflect() protoreflect.Message {
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[5]
+	mi := &file_sigstore_bundle_v2_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -330,7 +285,7 @@ func (x *PublicKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PublicKey.ProtoReflect.Descriptor instead.
 func (*PublicKey) Descriptor() ([]byte, []int) {
-	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{5}
+	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *PublicKey) GetPublicKey() *v1.PublicKeyIdentifier {
@@ -347,34 +302,45 @@ func (x *PublicKey) GetTimestamps() *TimestampVerificationData {
 	return nil
 }
 
-type Cert struct {
+func (x *PublicKey) GetSignature() *Signature {
+	if x != nil {
+		return x.Signature
+	}
+	return nil
+}
+
+type Certificate struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The end-entity certificate used for signing
 	Certificate *v1.X509Certificate `protobuf:"bytes,1,opt,name=certificate,proto3" json:"certificate,omitempty"`
 	// Optional list of untrusted intermediates used for chain
 	// building. When signing with Sigstore PGI, this list MUST be empty
 	// as the intermediates are provided via the TUF root.
-	Intermediates *v1.X509CertificateChain   `protobuf:"bytes,2,opt,name=intermediates,proto3,oneof" json:"intermediates,omitempty"`
-	Timestamps    *TimestampVerificationData `protobuf:"bytes,3,opt,name=timestamps,proto3" json:"timestamps,omitempty"`
+	Intermediates *v1.X509CertificateChain `protobuf:"bytes,2,opt,name=intermediates,proto3,oneof" json:"intermediates,omitempty"`
+	// Timestamps proving the signature was created during the certificate's
+	// validity period.
+	Timestamps *TimestampVerificationData `protobuf:"bytes,3,opt,name=timestamps,proto3" json:"timestamps,omitempty"`
+	// The signature over the domain-separated message for the artifact (or DSSE PAE).
+	Signature     *Signature `protobuf:"bytes,4,opt,name=signature,proto3" json:"signature,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Cert) Reset() {
-	*x = Cert{}
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[6]
+func (x *Certificate) Reset() {
+	*x = Certificate{}
+	mi := &file_sigstore_bundle_v2_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Cert) String() string {
+func (x *Certificate) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Cert) ProtoMessage() {}
+func (*Certificate) ProtoMessage() {}
 
-func (x *Cert) ProtoReflect() protoreflect.Message {
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[6]
+func (x *Certificate) ProtoReflect() protoreflect.Message {
+	mi := &file_sigstore_bundle_v2_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -385,28 +351,35 @@ func (x *Cert) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Cert.ProtoReflect.Descriptor instead.
-func (*Cert) Descriptor() ([]byte, []int) {
-	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{6}
+// Deprecated: Use Certificate.ProtoReflect.Descriptor instead.
+func (*Certificate) Descriptor() ([]byte, []int) {
+	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *Cert) GetCertificate() *v1.X509Certificate {
+func (x *Certificate) GetCertificate() *v1.X509Certificate {
 	if x != nil {
 		return x.Certificate
 	}
 	return nil
 }
 
-func (x *Cert) GetIntermediates() *v1.X509CertificateChain {
+func (x *Certificate) GetIntermediates() *v1.X509CertificateChain {
 	if x != nil {
 		return x.Intermediates
 	}
 	return nil
 }
 
-func (x *Cert) GetTimestamps() *TimestampVerificationData {
+func (x *Certificate) GetTimestamps() *TimestampVerificationData {
 	if x != nil {
 		return x.Timestamps
+	}
+	return nil
+}
+
+func (x *Certificate) GetSignature() *Signature {
+	if x != nil {
+		return x.Signature
 	}
 	return nil
 }
@@ -416,8 +389,8 @@ type VerificationMaterial struct {
 	// Types that are valid to be assigned to Content:
 	//
 	//	*VerificationMaterial_PublicKey
-	//	*VerificationMaterial_Cert
-	//	*VerificationMaterial_TlogProof
+	//	*VerificationMaterial_Certificate
+	//	*VerificationMaterial_TransparencyLogProof
 	Content       isVerificationMaterial_Content `protobuf_oneof:"content"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -425,7 +398,7 @@ type VerificationMaterial struct {
 
 func (x *VerificationMaterial) Reset() {
 	*x = VerificationMaterial{}
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[7]
+	mi := &file_sigstore_bundle_v2_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -437,7 +410,7 @@ func (x *VerificationMaterial) String() string {
 func (*VerificationMaterial) ProtoMessage() {}
 
 func (x *VerificationMaterial) ProtoReflect() protoreflect.Message {
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[7]
+	mi := &file_sigstore_bundle_v2_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -450,7 +423,7 @@ func (x *VerificationMaterial) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerificationMaterial.ProtoReflect.Descriptor instead.
 func (*VerificationMaterial) Descriptor() ([]byte, []int) {
-	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{7}
+	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *VerificationMaterial) GetContent() isVerificationMaterial_Content {
@@ -469,19 +442,19 @@ func (x *VerificationMaterial) GetPublicKey() *PublicKey {
 	return nil
 }
 
-func (x *VerificationMaterial) GetCert() *Cert {
+func (x *VerificationMaterial) GetCertificate() *Certificate {
 	if x != nil {
-		if x, ok := x.Content.(*VerificationMaterial_Cert); ok {
-			return x.Cert
+		if x, ok := x.Content.(*VerificationMaterial_Certificate); ok {
+			return x.Certificate
 		}
 	}
 	return nil
 }
 
-func (x *VerificationMaterial) GetTlogProof() *TlogProof {
+func (x *VerificationMaterial) GetTransparencyLogProof() *TransparencyLogProof {
 	if x != nil {
-		if x, ok := x.Content.(*VerificationMaterial_TlogProof); ok {
-			return x.TlogProof
+		if x, ok := x.Content.(*VerificationMaterial_TransparencyLogProof); ok {
+			return x.TransparencyLogProof
 		}
 	}
 	return nil
@@ -496,22 +469,22 @@ type VerificationMaterial_PublicKey struct {
 	PublicKey *PublicKey `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3,oneof"`
 }
 
-type VerificationMaterial_Cert struct {
+type VerificationMaterial_Certificate struct {
 	// Signed with a key included in a certificate and RFC 3161 timestamp
-	Cert *Cert `protobuf:"bytes,2,opt,name=cert,proto3,oneof"`
+	Certificate *Certificate `protobuf:"bytes,2,opt,name=certificate,proto3,oneof"`
 }
 
-type VerificationMaterial_TlogProof struct {
+type VerificationMaterial_TransparencyLogProof struct {
 	// Signed by logging to Rekor, authenticating with an ID token or
 	// a public key/signature.
-	TlogProof *TlogProof `protobuf:"bytes,3,opt,name=tlog_proof,json=tlogProof,proto3,oneof"`
+	TransparencyLogProof *TransparencyLogProof `protobuf:"bytes,3,opt,name=transparency_log_proof,json=transparencyLogProof,proto3,oneof"`
 }
 
 func (*VerificationMaterial_PublicKey) isVerificationMaterial_Content() {}
 
-func (*VerificationMaterial_Cert) isVerificationMaterial_Content() {}
+func (*VerificationMaterial_Certificate) isVerificationMaterial_Content() {}
 
-func (*VerificationMaterial_TlogProof) isVerificationMaterial_Content() {}
+func (*VerificationMaterial_TransparencyLogProof) isVerificationMaterial_Content() {}
 
 type Bundle struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -519,18 +492,14 @@ type Bundle struct {
 	// encoded as JSON.
 	MediaType            string                `protobuf:"bytes,1,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
 	VerificationMaterial *VerificationMaterial `protobuf:"bytes,2,opt,name=verification_material,json=verificationMaterial,proto3" json:"verification_material,omitempty"`
-	// Types that are valid to be assigned to Content:
-	//
-	//	*Bundle_MessageSignature
-	//	*Bundle_EmbeddedData
-	Content       isBundle_Content `protobuf_oneof:"content"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Payload              *Payload              `protobuf:"bytes,3,opt,name=payload,proto3,oneof" json:"payload,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *Bundle) Reset() {
 	*x = Bundle{}
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[8]
+	mi := &file_sigstore_bundle_v2_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -542,7 +511,7 @@ func (x *Bundle) String() string {
 func (*Bundle) ProtoMessage() {}
 
 func (x *Bundle) ProtoReflect() protoreflect.Message {
-	mi := &file_sigstore_bundle_v2_proto_msgTypes[8]
+	mi := &file_sigstore_bundle_v2_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -555,7 +524,7 @@ func (x *Bundle) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Bundle.ProtoReflect.Descriptor instead.
 func (*Bundle) Descriptor() ([]byte, []int) {
-	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{8}
+	return file_sigstore_bundle_v2_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Bundle) GetMediaType() string {
@@ -572,46 +541,12 @@ func (x *Bundle) GetVerificationMaterial() *VerificationMaterial {
 	return nil
 }
 
-func (x *Bundle) GetContent() isBundle_Content {
+func (x *Bundle) GetPayload() *Payload {
 	if x != nil {
-		return x.Content
+		return x.Payload
 	}
 	return nil
 }
-
-func (x *Bundle) GetMessageSignature() *MessageSignature {
-	if x != nil {
-		if x, ok := x.Content.(*Bundle_MessageSignature); ok {
-			return x.MessageSignature
-		}
-	}
-	return nil
-}
-
-func (x *Bundle) GetEmbeddedData() *Embedded {
-	if x != nil {
-		if x, ok := x.Content.(*Bundle_EmbeddedData); ok {
-			return x.EmbeddedData
-		}
-	}
-	return nil
-}
-
-type isBundle_Content interface {
-	isBundle_Content()
-}
-
-type Bundle_MessageSignature struct {
-	MessageSignature *MessageSignature `protobuf:"bytes,3,opt,name=message_signature,json=messageSignature,proto3,oneof"`
-}
-
-type Bundle_EmbeddedData struct {
-	EmbeddedData *Embedded `protobuf:"bytes,4,opt,name=embedded_data,json=embeddedData,proto3,oneof"`
-}
-
-func (*Bundle_MessageSignature) isBundle_Content() {}
-
-func (*Bundle_EmbeddedData) isBundle_Content() {}
 
 var File_sigstore_bundle_v2_proto protoreflect.FileDescriptor
 
@@ -619,50 +554,47 @@ const file_sigstore_bundle_v2_proto_rawDesc = "" +
 	"\n" +
 	"\x18sigstore_bundle_v2.proto\x12\x16dev.sigstore.bundle.v2\x1a\x1fgoogle/api/field_behavior.proto\x1a\x15sigstore_common.proto\"z\n" +
 	"\x19TimestampVerificationData\x12]\n" +
-	"\x12rfc3161_timestamps\x18\x01 \x03(\v2..dev.sigstore.common.v1.RFC3161SignedTimestampR\x11rfc3161Timestamps\")\n" +
-	"\tSignature\x12\x1c\n" +
-	"\tsignature\x18\x01 \x01(\fR\tsignature\"\x9b\x01\n" +
-	"\bEmbedded\x12!\n" +
-	"\fpayload_type\x18\x01 \x01(\tR\vpayloadType\x12\x18\n" +
-	"\apayload\x18\x02 \x01(\fR\apayload\x12D\n" +
-	"\tsignature\x18\x03 \x01(\v2!.dev.sigstore.bundle.v2.SignatureH\x00R\tsignature\x88\x01\x01B\f\n" +
+	"\x12rfc3161_timestamps\x18\x01 \x03(\v2..dev.sigstore.common.v1.RFC3161SignedTimestampR\x11rfc3161Timestamps\"/\n" +
+	"\tSignature\x12\"\n" +
+	"\tsignature\x18\x01 \x01(\fB\x04\xe2A\x01\x02R\tsignature\"R\n" +
+	"\aPayload\x12'\n" +
+	"\fpayload_type\x18\x01 \x01(\tB\x04\xe2A\x01\x02R\vpayloadType\x12\x1e\n" +
+	"\apayload\x18\x02 \x01(\fB\x04\xe2A\x01\x02R\apayload\"\x86\x01\n" +
+	"\x14TransparencyLogProof\x12\x1a\n" +
+	"\x05proof\x18\x01 \x01(\fB\x04\xe2A\x01\x02R\x05proof\x12D\n" +
+	"\tsignature\x18\x02 \x01(\v2!.dev.sigstore.bundle.v2.SignatureH\x00R\tsignature\x88\x01\x01B\f\n" +
 	"\n" +
-	"_signature\"f\n" +
-	"\x10MessageSignature\x12D\n" +
-	"\tsignature\x18\x01 \x01(\v2!.dev.sigstore.bundle.v2.SignatureH\x00R\tsignature\x88\x01\x01B\f\n" +
-	"\n" +
-	"_signature\"'\n" +
-	"\tTlogProof\x12\x1a\n" +
-	"\x05proof\x18\x01 \x01(\fB\x04\xe2A\x01\x02R\x05proof\"\xd2\x01\n" +
+	"_signature\"\x99\x02\n" +
 	"\tPublicKey\x12O\n" +
 	"\n" +
 	"public_key\x18\x01 \x01(\v2+.dev.sigstore.common.v1.PublicKeyIdentifierH\x00R\tpublicKey\x88\x01\x01\x12V\n" +
 	"\n" +
 	"timestamps\x18\x02 \x01(\v21.dev.sigstore.bundle.v2.TimestampVerificationDataH\x01R\n" +
-	"timestamps\x88\x01\x01B\r\n" +
+	"timestamps\x88\x01\x01\x12E\n" +
+	"\tsignature\x18\x03 \x01(\v2!.dev.sigstore.bundle.v2.SignatureB\x04\xe2A\x01\x02R\tsignatureB\r\n" +
 	"\v_public_keyB\r\n" +
-	"\v_timestamps\"\x9b\x02\n" +
-	"\x04Cert\x12O\n" +
+	"\v_timestamps\"\xe9\x02\n" +
+	"\vCertificate\x12O\n" +
 	"\vcertificate\x18\x01 \x01(\v2'.dev.sigstore.common.v1.X509CertificateB\x04\xe2A\x01\x02R\vcertificate\x12W\n" +
 	"\rintermediates\x18\x02 \x01(\v2,.dev.sigstore.common.v1.X509CertificateChainH\x00R\rintermediates\x88\x01\x01\x12W\n" +
 	"\n" +
 	"timestamps\x18\x03 \x01(\v21.dev.sigstore.bundle.v2.TimestampVerificationDataB\x04\xe2A\x01\x02R\n" +
-	"timestampsB\x10\n" +
-	"\x0e_intermediates\"\xef\x01\n" +
+	"timestamps\x12E\n" +
+	"\tsignature\x18\x04 \x01(\v2!.dev.sigstore.bundle.v2.SignatureB\x04\xe2A\x01\x02R\tsignatureB\x10\n" +
+	"\x0e_intermediates\"\xa6\x02\n" +
 	"\x14VerificationMaterial\x12H\n" +
 	"\n" +
-	"public_key\x18\x01 \x01(\v2!.dev.sigstore.bundle.v2.PublicKeyB\x04\xe2A\x01\x02H\x00R\tpublicKey\x128\n" +
-	"\x04cert\x18\x02 \x01(\v2\x1c.dev.sigstore.bundle.v2.CertB\x04\xe2A\x01\x02H\x00R\x04cert\x12H\n" +
-	"\n" +
-	"tlog_proof\x18\x03 \x01(\v2!.dev.sigstore.bundle.v2.TlogProofB\x04\xe2A\x01\x02H\x00R\ttlogProofB\t\n" +
-	"\acontent\"\xc9\x02\n" +
+	"public_key\x18\x01 \x01(\v2!.dev.sigstore.bundle.v2.PublicKeyB\x04\xe2A\x01\x02H\x00R\tpublicKey\x12M\n" +
+	"\vcertificate\x18\x02 \x01(\v2#.dev.sigstore.bundle.v2.CertificateB\x04\xe2A\x01\x02H\x00R\vcertificate\x12j\n" +
+	"\x16transparency_log_proof\x18\x03 \x01(\v2,.dev.sigstore.bundle.v2.TransparencyLogProofB\x04\xe2A\x01\x02H\x00R\x14transparencyLogProofB\t\n" +
+	"\acontent\"\xdc\x01\n" +
 	"\x06Bundle\x12\x1d\n" +
 	"\n" +
 	"media_type\x18\x01 \x01(\tR\tmediaType\x12g\n" +
-	"\x15verification_material\x18\x02 \x01(\v2,.dev.sigstore.bundle.v2.VerificationMaterialB\x04\xe2A\x01\x02R\x14verificationMaterial\x12]\n" +
-	"\x11message_signature\x18\x03 \x01(\v2(.dev.sigstore.bundle.v2.MessageSignatureB\x04\xe2A\x01\x02H\x00R\x10messageSignature\x12M\n" +
-	"\rembedded_data\x18\x04 \x01(\v2 .dev.sigstore.bundle.v2.EmbeddedB\x04\xe2A\x01\x02H\x00R\fembeddedDataB\t\n" +
-	"\acontentB~\n" +
+	"\x15verification_material\x18\x02 \x01(\v2,.dev.sigstore.bundle.v2.VerificationMaterialB\x04\xe2A\x01\x02R\x14verificationMaterial\x12>\n" +
+	"\apayload\x18\x03 \x01(\v2\x1f.dev.sigstore.bundle.v2.PayloadH\x00R\apayload\x88\x01\x01B\n" +
+	"\n" +
+	"\b_payloadB~\n" +
 	"\x1cdev.sigstore.proto.bundle.v2B\rBundleProtoV2P\x01Z6github.com/sigstore/protobuf-specs/gen/pb-go/bundle/v2\xea\x02\x14Sigstore::Bundle::V2b\x06proto3"
 
 var (
@@ -677,37 +609,36 @@ func file_sigstore_bundle_v2_proto_rawDescGZIP() []byte {
 	return file_sigstore_bundle_v2_proto_rawDescData
 }
 
-var file_sigstore_bundle_v2_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_sigstore_bundle_v2_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_sigstore_bundle_v2_proto_goTypes = []any{
 	(*TimestampVerificationData)(nil), // 0: dev.sigstore.bundle.v2.TimestampVerificationData
 	(*Signature)(nil),                 // 1: dev.sigstore.bundle.v2.Signature
-	(*Embedded)(nil),                  // 2: dev.sigstore.bundle.v2.Embedded
-	(*MessageSignature)(nil),          // 3: dev.sigstore.bundle.v2.MessageSignature
-	(*TlogProof)(nil),                 // 4: dev.sigstore.bundle.v2.TlogProof
-	(*PublicKey)(nil),                 // 5: dev.sigstore.bundle.v2.PublicKey
-	(*Cert)(nil),                      // 6: dev.sigstore.bundle.v2.Cert
-	(*VerificationMaterial)(nil),      // 7: dev.sigstore.bundle.v2.VerificationMaterial
-	(*Bundle)(nil),                    // 8: dev.sigstore.bundle.v2.Bundle
-	(*v1.RFC3161SignedTimestamp)(nil), // 9: dev.sigstore.common.v1.RFC3161SignedTimestamp
-	(*v1.PublicKeyIdentifier)(nil),    // 10: dev.sigstore.common.v1.PublicKeyIdentifier
-	(*v1.X509Certificate)(nil),        // 11: dev.sigstore.common.v1.X509Certificate
-	(*v1.X509CertificateChain)(nil),   // 12: dev.sigstore.common.v1.X509CertificateChain
+	(*Payload)(nil),                   // 2: dev.sigstore.bundle.v2.Payload
+	(*TransparencyLogProof)(nil),      // 3: dev.sigstore.bundle.v2.TransparencyLogProof
+	(*PublicKey)(nil),                 // 4: dev.sigstore.bundle.v2.PublicKey
+	(*Certificate)(nil),               // 5: dev.sigstore.bundle.v2.Certificate
+	(*VerificationMaterial)(nil),      // 6: dev.sigstore.bundle.v2.VerificationMaterial
+	(*Bundle)(nil),                    // 7: dev.sigstore.bundle.v2.Bundle
+	(*v1.RFC3161SignedTimestamp)(nil), // 8: dev.sigstore.common.v1.RFC3161SignedTimestamp
+	(*v1.PublicKeyIdentifier)(nil),    // 9: dev.sigstore.common.v1.PublicKeyIdentifier
+	(*v1.X509Certificate)(nil),        // 10: dev.sigstore.common.v1.X509Certificate
+	(*v1.X509CertificateChain)(nil),   // 11: dev.sigstore.common.v1.X509CertificateChain
 }
 var file_sigstore_bundle_v2_proto_depIdxs = []int32{
-	9,  // 0: dev.sigstore.bundle.v2.TimestampVerificationData.rfc3161_timestamps:type_name -> dev.sigstore.common.v1.RFC3161SignedTimestamp
-	1,  // 1: dev.sigstore.bundle.v2.Embedded.signature:type_name -> dev.sigstore.bundle.v2.Signature
-	1,  // 2: dev.sigstore.bundle.v2.MessageSignature.signature:type_name -> dev.sigstore.bundle.v2.Signature
-	10, // 3: dev.sigstore.bundle.v2.PublicKey.public_key:type_name -> dev.sigstore.common.v1.PublicKeyIdentifier
-	0,  // 4: dev.sigstore.bundle.v2.PublicKey.timestamps:type_name -> dev.sigstore.bundle.v2.TimestampVerificationData
-	11, // 5: dev.sigstore.bundle.v2.Cert.certificate:type_name -> dev.sigstore.common.v1.X509Certificate
-	12, // 6: dev.sigstore.bundle.v2.Cert.intermediates:type_name -> dev.sigstore.common.v1.X509CertificateChain
-	0,  // 7: dev.sigstore.bundle.v2.Cert.timestamps:type_name -> dev.sigstore.bundle.v2.TimestampVerificationData
-	5,  // 8: dev.sigstore.bundle.v2.VerificationMaterial.public_key:type_name -> dev.sigstore.bundle.v2.PublicKey
-	6,  // 9: dev.sigstore.bundle.v2.VerificationMaterial.cert:type_name -> dev.sigstore.bundle.v2.Cert
-	4,  // 10: dev.sigstore.bundle.v2.VerificationMaterial.tlog_proof:type_name -> dev.sigstore.bundle.v2.TlogProof
-	7,  // 11: dev.sigstore.bundle.v2.Bundle.verification_material:type_name -> dev.sigstore.bundle.v2.VerificationMaterial
-	3,  // 12: dev.sigstore.bundle.v2.Bundle.message_signature:type_name -> dev.sigstore.bundle.v2.MessageSignature
-	2,  // 13: dev.sigstore.bundle.v2.Bundle.embedded_data:type_name -> dev.sigstore.bundle.v2.Embedded
+	8,  // 0: dev.sigstore.bundle.v2.TimestampVerificationData.rfc3161_timestamps:type_name -> dev.sigstore.common.v1.RFC3161SignedTimestamp
+	1,  // 1: dev.sigstore.bundle.v2.TransparencyLogProof.signature:type_name -> dev.sigstore.bundle.v2.Signature
+	9,  // 2: dev.sigstore.bundle.v2.PublicKey.public_key:type_name -> dev.sigstore.common.v1.PublicKeyIdentifier
+	0,  // 3: dev.sigstore.bundle.v2.PublicKey.timestamps:type_name -> dev.sigstore.bundle.v2.TimestampVerificationData
+	1,  // 4: dev.sigstore.bundle.v2.PublicKey.signature:type_name -> dev.sigstore.bundle.v2.Signature
+	10, // 5: dev.sigstore.bundle.v2.Certificate.certificate:type_name -> dev.sigstore.common.v1.X509Certificate
+	11, // 6: dev.sigstore.bundle.v2.Certificate.intermediates:type_name -> dev.sigstore.common.v1.X509CertificateChain
+	0,  // 7: dev.sigstore.bundle.v2.Certificate.timestamps:type_name -> dev.sigstore.bundle.v2.TimestampVerificationData
+	1,  // 8: dev.sigstore.bundle.v2.Certificate.signature:type_name -> dev.sigstore.bundle.v2.Signature
+	4,  // 9: dev.sigstore.bundle.v2.VerificationMaterial.public_key:type_name -> dev.sigstore.bundle.v2.PublicKey
+	5,  // 10: dev.sigstore.bundle.v2.VerificationMaterial.certificate:type_name -> dev.sigstore.bundle.v2.Certificate
+	3,  // 11: dev.sigstore.bundle.v2.VerificationMaterial.transparency_log_proof:type_name -> dev.sigstore.bundle.v2.TransparencyLogProof
+	6,  // 12: dev.sigstore.bundle.v2.Bundle.verification_material:type_name -> dev.sigstore.bundle.v2.VerificationMaterial
+	2,  // 13: dev.sigstore.bundle.v2.Bundle.payload:type_name -> dev.sigstore.bundle.v2.Payload
 	14, // [14:14] is the sub-list for method output_type
 	14, // [14:14] is the sub-list for method input_type
 	14, // [14:14] is the sub-list for extension type_name
@@ -720,26 +651,22 @@ func file_sigstore_bundle_v2_proto_init() {
 	if File_sigstore_bundle_v2_proto != nil {
 		return
 	}
-	file_sigstore_bundle_v2_proto_msgTypes[2].OneofWrappers = []any{}
 	file_sigstore_bundle_v2_proto_msgTypes[3].OneofWrappers = []any{}
+	file_sigstore_bundle_v2_proto_msgTypes[4].OneofWrappers = []any{}
 	file_sigstore_bundle_v2_proto_msgTypes[5].OneofWrappers = []any{}
-	file_sigstore_bundle_v2_proto_msgTypes[6].OneofWrappers = []any{}
-	file_sigstore_bundle_v2_proto_msgTypes[7].OneofWrappers = []any{
+	file_sigstore_bundle_v2_proto_msgTypes[6].OneofWrappers = []any{
 		(*VerificationMaterial_PublicKey)(nil),
-		(*VerificationMaterial_Cert)(nil),
-		(*VerificationMaterial_TlogProof)(nil),
+		(*VerificationMaterial_Certificate)(nil),
+		(*VerificationMaterial_TransparencyLogProof)(nil),
 	}
-	file_sigstore_bundle_v2_proto_msgTypes[8].OneofWrappers = []any{
-		(*Bundle_MessageSignature)(nil),
-		(*Bundle_EmbeddedData)(nil),
-	}
+	file_sigstore_bundle_v2_proto_msgTypes[7].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sigstore_bundle_v2_proto_rawDesc), len(file_sigstore_bundle_v2_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
