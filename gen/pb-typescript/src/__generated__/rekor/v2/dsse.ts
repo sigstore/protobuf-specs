@@ -9,22 +9,48 @@ import { Envelope } from "../../envelope";
 import { HashOutput } from "../../sigstore_common";
 import { Signature, Verifier } from "./verifier";
 
-/** A request to add a DSSE v0.0.2 entry to the log */
+/**
+ * A request to add a DSSE v0.0.2 entry to the log
+ * Deprecated: Use HashedRekordRequestV002 with the hash of the DSSE PAE instead
+ *
+ * @deprecated
+ */
 export interface DSSERequestV002 {
-  /** A DSSE envelope */
+  /**
+   * A DSSE envelope
+   *
+   * @deprecated
+   */
   envelope:
     | Envelope
     | undefined;
-  /** All necessary verification material to verify all signatures embedded in the envelope */
+  /**
+   * All necessary verification material to verify all signatures embedded in the envelope
+   *
+   * @deprecated
+   */
   verifiers: Verifier[];
 }
 
+/**
+ * Deprecated: Use HashedRekordLogEntryV002
+ *
+ * @deprecated
+ */
 export interface DSSELogEntryV002 {
-  /** The hash of the DSSE payload */
+  /**
+   * The hash of the DSSE payload
+   *
+   * @deprecated
+   */
   payloadHash:
     | HashOutput
     | undefined;
-  /** Signatures and their associated verification material used to verify the payload */
+  /**
+   * Signatures and their associated verification material used to verify the payload
+   *
+   * @deprecated
+   */
   signatures: Signature[];
 }
 

@@ -4,13 +4,12 @@
 
 require 'google/protobuf'
 
-require 'google/api/field_behavior_pb'
 require 'sigstore_common_pb'
 require 'envelope_pb'
 require 'rekor/v2/verifier_pb'
 
 
-descriptor_data = "\n\x13rekor/v2/dsse.proto\x12\x15\x64\x65v.sigstore.rekor.v2\x1a\x1fgoogle/api/field_behavior.proto\x1a\x15sigstore_common.proto\x1a\x0e\x65nvelope.proto\x1a\x17rekor/v2/verifier.proto\"x\n\x0f\x44SSERequestV002\x12+\n\x08\x65nvelope\x18\x01 \x01(\x0b\x32\x13.io.intoto.EnvelopeB\x04\xe2\x41\x01\x02\x12\x38\n\tverifiers\x18\x02 \x03(\x0b\x32\x1f.dev.sigstore.rekor.v2.VerifierB\x04\xe2\x41\x01\x02\"\x8d\x01\n\x10\x44SSELogEntryV002\x12=\n\x0bpayloadHash\x18\x01 \x01(\x0b\x32\".dev.sigstore.common.v1.HashOutputB\x04\xe2\x41\x01\x02\x12:\n\nsignatures\x18\x02 \x03(\x0b\x32 .dev.sigstore.rekor.v2.SignatureB\x04\xe2\x41\x01\x02\x42y\n\x1b\x64\x65v.sigstore.proto.rekor.v2B\x0bRekorV2DsseP\x01Z5github.com/sigstore/protobuf-specs/gen/pb-go/rekor/v2\xea\x02\x13Sigstore::Rekor::V2b\x06proto3"
+descriptor_data = "\n\x13rekor/v2/dsse.proto\x12\x15\x64\x65v.sigstore.rekor.v2\x1a\x15sigstore_common.proto\x1a\x0e\x65nvelope.proto\x1a\x17rekor/v2/verifier.proto\"x\n\x0f\x44SSERequestV002\x12)\n\x08\x65nvelope\x18\x01 \x01(\x0b\x32\x13.io.intoto.EnvelopeB\x02\x18\x01\x12\x36\n\tverifiers\x18\x02 \x03(\x0b\x32\x1f.dev.sigstore.rekor.v2.VerifierB\x02\x18\x01:\x02\x18\x01\"\x8d\x01\n\x10\x44SSELogEntryV002\x12;\n\x0bpayloadHash\x18\x01 \x01(\x0b\x32\".dev.sigstore.common.v1.HashOutputB\x02\x18\x01\x12\x38\n\nsignatures\x18\x02 \x03(\x0b\x32 .dev.sigstore.rekor.v2.SignatureB\x02\x18\x01:\x02\x18\x01\x42y\n\x1b\x64\x65v.sigstore.proto.rekor.v2B\x0bRekorV2DsseP\x01Z5github.com/sigstore/protobuf-specs/gen/pb-go/rekor/v2\xea\x02\x13Sigstore::Rekor::V2b\x06proto3"
 
 pool = ::Google::Protobuf::DescriptorPool.generated_pool
 pool.add_serialized_file(descriptor_data)

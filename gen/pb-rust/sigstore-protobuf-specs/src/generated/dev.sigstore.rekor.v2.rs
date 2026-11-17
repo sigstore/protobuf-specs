@@ -61,6 +61,7 @@ pub struct Signature {
     pub verifier: ::core::option::Option<Verifier>,
 }
 /// A request to add a DSSE v0.0.2 entry to the log
+/// Deprecated: Use HashedRekordRequestV002 with the hash of the DSSE PAE instead
 #[derive(
     sigstore_protobuf_specs_derive::Deserialize_proto,
     sigstore_protobuf_specs_derive::Serialize_proto
@@ -71,14 +72,17 @@ pub struct Signature {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DsseRequestV002 {
     /// A DSSE envelope
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub envelope: ::core::option::Option<
         super::super::super::super::io::intoto::Envelope,
     >,
     /// All necessary verification material to verify all signatures embedded in the envelope
+    #[deprecated]
     #[prost(message, repeated, tag = "2")]
     pub verifiers: ::prost::alloc::vec::Vec<Verifier>,
 }
+/// Deprecated: Use HashedRekordLogEntryV002
 #[derive(
     sigstore_protobuf_specs_derive::Deserialize_proto,
     sigstore_protobuf_specs_derive::Serialize_proto
@@ -89,9 +93,11 @@ pub struct DsseRequestV002 {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DsseLogEntryV002 {
     /// The hash of the DSSE payload
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub payload_hash: ::core::option::Option<super::super::common::v1::HashOutput>,
     /// Signatures and their associated verification material used to verify the payload
+    #[deprecated]
     #[prost(message, repeated, tag = "2")]
     pub signatures: ::prost::alloc::vec::Vec<Signature>,
 }
@@ -173,6 +179,7 @@ pub mod spec {
     pub enum Spec {
         #[prost(message, tag = "1")]
         HashedRekordV002(super::HashedRekordLogEntryV002),
+        #[deprecated]
         #[prost(message, tag = "2")]
         DsseV002(super::DsseLogEntryV002),
     }
@@ -200,7 +207,73 @@ pub mod create_entry_request {
     pub enum Spec {
         #[prost(message, tag = "1")]
         HashedRekordRequestV002(super::HashedRekordRequestV002),
+        #[deprecated]
         #[prost(message, tag = "2")]
         DsseRequestV002(super::DsseRequestV002),
+    }
+}
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.rekor.v2.PublicKeyCredential")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PublicKeyCredential {
+    /// The public key used to verify the signature.
+    /// MUST be an Ed25519 public key (SPKI DER-encoded) or an ML-DSA-44 public key (SPKI DER-encoded).
+    #[prost(bytes = "vec", tag = "1")]
+    pub public_key: ::prost::alloc::vec::Vec<u8>,
+    /// The signature computed over the specification identifier, checksum, and context strings,
+    /// as defined by the c2sp.org/identity-transparency specification.
+    #[prost(bytes = "vec", tag = "2")]
+    pub signature: ::prost::alloc::vec::Vec<u8>,
+    /// Optional context value to record alongside the message. Must be a SHA-256 digest.
+    /// Must be signed as defined by the c2sp.org/identity-transparency specification.
+    #[prost(bytes = "vec", tag = "3")]
+    pub context: ::prost::alloc::vec::Vec<u8>,
+}
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.rekor.v2.OidcCredential")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OidcCredential {
+    /// The raw OIDC identity token
+    #[prost(string, tag = "1")]
+    pub token: ::prost::alloc::string::String,
+}
+/// A request to add an identity-based transparency log entry (v0.0.1)
+#[derive(
+    sigstore_protobuf_specs_derive::Deserialize_proto,
+    sigstore_protobuf_specs_derive::Serialize_proto
+)]
+#[derive(::prost_reflect::ReflectMessage)]
+#[prost_reflect(message_name = "dev.sigstore.rekor.v2.IdentityRequestV001")]
+#[prost_reflect(file_descriptor_set_bytes = "crate::FILE_DESCRIPTOR_SET_BYTES")]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct IdentityRequestV001 {
+    /// Must be a SHA-256 digest of data.
+    #[prost(bytes = "vec", tag = "3")]
+    pub message: ::prost::alloc::vec::Vec<u8>,
+    #[prost(oneof = "identity_request_v001::Credential", tags = "1, 2")]
+    pub credential: ::core::option::Option<identity_request_v001::Credential>,
+}
+/// Nested message and enum types in `IdentityRequestV001`.
+pub mod identity_request_v001 {
+    #[derive(
+        sigstore_protobuf_specs_derive::Deserialize_proto,
+        sigstore_protobuf_specs_derive::Serialize_proto
+    )]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Credential {
+        #[prost(message, tag = "1")]
+        PublicKey(super::PublicKeyCredential),
+        #[prost(message, tag = "2")]
+        Oidc(super::OidcCredential),
     }
 }
