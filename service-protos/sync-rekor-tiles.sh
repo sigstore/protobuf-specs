@@ -22,7 +22,7 @@ mkdir -p ./rekor/v2
 echo "syncing protos with ${latest_tag}"
 git clone --filter=blob:none --no-checkout --depth=1 https://github.com/sigstore/rekor-tiles.git ./rekor-tiles
 cd ./rekor-tiles
-git sparse-checkout set --no-cone '/api/proto/rekor/v2/*.proto' '!**/rekor_service.proto'
+git sparse-checkout set --no-cone '/api/proto/rekor/v2/*.proto' '!**/*_service.proto'
 git fetch origin tag "$latest_tag" --no-tags
 git checkout "$latest_tag"
 cd ../
