@@ -4,6 +4,9 @@
 // 	protoc        v7.36.2
 // source: sigstore_bundle_v2.proto
 
+// This package is unstable and may change.
+// Bundle v2 is designed for https://github.com/sigstore/architecture-docs/blob/main/pqc-design.md
+
 package v2
 
 import (

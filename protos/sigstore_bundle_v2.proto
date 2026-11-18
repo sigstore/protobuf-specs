@@ -1,4 +1,7 @@
 syntax = "proto3";
+
+// This package is unstable and may change.
+// Bundle v2 is designed for https://github.com/sigstore/architecture-docs/blob/main/pqc-design.md
 package dev.sigstore.bundle.v2;
 
 import "google/api/field_behavior.proto";
