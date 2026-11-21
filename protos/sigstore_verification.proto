@@ -162,3 +162,164 @@ message Input {
         // provided.
         optional Artifact artifact = 4;
 }
+
+// CertificateSummary contains verified metadata from the certificate
+message CertificateSummary {
+        // The issuer of the certificate
+        string certificate_issuer = 1;
+
+        // The Subject Alternative Name, or SAN, from the certificate
+        string subject_alternative_name = 2;
+
+        // The OIDC issuer. Should match `iss` claim of ID token or, in the case of
+        // a federated login like Dex it should match the issuer URL of the
+        // upstream issuer. The issuer is not set the extensions are invalid and
+        // will fail to render.
+        // OID 1.3.6.1.4.1.57264.1.8 and 1.3.6.1.4.1.57264.1.1 (Deprecated)
+        string issuer = 3;
+
+        // Deprecated
+        // Triggering event of the Github Workflow. Matches the `event_name` claim of ID
+        // tokens from Github Actions
+        // OID 1.3.6.1.4.1.57264.1.2
+        string githubWorkflowTrigger = 4;
+
+        // Deprecated
+        // SHA of git commit being built in Github Actions. Matches the `sha` claim of ID
+        // tokens from Github Actions
+        // OID 1.3.6.1.4.1.57264.1.3
+        string githubWorkflowSHA = 5;
+
+        // Deprecated
+        // Name of Github Actions Workflow. Matches the `workflow` claim of the ID
+        // tokens from Github Actions
+        // OID 1.3.6.1.4.1.57264.1.4
+        string githubWorkflowName = 6;
+
+        // Deprecated
+        // Repository of the Github Actions Workflow. Matches the `repository` claim of the ID
+        // tokens from Github Actions
+        // OID 1.3.6.1.4.1.57264.1.5
+        string githubWorkflowRepository = 7;
+
+        // Deprecated
+        // Git Ref of the Github Actions Workflow. Matches the `ref` claim of the ID tokens
+        // from Github Actions
+        // OID 1.3.6.1.4.1.57264.1.6
+        string githubWorkflowRef = 8;
+
+        // Reference to specific build instructions that are responsible for signing.
+        // OID 1.3.6.1.4.1.57264.1.9
+        string buildSignerURI = 9;
+
+        // Immutable reference to the specific version of the build instructions that is responsible for signing.
+        // OID 1.3.6.1.4.1.57264.1.10
+        string buildSignerDigest = 10;
+
+        // Specifies whether the build took place in platform-hosted cloud infrastructure or customer/self-hosted infrastructure.
+        // OID 1.3.6.1.4.1.57264.1.11
+        string runnerEnvironment = 11;
+
+        // Source repository URL that the build was based on.
+        // OID 1.3.6.1.4.1.57264.1.12
+        string sourceRepositoryURI = 12;
+
+        // Immutable reference to a specific version of the source code that the build was based upon.
+        // OID 1.3.6.1.4.1.57264.1.13
+        string sourceRepositoryDigest = 13;
+
+        // Source Repository Ref that the build run was based upon.
+        // OID 1.3.6.1.4.1.57264.1.14
+        string sourceRepositoryRef = 14;
+
+        // Immutable identifier for the source repository the workflow was based upon.
+        // OID 1.3.6.1.4.1.57264.1.15
+        string sourceRepositoryIdentifier = 15;
+
+        // Source repository owner URL of the owner of the source repository that the build was based on.
+        // OID 1.3.6.1.4.1.57264.1.16
+        string sourceRepositoryOwnerURI = 16;
+
+        // Immutable identifier for the owner of the source repository that the workflow was based upon.
+        // OID 1.3.6.1.4.1.57264.1.17
+        string sourceRepositoryOwnerIdentifier = 17;
+
+        // Build Config URL to the top-level/initiating build instructions.
+        // OID 1.3.6.1.4.1.57264.1.18
+        string buildConfigURI = 18;
+
+        // Immutable reference to the specific version of the top-level/initiating build instructions.
+        // OID 1.3.6.1.4.1.57264.1.19
+        string buildConfigDigest = 19;
+
+        // Event or action that initiated the build.
+        // OID 1.3.6.1.4.1.57264.1.20
+        string buildTrigger = 20;
+
+        // Run Invocation URL to uniquely identify the build execution.
+        // OID 1.3.6.1.4.1.57264.1.21
+        string runInvocationURI = 21;
+
+        // Source repository visibility at the time of signing the certificate.
+        // OID 1.3.6.1.4.1.57264.1.22
+        string sourceRepositoryVisibilityAtSigning = 22;
+}
+
+message SignatureResult {
+        // If the bundle contains a public key, the public_key_id field will
+        // contain the public key ID
+        string public_key_id = 1;
+
+        // If the bundle contains a certificate, the certificate field will
+        // contain metadata about the certificate
+        CertificateSummary certificate = 2;
+}
+
+message TimestampResult {
+        // The type of timestamp verification; may be `Tlog`, `TimestampAuthority`, or `CurrentTime`
+        string type = 1;
+
+        // The URI of the timestamp provider; may contain the base URL of the
+        // TSA or Tlog that was used to establish a timestamp
+        string uri = 2;
+
+        // The actual timestamp time that was verified
+        google.protobuf.Timestamp timestamp = 3;
+}
+
+message UnverifiedTimestampResult {
+        // Data about the timestamp that was unverified
+        TimestampResult result = 1;
+
+        // Reason or error text describing why this timestamp was not verified
+        string reason = 2;
+}
+
+message UnverifiedData {
+        repeated UnverifiedTimestampResult timestamps = 1;
+}
+
+// Result captures the result of the verification
+message Result {
+        // MUST be application/vnd.dev.sigstore.verificationresult+json;version=0.1
+        string media_type = 1;
+
+        // MUST be either "success" or "failure"
+        string status = 2;
+
+        // SHOULD contain an error message if status == "failure"
+        string error = 3;
+
+        // If the bundle contains a DSSE, this result shonuld contain the
+        // deserialized and verified statement
+        string statement = 3;
+
+        // Data about the public key or certificate associated with the verified signature
+        SignatureResult signature = 4;
+
+        // Data about verified timestamps
+        repeated TimestampResult verified_timestamps = 5;
+
+        // Any data which was unable to be verified.
+        UnverifiedData unverified_data = 6;
+}
