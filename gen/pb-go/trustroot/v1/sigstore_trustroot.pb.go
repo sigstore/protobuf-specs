@@ -485,6 +485,10 @@ type SigningConfig struct {
 	// the client MAY construct the CSR endpoint as
 	// `https://example.com/ca/api/v2/signingCert`.
 	//
+	// Known `major_api_version` values:
+	// * 1: Fulcio HTTP/gRPC v2 API (e.g. `POST /api/v2/signingCert`).
+	//   See https://github.com/sigstore/fulcio/blob/main/fulcio.proto
+	//
 	// Clients MUST select only one Service with the highest API version
 	// that the client is compatible with, that is within its
 	// validity period, and has the newest validity start date.
@@ -497,6 +501,9 @@ type SigningConfig struct {
 	// These URLs MUST be the "base" URLs for the OIDC IdPs, which clients
 	// should perform well-known OpenID Connect discovery against.
 	//
+	// Known `major_api_version` values:
+	// * 1: OpenID Connect Core 1.0.
+	//
 	// Clients MUST select only one Service with the highest API version
 	// that the client is compatible with, that is within its
 	// validity period, and has the newest validity start date.
@@ -508,6 +515,16 @@ type SigningConfig struct {
 	//
 	// These URL MUST be the "base" URLs for the transparency logs,
 	// which clients should construct appropriate API endpoints on top of.
+	//
+	// Known `major_api_version` values:
+	// * 1: Rekor v1 API (`POST /api/v1/log/entries`, OpenAPI / pluggable types).
+	//   See https://github.com/sigstore/rekor/blob/main/openapi.yaml
+	// * 2: Rekor v2 API (`POST /api/v2/log/entries` with
+	//   `dev.sigstore.rekor.v2.CreateEntryRequest` returning `TransparencyLogEntry`).
+	//   See https://github.com/sigstore/rekor-tiles/blob/main/api/proto/rekor/v2/rekor_service.proto
+	// * 3: Rekor identity log API (`POST /api/v2/log/entries` with
+	//   `dev.sigstore.rekor.v2.IdentityRequestV001` returning a `c2sp.org/tlog-proof`).
+	//   See https://github.com/sigstore/rekor-tiles/blob/main/api/proto/rekor/v2/rekor_identity_service.proto
 	//
 	// Clients MUST group Services by `operator` and select at most one
 	// Service from each operator. Clients MUST select Services with the
@@ -527,6 +544,10 @@ type SigningConfig struct {
 	// These URLs MUST be the *full* URL for the TSA, meaning that it
 	// should be suitable for submitting Time Stamp Requests (TSRs) to
 	// via HTTP, per RFC 3161.
+	//
+	// Known `major_api_version` values:
+	// * 1: RFC 3161 HTTP timestamping protocol.
+	//   See https://www.rfc-editor.org/rfc/rfc3161
 	//
 	// Clients MUST group Services by `operator` and select at most one
 	// Service from each operator. Clients MUST select Services with the
@@ -644,7 +665,8 @@ type Service struct {
 	// URL of the service. MUST include scheme and authority. MAY include path.
 	Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 	// Specifies the major API version. A value of 0 represents a service that
-	// has not yet been released.
+	// has not yet been released. Specific version numbers are defined per
+	// service type on the fields using this message (see `SigningConfig`).
 	MajorApiVersion uint32 `protobuf:"varint,2,opt,name=major_api_version,json=majorApiVersion,proto3" json:"major_api_version,omitempty"`
 	// Validity period of a service. A service that has only a start date
 	// SHOULD be considered the most recent instance of that service, but
